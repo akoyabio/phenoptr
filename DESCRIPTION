@@ -1,0 +1,20 @@
+Package: informr
+Type: Package
+Title: inForm Helper Functions
+Version: 0.1.0
+Author: Kent Johnson
+Maintainer: Kent Johnson <kent.johnson@perkinelmer.com>
+Description: Helper functions for working with inForm data.
+Imports:
+    dplyr,
+    lazyeval,
+    purrr,
+    readr,
+    stringr,
+    tidyverse,
+    tiff
+License: GPL-2
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 5.0.1
+Suggests: testthat
