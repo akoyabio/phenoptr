@@ -45,7 +45,7 @@ read_cell_seg_data <- function(
     stop("File name is missing.")
 
   # Read the data
-  df <- readr::read_tsv(path, na=c('NA', '#N/A'))
+  df <- readr::read_tsv(path, na=c('NA', '#N/A'), col_types=readr::cols())
 
   sampleName = 'Sample Name'
 
