@@ -32,6 +32,7 @@ path = system.file("extdata",
   "TMA/Core[1,5,6,1]_[21302,15107]_cell_seg_data.txt",
   package = "informr")
 d = read_cell_seg_data(path)
+
 ## Select tumor cells with PDL1 expression > 4
 selector = list('tumor', ~`Entire Cell PDL1 (Opal 620) Mean`>4)
 pdl1_pos_tumor = d[select_rows(d, selector),]
