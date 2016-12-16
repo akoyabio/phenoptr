@@ -4,14 +4,18 @@
 \alias{distance_matrix}
 \title{Create a distance matrix from cell seg data.}
 \usage{
-distance_matrix(d)
+distance_matrix(csd)
 }
 \arguments{
-\item{d}{A data frame with \code{Cell X Position} and \code{Cell Y Position}
-columns.}
+\item{csd}{A data frame with \code{Cell X Position}
+and \code{Cell Y Position} columns, such as the result of
+\code{\link{read_cell_seg_data}}.}
 }
 \value{
-A square matrix with both dimensions equal to \code{nrow(d)}
+A square matrix with both dimensions equal to \code{nrow(d)}.
+        The value at \code{[i, j]} will be the distance from the cell
+        at row \code{i} of \code{csd} to the cell at row \code{j}.
+        The returned matrix is symmetric.
 }
 \description{
 Create a distance matrix from cell seg data.
