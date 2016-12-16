@@ -3,7 +3,10 @@ library(testthat)
 library(dplyr)
 
 test_that("distance_matrix works", {
-  d = sample_cell_seg_data
-  m = distance_matrix(d)
-  expect_equal(dim(m), c(nrow(d), nrow(d)))
+  csd = sample_cell_seg_data %>% filter(Phenotype != 'other')
+  dst = distance_matrix(csd)
+  expect_equal(dim(dst), c(nrow(csd), nrow(csd)))
+  s = subset_distance_matrix(dst, csd, 'tumor', 'cytotoxic CD8')
+  expect_equal(dim(s)[1], sum(csd$Phenotype=='tumor'))
+  expect_equal(dim(s)[2], sum(csd$Phenotype=='cytotoxic CD8'))
 })

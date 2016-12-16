@@ -10,7 +10,11 @@ informr contains functions that make it easier to read and analyze data tables
 created by PerkinElmer's inForm software.
 }
 \details{
-\code{\link{read_cell_seg_data}} reads inForm cell segmentation data tables and makes them easier to use in R.
+\code{\link{read_cell_seg_data}} reads inForm cell segmentation data tables
+and makes them easier to use in R.
+
+\code{\link{distance_matrix}} and \code{\link{subset_distance_matrix}}
+create and subset cell distance matrices from cell segmentation data.
 
 \code{\link{read_maps}} reads inForm segmentation maps.
 

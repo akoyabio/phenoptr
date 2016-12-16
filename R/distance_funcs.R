@@ -11,11 +11,11 @@
 #' @export
 distance_matrix = function(csd) {
   stopifnot('Cell X Position' %in% names(csd), 'Cell Y Position' %in% names(csd))
-  as.matrix(dist(csd[,c('Cell X Position', 'Cell Y Position')]))
+  as.matrix(stats::dist(csd[,c('Cell X Position', 'Cell Y Position')]))
 }
 
 #' Subset the rows and columns of a distance matrix.
-#' @param dist The distance matrix corresponding to \code{csd},
+#' @param dst The distance matrix corresponding to \code{csd},
 #'        produced by calling \code{\link{distance_matrix}}.
 #' @param csd A data frame containing cell segmentation data,
 #'        such as the result of
@@ -26,8 +26,8 @@ distance_matrix = function(csd) {
 #' rows corresponding to \code{row_selection} and columns
 #' corresponding to \code{col_selection}.
 #' @export
-subset_distance_matrix = function(dist, csd, row_selection, col_selection) {
+subset_distance_matrix = function(dst, csd, row_selection, col_selection) {
   rows = select_rows(csd, row_selection)
   cols = select_rows(csd, col_selection)
-  dist[rows, cols, drop=FALSE]
+  dst[rows, cols, drop=FALSE]
 }

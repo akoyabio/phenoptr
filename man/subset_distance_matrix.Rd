@@ -4,10 +4,10 @@
 \alias{subset_distance_matrix}
 \title{Subset the rows and columns of a distance matrix.}
 \usage{
-subset_distance_matrix(dist, csd, row_selection, col_selection)
+subset_distance_matrix(dst, csd, row_selection, col_selection)
 }
 \arguments{
-\item{dist}{The distance matrix corresponding to \code{csd},
+\item{dst}{The distance matrix corresponding to \code{csd},
 produced by calling \code{\link{distance_matrix}}.}
 
 \item{csd}{A data frame containing cell segmentation data,

@@ -1,7 +1,7 @@
 Package: informr
 Type: Package
 Title: inForm Helper Functions
-Version: 0.1.0
+Version: 0.1.0.9000
 Author: Kent Johnson
 Maintainer: Kent Johnson <kent.johnson@perkinelmer.com>
 Description: Helper functions for working with inForm data.
@@ -13,6 +13,7 @@ Imports:
     stringr,
     tidyverse,
     tiff
+Depends: R (>= 3.1.0)
 License: GPL-2
 Encoding: UTF-8
 LazyData: true
