@@ -32,6 +32,13 @@ test_that('Phenotype + expression works', {
   expect_equal(select_rows(test_data, list(~E2==1, 'cd8')), c(F, F, F, F, T))
 })
 
+test_that('Multiple phenotypes work', {
+  expect_equal(select_rows(test_data, c('tumor', 'cd8')), c(T, T, T, T, T))
+  expect_equal(select_rows(test_data, list(c('tumor', 'cd8'))), c(T, T, T, T, T))
+  expect_equal(select_rows(test_data, list(~E3==1, c('tumor', 'cd8'))),
+               c(T, F, T, F, T))
+})
+
 test_that('Multiple expressions work', {
   expect_equal(select_rows(test_data, list(~Expr==1, ~E2==2)), c(F, F, T, F, F))
   expect_equal(select_rows(test_data, list(~E2==1, ~Expr==2)), c(F, T, F, F, F))

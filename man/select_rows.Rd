@@ -10,11 +10,11 @@ select_rows(d, sel, phenotype_column = "Phenotype")
 \arguments{
 \item{d}{A data frame}
 
-\item{sel}{May be a single string, a one-sided formula or a list containing
-such. A string is interpreted as the name of a phenotype and selects that
-phenotype. A formula is interpreted as an expression on the columns of
-\code{d}.
-Multiple items are joined with AND.}
+\item{sel}{May be a character vector, a one-sided formula or a list
+containing such. A character vector is interpreted as the name(s) of one or
+more phenotypes and selects any matching phenotype. A formula is
+interpreted as an expression on the columns of \code{d}. Multiple items are
+joined with AND.}
 
 \item{phenotype_column}{Optional, name of the phenotype column to use for
 simple selection}
@@ -28,14 +28,16 @@ Flexibly select rows of a data frame based on phenotypes or other
 expressions.
 }
 \examples{
-path = system.file("extdata",
-  "TMA/Core[1,5,6,1]_[21302,15107]_cell_seg_data.txt",
-  package = "informr")
-d = read_cell_seg_data(path)
+d = sample_cell_seg_data
 
 ## Select tumor cells with PDL1 expression > 4
 selector = list('tumor', ~`Entire Cell PDL1 (Opal 620) Mean`>4)
 pdl1_pos_tumor = d[select_rows(d, selector),]
-table(pdl1_pos_tumor$Phenotype)
+hist(pdl1_pos_tumor$`Entire Cell PDL1 (Opal 620) Mean`)
+
+## Select all T-cells
+selector = c('cytotoxic CD8', 'helper CD4', 'T reg Foxp3')
+tcells = d[select_rows(d, selector),]
+table(tcells$Phenotype)
 }
 
