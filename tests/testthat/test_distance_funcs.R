@@ -10,3 +10,12 @@ test_that("distance_matrix works", {
   expect_equal(dim(s)[1], sum(csd$Phenotype=='tumor'))
   expect_equal(dim(s)[2], sum(csd$Phenotype=='cytotoxic CD8'))
 })
+
+test_that("find_nearest_distance works", {
+  csd = sample_cell_seg_data %>% filter(Phenotype != 'other')
+  phenos = sort(unique(csd$Phenotype))
+  nearest = find_nearest_distance(csd)
+  expect_equal(ncol(nearest), length(phenos))
+  expect_equal(nrow(nearest), nrow(csd))
+  expect_equal(names(nearest), paste('Distance to', phenos))
+})

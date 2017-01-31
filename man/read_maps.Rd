@@ -16,10 +16,13 @@ A named list of images, one for each map in the source file.
 Reads an inForm \code{binary_seg_maps} file and returns a list of images.
 }
 \examples{
+\dontrun{
+# Not included at this time
 path = system.file("extdata",
   "TMA/Core[1,5,6,1]_[21302,15107]_binary_seg_maps.tif",
   package = "informr")
 d = read_maps(path)
 names(d)
+}
 }
 

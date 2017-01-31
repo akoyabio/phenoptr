@@ -8,6 +8,8 @@
 #'
 #' \code{\link{distance_matrix}} and \code{\link{subset_distance_matrix}}
 #' create and subset cell distance matrices from cell segmentation data.
+#' \code{\link{find_nearest_distance}} uses a distance matrix to find
+#' the distance from each cell to the nearest cell of each phenotype.
 #'
 #' \code{\link{read_maps}} reads inForm segmentation maps.
 #'
