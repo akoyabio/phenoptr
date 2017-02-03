@@ -4,6 +4,7 @@
 #' @param map_path Path to the map file.
 #' @return A named list of images, one for each map in the source file.
 #' @export
+#' @family file readers
 #' @examples
 #' \dontrun{
 #' # Not included at this time

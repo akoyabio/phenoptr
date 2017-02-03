@@ -30,6 +30,7 @@
 #' @return A \code{\link[tibble]{data_frame}}
 #'         containing the cleaned-up data set.
 #' @export
+#' @family file readers
 #' @examples
 #' path = system.file("extdata",
 #'   "TMA/Core[1,5,6,1]_[21302,15107]_cell_seg_data.txt",
@@ -52,19 +53,23 @@ read_cell_seg_data <- function(
   # If there are multiple sample names,
   # make 'tag' be an abbreviated Sample.Name column and insert it as the first column
   # Use the 'tag' column when you need a short name for the sample, e.g. in chart legends
-  if (length(unique(df[[sampleName]])) > 1) {
+  if (length(unique(df[[sampleName]])) > 1 && !('tag' %in% names(df))) {
     tag <- as.factor(removeExtensions(removeCommonPrefix(df[[sampleName]])))
     df <- cbind(tag, df)
   }
 
+  # Convert percents if it is not done already
   pcts <- grep('percent|confidence', names(df), ignore.case=TRUE)
-  for (i in pcts) df[[i]] <- as.numeric(sub('\\s*%$', '', df[[i]]))/100
+  for (i in pcts)
+    if (is.character(df[[i]]))
+        df[[i]] <- as.numeric(sub('\\s*%$', '', df[[i]]))/100
 
   # Remove columns that are all NA or all blank
   na.columns <- sapply(df, function(col) all(is.na(col) | col==''))
   df <- df[!na.columns]
 
-  # Convert distance to microns
+  # Convert distance to microns.
+  # No way to tell in general if this was done already...
   if (!is.na(pixels_per_micron)) {
     cols = get_pixel_columns(df)
     for (col in cols) {

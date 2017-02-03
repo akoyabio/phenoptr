@@ -1,5 +1,38 @@
 # Distance functions
 
+#' Compute nearest distance to each phenotype for each cell in a
+#' (possibly merged) inForm cell seg table. Write the result to a new file.
+#' @param cell_table_path Path to an inForm cell seg data file, or NULL
+#' to prompt for the path.
+#' @out_path Path to the output file, or NULL to create a path from the
+#' input file path.
+#' @importFrom magrittr "%>%"
+#' @export
+#' @family distance functions
+compute_all_nearest_distance = function(cell_table_path=NULL, out_path=NULL)
+{
+  # Get the path to the cell seg table and check it
+  if (is.null(cell_table_path))
+    cell_table_path = file.choose()
+
+  # Read the table
+  cat('Reading', cell_table_path, '\n')
+  csd = read_cell_seg_data(cell_table_path)
+
+  # Compute the distances
+  cat('Computing distances\n')
+  result = NULL
+  phenos = unique(csd$Phenotype)
+  result = csd %>% dplyr::group_by(`Sample Name`) %>%
+    dplyr::do(dplyr::bind_cols(., find_nearest_distance(., phenos)))
+
+  if (is.null(out_path))
+    out_path = sub('\\.txt$', '_dist.txt', cell_table_path)
+  cat('Writing', out_path, '\n')
+  readr::write_tsv(result, out_path, na='#N/A')
+}
+
+
 #' For each phenotype in a single sample,
 #' find the distance from
 #' each cell to the nearest other cell in the phenotype.
@@ -13,6 +46,7 @@
 #' for each phenotype. Will contain NA values where there is no other cell
 #' of the phenotype.
 #' @export
+#' @family distance functions
 #' @examples
 #' # Compute distance columns and append them to the source data
 #' d = sample_cell_seg_data
@@ -67,6 +101,7 @@ row_min = function(row)
 #'         The value at \code{[i, j]} will be the distance from the cell
 #'         at row \code{i} of \code{csd} to the cell at row \code{j}.
 #'         The returned matrix is symmetric.
+#' @family distance functions
 #' @export
 distance_matrix = function(csd) {
   stopifnot('Cell X Position' %in% names(csd), 'Cell Y Position' %in% names(csd))
@@ -84,6 +119,8 @@ distance_matrix = function(csd) {
 #' @return The input matrix \code{dst} subsetted to include only the
 #' rows corresponding to \code{row_selection} and columns
 #' corresponding to \code{col_selection}.
+#' @family distance functions
+#' @describeIn distance_matrix
 #' @export
 subset_distance_matrix = function(dst, csd, row_selection, col_selection) {
   rows = select_rows(csd, row_selection)
