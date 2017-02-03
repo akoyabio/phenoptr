@@ -20,4 +20,3 @@ To see all the included files for this core, use
 \code{list.files(system.file("extdata", "TMA", package = "informr"))}
 }
 \keyword{datasets}
-

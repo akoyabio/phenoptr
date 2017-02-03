@@ -8,6 +8,7 @@ Description: Helper functions for working with inForm data.
 Imports:
     dplyr,
     lazyeval,
+    magrittr,
     purrr,
     readr,
     stringr,

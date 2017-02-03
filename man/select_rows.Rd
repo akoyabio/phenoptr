@@ -2,8 +2,7 @@
 % Please edit documentation in R/select_rows.R
 \name{select_rows}
 \alias{select_rows}
-\title{Flexibly select rows of a data frame based on phenotypes or other
-expressions.}
+\title{Flexibly select rows of a data frame}
 \usage{
 select_rows(d, sel, phenotype_column = "Phenotype")
 }
@@ -24,7 +23,7 @@ A logical vector of length \code{nrow(d)} which selects rows
   according to sel.
 }
 \description{
-Flexibly select rows of a data frame based on phenotypes or other
+Select rows of a data frame based on phenotypes or other
 expressions.
 }
 \examples{
@@ -40,4 +39,3 @@ selector = c('cytotoxic CD8', 'helper CD4', 'T reg Foxp3')
 tcells = d[select_rows(d, selector),]
 table(tcells$Phenotype)
 }
-

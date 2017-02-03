@@ -50,4 +50,6 @@ path = system.file("extdata",
   package = "informr")
 d = read_cell_seg_data(path)
 }
-
+\seealso{
+Other file readers: \code{\link{read_maps}}
+}

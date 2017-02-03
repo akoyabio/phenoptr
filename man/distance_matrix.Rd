@@ -20,4 +20,8 @@ A square matrix with both dimensions equal to \code{nrow(d)}.
 \description{
 Create a distance matrix from cell seg data.
 }
-
+\seealso{
+Other distance functions: \code{\link{compute_all_nearest_distance}},
+  \code{\link{find_nearest_distance}},
+  \code{\link{subset_distance_matrix}}
+}

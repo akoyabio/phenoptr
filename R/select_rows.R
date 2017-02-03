@@ -1,4 +1,6 @@
-#' Flexibly select rows of a data frame based on phenotypes or other
+#' Flexibly select rows of a data frame
+#'
+#' Select rows of a data frame based on phenotypes or other
 #' expressions.
 #' @param d A data frame
 #' @param sel May be a character vector, a one-sided formula or a list

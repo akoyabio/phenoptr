@@ -25,4 +25,6 @@ d = read_maps(path)
 names(d)
 }
 }
-
+\seealso{
+Other file readers: \code{\link{read_cell_seg_data}}
+}

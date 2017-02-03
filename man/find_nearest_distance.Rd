@@ -2,9 +2,7 @@
 % Please edit documentation in R/distance_funcs.R
 \name{find_nearest_distance}
 \alias{find_nearest_distance}
-\title{For each phenotype in a single sample,
-find the distance from
-each cell to the nearest other cell in the phenotype.}
+\title{Nearest neighbor distances for each cell and phenotype}
 \usage{
 find_nearest_distance(csd, phenotypes = NULL)
 }
@@ -32,4 +30,8 @@ each cell to the nearest other cell in the phenotype.
 d = sample_cell_seg_data
 d = cbind(d, find_nearest_distance(d))
 }
-
+\seealso{
+Other distance functions: \code{\link{compute_all_nearest_distance}},
+  \code{\link{distance_matrix}},
+  \code{\link{subset_distance_matrix}}
+}

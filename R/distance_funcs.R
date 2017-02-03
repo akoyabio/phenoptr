@@ -1,10 +1,12 @@
 # Distance functions
 
+#' Nearest neighbors from a file
+#'
 #' Compute nearest distance to each phenotype for each cell in a
 #' (possibly merged) inForm cell seg table. Write the result to a new file.
 #' @param cell_table_path Path to an inForm cell seg data file, or NULL
 #' to prompt for the path.
-#' @out_path Path to the output file, or NULL to create a path from the
+#' @param out_path Path to the output file, or NULL to create a path from the
 #' input file path.
 #' @importFrom magrittr "%>%"
 #' @export
@@ -32,7 +34,8 @@ compute_all_nearest_distance = function(cell_table_path=NULL, out_path=NULL)
   readr::write_tsv(result, out_path, na='#N/A')
 }
 
-
+#' Nearest neighbor distances for each cell and phenotype
+#'
 #' For each phenotype in a single sample,
 #' find the distance from
 #' each cell to the nearest other cell in the phenotype.
@@ -120,7 +123,6 @@ distance_matrix = function(csd) {
 #' rows corresponding to \code{row_selection} and columns
 #' corresponding to \code{col_selection}.
 #' @family distance functions
-#' @describeIn distance_matrix
 #' @export
 subset_distance_matrix = function(dst, csd, row_selection, col_selection) {
   rows = select_rows(csd, row_selection)

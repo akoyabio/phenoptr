@@ -23,4 +23,3 @@ the distance from each cell to the nearest cell of each phenotype.
 \code{\link{select_rows}} helps select rows in cell segmentation data
 corresponding to specific phenotypes and expression levels.
 }
-
