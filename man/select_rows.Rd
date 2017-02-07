@@ -34,7 +34,7 @@ selector = list('tumor', ~`Entire Cell PDL1 (Opal 620) Mean`>4)
 pdl1_pos_tumor = d[select_rows(d, selector),]
 hist(pdl1_pos_tumor$`Entire Cell PDL1 (Opal 620) Mean`)
 
-## Select all T-cells
+## Select all T-cells. Note: use \\code{c} to OR phenotypes, not \\code{list}
 selector = c('cytotoxic CD8', 'helper CD4', 'T reg Foxp3')
 tcells = d[select_rows(d, selector),]
 table(tcells$Phenotype)

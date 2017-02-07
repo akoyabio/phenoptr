@@ -10,16 +10,26 @@ informr contains functions that make it easier to read and analyze data tables
 created by PerkinElmer's inForm software.
 }
 \details{
+\subsection{File readers}{
 \code{\link{read_cell_seg_data}} reads inForm cell segmentation data tables
 and makes them easier to use in R.
 
+\code{\link{read_maps}} reads inForm segmentation maps.
+}
+
+\subsection{Distance functions}{
 \code{\link{distance_matrix}} and \code{\link{subset_distance_matrix}}
 create and subset cell distance matrices from cell segmentation data.
+
 \code{\link{find_nearest_distance}} uses a distance matrix to find
 the distance from each cell to the nearest cell of each phenotype.
 
-\code{\link{read_maps}} reads inForm segmentation maps.
+\code{\link{count_within}} uses a distance matrix to find
+the number of cells within a radius of other cells.
+}
 
+\subsection{Helpers}{
 \code{\link{select_rows}} helps select rows in cell segmentation data
 corresponding to specific phenotypes and expression levels.
+}
 }

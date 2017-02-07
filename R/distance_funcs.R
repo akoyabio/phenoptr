@@ -1,5 +1,8 @@
 # Distance functions
 
+# Suppress CMD CHECK notes for things that look like global vars
+if(getRversion() >= "2.15.1")  utils::globalVariables(c(".", "Sample Name"))
+
 #' Nearest neighbors from a file
 #'
 #' Compute nearest distance to each phenotype for each cell in a
@@ -112,11 +115,11 @@ distance_matrix = function(csd) {
 }
 
 #' Subset the rows and columns of a distance matrix.
-#' @param dst The distance matrix corresponding to \code{csd},
-#'        produced by calling \code{\link{distance_matrix}}.
 #' @param csd A data frame containing cell segmentation data,
 #'        such as the result of
 #'        \code{\link{read_cell_seg_data}}.
+#' @param dst The distance matrix corresponding to \code{csd},
+#'        produced by calling \code{\link{distance_matrix}}.
 #' @param row_selection,col_selection Selection criteria for the
 #' rows and columns. Accepts all formats accepted by \code{\link{select_rows}}.
 #' @return The input matrix \code{dst} subsetted to include only the
@@ -124,7 +127,7 @@ distance_matrix = function(csd) {
 #' corresponding to \code{col_selection}.
 #' @family distance functions
 #' @export
-subset_distance_matrix = function(dst, csd, row_selection, col_selection) {
+subset_distance_matrix = function(csd, dst, row_selection, col_selection) {
   rows = select_rows(csd, row_selection)
   cols = select_rows(csd, col_selection)
   dst[rows, cols, drop=FALSE]

@@ -39,6 +39,10 @@ test_that('Multiple phenotypes work', {
                c(T, F, T, F, T))
 })
 
+test_that('Phenotype in as list are ANDed', {
+  expect_equal(select_rows(test_data, list('tumor', 'cd8')), c(F, F, F, F, F))
+})
+
 test_that('Multiple expressions work', {
   expect_equal(select_rows(test_data, list(~Expr==1, ~E2==2)), c(F, F, T, F, F))
   expect_equal(select_rows(test_data, list(~E2==1, ~Expr==2)), c(F, T, F, F, F))
@@ -47,4 +51,46 @@ test_that('Multiple expressions work', {
 test_that('All together now', {
   expect_equal(select_rows(test_data, list('tumor', ~E2==1, ~E3==1)), c(T, F, F, F, F))
   expect_equal(select_rows(test_data, list(~E2==1, 'tumor', ~E3==1)), c(T, F, F, F, F))
+})
+
+test_that('Normalize selector works', {
+  expect_error(normalize_selector(NULL))
+  expect_error(normalize_selector(c()))
+  expect_error(normalize_selector('cd8'))
+  expect_error(normalize_selector(list()))
+
+  expect_equal(normalize_selector(list(a='b')), list(a='b'))
+
+  expect_equal(normalize_selector(list('cd8')), list(cd8='cd8'))
+  expect_equal(normalize_selector(list(~Expr==1)), list(`Expr == 1`= ~Expr==1))
+
+  # Note these are all different!
+  # Three selectors, each an individual phenotype
+  expect_equal(normalize_selector(list('a', 'b', 'c')), list(a='a', b='b', c='c'))
+
+  # One selector, OR of three phenotypes
+  expect_equal(normalize_selector(list(c('a', 'b', 'c'))),
+               list(`a|b|c`=c('a', 'b', 'c')))
+
+  # One selector, AND of three phenotypes
+  expect_equal(normalize_selector(list(list('a', 'b', 'c'))),
+               list(`a&b&c`=list('a', 'b', 'c')))
+
+  # Mixed phenotype and threshold
+  expect_equal(normalize_selector(list(list('cd8', ~Expr==1))),
+               list(`cd8&Expr == 1`=list('cd8', ~Expr==1)))
+  expect_equal(normalize_selector(list(list('a', ~Expr==1, 'c'))),
+               list(`a&Expr == 1&c`=list('a', ~Expr==1, 'c')))
+
+  # Multiple selectors
+  expect_equal(normalize_selector(list(
+      list('cd8', ~Expr==1),
+      c('a', 'b', 'c'),
+      'tumor'
+    )),
+    list(
+      `cd8&Expr == 1`=list('cd8', ~Expr==1),
+      `a|b|c`=c('a', 'b', 'c'),
+      tumor='tumor'
+    ))
 })

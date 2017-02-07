@@ -21,7 +21,7 @@
 #' pdl1_pos_tumor = d[select_rows(d, selector),]
 #' hist(pdl1_pos_tumor$`Entire Cell PDL1 (Opal 620) Mean`)
 #'
-#' ## Select all T-cells
+#' ## Select all T-cells. Note: use \code{c} to OR phenotypes, not \code{list}
 #' selector = c('cytotoxic CD8', 'helper CD4', 'T reg Foxp3')
 #' tcells = d[select_rows(d, selector),]
 #' table(tcells$Phenotype)
@@ -46,4 +46,31 @@ select_rows = function(d, sel, phenotype_column='Phenotype') {
   for (s in sel)
     result = result & select_one(s)
   result
+}
+
+# Helper function to normalize lists of selectors into named lists of selectors,
+# so we can give names to the selected items.
+normalize_selector = function(sel) {
+  if (is.null(sel) || length(sel)==0)
+    stop("Empty selector")
+
+  stopifnot(is.list(sel))
+
+  if (!is.null(names(sel)))
+    return (sel)
+
+  # Name a single selector
+  name_item = function(s) {
+    if (is.character(s))
+      return (paste(s, collapse='|'))
+    else if (lazyeval::is_formula(s))
+      return (lazyeval::f_text(s))
+    else if (is.list(s))
+      return (paste(purrr::map_chr(s, name_item), collapse='&'))
+    else
+      stop('Unknown selector type')
+  }
+
+  names(sel) = purrr::map_chr(sel, name_item)
+  sel
 }

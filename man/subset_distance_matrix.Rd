@@ -4,15 +4,15 @@
 \alias{subset_distance_matrix}
 \title{Subset the rows and columns of a distance matrix.}
 \usage{
-subset_distance_matrix(dst, csd, row_selection, col_selection)
+subset_distance_matrix(csd, dst, row_selection, col_selection)
 }
 \arguments{
-\item{dst}{The distance matrix corresponding to \code{csd},
-produced by calling \code{\link{distance_matrix}}.}
-
 \item{csd}{A data frame containing cell segmentation data,
 such as the result of
 \code{\link{read_cell_seg_data}}.}
+
+\item{dst}{The distance matrix corresponding to \code{csd},
+produced by calling \code{\link{distance_matrix}}.}
 
 \item{row_selection, col_selection}{Selection criteria for the
 rows and columns. Accepts all formats accepted by \code{\link{select_rows}}.}
@@ -27,6 +27,7 @@ Subset the rows and columns of a distance matrix.
 }
 \seealso{
 Other distance functions: \code{\link{compute_all_nearest_distance}},
+  \code{\link{count_within}},
   \code{\link{distance_matrix}},
   \code{\link{find_nearest_distance}}
 }
