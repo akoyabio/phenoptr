@@ -26,8 +26,8 @@ corresponding to \code{col_selection}.
 Subset the rows and columns of a distance matrix.
 }
 \seealso{
-Other distance functions: \code{\link{compute_all_nearest_distance}},
-  \code{\link{count_within}},
+Other distance functions: \code{\link{average_count_within}},
+  \code{\link{compute_all_nearest_distance}},
   \code{\link{distance_matrix}},
   \code{\link{find_nearest_distance}}
 }

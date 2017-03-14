@@ -2,19 +2,19 @@
 
 #' Find the number of cells within a radius
 #'
-#' Find the number of cells of type \code{to} within \code{radius}
+#' Find the average number of cells of type \code{to} within \code{radius}
 #' of \code{from} cells
 #' within tissue category \code{category}.
 #' @param csd A data frame with \code{Cell X Position},
 #'        \code{Cell Y Position} and \code{Phenotype} columns,
 #'        such as the result of calling \code{\link{read_cell_seg_data}}.
-#' @param dst The distance matrix corresponding to \code{csd},
-#'        produced by calling \code{\link{distance_matrix}}.
 #' @param from,to Selection criteria for the
 #' rows and columns. Accepts all formats accepted by \code{\link{select_rows}}.
 #' @param radius The radius to search within.
 #' @param category Optional tissue category to restrict both \code{from} and
 #' \code{to}.
+#' @param dst Optional distance matrix corresponding to \code{csd},
+#'        produced by calling \code{\link{distance_matrix}}.
 #' @return A \code{\link{data_frame}} with four columns:
 #'   \describe{
 #'    \item{\code{from_count}}{The number of \code{from} cells found.}
@@ -26,8 +26,11 @@
 #'  }
 #' @export
 #' @family distance functions
-count_within = function(csd, dst, from, to, radius, category=NULL)
+average_count_within = function(csd, from, to, radius, category=NULL, dst=NULL)
 {
+  if (is.null(dst))
+    dst = distance_matrix(csd)
+
   # Which cells are in the from and to phenotypes?
   if (!is.null(category)) {
     tissue_f = stats::as.formula(paste0('~`Tissue Category`=="', category, '"'))

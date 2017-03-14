@@ -24,8 +24,8 @@ create and subset cell distance matrices from cell segmentation data.
 \code{\link{find_nearest_distance}} uses a distance matrix to find
 the distance from each cell to the nearest cell of each phenotype.
 
-\code{\link{count_within}} uses a distance matrix to find
-the number of cells within a radius of other cells.
+\code{\link{average_count_within}} uses a distance matrix to find
+the average number of cells within a radius of other cells.
 }
 
 \subsection{Helpers}{

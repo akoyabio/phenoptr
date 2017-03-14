@@ -16,22 +16,23 @@ test_that("average_counts works", {
   csd = sample_cell_seg_data %>% filter(Phenotype != 'other')
   dst = distance_matrix(csd)
 
-  within15 = count_within(csd, dst, 'tumor', 'cytotoxic CD8', 15)
+  within15 = average_count_within(csd, 'tumor', 'cytotoxic CD8', 15, dst=dst)
   check_within(within15, 3303, 293)
 
-  within30 = count_within(csd, dst, 'tumor', 'cytotoxic CD8', 30)
+  within30 = average_count_within(csd, 'tumor', 'cytotoxic CD8', 30, dst=dst)
   check_within(within30, 3303, 293)
   expect_gt(within30$within_count, within15$within_count)
   expect_gt(within30$within_mean, within15$within_mean)
 
-  within15tumor = count_within(csd, dst, 'tumor', 'cytotoxic CD8', 15, 'tumor')
+  within15tumor = average_count_within(csd, 'tumor', 'cytotoxic CD8', 15,
+                                       'tumor', dst=dst)
   check_within(within15tumor, 3221, 129)
 
-  within = count_within(csd, dst, 'tumor',
-                        c('cytotoxic CD8', 'helper CD4'), 15, 'tumor')
+  within = average_count_within(csd, 'tumor',
+                        c('cytotoxic CD8', 'helper CD4'), 15, 'tumor', dst=dst)
   check_within(within, 3221, 129+6)
 
-  within = count_within(csd, dst,
-                        c('cytotoxic CD8', 'helper CD4'), 'tumor',  15, 'tumor')
+  within = average_count_within(csd,
+                        c('cytotoxic CD8', 'helper CD4'), 'tumor',  15, 'tumor', dst=dst)
   check_within(within, 129+6, 3221)
 })

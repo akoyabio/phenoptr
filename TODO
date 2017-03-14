@@ -1,0 +1,3 @@
+To do:
+- Factor out an actual count_within which returns a count for each cell.
+- Write the selecting_cells vignette.
