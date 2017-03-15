@@ -18,7 +18,7 @@ Compute nearest distance to each phenotype for each cell in a
 (possibly merged) inForm cell seg table. Write the result to a new file.
 }
 \seealso{
-Other distance functions: \code{\link{average_count_within}},
+Other distance functions: \code{\link{count_within}},
   \code{\link{distance_matrix}},
   \code{\link{find_nearest_distance}},
   \code{\link{subset_distance_matrix}}

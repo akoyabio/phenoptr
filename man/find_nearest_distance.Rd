@@ -31,8 +31,8 @@ d = sample_cell_seg_data
 d = cbind(d, find_nearest_distance(d))
 }
 \seealso{
-Other distance functions: \code{\link{average_count_within}},
-  \code{\link{compute_all_nearest_distance}},
+Other distance functions: \code{\link{compute_all_nearest_distance}},
+  \code{\link{count_within}},
   \code{\link{distance_matrix}},
   \code{\link{subset_distance_matrix}}
 }
