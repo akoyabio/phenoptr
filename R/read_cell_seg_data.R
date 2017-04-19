@@ -73,18 +73,25 @@ read_cell_seg_data <- function(
   if (!is.na(pixels_per_micron)) {
     cols = get_pixel_columns(df)
     for (col in cols) {
+      # If col has a lot of NAs it may have been read as chr
+      if (!is.numeric(df[[col]]))
+        df[[col]] = as.numeric(df[[col]])
       df[[col]] = df[[col]] / pixels_per_micron
       names(df)[col] = sub('pixels', 'microns', names(df)[col])
     }
 
     cols = get_area_columns(df)
     for (col in cols) {
+      if (!is.numeric(df[[col]]))
+        df[[col]] = as.numeric(df[[col]])
       df[[col]] = df[[col]] / (pixels_per_micron^2)
       names(df)[col] = sub('pixels', 'sq microns', names(df)[col])
     }
 
     cols = get_density_columns(df)
     for (col in cols) {
+      if (!is.numeric(df[[col]]))
+        df[[col]] = as.numeric(df[[col]])
       df[[col]] = df[[col]] * (pixels_per_micron^2)
       names(df)[col] = sub('megapixels', 'sq mm', names(df)[col])
     }
