@@ -48,6 +48,7 @@ compute_all_nearest_distance = function(cell_table_path=NULL, out_path=NULL)
 #'        \code{\link{read_cell_seg_data}}.
 #' @param phenotypes Optional list of phenotypes to include. If omitted,
 #' \code{unique(csd$Phenotype)} will be used.
+#' @param dst Optional distance matrix. If omitted it will be computed.
 #' @return A data_frame containing a 'Distance to <phenotype>' column
 #' for each phenotype. Will contain NA values where there is no other cell
 #' of the phenotype.
@@ -57,7 +58,7 @@ compute_all_nearest_distance = function(cell_table_path=NULL, out_path=NULL)
 #' # Compute distance columns and append them to the source data
 #' d = sample_cell_seg_data
 #' d = cbind(d, find_nearest_distance(d))
-find_nearest_distance = function(csd, phenotypes=NULL)
+find_nearest_distance = function(csd, phenotypes=NULL, dst=NULL)
 {
   stopifnot('Phenotype' %in% names(csd))
 
@@ -65,7 +66,8 @@ find_nearest_distance = function(csd, phenotypes=NULL)
   if (length(unique((csd$`Sample Name`)))>1)
     stop('Data appears to contain multiple samples.')
 
-  d = distance_matrix(csd)
+  if (is.null(dst))
+    dst = distance_matrix(csd)
 
   if (is.null(phenotypes))
     phenotypes = sort(unique(csd$Phenotype))
@@ -78,7 +80,7 @@ find_nearest_distance = function(csd, phenotypes=NULL)
     if (sum(phenotype_cells)>0)
     {
       # Find the minimum distance > 0; i.e. from cells to not-self cells
-      phenotype_mins = apply(d[,phenotype_cells, drop=FALSE], 1, row_min)
+      phenotype_mins = apply(dst[,phenotype_cells, drop=FALSE], 1, row_min)
     }
     else
     {
