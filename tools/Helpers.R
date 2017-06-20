@@ -7,3 +7,8 @@ devtools::check(manual = TRUE)
 # Linting
 devtools::install_github('jimhester/lintr')
 lintr::lint_package()
+
+# Good practices
+# This takes a while to run and requires working R CMD CHECK
+devtools::install_github('mangothecat/goodpractice')
+goodpractice::gp()

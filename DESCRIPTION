@@ -25,3 +25,5 @@ Suggests: testthat,
     knitr,
     rmarkdown
 VignetteBuilder: knitr
+URL: https://github.com/PerkinElmer/informr
+BugReports: https://github.com/PerkinElmer/informr/issues
