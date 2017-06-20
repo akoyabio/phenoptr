@@ -6,8 +6,8 @@
 \alias{informr-package}
 \title{Helpers for working with inForm data}
 \description{
-informr contains functions that make it easier to read and analyze data tables
-created by PerkinElmer's inForm software.
+informr contains functions that make it easier to read and
+ analyze data tables created by PerkinElmer's inForm software.
 }
 \details{
 \subsection{File readers}{

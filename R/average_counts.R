@@ -33,7 +33,8 @@
 #'   value in \code{radius}:
 #'   \describe{
 #'    \item{\code{radius}}{The value of \code{radius} for this row.}
-#'    \item{\code{from_count}}{The number of \code{from} cells found in \code{csd}.}
+#'    \item{\code{from_count}}{The number of \code{from} cells found in
+#'     \code{csd}.}
 #'    \item{\code{to_count}}{The number of \code{to} cells found in \code{csd}.}
 #'    \item{\code{from_with}}{The number of \code{from} cells with a
 #'    \code{to} cell within \code{radius}.}
@@ -42,8 +43,7 @@
 #'  }
 #' @export
 #' @family distance functions
-count_within = function(csd, from, to, radius, category=NULL, dst=NULL)
-{
+count_within = function(csd, from, to, radius, category=NULL, dst=NULL) {
   if (is.null(dst))
     dst = distance_matrix(csd)
 
@@ -64,8 +64,10 @@ count_within = function(csd, from, to, radius, category=NULL, dst=NULL)
         radius = rad,
         from_count = dim(dst)[1], # Number of from cells
         to_count = dim(dst)[2],   # Number of to cells
-        from_with = sum(within>0), # Number of from cells having a to cell within radius
-        within_mean = mean(within)  # Mean number of to cells within radius of a from cell
+        from_with = sum(within>0), # Number of from cells having a
+                                   # to cell within radius
+        within_mean = mean(within) # Mean number of to cells within
+                                   # radius of a from cell
       )}
     )
   } else {

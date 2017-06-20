@@ -27,7 +27,8 @@ A \code{\link{data_frame}} with four columns and one row for each
   value in \code{radius}:
   \describe{
    \item{\code{radius}}{The value of \code{radius} for this row.}
-   \item{\code{from_count}}{The number of \code{from} cells found in \code{csd}.}
+   \item{\code{from_count}}{The number of \code{from} cells found in
+    \code{csd}.}
    \item{\code{to_count}}{The number of \code{to} cells found in \code{csd}.}
    \item{\code{from_with}}{The number of \code{from} cells with a
    \code{to} cell within \code{radius}.}

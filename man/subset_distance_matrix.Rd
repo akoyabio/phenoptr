@@ -15,7 +15,8 @@ such as the result of
 produced by calling \code{\link{distance_matrix}}.}
 
 \item{row_selection, col_selection}{Selection criteria for the
-rows and columns. Accepts all formats accepted by \code{\link{select_rows}}.}
+rows and columns. Accepts all formats accepted by
+\code{\link{select_rows}}.}
 }
 \value{
 The input matrix \code{dst} subsetted to include only the

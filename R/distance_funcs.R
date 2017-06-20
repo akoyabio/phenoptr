@@ -1,7 +1,8 @@
 # Distance functions
 
 # Suppress CMD CHECK notes for things that look like global vars
-if(getRversion() >= "2.15.1")  utils::globalVariables(c(".", "Sample Name"))
+if (getRversion() >= "2.15.1")
+  utils::globalVariables(c(".", "Sample Name"))
 
 #' Nearest neighbors from a file
 #'
@@ -14,8 +15,7 @@ if(getRversion() >= "2.15.1")  utils::globalVariables(c(".", "Sample Name"))
 #' @importFrom magrittr "%>%"
 #' @export
 #' @family distance functions
-compute_all_nearest_distance = function(cell_table_path=NULL, out_path=NULL)
-{
+compute_all_nearest_distance = function(cell_table_path=NULL, out_path=NULL) {
   # Get the path to the cell seg table and check it
   if (is.null(cell_table_path))
     cell_table_path = file.choose()
@@ -28,7 +28,8 @@ compute_all_nearest_distance = function(cell_table_path=NULL, out_path=NULL)
   cat('Computing distances\n')
   result = NULL
   phenos = unique(csd$Phenotype)
-  result = csd %>% dplyr::group_by(`Sample Name`) %>%
+  result = csd %>%
+    dplyr::group_by(`Sample Name`) %>%
     dplyr::do(dplyr::bind_cols(., find_nearest_distance(., phenos)))
 
   if (is.null(out_path))
@@ -58,12 +59,11 @@ compute_all_nearest_distance = function(cell_table_path=NULL, out_path=NULL)
 #' # Compute distance columns and append them to the source data
 #' d = sample_cell_seg_data
 #' d = cbind(d, find_nearest_distance(d))
-find_nearest_distance = function(csd, phenotypes=NULL, dst=NULL)
-{
+find_nearest_distance = function(csd, phenotypes=NULL, dst=NULL) {
   stopifnot('Phenotype' %in% names(csd))
 
   # Check for multiple samples, this is probably an error
-  if (length(unique((csd$`Sample Name`)))>1)
+  if (length(unique(csd$`Sample Name`))>1)
     stop('Data appears to contain multiple samples.')
 
   if (is.null(dst))
@@ -73,30 +73,27 @@ find_nearest_distance = function(csd, phenotypes=NULL, dst=NULL)
     phenotypes = sort(unique(csd$Phenotype))
   stopifnot(length(phenotypes) > 0)
 
-  result = lapply(phenotypes, FUN=function(phenotype)
-  {
+  result = lapply(phenotypes, FUN=function(phenotype) {
     # Which cells are in the target phenotype?
     phenotype_cells = csd$Phenotype==phenotype
-    if (sum(phenotype_cells)>0)
-    {
+    if (sum(phenotype_cells)>0) {
       # Find the minimum distance > 0; i.e. from cells to not-self cells
-      phenotype_mins = apply(dst[,phenotype_cells, drop=FALSE], 1, row_min)
+      phenotype_mins = apply(dst[, phenotype_cells, drop=FALSE], 1, row_min)
     }
-    else
-    {
+    else {
       phenotype_mins = rep(NA, nrow(csd))
     }
     phenotype_mins
   })
-  names(result) = paste('Distance to', phenotypes)       # The names for the new columns
+  # The names for the new columns
+  names(result) = paste('Distance to', phenotypes)
 
   tibble::as_tibble(result)
 }
 
 # Find the minimum value > 0 in row
 # If none, return NA
-row_min = function(row)
-{
+row_min = function(row) {
   row = row[row>0]
   if (length(row) > 0) min(row) else NA
 }
@@ -112,8 +109,9 @@ row_min = function(row)
 #' @family distance functions
 #' @export
 distance_matrix = function(csd) {
-  stopifnot('Cell X Position' %in% names(csd), 'Cell Y Position' %in% names(csd))
-  as.matrix(stats::dist(csd[,c('Cell X Position', 'Cell Y Position')]))
+  stopifnot('Cell X Position' %in% names(csd),
+            'Cell Y Position' %in% names(csd))
+  as.matrix(stats::dist(csd[, c('Cell X Position', 'Cell Y Position')]))
 }
 
 #' Subset the rows and columns of a distance matrix.
@@ -123,7 +121,8 @@ distance_matrix = function(csd) {
 #' @param dst The distance matrix corresponding to \code{csd},
 #'        produced by calling \code{\link{distance_matrix}}.
 #' @param row_selection,col_selection Selection criteria for the
-#' rows and columns. Accepts all formats accepted by \code{\link{select_rows}}.
+#' rows and columns. Accepts all formats accepted by
+#' \code{\link{select_rows}}.
 #' @return The input matrix \code{dst} subsetted to include only the
 #' rows corresponding to \code{row_selection} and columns
 #' corresponding to \code{col_selection}.

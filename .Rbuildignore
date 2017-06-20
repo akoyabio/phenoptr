@@ -1,7 +1,9 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
+^\tools
 
 # For now, exclude the sample image files
 Core\[1,5,6,1\]_\[21302,15107\].*(jpg|tif)
 
 TODO
+.lintr

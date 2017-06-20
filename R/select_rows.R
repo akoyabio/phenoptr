@@ -31,7 +31,8 @@ select_rows = function(d, sel, phenotype_column='Phenotype') {
   # Evaluate a single selector
   select_one = function(s) {
     if (is.character(s)) {
-      # Selector is one or more phenotype names, look for match with phenotype column
+      # Selector is one or more phenotype names,
+      # look for match with phenotype column
       stopifnot(phenotype_column %in% names(d))
       d[[phenotype_column]] %in% s
     } else {

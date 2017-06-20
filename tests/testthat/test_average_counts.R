@@ -5,7 +5,8 @@ library(dplyr)
 check_within = function(within, radius, from, to) {
   expect_equal(nrow(within), length(radius))
   expect_equal(names(within),
-               c("radius", "from_count", "to_count", "from_with", "within_mean"))
+               c("radius", "from_count", "to_count",
+                 "from_with", "within_mean"))
   expect_equal(within$from_count, from)
   expect_equal(within$to_count, to)
 }
@@ -32,7 +33,8 @@ test_that("count_within works", {
   check_within(within, 15, 3221, 129+6)
 
   within = count_within(csd,
-                        c('cytotoxic CD8', 'helper CD4'), 'tumor',  15, 'tumor', dst=dst)
+                        c('cytotoxic CD8', 'helper CD4'),
+                        'tumor',  15, 'tumor', dst=dst)
   check_within(within, 15, 129+6, 3221)
 })
 

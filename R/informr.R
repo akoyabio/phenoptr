@@ -1,7 +1,7 @@
 #' Helpers for working with inForm data
 #'
-#' informr contains functions that make it easier to read and analyze data tables
-#' created by PerkinElmer's inForm software.
+#' informr contains functions that make it easier to read and
+#'  analyze data tables created by PerkinElmer's inForm software.
 #'
 #' \subsection{File readers}{
 #' \code{\link{read_cell_seg_data}} reads inForm cell segmentation data tables

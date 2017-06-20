@@ -10,7 +10,7 @@ read_cell_seg_data(path = NA, pixels_per_micron = 2, remove_units = TRUE)
 \item{path}{Path to the file to read, or NA to use a file chooser.}
 
 \item{pixels_per_micron}{Conversion factor to microns
-(default 2 pixels/μm),
+(default 2 pixels/micron),
 set to NA to skip conversion.}
 
 \item{remove_units}{If TRUE (default),

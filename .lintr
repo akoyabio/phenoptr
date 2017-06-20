@@ -1,0 +1,7 @@
+linters: with_defaults(absolute_path_linter,
+  assignment_linter=NULL,
+  infix_spaces_linter=NULL,
+  single_quotes_linter=NULL,
+  spaces_left_parentheses_linter=NULL)
+
+exclude: "# nolint|return \\("

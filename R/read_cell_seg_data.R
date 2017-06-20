@@ -23,7 +23,7 @@
 #' }
 #' @param path Path to the file to read, or NA to use a file chooser.
 #' @param pixels_per_micron Conversion factor to microns
-#'        (default 2 pixels/μm),
+#'        (default 2 pixels/micron),
 #'        set to NA to skip conversion.
 #' @param remove_units If TRUE (default),
 #'        remove the unit name from expression columns.
@@ -48,13 +48,14 @@ read_cell_seg_data <- function(
   # Read the data
   df <- readr::read_tsv(path, na=c('NA', '#N/A'), col_types=readr::cols())
 
-  sampleName = 'Sample Name'
+  sample_name = 'Sample Name'
 
-  # If there are multiple sample names,
-  # make 'tag' be an abbreviated Sample.Name column and insert it as the first column
-  # Use the 'tag' column when you need a short name for the sample, e.g. in chart legends
-  if (length(unique(df[[sampleName]])) > 1 && !('tag' %in% names(df))) {
-    tag <- as.factor(removeExtensions(removeCommonPrefix(df[[sampleName]])))
+  # If there are multiple sample names, make 'tag' be an abbreviated
+  # Sample.Name column and insert it as the first column
+  # Use the 'tag' column when you need a short name for the sample,
+  # e.g. in chart legends
+  if (length(unique(df[[sample_name]])) > 1 && !('tag' %in% names(df))) {
+    tag <- as.factor(removeExtensions(remove_common_prefix(df[[sample_name]])))
     df <- cbind(tag, df)
   }
 
@@ -65,8 +66,8 @@ read_cell_seg_data <- function(
         df[[i]] <- as.numeric(sub('\\s*%$', '', df[[i]]))/100
 
   # Remove columns that are all NA or all blank
-  na.columns <- sapply(df, function(col) all(is.na(col) | col==''))
-  df <- df[!na.columns]
+  na_columns <- sapply(df, function(col) all(is.na(col) | col==''))
+  df <- df[!na_columns]
 
   # Convert distance to microns.
   # No way to tell in general if this was done already...
@@ -98,7 +99,7 @@ read_cell_seg_data <- function(
   }
 
   if (remove_units) {
-    unit_name = stringr::str_match(names(df), 'Mean( \\(.*\\))$')[,2]
+    unit_name = stringr::str_match(names(df), 'Mean( \\(.*\\))$')[, 2]
     unit_name = unit_name[!is.na(unit_name)][1]
     if (!is.na(unit_name))
       names(df) = sub(unit_name, '', names(df), fixed=TRUE)
@@ -108,7 +109,7 @@ read_cell_seg_data <- function(
 }
 
 get_pixel_columns = function(df) {
-  rx = 'position|Distance from Process Region Edge|Distance from Tissue Category Edge|axis'
+  rx = 'position|Distance from Process Region Edge|Distance from Tissue Category Edge|axis' # nolint
   grep(rx, names(df), ignore.case=TRUE)
 }
 
@@ -124,20 +125,20 @@ get_density_columns = function(df) {
 
 
 # Remove the common prefix from a vector of strings
-removeCommonPrefix <- function(x) {
+remove_common_prefix <- function(x) {
   .min <- min(x)
   .max <- max(x)
   if (.min == .max) return (x)  # All strings are the same
 
   # Find the first difference by comparing characters
   # Suppress a common warning
-  old.warn <- options(warn=-1)
+  old_warn <- options(warn=-1)
   .split <- strsplit(c(.min, .max), split='')
   .match <- .split[[1]] == .split[[2]]
-  options(old.warn)
-  firstDiff <- match(FALSE, .match)
+  options(old_warn)
+  first_diff <- match(FALSE, .match)
 
-  substring(x, firstDiff)
+  substring(x, first_diff)
 }
 
 # Remove the extensions from a vector of strings
