@@ -16,5 +16,9 @@ goodpractice::gp()
 
 devtools::spell_check()
 
+# Build documentation site - not working for NEWS.md?
 devtools::install_github("hadley/pkgdown")
 pkgdown::build_site()
+
+# Hack for NEWS
+rmarkdown::render("NEWS.md", output_file='docs/news/index.html')

@@ -57,6 +57,9 @@
 <li>
   <a href="../articles/index.html">Articles</a>
 </li>
+<li>
+  <a href="../news/index.html">News</a>
+</li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
@@ -86,7 +89,7 @@ find the distance from
 each cell to the nearest other cell in the phenotype.</p>
     
 
-    <pre class="usage"><span class='fu'>find_nearest_distance</span>(<span class='no'>csd</span>, <span class='kw'>phenotypes</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>dst</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>find_nearest_distance</span>(<span class='no'>csd</span>, <span class='kw'>phenotypes</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -102,10 +105,6 @@ such as the result of calling
       <th>phenotypes</th>
       <td><p>Optional list of phenotypes to include. If omitted,
 <code>unique(csd$Phenotype)</code> will be used.</p></td>
-    </tr>
-    <tr>
-      <th>dst</th>
-      <td><p>Optional distance matrix. If omitted it will be computed.</p></td>
     </tr>
     </table>
     
@@ -145,7 +144,7 @@ of the phenotype.</p>
 
       <footer>
       <div class="copyright">
-  <p>Developed by .</p>
+  <p>Developed by Kent Johnson.</p>
 </div>
 
 <div class="pkgdown">
