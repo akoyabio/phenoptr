@@ -49,7 +49,7 @@ compute_all_nearest_distance = function(cell_table_path=NULL, out_path=NULL) {
 #'        \code{\link{read_cell_seg_data}}.
 #' @param phenotypes Optional list of phenotypes to include. If omitted,
 #' \code{unique(csd$Phenotype)} will be used.
-#' @param dst Optional distance matrix. If omitted it will be computed.
+#'
 #' @return A data_frame containing a 'Distance to <phenotype>' column
 #' for each phenotype. Will contain NA values where there is no other cell
 #' of the phenotype.
@@ -59,15 +59,14 @@ compute_all_nearest_distance = function(cell_table_path=NULL, out_path=NULL) {
 #' # Compute distance columns and append them to the source data
 #' d = sample_cell_seg_data
 #' d = cbind(d, find_nearest_distance(d))
-find_nearest_distance = function(csd, phenotypes=NULL, dst=NULL) {
+find_nearest_distance = function(csd, phenotypes=NULL) {
   stopifnot('Phenotype' %in% names(csd))
 
   # Check for multiple samples, this is probably an error
   if (length(unique(csd$`Sample Name`))>1)
     stop('Data appears to contain multiple samples.')
 
-  if (is.null(dst))
-    dst = distance_matrix(csd)
+  dst = distance_matrix(csd)
 
   if (is.null(phenotypes))
     phenotypes = sort(unique(csd$Phenotype))
@@ -129,6 +128,10 @@ distance_matrix = function(csd) {
 #' @family distance functions
 #' @export
 subset_distance_matrix = function(csd, dst, row_selection, col_selection) {
+  # Check for pre-0.1.0.9002 parameter order
+  if (is.matrix(csd) && is.data.frame(dst))
+    stop('csd and dst parameters to subset_distance_matrix are in the wrong order')
+
   rows = select_rows(csd, row_selection)
   cols = select_rows(csd, col_selection)
   dst[rows, cols, drop=FALSE]
