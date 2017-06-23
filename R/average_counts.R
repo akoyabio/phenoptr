@@ -10,7 +10,31 @@
 #' For each \code{from} cell, count the number of \code{to} cells within
 #' \code{radius} microns. Report the number of \code{from} cells containing
 #' at least \emph{one} \code{to} cell within \code{radius} as \code{from_with}.
-#' Report the \emph{average} number of \code{to} cells as \code{within_mean}.
+#' Report the \emph{average} number of \code{to} cells per
+#' \code{from} cell as \code{within_mean}.
+#'
+#' There are some subtleties to this calculation. See the example code
+#' for a demonstration.
+#' \itemize{
+#'   \item It is not symmetric in \code{from} and \code{to}.
+#'   For example the number of tumor cells with a
+#'   macrophage within 25 microns is not the same as the number of macrophages
+#'   with a tumor cell within 25 microns.
+#'   \item \code{from_count*within_mean} is \emph{not} the number of
+#'   \code{to} cells within \code{radius} of a \code{from} cell, it may
+#'   count \code{to} cells multiple times.
+#'   \item Surprisingly, \code{from_count*within_mean} is symmetric in
+#'   \code{from} and \code{to}. The double-counting works out.
+#' }
+#' To aggregate \code{within_mean} across multiple samples (e.g. by Slide ID)
+#' use code such as
+#' \preformatted{
+#' results \%>\% group_by(`Slide ID`, from, to, radius) \%>\%
+#'   summarize(count=sum(from_count),
+#'             within=sum(from_count*within_mean),
+#'             avg=within/count) \%>\%
+#'   ungroup
+#' }
 #'
 #' If \code{category} is specified, all reported values are for cells within
 #' the given tissue category. If \code{category} is NULL, values are reported
@@ -29,7 +53,7 @@
 #' @param dst Optional distance matrix corresponding to \code{csd},
 #'        produced by calling \code{\link{distance_matrix}}.
 #'
-#' @return A \code{\link{data_frame}} with four columns and one row for each
+#' @return A \code{\link{data_frame}} with five columns and one row for each
 #'   value in \code{radius}:
 #'   \describe{
 #'    \item{\code{radius}}{The value of \code{radius} for this row.}
@@ -43,6 +67,20 @@
 #'  }
 #' @export
 #' @family distance functions
+#' @examples
+#' library(tidyverse)
+#' s = sample_cell_seg_data
+#'
+#' # Find the number of macrophages with a tumor cell within 10 or 25 microns
+#' count_within(s, from='macrophage CD68', to='tumor', radius=c(10, 25)) %>%
+#'   mutate(not_to=from_count*within_mean, to_mean=not_to/to_count)
+#'
+#' # Find the number of tumor cells with a macrophage within 10 or 25 microns
+#' # Show that from_count*within_mean is not the same as from_with in the
+#' # previous computation but from_count*within_mean/to_count is the same.
+#' count_within(s, from='tumor', to='macrophage CD68', radius=c(10, 25)) %>%
+#'   mutate(not_to=from_count*within_mean, to_mean=not_to/to_count)
+
 count_within = function(csd, from, to, radius, category=NULL, dst=NULL) {
   if (is.null(dst))
     dst = distance_matrix(csd)

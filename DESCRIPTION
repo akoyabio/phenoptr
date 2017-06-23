@@ -1,9 +1,7 @@
 Package: informr
 Type: Package
 Title: inForm Helper Functions
-Version: 0.1.0.9001
-Author: Kent Johnson [aut, cre]
-Maintainer: Kent Johnson <kent.johnson@perkinelmer.com>
+Version: 0.1.0.9002
 Description: Helper functions for working with inForm data.
 Imports:
     dplyr,
@@ -27,7 +25,7 @@ Suggests: testthat,
 VignetteBuilder: knitr
 URL: https://github.com/PerkinElmer/informr
 BugReports: https://github.com/PerkinElmer/informr/issues
-Authors@R: 
-    person(given = "Kent",
-           family = "Johnson",
-           email = "kent.johnson@perkinelmer.com")
+Authors@R: c(
+    person("Kent", "Johnson", role = c("aut", "cre"),
+           email = "kent.johnson@perkinelmer.com"),
+    person("PerkinElmer, Inc.", role="cph"))
