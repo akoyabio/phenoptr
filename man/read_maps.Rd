@@ -7,10 +7,14 @@
 read_maps(map_path)
 }
 \arguments{
-\item{map_path}{Path to the map file.}
+\item{map_path}{Path to the map file or a cell seg data file in the same
+directory.}
 }
 \value{
 A named list of images, one for each map in the source file.
+Images are oriented to match the coordinates in a cell seg data file,
+i.e. (0, 0) at the top left and the row corresponding to Y and
+column corresponding to X.
 }
 \description{
 Reads an inForm \code{binary_seg_maps} file and returns a list of images.
@@ -26,5 +30,6 @@ names(d)
 }
 }
 \seealso{
-Other file readers: \code{\link{read_cell_seg_data}}
+Other file readers: \code{\link{list_cell_seg_files}},
+  \code{\link{read_cell_seg_data}}
 }

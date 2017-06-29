@@ -1,3 +1,19 @@
+#' Find inForm data files.
+#'
+#' `list_cell_seg_files` finds inForm cell seg data files in a single directory
+#' or a directory hierarchy.
+#'
+#' @param path Path to the base directory to search.
+#' @param ... Additional arguments passed to [list.files][base::list.files()].
+#' Pass `recursive=TRUE` to search a directory hierarchy.
+#' @return A list of  file paths.
+#' @export
+#' @family file readers
+#' @md
+list_cell_seg_files = function(path, ...) {
+  list.files(path, pattern='cell_seg_data.txt', full.names=TRUE, ...)
+}
+
 #' Read and clean an inForm data file.
 #'
 #' \code{read_cell_seg_data} makes it easier to use data from PerkinElmer's
@@ -36,6 +52,12 @@
 #'   "TMA/Core[1,5,6,1]_[21302,15107]_cell_seg_data.txt",
 #'   package = "informr")
 #' d = read_cell_seg_data(path)
+#'
+#' \dontrun{
+#' # Read all cell seg files in a directory and return a single data_frame
+#' paths = list_cell_seg_files(path)
+#' d = purrr::map_df(paths, read_cell_seg_data)
+#' }
 read_cell_seg_data <- function(
   path=NA, pixels_per_micron=2, remove_units=TRUE) {
   if (is.na(path)) {

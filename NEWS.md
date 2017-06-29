@@ -10,6 +10,7 @@
 
 - `count_within` counts the number of `from` cells having a `to` cell
    within a given radius.
+- Added `list_cell_seg_files` to list all cell seg data files in a folder.
 
 ## Bug fixes
 
@@ -18,6 +19,7 @@
   
 ## Other changes
 
+- `read_maps` will find the correct path when given a cell seg table path.
 - Many documentation improvements.
 - Internal cleanup using `lintr` and `goodpractices`.
 

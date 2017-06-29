@@ -1,8 +1,12 @@
 #' Read an inForm segmentation map file
 #'
 #' Reads an inForm \code{binary_seg_maps} file and returns a list of images.
-#' @param map_path Path to the map file.
+#' @param map_path Path to the map file or a cell seg data file in the same
+#' directory.
 #' @return A named list of images, one for each map in the source file.
+#' Images are oriented to match the coordinates in a cell seg data file,
+#' i.e. (0, 0) at the top left and the row corresponding to Y and
+#' column corresponding to X.
 #' @export
 #' @family file readers
 #' @examples
@@ -15,6 +19,9 @@
 #' names(d)
 #' }
 read_maps = function(map_path) {
+  # Allow a cell seg path to be passed in
+  map_path = sub('cell_seg_data.txt', 'binary_seg_maps.tif', map_path)
+
   stopifnot(file.exists(map_path))
 
   # Read the mask file and get the image descriptions
