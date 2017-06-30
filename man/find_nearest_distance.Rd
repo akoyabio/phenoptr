@@ -27,8 +27,8 @@ each cell to the nearest other cell in the phenotype.
 }
 \examples{
 # Compute distance columns and append them to the source data
-d = sample_cell_seg_data
-d = cbind(d, find_nearest_distance(d))
+csd = sample_cell_seg_data
+csd = cbind(csd, find_nearest_distance(csd))
 }
 \seealso{
 Other distance functions: \code{\link{compute_all_nearest_distance}},

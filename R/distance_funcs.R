@@ -57,8 +57,8 @@ compute_all_nearest_distance = function(cell_table_path=NULL, out_path=NULL) {
 #' @family distance functions
 #' @examples
 #' # Compute distance columns and append them to the source data
-#' d = sample_cell_seg_data
-#' d = cbind(d, find_nearest_distance(d))
+#' csd = sample_cell_seg_data
+#' csd = cbind(csd, find_nearest_distance(csd))
 find_nearest_distance = function(csd, phenotypes=NULL) {
   stopifnot('Phenotype' %in% names(csd))
 
