@@ -1,0 +1,231 @@
+---
+title: "Phenotype Spatial Distribution"
+date: '`r format(Sys.Date(), "%B %d, %Y")`'
+output: html_vignette
+---
+
+```{r parameters, echo=FALSE,include=FALSE,message=FALSE}
+# This document creates a spatial distribution report for two phenotypes in a
+# single frame with optional positivity thresholds for each phenotype. It
+# requires a cell seg table with phenotypes Optionally, a tissue segmentation
+# TIFF image, if provided it will be used as a background for the image plots.
+library(ggplot2)
+library(magrittr)
+library(spatstat)
+```
+
+<style type="text/css">
+code, pre { 
+  color: black;
+  border: none;
+  background-color: white;
+  padding: 0;
+  font-size: 14px;
+}
+.table {
+    width: auto !important;
+    max-width: 100%;
+    margin-bottom: 20px;
+}
+</style>
+
+```{r setup, echo=FALSE,include=FALSE,message=FALSE}
+knitr::opts_chunk$set(echo=FALSE,fig.width=11, fig.height=8, 
+                      comment=NA, warning=FALSE, message=FALSE)
+
+data = read_cell_seg_data(cell_seg_path)
+
+pheno1 = list(
+  name=phenotypes[1], color=colors[1])
+
+pheno2 = list(
+  name=phenotypes[2], color=colors[2])
+
+# Get point pattern datasets and distance matrices; direction matters...
+window = spatstat::owin(xrange=c(0, max(data$`Cell X Position`)),
+                        yrange=c(0, max(data$`Cell Y Position`)))
+pheno_data1 = phenotype_as_ppp(data, pheno1, window)
+pheno_data2 = phenotype_as_ppp(data, pheno2, window)
+
+nn_dist12 = find_nearest_neighbor(pheno_data1, pheno_data2)
+nn_dist21 = find_nearest_neighbor(pheno_data2, pheno_data1)
+
+# Combined data for some reports
+# Both phenotypes in one ppp
+pp = spatstat::superimpose(pheno_data1$pp, pheno_data2$pp)
+
+# Segmented image for background
+if (grepl('cell_seg_data.txt', cell_seg_path))
+{
+  image_endings = c(
+    'image_with_tissue_seg.tif',
+    'image_with_tissue_seg.jpg',
+    'tissue_seg_map.tif',
+    'tissue_seg_map.jpg',
+    'composite_image.tif',
+    'composite_image.jpg'
+  )
+  for (ending in image_endings) {
+    tissue_seg_path = sub('cell_seg_data.txt', ending, cell_seg_path)
+    if (file.exists(tissue_seg_path)) break
+  }
+}
+
+if (exists('tissue_seg_path') && file.exists(tissue_seg_path))
+{
+  if (grepl('jpg$', tissue_seg_path))
+    background = jpeg::readJPEG(tissue_seg_path)
+  else background = tiff::readTIFF(tissue_seg_path)
+  
+  # Tone it down a bit by bringing it closer to neutral gray
+  background = (background - 0.75) / 8 + 0.75 
+  background = as.raster(background)
+  xlim = dim(background)[2] / pixels_per_micron
+  ylim = dim(background)[1] / pixels_per_micron
+} else {
+  # If no background image guess at dimensions
+  background = NA
+  xlim = guessXMax(data)
+  ylim = guessYMax(data)
+}
+
+# Remove def'n of tissue_seg_path so we will recompute next time for new image
+rm(tissue_seg_path)
+
+# Color palette for plots
+palette = c(pheno1$color, pheno2$color)
+names(palette) = c(pheno1$name, pheno2$name)
+legend=TRUE
+```
+
+### Data
+Spatial distribution of phenotypes from
+
+``r cell_seg_path``
+
+#### Selected phenotypes  
+
+```{r results='asis'}
+cat('-', pheno1$name, '\n')
+cat('-', pheno2$name, '\n')
+```
+
+
+### First-order statistics
+
+```{r results='asis'}
+cat('Number of cells:', nrow(data), '\n\n')
+
+data %>% dplyr::group_by(Phenotype) %>% 
+  dplyr::summarize(Count=n(), 
+                   Proportion=scales::percent(round(Count/nrow(data), 2))) %>% 
+  knitr::kable(caption='Cell count and fraction of total per phenotype',
+               table.attr='style="width: 30%"')
+
+```
+
+### Cell and phenotype locations
+
+#### All cells  
+
+```{r}
+p = ggplot(data, aes(x=`Cell X Position`, y=`Cell Y Position`, color=Phenotype))
+p = add_scales_and_background(p, background, xlim, ylim)
+p = p + geom_point()
+p + labs(title='Locations of all cells')
+```
+
+```{r fig.height=6+2*(length(levels(data$Phenotype))-1) %/% 3}
+p + facet_wrap(~Phenotype) + guides(color=FALSE)
+```
+
+#### Selected phenotypes only  
+
+```{r}
+p = ggplot(as.data.frame(pp), aes(x=x, y=y, color=marks))
+p = add_scales_and_background(p, background, xlim, ylim)
+p = p + geom_point()
+p = p + scale_color_manual('Phenotype', values=palette)
+p = p + labs(x='Cell X Position', y='Cell Y Position',
+             title='Locations of selected phenotypes')
+p
+```
+
+```{r fig.height=6}
+# p from previous chunk...
+p + facet_wrap(~marks) + guides(color=FALSE)
+```
+
+### Nearest neighbors, selected phenotypes
+
+```{r}
+nn_plot(pheno_data1, pheno_data2, nn_dist12, background, xlim, ylim)
+nn_plot(pheno_data2, pheno_data1, nn_dist21, background, xlim, ylim)
+```
+
+### Spatial statistics
+
+#### Second-order statistics for selected phenotypes - G function 
+
+G shows the distribution of nearest neigbors. 
+It is the cumulative distribution function of the distance from
+a typical cell to its nearest neighbor.
+
+```{r, fig.height=5}
+# Show G in a grid, cross-G only
+x_label_microns = expression(paste('radius (', mu, 'm)'))
+g_correction = 'km' # Kaplan-Meier edge correction only
+plot_G = function(g, main)
+{
+  plot(g, cbind(km, theo) ~ r, legend=legend, 
+       xlim=c(0,plot_gx_max), ylim=c(0,1),
+       xlab=x_label_microns, main=main)
+  micron_frac = as.function(g)(micron_line)
+  abline(h=micron_frac, col = "lightgray", lty = 3)
+  abline(v=micron_line, col='lightgray', lty=3)
+  text(0, micron_frac, round(micron_frac, 2), adj=c(0, 0.4))
+}
+
+if (length(levels(pp$marks))<=1)
+{
+  cat('Not every phenotype has cells.\n')
+} else {
+  oldpar=par(mfrow=c(1,2))
+  ignore = plot_G(Gcross(pp, pheno1$name, pheno2$name, correction=g_correction),
+       main=bquote('Nearest neighbor,' 
+                   ~ italic(.(pheno1$name) ~ 'to' ~ italic(.(pheno2$name)))))
+  
+  ignore = plot_G(Gcross(pp, pheno2$name, pheno1$name, correction=g_correction),
+       main=bquote('Nearest neighbor,' 
+                   ~ italic(.(pheno2$name)) ~ 'to' ~ italic(.(pheno1$name))))
+  
+  par(oldpar)
+}
+```
+
+
+#### Cross-correlation for selected phenotypes  
+
+Cross-correlation summarizes the relative density of cells of one type from cells of a second type.
+
+```{r, fig.height=5}
+pcf_correction = 'Ripley'
+
+if (length(levels(pp$marks))<=1)
+{
+  cat('Not every phenotype has cells.\n')
+} else {
+  oldpar=par(mfrow=c(1,2))
+  ignore = plot(pcfcross(pp, pheno1$name, pheno2$name, correction=pcf_correction), 
+                legend=legend, xlab=x_label_microns, 
+       main=bquote('Cross-correlation from' ~ italic(.(pheno1$name)) ~ 'to' 
+                   ~ italic(.(pheno2$name))))
+  
+  ignore = plot(pcfcross(pp, pheno2$name, pheno1$name, correction=pcf_correction), 
+                legend=legend, xlab=x_label_microns, 
+       main=bquote('Cross-correlation from' ~ italic(.(pheno2$name)) ~ 'to' 
+                   ~ italic(.(pheno1$name))))
+  
+  par(oldpar)
+}
+```

@@ -8,6 +8,8 @@
   
 ## New features
 
+- `spatial_distribution_report` creates an HTML report showing the 
+  location and nearest-neighbor relations of cells in a single field.
 - `count_within` counts the number of `from` cells having a `to` cell
    within a given radius.
 - Added `list_cell_seg_files` to list all cell seg data files in a folder.

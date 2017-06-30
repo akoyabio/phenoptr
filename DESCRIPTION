@@ -5,10 +5,15 @@ Version: 0.1.1.9000
 Description: Helper functions for working with inForm data.
 Imports:
     dplyr,
+    ggplot2,
+    jpeg,
+    knitr,
     lazyeval,
     magrittr,
     purrr,
     readr,
+    rmarkdown,
+    spatstat,
     stringr,
     tibble,
     tidyverse,
@@ -19,9 +24,7 @@ Copyright: PerkinElmer
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.0.1
-Suggests: testthat,
-    knitr,
-    rmarkdown
+Suggests: testthat
 VignetteBuilder: knitr
 URL: https://github.com/PerkinElmer/informr
 BugReports: https://github.com/PerkinElmer/informr/issues
