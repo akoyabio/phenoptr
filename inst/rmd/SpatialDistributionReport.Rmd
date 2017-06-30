@@ -6,11 +6,12 @@ output: html_vignette
 
 ```{r parameters, echo=FALSE,include=FALSE,message=FALSE}
 # This document creates a spatial distribution report for two phenotypes in a
-# single field.
-# It requires a cell seg table with phenotypes
-# Optionally, a tissue segmentation TIFF image, if provided it will be used as a background for the image plots.
-
-library(informr)
+# single frame with optional positivity thresholds for each phenotype. It
+# requires a cell seg table with phenotypes Optionally, a tissue segmentation
+# TIFF image, if provided it will be used as a background for the image plots.
+library(ggplot2)
+library(magrittr)
+library(spatstat)
 ```
 
 <style type="text/css">
@@ -21,113 +22,106 @@ code, pre {
   padding: 0;
   font-size: 14px;
 }
+.table {
+    width: auto !important;
+    max-width: 100%;
+    margin-bottom: 20px;
+}
 </style>
 
 ```{r setup, echo=FALSE,include=FALSE,message=FALSE}
-
-# theme_reports()
-knitr::opts_chunk$set(echo=FALSE,fig.width=11, fig.height=8, comment=NA, warning=FALSE, message=FALSE)
+knitr::opts_chunk$set(echo=FALSE,fig.width=11, fig.height=8, 
+                      comment=NA, warning=FALSE, message=FALSE)
 
 data = read_cell_seg_data(cell_seg_path)
 
-pheno1 = PhenExp$new(
-  name=phenotype1, nickname=phenotype1Nickname, color=phenotype1Color,
-  expression=phenotype1ExpressionName, threshold=phenotype1ExpressionThreshold)
+pheno1 = list(
+  name=phenotypes[1], color=colors[1])
 
-pheno2 = PhenExp$new(
-  name=phenotype2, nickname=phenotype2Nickname, color=phenotype2Color,
-  expression=phenotype2ExpressionName, threshold=phenotype2ExpressionThreshold)
+pheno2 = list(
+  name=phenotypes[2], color=colors[2])
 
 # Get point pattern datasets and distance matrices; direction matters...
-phenoData12 = getPhenotypes(data, pheno1, pheno2)
-nnDist12 = findExpressionDistance(phenoData12)
-window=phenoData12$ppFrom$window
-#ppDist12 = with(nnDist12, ppp(`From Cell X Position`, `From Cell Y Position`, window=window, marks=Distance))
+window = spatstat::owin(xrange=c(0, max(data$`Cell X Position`)),
+                        yrange=c(0, max(data$`Cell Y Position`)))
+pheno_data1 = phenotype_as_ppp(data, pheno1, window)
+pheno_data2 = phenotype_as_ppp(data, pheno2, window)
 
-phenoData21 = getPhenotypes(data, pheno2, pheno1)
-nnDist21 = findExpressionDistance(phenoData21)
-#ppDist21 = with(nnDist21, ppp(`From Cell X Position`, `From Cell Y Position`, window=window, marks=Distance))
+nn_dist12 = find_nearest_neighbor(pheno_data1, pheno_data2)
+nn_dist21 = find_nearest_neighbor(pheno_data2, pheno_data1)
 
 # Combined data for some reports
 # Both phenotypes in one ppp
-pp = superimpose(phenoData12$ppFrom, phenoData12$ppTo)
-
-# All data together
-ppAll = with(data, ppp(`Cell X Position`, `Cell Y Position`, window=window, marks=`Phenotype`))
+pp = spatstat::superimpose(pheno_data1$pp, pheno_data2$pp)
 
 # Segmented image for background
 if (grepl('cell_seg_data.txt', cell_seg_path))
 {
-    tissue_seg_path = sub('cell_seg_data.txt', 'image_with_tissue_seg.tif', cell_seg_path)
-  if (!file.exists(tissue_seg_path))
-    tissue_seg_path = sub('cell_seg_data.txt', 'tissue_seg_map.tif', cell_seg_path)
+  image_endings = c(
+    'image_with_tissue_seg.tif',
+    'image_with_tissue_seg.jpg',
+    'tissue_seg_map.tif',
+    'tissue_seg_map.jpg',
+    'composite_image.tif',
+    'composite_image.jpg'
+  )
+  for (ending in image_endings) {
+    tissue_seg_path = sub('cell_seg_data.txt', ending, cell_seg_path)
+    if (file.exists(tissue_seg_path)) break
+  }
 }
 
 if (exists('tissue_seg_path') && file.exists(tissue_seg_path))
 {
-  background = tiff::readTIFF(tissue_seg_path)
-  background = (background - 0.75) / 8 + 0.75 # Tone it down a bit by bringing it closer to neutral gray
+  if (grepl('jpg$', tissue_seg_path))
+    background = jpeg::readJPEG(tissue_seg_path)
+  else background = tiff::readTIFF(tissue_seg_path)
+  
+  # Tone it down a bit by bringing it closer to neutral gray
+  background = (background - 0.75) / 8 + 0.75 
   background = as.raster(background)
-  xlim = dim(background)[2] / pixelsPerMicron
-  ylim = dim(background)[1] / pixelsPerMicron
+  xlim = dim(background)[2] / pixels_per_micron
+  ylim = dim(background)[1] / pixels_per_micron
 } else {
   # If no background image guess at dimensions
+  background = NA
   xlim = guessXMax(data)
   ylim = guessYMax(data)
 }
 
-# Remove def'n of tissueSegPath so we will recompute next time for new image
+# Remove def'n of tissue_seg_path so we will recompute next time for new image
 rm(tissue_seg_path)
 
 # Color palette for plots
 palette = c(pheno1$color, pheno2$color)
-names(palette) = c(pheno1$fullname(), pheno2$fullname())
+names(palette) = c(pheno1$name, pheno2$name)
 legend=TRUE
 ```
 
 ### Data
 Spatial distribution of phenotypes from
 
-``r cellTablePath``
+``r cell_seg_path``
 
-#### Selected phenotype and expression levels  
+#### Selected phenotypes  
 
 ```{r results='asis'}
-cat('-', pheno1$fullname(), '\n')
-if (pheno1$threshold > 0)
-  cat('    -', pheno1$expression, '>', pheno1$threshold, '\n')
-cat('-', pheno2$fullname(), '\n')
-if (pheno2$threshold > 0)
-  cat('    -', pheno2$expression, '>', pheno2$threshold, '\n')
+cat('-', pheno1$name, '\n')
+cat('-', pheno2$name, '\n')
 ```
 
 
 ### First-order statistics
 
-#### All cells  
+```{r results='asis'}
+cat('Number of cells:', nrow(data), '\n\n')
 
-```{r}
-# We don't need the full summary, it has too much detail
-# Print just the helpful bits
-dp = 3
+data %>% dplyr::group_by(Phenotype) %>% 
+  dplyr::summarize(Count=n(), 
+                   Proportion=scales::percent(round(Count/nrow(data), 2))) %>% 
+  knitr::kable(caption='Cell count and fraction of total per phenotype',
+               table.attr='style="width: 30%"')
 
-s = summary(ppAll)
-
-cat('Number of cells:', s$n, '\n')
-cat("Average intensity:", round(s$intensity, dp), "cells per square micron\n")
-cat('Frequency and intensity per phenotype:\n')
-round(s$marks, dp)
-```
-
-#### Selected phenotypes only  
-
-```{r}
-s = summary(pp)
-
-cat('Number of cells:', s$n, '\n')
-cat("Average intensity:", round(s$intensity, dp), "cells per square micron\n")
-cat('Frequency and intensity per phenotype:\n')
-round(s$marks, dp)
 ```
 
 ### Cell and phenotype locations
@@ -136,62 +130,60 @@ round(s$marks, dp)
 
 ```{r}
 p = ggplot(data, aes(x=`Cell X Position`, y=`Cell Y Position`, color=Phenotype))
-p = addScalesAndBackground(p)
+p = add_scales_and_background(p, background, xlim, ylim)
 p = p + geom_point()
 p + labs(title='Locations of all cells')
 ```
+
 ```{r fig.height=6+2*(length(levels(data$Phenotype))-1) %/% 3}
 p + facet_wrap(~Phenotype) + guides(color=FALSE)
-
-#plot(density(split(ppAll), adjust=0.2), ribbon=FALSE, 
-#     main='Phenotype density - all cells', ylim=rev(range(ppAll$y)))
 ```
 
 #### Selected phenotypes only  
 
 ```{r}
 p = ggplot(as.data.frame(pp), aes(x=x, y=y, color=marks))
-p = addScalesAndBackground(p)
+p = add_scales_and_background(p, background, xlim, ylim)
 p = p + geom_point()
 p = p + scale_color_manual('Phenotype', values=palette)
-p = p + labs(x='Cell X Position', y='Cell Y Position', title='Locations of selected phenotypes')
+p = p + labs(x='Cell X Position', y='Cell Y Position',
+             title='Locations of selected phenotypes')
 p
 ```
 
 ```{r fig.height=6}
 # p from previous chunk...
 p + facet_wrap(~marks) + guides(color=FALSE)
-
-#plot(density(split(pp), adjust=0.2), ribbon = FALSE, 
-#     main='Phenotype density - selected phenotypes', ylim=rev(range(pp$y)))
 ```
 
 ### Nearest neighbors, selected phenotypes
 
 ```{r}
-nnPlot(phenoData12, nnDist12)
-nnPlot(phenoData21, nnDist21)
+nn_plot(pheno_data1, pheno_data2, nn_dist12, background, xlim, ylim)
+nn_plot(pheno_data2, pheno_data1, nn_dist21, background, xlim, ylim)
 ```
 
 ### Spatial statistics
 
 #### Second-order statistics for selected phenotypes - G function 
 
-G shows the distribution of nearest neigbors. It is the cumulative distribution function of the distance from
+G shows the distribution of nearest neigbors. 
+It is the cumulative distribution function of the distance from
 a typical cell to its nearest neighbor.
 
 ```{r, fig.height=5}
 # Show G in a grid, cross-G only
-xlabMicrons = expression(paste('radius (', mu, 'm)'))
-gCorrection = 'km' # Kaplan-Meier edge correction only
-plotG = function(g, main)
+x_label_microns = expression(paste('radius (', mu, 'm)'))
+g_correction = 'km' # Kaplan-Meier edge correction only
+plot_G = function(g, main)
 {
-  plot(g, cbind(km, theo) ~ r, legend=legend, xlim=c(0,plotGxMax), ylim=c(0,1),
-       xlab=xlabMicrons, main=main)
-  micronFrac = as.function(g)(micronLine)
-  abline(h=micronFrac, col = "lightgray", lty = 3)
-  abline(v=micronLine, col='lightgray', lty=3)
-  text(0, micronFrac, round(micronFrac, 2), adj=c(0, 0.4))
+  plot(g, cbind(km, theo) ~ r, legend=legend, 
+       xlim=c(0,plot_gx_max), ylim=c(0,1),
+       xlab=x_label_microns, main=main)
+  micron_frac = as.function(g)(micron_line)
+  abline(h=micron_frac, col = "lightgray", lty = 3)
+  abline(v=micron_line, col='lightgray', lty=3)
+  text(0, micron_frac, round(micron_frac, 2), adj=c(0, 0.4))
 }
 
 if (length(levels(pp$marks))<=1)
@@ -199,11 +191,13 @@ if (length(levels(pp$marks))<=1)
   cat('Not every phenotype has cells.\n')
 } else {
   oldpar=par(mfrow=c(1,2))
-  ignore = plotG(Gcross(pp, pheno1$fullname(), pheno2$fullname(), correction=gCorrection),
-       main=bquote('Nearest neighbor,' ~ italic(.(pheno1$fullname())) ~ 'to' ~ italic(.(pheno2$fullname()))))
+  ignore = plot_G(Gcross(pp, pheno1$name, pheno2$name, correction=g_correction),
+       main=bquote('Nearest neighbor,' 
+                   ~ italic(.(pheno1$name) ~ 'to' ~ italic(.(pheno2$name)))))
   
-  ignore = plotG(Gcross(pp, pheno2$fullname(), pheno1$fullname(), correction=gCorrection),
-       main=bquote('Nearest neighbor,' ~ italic(.(pheno2$fullname())) ~ 'to' ~ italic(.(pheno1$fullname()))))
+  ignore = plot_G(Gcross(pp, pheno2$name, pheno1$name, correction=g_correction),
+       main=bquote('Nearest neighbor,' 
+                   ~ italic(.(pheno2$name)) ~ 'to' ~ italic(.(pheno1$name))))
   
   par(oldpar)
 }
@@ -215,20 +209,22 @@ if (length(levels(pp$marks))<=1)
 Cross-correlation summarizes the relative density of cells of one type from cells of a second type.
 
 ```{r, fig.height=5}
-pcfCorrection = 'Ripley'
+pcf_correction = 'Ripley'
 
 if (length(levels(pp$marks))<=1)
 {
   cat('Not every phenotype has cells.\n')
 } else {
   oldpar=par(mfrow=c(1,2))
-  ignore = plot(pcfcross(pp, pheno1$fullname(), pheno2$fullname(), correction=pcfCorrection), 
-                legend=legend, xlab=xlabMicrons, 
-       main=bquote('Cross-correlation from' ~ italic(.(pheno1$fullname())) ~ 'to' ~ italic(.(pheno2$fullname()))))
+  ignore = plot(pcfcross(pp, pheno1$name, pheno2$name, correction=pcf_correction), 
+                legend=legend, xlab=x_label_microns, 
+       main=bquote('Cross-correlation from' ~ italic(.(pheno1$name)) ~ 'to' 
+                   ~ italic(.(pheno2$name))))
   
-  ignore = plot(pcfcross(pp, pheno2$fullname(), pheno1$fullname(), correction=pcfCorrection), 
-                legend=legend, xlab=xlabMicrons, 
-       main=bquote('Cross-correlation from' ~ italic(.(pheno2$fullname())) ~ 'to' ~ italic(.(pheno1$fullname()))))
+  ignore = plot(pcfcross(pp, pheno2$name, pheno1$name, correction=pcf_correction), 
+                legend=legend, xlab=x_label_microns, 
+       main=bquote('Cross-correlation from' ~ italic(.(pheno2$name)) ~ 'to' 
+                   ~ italic(.(pheno1$name))))
   
   par(oldpar)
 }

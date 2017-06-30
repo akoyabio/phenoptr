@@ -2,33 +2,52 @@
 % Please edit documentation in R/spatial_distribution_report.R
 \name{spatial_distribution_report}
 \alias{spatial_distribution_report}
-\title{Create a spatial distribution report}
+\title{Create a spatial distribution report.}
 \usage{
 spatial_distribution_report(cell_seg_path, phenotypes, colors,
-  plot_gx_max = 100, micron_line = 25)
+  output_path = NULL, pixels_per_micron = 2, plot_gx_max = 100,
+  micron_line = 25)
 }
 \arguments{
-\item{phenotypes}{A list of phenotype specifications in the form used by
-\code{\link[=select_rows]{select_rows()}}.}
+\item{cell_seg_path}{Path to a cell seg data file.}
 
-\item{colors}{A character vector of color specifications, of the same
-length as \code{phenotypes}.}
+\item{phenotypes}{A character vector containing two phenotype names.}
+
+\item{colors}{A character vector of two color specifications.}
+
+\item{output_path}{Optional, path to the output HTML file. If omitted,
+output will be written to the directory containing \code{cell_seg_path}.}
+
+\item{pixels_per_micron}{Conversion factor to microns
+(default 2 pixels/micron),}
 
 \item{plot_gx_max}{Optional, maximum value of radius to show on G
 function plots.}
 
 \item{micron_line}{Optional, X location (radius in microns)
 of crosshair on G function plots.}
-
-\item{path}{Path to a cell seg table.}
 }
 \description{
 Creates an HTML report showing the location and nearest-neighbor relations
 of cells in a single field and two chosen phenotypes.
 }
 \details{
-A cell seg data file for the field is required. If an image of the field
+A cell seg data file for the field is required. If a tissue segmentation
+or composite image of the field
 is available, it will be used as a background.
 
 The report is saved to the same directory as the input file.
+}
+\examples{
+\dontrun{
+cell_seg_path = system.file("extdata",
+                       "TMA/Core[1,5,6,1]_[21302,15107]_cell_seg_data.txt",
+                       package = "informr")
+
+phenotypes = c("macrophage CD68", "cytotoxic CD8")
+colors = c('red', 'blue')
+out_path = path.expand('~/spatial_distribution_report.html')
+
+spatial_distribution_report(cell_seg_path, phenotypes, colors, out_path)
+}
 }
