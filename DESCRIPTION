@@ -5,10 +5,12 @@ Version: 0.1.1.9000
 Description: Helper functions for working with inForm data.
 Imports:
     dplyr,
+    knitr,
     lazyeval,
     magrittr,
     purrr,
     readr,
+    rmarkdown,
     stringr,
     tibble,
     tidyverse,
