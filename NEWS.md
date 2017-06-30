@@ -1,4 +1,4 @@
-# informr 0.1.0.9002
+# informr 0.1.1.9000
 
 ## Backwards incompatible change
 
@@ -22,6 +22,7 @@
 - `read_maps` will find the correct path when given a cell seg table path.
 - Many documentation improvements.
 - Internal cleanup using `lintr` and `goodpractices`.
+- zlib license
 
 # informr 0.1.0.9001
 
