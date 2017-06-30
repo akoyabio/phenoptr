@@ -2,7 +2,7 @@
 % Please edit documentation in R/distance_funcs.R
 \name{compute_all_nearest_distance}
 \alias{compute_all_nearest_distance}
-\title{Nearest neighbors from a file}
+\title{Nearest neighbors from a file.}
 \usage{
 compute_all_nearest_distance(cell_table_path = NULL, out_path = NULL)
 }

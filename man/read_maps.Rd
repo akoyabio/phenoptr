@@ -2,7 +2,7 @@
 % Please edit documentation in R/read_maps.R
 \name{read_maps}
 \alias{read_maps}
-\title{Read an inForm segmentation map file}
+\title{Read an inForm segmentation map file.}
 \usage{
 read_maps(map_path)
 }

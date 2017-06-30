@@ -2,7 +2,7 @@
 % Please edit documentation in R/select_rows.R
 \name{select_rows}
 \alias{select_rows}
-\title{Flexibly select rows of a data frame}
+\title{Flexibly select rows of a data frame.}
 \usage{
 select_rows(d, sel, phenotype_column = "Phenotype")
 }
@@ -34,7 +34,7 @@ selector = list('tumor', ~`Entire Cell PDL1 (Opal 620) Mean`>4)
 pdl1_pos_tumor = d[select_rows(d, selector),]
 hist(pdl1_pos_tumor$`Entire Cell PDL1 (Opal 620) Mean`)
 
-## Select all T-cells. Note: use \\code{c} to OR phenotypes, not \\code{list}
+## Select all T-cells. Note: Use c() to OR phenotypes, not list()
 selector = c('cytotoxic CD8', 'helper CD4', 'T reg Foxp3')
 tcells = d[select_rows(d, selector),]
 table(tcells$Phenotype)

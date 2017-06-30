@@ -4,7 +4,7 @@
 \name{informr}
 \alias{informr}
 \alias{informr-package}
-\title{Helpers for working with inForm data}
+\title{Helpers for working with inForm data.}
 \description{
 informr contains functions that make it easier to read and
  analyze data tables created by PerkinElmer's inForm software.

@@ -2,7 +2,7 @@
 % Please edit documentation in R/distance_funcs.R
 \name{find_nearest_distance}
 \alias{find_nearest_distance}
-\title{Nearest neighbor distances for each cell and phenotype}
+\title{Nearest neighbor distances for each cell and phenotype.}
 \usage{
 find_nearest_distance(csd, phenotypes = NULL)
 }

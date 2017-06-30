@@ -3,7 +3,7 @@
 \docType{data}
 \name{sample_cell_seg_data}
 \alias{sample_cell_seg_data}
-\title{Sample cell segmentation data}
+\title{Sample cell segmentation data.}
 \format{A data frame with 5726 rows and 200 variables}
 \usage{
 sample_cell_seg_data

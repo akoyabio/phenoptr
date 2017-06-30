@@ -4,7 +4,7 @@
 if (getRversion() >= "2.15.1")
   utils::globalVariables(c(".", "Sample Name"))
 
-#' Nearest neighbors from a file
+#' Nearest neighbors from a file.
 #'
 #' Compute nearest distance to each phenotype for each cell in a
 #' (possibly merged) inForm cell seg table. Write the result to a new file.
@@ -38,7 +38,7 @@ compute_all_nearest_distance = function(cell_table_path=NULL, out_path=NULL) {
   readr::write_tsv(result, out_path, na='#N/A')
 }
 
-#' Nearest neighbor distances for each cell and phenotype
+#' Nearest neighbor distances for each cell and phenotype.
 #'
 #' For each phenotype in a single sample,
 #' find the distance from

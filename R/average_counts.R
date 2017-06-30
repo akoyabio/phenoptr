@@ -1,6 +1,6 @@
 # Functions to compute counts and average counts
 
-#' Count cells within a radius
+#' Count cells within a radius.
 #'
 #' Count the number of \code{from} cells having a \code{to} cell within
 #' \code{radius} microns in tissue category \code{category}.

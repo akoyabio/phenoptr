@@ -1,4 +1,4 @@
-#' Flexibly select rows of a data frame
+#' Flexibly select rows of a data frame.
 #'
 #' Select rows of a data frame based on phenotypes or other
 #' expressions.
@@ -21,7 +21,7 @@
 #' pdl1_pos_tumor = d[select_rows(d, selector),]
 #' hist(pdl1_pos_tumor$`Entire Cell PDL1 (Opal 620) Mean`)
 #'
-#' ## Select all T-cells. Note: use \code{c} to OR phenotypes, not \code{list}
+#' ## Select all T-cells. Note: Use c() to OR phenotypes, not list()
 #' selector = c('cytotoxic CD8', 'helper CD4', 'T reg Foxp3')
 #' tcells = d[select_rows(d, selector),]
 #' table(tcells$Phenotype)

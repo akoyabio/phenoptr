@@ -1,4 +1,4 @@
-#' Helpers for working with inForm data
+#' Helpers for working with inForm data.
 #'
 #' informr contains functions that make it easier to read and
 #'  analyze data tables created by PerkinElmer's inForm software.

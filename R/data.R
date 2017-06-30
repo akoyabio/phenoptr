@@ -1,6 +1,6 @@
 # Documentation for data
 
-#' Sample cell segmentation data
+#' Sample cell segmentation data.
 #'
 #' A dataset containing inForm cell segmentation data for a single TMA core.
 #' This is the data from

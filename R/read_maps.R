@@ -1,4 +1,4 @@
-#' Read an inForm segmentation map file
+#' Read an inForm segmentation map file.
 #'
 #' Reads an inForm \code{binary_seg_maps} file and returns a list of images.
 #' @param map_path Path to the map file or a cell seg data file in the same

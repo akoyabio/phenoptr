@@ -2,7 +2,7 @@
 % Please edit documentation in R/average_counts.R
 \name{count_within}
 \alias{count_within}
-\title{Count cells within a radius}
+\title{Count cells within a radius.}
 \usage{
 count_within(csd, from, to, radius, category = NULL, dst = NULL)
 }
