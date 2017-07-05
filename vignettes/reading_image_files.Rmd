@@ -1,0 +1,120 @@
+---
+title: "Reading inForm Image Files"
+author: "Kent Johnson"
+date: "`r Sys.Date()`"
+output:
+  rmarkdown::html_vignette:
+    fig_caption: yes
+vignette: >
+  %\VignetteIndexEntry{Reading inForm Image Files}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, echo=FALSE,include=FALSE,message=FALSE}
+knitr::opts_chunk$set(fig.width=7, fig.height=5, 
+                      comment=NA, warning=FALSE, message=FALSE)
+# No figure margins
+par(mar=rep(0, 4))
+```
+
+<style type="text/css">
+img { 
+  border: none;
+}
+</style>
+
+inForm writes a variety of image files in JPEG and TIFF format. This
+vignette shows how to read the image files in R.
+
+The R packages `tiff` and `jpeg` provide functions `readTIFF` and `readJPEG`
+which read image data into R matrices. `informr` expands on these with
+`read_components` and `read_maps` which read multiple images and extract
+useful metadata from the Image Description fields.
+
+## Reading RGB image output
+
+RGB images output from inForm, such as the composite image and segmentation
+images, can be read directly using `tiff::readTIFF()` or `jpeg::readJPEG()`.
+For example,
+
+```{r read_composite}
+path = system.file("extdata",
+  "TMA/Core[1,5,6,1]_[21302,15107]_composite_image.jpg", package = "informr")
+img = jpeg::readJPEG(path)
+dim(img)
+```
+
+Color images are read as 3D arrays. They can be displayed by converting to
+a raster. 
+
+```{r show_composite}
+snippet = as.raster(img[800:1000, 1200:1500,])
+plot(snippet)
+```
+
+
+## Reading component data
+
+inForm saves component data as multiple 32-bit floating-point
+images within a single TIFF file.
+Images smaller than 2K by 2K pixels are saved in strip format and may
+be read by `tiff::readTIFF()`. Larger images are saved in tiled format
+which is not supported by `readTIFF()`.
+
+`informr::read_components()` is a wrapper around `readTIFF()` which reads
+the individual component images from a `component_data.tif` file. 
+It keeps the full-resolution component images,
+extracts the component names from the image descriptions, 
+and returns a named list of image matrices.
+
+## Reading segmentation maps
+
+inForm saves segmentation maps (nuclear segmentation, etc.) as multiple
+16-bit grayscale images within a single TIFF file. Most segmentation images
+are _label_ images, where each object is represented by a region whose value
+is the object number. 
+
+`informr::read_maps()` is a wrapper around `readTIFF()` which reads
+map files. It returns a named list of integer-valued matrices. The
+list names reflect the content of the individual images, e.g. Nucleus,
+Cytoplasm, etc.
+
+```{r read_map}
+map_path = system.file("extdata",
+   "TMA/Core[1,5,6,1]_[21302,15107]_binary_seg_maps.tif", package = "informr")
+maps = informr::read_maps(map_path)
+names(maps)
+
+# The Nucleus label image contains values for background (0) and each Cell ID.
+range(as.integer(maps[['Nucleus']]))
+range(informr::sample_cell_seg_data$`Cell ID`)
+```
+
+## Plotting image data
+
+Images have the origin (0, 0) at the top left. This is consistent with
+the `Cell X Position` and `Cell Y Position` columns of an inForm
+cell seg table but it is reversed (in Y) from the usual plotting conventions.
+If you plot images and points together, you will have to reverse one or
+the other. 
+
+Here is an example using `ggplot2`. The y-axis is reversed
+using `ggplot2::scale_y_reverse()` and the image is then un-reversed
+by negating its y limits.
+
+```{r plotting}
+library(ggplot2)
+d = informr::sample_cell_seg_data
+d = subset(d, `Cell X Position`>=600 & `Cell X Position`<=750 &
+              `Cell Y Position`>=400 & `Cell Y Position`<=500)
+ggplot(data=d, aes(`Cell X Position`, `Cell Y Position`, color=Phenotype)) +
+  scale_x_continuous(limits=c(600, 750)) + 
+  scale_y_reverse(limits=c(500, 400)) +
+  annotation_raster(snippet, 600, 750, -400, -500) +
+  geom_point(size=2) + coord_equal() +
+  scale_color_manual(values=c("tumor"="cyan", "cytotoxic CD8"="yellow",
+                              "other"="blue", "macrophage CD68"="red", 
+                              "helper CD4"="green"))
+```
+
