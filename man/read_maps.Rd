@@ -12,12 +12,18 @@ directory.}
 }
 \value{
 A named list of images, one for each map in the source file.
+}
+\description{
+Reads an inForm `binary_seg_maps.tif`` file and returns a named
+list of images. The names reflect the content of the individual images.
+Possible names are Nucleus, Cytoplasm, Membrane, Object,
+TissueClassMap, and ProcessRegionImage; not every image file will include all
+names.
+}
+\details{
 Images are oriented to match the coordinates in a cell seg data file,
 i.e. (0, 0) at the top left and the row corresponding to Y and
 column corresponding to X.
-}
-\description{
-Reads an inForm \code{binary_seg_maps} file and returns a list of images.
 }
 \examples{
 \dontrun{
@@ -31,5 +37,6 @@ names(d)
 }
 \seealso{
 Other file readers: \code{\link{list_cell_seg_files}},
-  \code{\link{read_cell_seg_data}}
+  \code{\link{read_cell_seg_data}},
+  \code{\link{read_components}}
 }

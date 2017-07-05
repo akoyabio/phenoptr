@@ -58,5 +58,5 @@ d = purrr::map_df(paths, read_cell_seg_data)
 }
 \seealso{
 Other file readers: \code{\link{list_cell_seg_files}},
-  \code{\link{read_maps}}
+  \code{\link{read_components}}, \code{\link{read_maps}}
 }

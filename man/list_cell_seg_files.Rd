@@ -21,5 +21,5 @@ or a directory hierarchy.
 }
 \seealso{
 Other file readers: \code{\link{read_cell_seg_data}},
-  \code{\link{read_maps}}
+  \code{\link{read_components}}, \code{\link{read_maps}}
 }

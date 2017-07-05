@@ -4,29 +4,31 @@
 #'  analyze data tables created by PerkinElmer's inForm software.
 #'
 #' \subsection{File readers}{
-#' \code{\link{read_cell_seg_data}} reads inForm cell segmentation data tables
+#' [read_cell_seg_data] reads inForm cell segmentation data tables
 #' and makes them easier to use in R.
 #'
-#' \code{\link{read_maps}} reads inForm segmentation maps.
+#' [read_components] reads inForm component data and
+#' [read_maps] reads inForm segmentation maps.
 #' }
 #'
 #' \subsection{Distance functions}{
-#' \code{\link{distance_matrix}} and \code{\link{subset_distance_matrix}}
+#' [distance_matrix] and [subset_distance_matrix]
 #' create and subset cell distance matrices from cell segmentation data.
 #'
-#' \code{\link{find_nearest_distance}} uses a distance matrix to find
+#' [find_nearest_distance] uses a distance matrix to find
 #' the distance from each cell to the nearest cell of each phenotype.
 #'
-#' \code{\link{count_within}} uses a distance matrix to find
+#' [count_within] uses a distance matrix to find
 #' the number of cells within a radius of other cells.
 #'}
 #'
 #' \subsection{Helpers}{
-#' \code{\link{select_rows}} helps select rows in cell segmentation data
+#' [select_rows] helps select rows in cell segmentation data
 #' corresponding to specific phenotypes and expression levels.
 #' }
 #'
 #' @docType package
 #' @name informr
 #' @aliases informr
+#' @md
 NULL
