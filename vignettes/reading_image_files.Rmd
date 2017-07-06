@@ -1,12 +1,13 @@
 ---
-title: "Reading inForm Image Files"
+title: "Reading and Displaying inForm Image Files"
 author: "Kent Johnson"
 date: "`r Sys.Date()`"
 output:
   rmarkdown::html_vignette:
     fig_caption: yes
+    toc: true
 vignette: >
-  %\VignetteIndexEntry{Reading inForm Image Files}
+  %\VignetteIndexEntry{Reading and Displaying inForm Image Files}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -32,10 +33,32 @@ which read image data into R matrices. `informr` expands on these with
 `read_components` and `read_maps` which read multiple images and extract
 useful metadata from the Image Description fields.
 
-## Reading RGB image output
+A variety of functions can display image data including `plot.raster`,
+`ggplot2::annotation_raster` and `EBImage::display`. 
 
-RGB images output from inForm, such as the composite image and segmentation
-images, can be read directly using `tiff::readTIFF()` or `jpeg::readJPEG()`.
+## Coordinate systems
+
+A few items to note:
+
+- Images have the origin (0, 0) at the top left. This is consistent with
+the `Cell X Position` and `Cell Y Position` columns of an inForm
+cell seg table. The _row_ (first) dimension of an array corresponds to
+the $y$ axis and `Cell Y Position` column. The _column_ (second) array dimension
+corresponds to the $x$ axis and the `Cell X Position` column. 
+
+- Image dimensions are in pixels. Cell seg tables are written with pixel 
+dimensions and converted to microns when read by `informr::read_cell_seg_data`.
+
+- Image display methods differ in their orientation; some show $x$ and $y$ as
+described above; others transpose the image.
+
+Each of these items easily causes confusion; be careful and verify your work!
+
+## Reading and displaying color images
+
+Color (RGB) images output from inForm, such as the composite image and 
+segmentation images, can be read directly using 
+`tiff::readTIFF()` or `jpeg::readJPEG()`.
 For example,
 
 ```{r read_composite}
@@ -53,14 +76,28 @@ snippet = as.raster(img[800:1000, 1200:1500,])
 plot(snippet)
 ```
 
+`EBImage::display` will display an array in a web browser. RGB images are 
+shown as three grayscale planes unless converted to an `EBImage::Image` first.
+`EBImage::display` shows the first coordinate horizontally
+and the second coordinate vertically so the image must be flipped to display
+in the expected orientation.
 
-## Reading component data
+```{r show_composite_ebimage,eval=FALSE}
+img_transposed = aperm(img, c(2, 1, 3))
+EBImage::display(img_transposed)
+EBImage::display(EBImage::Image(img_transposed, colormode='Color'))
+```
+
+
+## Reading and displaying component data
 
 inForm saves component data as multiple 32-bit floating-point
 images within a single TIFF file.
-Images smaller than 2K by 2K pixels are saved in strip format and may
-be read by `tiff::readTIFF()`. Larger images are saved in tiled format
-which is not supported by `readTIFF()`.
+Images smaller than 2K by 2K pixels are saved in "strip" format and may
+be read by `tiff::readTIFF()`. Larger images are saved in "tiled" format
+which is not supported by `readTIFF()`. 
+The [`RBioFormats`](https://github.com/aoles/RBioFormats) package may
+be an alternative for reading larger component data files.
 
 `informr::read_components()` is a wrapper around `readTIFF()` which reads
 the individual component images from a `component_data.tif` file. 
@@ -68,12 +105,16 @@ It keeps the full-resolution component images,
 extracts the component names from the image descriptions, 
 and returns a named list of image matrices.
 
-## Reading segmentation maps
+Component data may be displayed using `plot.raster` or `EBImage::display`. 
+See the next section for examples of displaying grayscale images.
+
+## Reading and displaying segmentation maps
 
 inForm saves segmentation maps (nuclear segmentation, etc.) as multiple
 16-bit grayscale images within a single TIFF file. Most segmentation images
 are _label_ images, where each object is represented by a region whose value
-is the object number. 
+is the object number. The membrane map is a binary image where the presence
+of membrane is indicated with a "1" value.
 
 `informr::read_maps()` is a wrapper around `readTIFF()` which reads
 map files. It returns a named list of integer-valued matrices. The
@@ -85,23 +126,42 @@ map_path = system.file("extdata",
    "TMA/Core[1,5,6,1]_[21302,15107]_binary_seg_maps.tif", package = "informr")
 maps = informr::read_maps(map_path)
 names(maps)
+```
 
-# The Nucleus label image contains values for background (0) and each Cell ID.
-range(as.integer(maps[['Nucleus']]))
+The Nucleus label image contains values for background (0) and each Cell ID.
+
+```{r nucleus}
+nucleus = maps[['Nucleus']]
+dim(nucleus)
+range(nucleus)
 range(informr::sample_cell_seg_data$`Cell ID`)
+```
+
+Label images may be displayed with `plot.raster` or `EBImage::display`
+(which requires swapping axes).
+
+
+```{r display_map}
+nucleus_snippet = nucleus[800:1000, 1200:1500]
+plot(as.raster(nucleus_snippet, max=max(nucleus_snippet)))
+```
+
+```{r display_map_ebimage,eval=FALSE}
+EBImage::display(t(nucleus/max(nucleus)))
+EBImage::display(t(maps[['Membrane']]))
 ```
 
 ## Plotting image data
 
 Images have the origin (0, 0) at the top left. This is consistent with
 the `Cell X Position` and `Cell Y Position` columns of an inForm
-cell seg table but it is reversed (in Y) from the usual plotting conventions.
+cell seg table but it is reversed (in $y$) from the usual plotting conventions.
 If you plot images and points together, you will have to reverse one or
 the other. 
 
-Here is an example using `ggplot2`. The y-axis is reversed
+Here is an example using `ggplot2`. The $y$-axis is reversed
 using `ggplot2::scale_y_reverse()` and the image is then un-reversed
-by negating its y limits.
+by negating its $y$ limits.
 
 ```{r plotting}
 library(ggplot2)
