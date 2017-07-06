@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Read an inForm segmentation map file — read_maps â€¢ informr</title>
+<title>Read an inForm segmentation map file. — read_maps â€¢ informr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -52,10 +52,28 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../reference/index.html">Reference</a>
+  <a href="..//index.html">
+    <span class="fa fa-home fa-lg"></span>
+     
+  </a>
 </li>
 <li>
-  <a href="../articles/index.html">Articles</a>
+  <a href="../reference/index.html">Reference</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/reading_image_files.html">Reading and Displaying inForm Image Files</a>
+    </li>
+    <li>
+      <a href="../articles/selecting_cells.html">Selecting cells within a cell segmentation table</a>
+    </li>
+  </ul>
 </li>
 <li>
   <a href="../news/index.html">News</a>
@@ -80,11 +98,15 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Read an inForm segmentation map file</h1>
+    <h1>Read an inForm segmentation map file.</h1>
     </div>
 
     
-    <p>Reads an inForm <code>binary_seg_maps</code> file and returns a list of images.</p>
+    <p>Reads an inForm `binary_seg_maps.tif`` file and returns a named
+list of images. The names reflect the content of the individual images.
+Possible names are Nucleus, Cytoplasm, Membrane, Object,
+TissueClassMap, and ProcessRegionImage; not every image file will include all
+names.</p>
     
 
     <pre class="usage"><span class='fu'>read_maps</span>(<span class='no'>map_path</span>)</pre>
@@ -94,7 +116,8 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>map_path</th>
-      <td><p>Path to the map file.</p></td>
+      <td><p>Path to the map file or a cell seg data file in the same
+directory.</p></td>
     </tr>
     </table>
     
@@ -102,20 +125,28 @@
 
     <p>A named list of images, one for each map in the source file.</p>
     
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>Images are oriented to match the coordinates in a cell seg data file,
+i.e. (0, 0) at the top left and the row corresponding to Y and
+column corresponding to X.</p>
+    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p>Other file readers: <code><a href='read_cell_seg_data.html'>read_cell_seg_data</a></code></p>
+    <p>Other file readers: <code><a href='list_cell_seg_files.html'>list_cell_seg_files</a></code>,
+  <code><a href='read_cell_seg_data.html'>read_cell_seg_data</a></code>,
+  <code><a href='read_components.html'>read_components</a></code></p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>not_run</span>({
-  <span class='co'># Not included at this time</span>
-  <span class='no'>path</span> <span class='kw'>=</span> <span class='fu'>system.file</span>(<span class='st'>"extdata"</span>,
-    <span class='st'>"TMA/Core[1,5,6,1]_[21302,15107]_binary_seg_maps.tif"</span>,
-    <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"informr"</span>)
-  <span class='no'>d</span> <span class='kw'>=</span> <span class='fu'>read_maps</span>(<span class='no'>path</span>)
-  <span class='fu'>names</span>(<span class='no'>d</span>)
-})</div></pre>
+    <pre class="examples"><span class='co'># NOT RUN {</span>
+<span class='co'># Not included at this time</span>
+<span class='no'>path</span> <span class='kw'>=</span> <span class='fu'>system.file</span>(<span class='st'>"extdata"</span>,
+  <span class='st'>"TMA/Core[1,5,6,1]_[21302,15107]_binary_seg_maps.tif"</span>,
+  <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"informr"</span>)
+<span class='no'>d</span> <span class='kw'>=</span> <span class='fu'>read_maps</span>(<span class='no'>path</span>)
+<span class='fu'>names</span>(<span class='no'>d</span>)
+<span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -123,6 +154,8 @@
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
+
+      <li><a href="#details">Details</a></li>
 
       <li><a href="#see-also">See also</a></li>
       

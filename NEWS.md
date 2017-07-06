@@ -8,11 +8,13 @@
   
 ## New features
 
+- Add vignette "Reading and Displaying inForm Image Files"
 - `spatial_distribution_report` creates an HTML report showing the 
   location and nearest-neighbor relations of cells in a single field.
+- `read_components` reads component image files.
 - `count_within` counts the number of `from` cells having a `to` cell
    within a given radius.
-- Added `list_cell_seg_files` to list all cell seg data files in a folder.
+- `list_cell_seg_files` lists all cell seg data files in a folder.
 
 ## Bug fixes
 

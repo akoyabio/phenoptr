@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Flexibly select rows of a data frame — select_rows â€¢ informr</title>
+<title>Flexibly select rows of a data frame. — select_rows â€¢ informr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -52,10 +52,28 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../reference/index.html">Reference</a>
+  <a href="..//index.html">
+    <span class="fa fa-home fa-lg"></span>
+     
+  </a>
 </li>
 <li>
-  <a href="../articles/index.html">Articles</a>
+  <a href="../reference/index.html">Reference</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/reading_image_files.html">Reading and Displaying inForm Image Files</a>
+    </li>
+    <li>
+      <a href="../articles/selecting_cells.html">Selecting cells within a cell segmentation table</a>
+    </li>
+  </ul>
 </li>
 <li>
   <a href="../news/index.html">News</a>
@@ -80,7 +98,7 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Flexibly select rows of a data frame</h1>
+    <h1>Flexibly select rows of a data frame.</h1>
     </div>
 
     
@@ -124,8 +142,8 @@ simple selection</p></td>
 <span class='co'>## Select tumor cells with PDL1 expression &gt; 4</span>
 <span class='no'>selector</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='st'>'tumor'</span>, ~<span class='no'>`Entire Cell PDL1 (Opal 620) Mean`</span><span class='kw'>&gt;</span><span class='fl'>4</span>)
 <span class='no'>pdl1_pos_tumor</span> <span class='kw'>=</span> <span class='no'>d</span>[<span class='fu'>select_rows</span>(<span class='no'>d</span>, <span class='no'>selector</span>),]
-<span class='fu'>hist</span>(<span class='no'>pdl1_pos_tumor</span>$<span class='no'>`Entire Cell PDL1 (Opal 620) Mean`</span>)</div><img src='select_rows-2.png' alt='' width='540' height='400' /><div class='input'>
-<span class='co'>## Select all T-cells. Note: use \code{c} to OR phenotypes, not \code{list}</span>
+<span class='fu'>hist</span>(<span class='no'>pdl1_pos_tumor</span>$<span class='no'>`Entire Cell PDL1 (Opal 620) Mean`</span>)</div><div class='img'><img src='select_rows-1.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+<span class='co'>## Select all T-cells. Note: Use c() to OR phenotypes, not list()</span>
 <span class='no'>selector</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>'cytotoxic CD8'</span>, <span class='st'>'helper CD4'</span>, <span class='st'>'T reg Foxp3'</span>)
 <span class='no'>tcells</span> <span class='kw'>=</span> <span class='no'>d</span>[<span class='fu'>select_rows</span>(<span class='no'>d</span>, <span class='no'>selector</span>),]
 <span class='fu'>table</span>(<span class='no'>tcells</span>$<span class='no'>Phenotype</span>)</div><div class='output co'>#&gt; 

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Sample cell segmentation data. — sample_cell_seg_data â€¢ informr</title>
+<title>Read a component TIFF file. — read_components â€¢ informr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -98,49 +98,64 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Sample cell segmentation data.</h1>
+    <h1>Read a component TIFF file.</h1>
     </div>
 
     
-    <p>A dataset containing inForm cell segmentation data for a single TMA core.
-This is the data from
-<code>system.file("extdata",
-                  "TMA/Core[1,5,6,1]_[21302,15107]_cell_seg_data.txt",
-                 package = "informr")</code></p>
+    <p>Read an inForm <code>component_data.tif</code> file.
+Keep only the full-resolution component images,
+extract the component names from the image descriptions,
+and return a named list of image matrices.</p>
     
 
-    <pre class="usage"><span class='no'>sample_cell_seg_data</span></pre>
-        
-    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
+    <pre class="usage"><span class='fu'>read_components</span>(<span class='no'>path</span>)</pre>
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>path</th>
+      <td><p>Path to the <code>component_data.tif</code> file.</p></td>
+    </tr>
+    </table>
+    
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A data frame with 5726 rows and 200 variables</p>
+    <p>A named list of matrices, one for each component.</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>This table includes columns for components:</p><ul>
-<li><p>DAPI</p></li>
-<li><p>CD4 (Opal 520)</p></li>
-<li><p>CK (Opal 540)</p></li>
-<li><p>CD8 (Opal 570)</p></li>
-<li><p>PDL1 (Opal 620)</p></li>
-<li><p>CD68 (Opal 650)</p></li>
-<li><p>Foxp3 (Opal 690)</p></li>
-</ul>
-    <p>and phenotypes cytotoxic CD8, helper CD4, macrophage CD68, other,
-T reg Foxp3, and tumor.</p>
-<p>To see all the included files for this core, use
-<code>list.files(system.file("extdata", "TMA", package = "informr"))</code></p>
+    <p>Images are oriented to match the coordinates in a cell seg data file,
+i.e. (0, 0) at the top left and the row corresponding to Y and
+column corresponding to X.</p>
+<p>Limited to 1x1 fields due to
+limitations in the <code>tiff</code> package.</p>
+    
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <p>Other file readers: <code><a href='list_cell_seg_files.html'>list_cell_seg_files</a></code>,
+  <code><a href='read_cell_seg_data.html'>read_cell_seg_data</a></code>, <code><a href='read_maps.html'>read_maps</a></code></p>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><span class='co'># NOT RUN {</span>
+<span class='no'>path</span> <span class='kw'>=</span> <span class='st'>"/path/to/my_component_data.tif"</span>
+<span class='no'>components</span> <span class='kw'>=</span> <span class='fu'>read_components</span>(<span class='no'>path</span>)
+<span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
+      <li><a href="#arguments">Arguments</a></li>
       
-      <li><a href="#format">Format</a></li>
+      <li><a href="#value">Value</a></li>
 
       <li><a href="#details">Details</a></li>
-          </ul>
+
+      <li><a href="#see-also">See also</a></li>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

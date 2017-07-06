@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Sample cell segmentation data. — sample_cell_seg_data â€¢ informr</title>
+<title>Find inForm data files. — list_cell_seg_files â€¢ informr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -98,48 +98,49 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Sample cell segmentation data.</h1>
+    <h1>Find inForm data files.</h1>
     </div>
 
     
-    <p>A dataset containing inForm cell segmentation data for a single TMA core.
-This is the data from
-<code>system.file("extdata",
-                  "TMA/Core[1,5,6,1]_[21302,15107]_cell_seg_data.txt",
-                 package = "informr")</code></p>
+    <p><code>list_cell_seg_files</code> finds inForm cell seg data files in a single directory
+or a directory hierarchy.</p>
     
 
-    <pre class="usage"><span class='no'>sample_cell_seg_data</span></pre>
-        
-    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
-
-    <p>A data frame with 5726 rows and 200 variables</p>
+    <pre class="usage"><span class='fu'>list_cell_seg_files</span>(<span class='no'>path</span>, <span class='no'>...</span>)</pre>
     
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>path</th>
+      <td><p>Path to the base directory to search.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>Additional arguments passed to <a href='http://www.rdocumentation.org/packages/base/topics/list.files'>list.files</a>.
+Pass <code>recursive=TRUE</code> to search a directory hierarchy.</p></td>
+    </tr>
+    </table>
+    
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>This table includes columns for components:</p><ul>
-<li><p>DAPI</p></li>
-<li><p>CD4 (Opal 520)</p></li>
-<li><p>CK (Opal 540)</p></li>
-<li><p>CD8 (Opal 570)</p></li>
-<li><p>PDL1 (Opal 620)</p></li>
-<li><p>CD68 (Opal 650)</p></li>
-<li><p>Foxp3 (Opal 690)</p></li>
-</ul>
-    <p>and phenotypes cytotoxic CD8, helper CD4, macrophage CD68, other,
-T reg Foxp3, and tumor.</p>
-<p>To see all the included files for this core, use
-<code>list.files(system.file("extdata", "TMA", package = "informr"))</code></p>
+    <p>A list of  file paths.</p>
+    
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <p>Other file readers: <code><a href='read_cell_seg_data.html'>read_cell_seg_data</a></code>,
+  <code><a href='read_components.html'>read_components</a></code>, <code><a href='read_maps.html'>read_maps</a></code></p>
     
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
+      <li><a href="#arguments">Arguments</a></li>
       
-      <li><a href="#format">Format</a></li>
+      <li><a href="#value">Value</a></li>
 
-      <li><a href="#details">Details</a></li>
+      <li><a href="#see-also">See also</a></li>
           </ul>
 
   </div>

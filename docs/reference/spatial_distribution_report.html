@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Sample cell segmentation data. — sample_cell_seg_data â€¢ informr</title>
+<title>Create a spatial distribution report. — spatial_distribution_report â€¢ informr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -98,49 +98,85 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Sample cell segmentation data.</h1>
+    <h1>Create a spatial distribution report.</h1>
     </div>
 
     
-    <p>A dataset containing inForm cell segmentation data for a single TMA core.
-This is the data from
-<code>system.file("extdata",
-                  "TMA/Core[1,5,6,1]_[21302,15107]_cell_seg_data.txt",
-                 package = "informr")</code></p>
+    <p>Creates an HTML report showing the location and nearest-neighbor relations
+of cells in a single field and two chosen phenotypes.</p>
     
 
-    <pre class="usage"><span class='no'>sample_cell_seg_data</span></pre>
-        
-    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
-
-    <p>A data frame with 5726 rows and 200 variables</p>
+    <pre class="usage"><span class='fu'>spatial_distribution_report</span>(<span class='no'>cell_seg_path</span>, <span class='no'>phenotypes</span>, <span class='no'>colors</span>,
+  <span class='kw'>output_path</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>pixels_per_micron</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>plot_gx_max</span> <span class='kw'>=</span> <span class='fl'>100</span>,
+  <span class='kw'>micron_line</span> <span class='kw'>=</span> <span class='fl'>25</span>)</pre>
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>cell_seg_path</th>
+      <td><p>Path to a cell seg data file.</p></td>
+    </tr>
+    <tr>
+      <th>phenotypes</th>
+      <td><p>A character vector containing two phenotype names.</p></td>
+    </tr>
+    <tr>
+      <th>colors</th>
+      <td><p>A character vector of two color specifications.</p></td>
+    </tr>
+    <tr>
+      <th>output_path</th>
+      <td><p>Optional, path to the output HTML file. If omitted,
+output will be written to the directory containing <code>cell_seg_path</code>.</p></td>
+    </tr>
+    <tr>
+      <th>pixels_per_micron</th>
+      <td><p>Conversion factor to microns
+(default 2 pixels/micron),</p></td>
+    </tr>
+    <tr>
+      <th>plot_gx_max</th>
+      <td><p>Optional, maximum value of radius to show on G
+function plots.</p></td>
+    </tr>
+    <tr>
+      <th>micron_line</th>
+      <td><p>Optional, X location (radius in microns)
+of crosshair on G function plots.</p></td>
+    </tr>
+    </table>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>This table includes columns for components:</p><ul>
-<li><p>DAPI</p></li>
-<li><p>CD4 (Opal 520)</p></li>
-<li><p>CK (Opal 540)</p></li>
-<li><p>CD8 (Opal 570)</p></li>
-<li><p>PDL1 (Opal 620)</p></li>
-<li><p>CD68 (Opal 650)</p></li>
-<li><p>Foxp3 (Opal 690)</p></li>
-</ul>
-    <p>and phenotypes cytotoxic CD8, helper CD4, macrophage CD68, other,
-T reg Foxp3, and tumor.</p>
-<p>To see all the included files for this core, use
-<code>list.files(system.file("extdata", "TMA", package = "informr"))</code></p>
+    <p>A cell seg data file for the field is required. If a tissue segmentation
+or composite image of the field
+is available, it will be used as a background.</p>
+<p>The report is saved to the same directory as the input file.</p>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><span class='co'># NOT RUN {</span>
+<span class='no'>cell_seg_path</span> <span class='kw'>=</span> <span class='fu'>system.file</span>(<span class='st'>"extdata"</span>,
+                       <span class='st'>"TMA/Core[1,5,6,1]_[21302,15107]_cell_seg_data.txt"</span>,
+                       <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"informr"</span>)
+
+<span class='no'>phenotypes</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"macrophage CD68"</span>, <span class='st'>"cytotoxic CD8"</span>)
+<span class='no'>colors</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>'red'</span>, <span class='st'>'blue'</span>)
+<span class='no'>out_path</span> <span class='kw'>=</span> <span class='fu'>path.expand</span>(<span class='st'>'~/spatial_distribution_report.html'</span>)
+
+<span class='fu'>spatial_distribution_report</span>(<span class='no'>cell_seg_path</span>, <span class='no'>phenotypes</span>, <span class='no'>colors</span>, <span class='no'>out_path</span>)
+<span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
+      <li><a href="#arguments">Arguments</a></li>
       
-      <li><a href="#format">Format</a></li>
-
       <li><a href="#details">Details</a></li>
-          </ul>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

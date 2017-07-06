@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Sample cell segmentation data. � sample_cell_seg_data • informr</title>
+<title>License • informr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -20,9 +20,9 @@
 
 
 <!-- pkgdown -->
-<link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
-<script src="../pkgdown.js"></script>
+<link href="pkgdown.css" rel="stylesheet">
+<script src="jquery.sticky-kit.min.js"></script>
+<script src="pkgdown.js"></script>
   
   
 <!-- mathjax -->
@@ -37,7 +37,7 @@
   </head>
 
   <body>
-    <div class="container template-reference-topic">
+    <div class="container template-license">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -47,18 +47,18 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">informr</a>
+      <a class="navbar-brand" href="index.html">informr</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="..//index.html">
+  <a href="/index.html">
     <span class="fa fa-home fa-lg"></span>
      
   </a>
 </li>
 <li>
-  <a href="../reference/index.html">Reference</a>
+  <a href="reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -68,15 +68,15 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/reading_image_files.html">Reading and Displaying inForm Image Files</a>
+      <a href="articles/reading_image_files.html">Reading and Displaying inForm Image Files</a>
     </li>
     <li>
-      <a href="../articles/selecting_cells.html">Selecting cells within a cell segmentation table</a>
+      <a href="articles/selecting_cells.html">Selecting cells within a cell segmentation table</a>
     </li>
   </ul>
 </li>
 <li>
-  <a href="../news/index.html">News</a>
+  <a href="news/index.html">News</a>
 </li>
       </ul>
       
@@ -96,54 +96,36 @@
       </header>
 
       <div class="row">
-  <div class="col-md-9 contents">
+  <div class="contents col-md-12">
     <div class="page-header">
-    <h1>Sample cell segmentation data.</h1>
+      <h1>License</h1>
     </div>
 
-    
-    <p>A dataset containing inForm cell segmentation data for a single TMA core.
-This is the data from
-<code>system.file("extdata",
-                  "TMA/Core[1,5,6,1]_[21302,15107]_cell_seg_data.txt",
-                 package = "informr")</code></p>
-    
+<pre>zlib License
 
-    <pre class="usage"><span class='no'>sample_cell_seg_data</span></pre>
-        
-    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
+(C) 2017 PerkinElmer
 
-    <p>A data frame with 5726 rows and 200 variables</p>
-    
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+This software is provided 'as-is', without any express or implied
+warranty.  In no event will the authors be held liable for any damages
+arising from the use of this software.
 
-    <p>This table includes columns for components:</p><ul>
-<li><p>DAPI</p></li>
-<li><p>CD4 (Opal 520)</p></li>
-<li><p>CK (Opal 540)</p></li>
-<li><p>CD8 (Opal 570)</p></li>
-<li><p>PDL1 (Opal 620)</p></li>
-<li><p>CD68 (Opal 650)</p></li>
-<li><p>Foxp3 (Opal 690)</p></li>
-</ul>
-    <p>and phenotypes cytotoxic CD8, helper CD4, macrophage CD68, other,
-T reg Foxp3, and tumor.</p>
-<p>To see all the included files for this core, use
-<code>list.files(system.file("extdata", "TMA", package = "informr"))</code></p>
-    
+Permission is granted to anyone to use this software for any purpose,
+including commercial applications, and to alter it and redistribute it
+freely, subject to the following restrictions:
+
+1. The origin of this software must not be misrepresented; you must not
+   claim that you wrote the original software. If you use this software
+   in a product, an acknowledgment in the product documentation would be
+   appreciated but is not required.
+2. Altered source versions must be plainly marked as such, and must not be
+   misrepresented as being the original software.
+3. This notice may not be removed or altered from any source distribution.
+</pre>
 
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      
-      <li><a href="#format">Format</a></li>
 
-      <li><a href="#details">Details</a></li>
-          </ul>
-
-  </div>
 </div>
+
 
       <footer>
       <div class="copyright">
