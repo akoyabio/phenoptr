@@ -43,7 +43,7 @@ read_maps = function(map_path) {
   for (n in names(map_keys)) {
     m = masks[stringr::str_detect(infos, map_keys[n])]
     if (length(m)>0)
-      maps[[n]] = t(m[[1]])
+      maps[[n]] = m[[1]]
   }
 
   maps
