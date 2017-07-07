@@ -40,8 +40,8 @@ The report is saved to the same directory as the input file.
 }
 \examples{
 \dontrun{
-cell_seg_path = system.file("extdata",
-                       "TMA/Core[1,5,6,1]_[21302,15107]_cell_seg_data.txt",
+cell_seg_path = system.file("extdata", "TMA",
+                       "Core[1,5,6,1]_[21302,15107]_cell_seg_data.txt",
                        package = "informr")
 
 phenotypes = c("macrophage CD68", "cytotoxic CD8")

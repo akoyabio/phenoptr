@@ -4,9 +4,9 @@
 #'
 #' A dataset containing inForm cell segmentation data for a single TMA core.
 #' This is the data from
-#' \code{system.file("extdata",
-#'                   "TMA/Core[1,5,6,1]_[21302,15107]_cell_seg_data.txt",
-#'                  package = "informr")}
+#' \code{system.file("extdata", "TMA",
+#'                   "Core[1,5,6,1]_[21302,15107]_cell_seg_data.txt",
+#'                   package = "informr")}
 #'
 #' This table includes columns for components:
 #' \itemize{

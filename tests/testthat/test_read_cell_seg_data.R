@@ -1,8 +1,8 @@
 # Tests for read_cell_seg_data
 library(testthat)
 
-path = system.file("extdata",
-   "TMA/Core[1,5,6,1]_[21302,15107]_cell_seg_data.txt",
+path = system.file("extdata", "TMA",
+   "Core[1,5,6,1]_[21302,15107]_cell_seg_data.txt",
    package = "informr")
 
 expect_contains = function(container, items) {

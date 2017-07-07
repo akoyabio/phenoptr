@@ -62,8 +62,9 @@ segmentation images, can be read directly using
 For example,
 
 ```{r read_composite}
-path = system.file("extdata",
-  "TMA/Core[1,5,6,1]_[21302,15107]_composite_image.jpg", package = "informr")
+path = system.file("extdata", "TMA", 
+                   "Core[1,5,6,1]_[21302,15107]_composite_image.jpg", 
+                   package = "informr")
 img = jpeg::readJPEG(path)
 dim(img)
 ```

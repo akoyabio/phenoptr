@@ -45,9 +45,9 @@ and does useful cleanup on the data:
 }
 }
 \examples{
-path = system.file("extdata",
-  "TMA/Core[1,5,6,1]_[21302,15107]_cell_seg_data.txt",
-  package = "informr")
+path = system.file("extdata", "TMA",
+                   "Core[1,5,6,1]_[21302,15107]_cell_seg_data.txt",
+                   package = "informr")
 d = read_cell_seg_data(path)
 
 \dontrun{
