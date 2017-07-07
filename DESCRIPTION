@@ -19,7 +19,7 @@ Imports:
     tidyverse,
     tiff
 Depends: R (>= 3.1.0)
-License: Zlib + file LICENSE
+License: Zlib | file LICENSE
 Copyright: PerkinElmer
 Encoding: UTF-8
 LazyData: true
