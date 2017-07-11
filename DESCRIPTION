@@ -28,6 +28,7 @@ Suggests: testthat
 VignetteBuilder: knitr
 URL: https://github.com/PerkinElmer/informr
 BugReports: https://github.com/PerkinElmer/informr/issues
+Maintainer: Kent Johnson <kent.johnson@perkinelmer.com>
 Authors@R: c(
     person("Kent", "Johnson", role = c("aut", "cre"),
            email = "kent.johnson@perkinelmer.com"),
