@@ -17,6 +17,10 @@ input file path.}
 Compute nearest distance to each phenotype for each cell in a
 (possibly merged) inForm cell seg table. Write the result to a new file.
 }
+\details{
+NOTE: The input file is read using \link{read_cell_seg_data} so the conversions
+and cleanup it does will be applied to the output data.
+}
 \seealso{
 Other distance functions: \code{\link{count_within}},
   \code{\link{distance_matrix}},

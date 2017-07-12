@@ -1,6 +1,12 @@
-# informr - Helper functions for working with inForm data.
+# informr - Helpers for working with inForm data
 
-informr contains functions that make it easier to read and analyze data tables and images created by PerkinElmer's inForm software.
+informr contains functions that make it easier to read and analyze data tables
+and images created by PerkinElmer's inForm software.
+
+informr is part of the PerkinElmer Phenoptics™ family of
+Quantitative Pathology Research Solutions. For more information
+visit the Phenoptics™
+[home page](http://www.perkinelmer.com/cancer-immunology/index.html).
 
 ## Installation
 

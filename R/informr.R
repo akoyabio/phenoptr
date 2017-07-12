@@ -1,7 +1,12 @@
-#' Helpers for working with inForm data.
+#' Helpers for working with inForm data
 #'
 #' informr contains functions that make it easier to read and
-#'  analyze data tables created by PerkinElmer's inForm software.
+#'  analyze data tables and images created by PerkinElmer's inForm software.
+#'
+#' informr is part of the PerkinElmer Phenoptics™ family of
+#' Quantitative Pathology Research Solutions. For more information
+#' visit the Phenoptics™
+#' [home page](http://www.perkinelmer.com/cancer-immunology/index.html).
 #'
 #' \subsection{File readers}{
 #' [read_cell_seg_data] reads inForm cell segmentation data tables
@@ -12,14 +17,17 @@
 #' }
 #'
 #' \subsection{Distance functions}{
-#' [distance_matrix] and [subset_distance_matrix]
-#' create and subset cell distance matrices from cell segmentation data.
-#'
-#' [find_nearest_distance] uses a distance matrix to find
+#' [find_nearest_distance] finds
 #' the distance from each cell to the nearest cell of each phenotype.
 #'
-#' [count_within] uses a distance matrix to find
-#' the number of cells within a radius of other cells.
+#' [count_within] counts
+#' the number of cells within a fixed radius of other cells.
+#'
+#' [spatial_distribution_report] creates a report visualizing nearest
+#' neighbor relationships between cells of two phenotypes.
+#'
+#' [distance_matrix] and [subset_distance_matrix]
+#' create and subset cell distance matrices from cell segmentation data.
 #'}
 #'
 #' \subsection{Helpers}{

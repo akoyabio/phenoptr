@@ -80,16 +80,16 @@ for the entire data set.
 }
 \examples{
 library(tidyverse)
-s = sample_cell_seg_data
+csd = sample_cell_seg_data
 
 # Find the number of macrophages with a tumor cell within 10 or 25 microns
-count_within(s, from='macrophage CD68', to='tumor', radius=c(10, 25)) \%>\%
+count_within(csd, from='macrophage CD68', to='tumor', radius=c(10, 25)) \%>\%
   mutate(not_to=from_count*within_mean, to_mean=not_to/to_count)
 
 # Find the number of tumor cells with a macrophage within 10 or 25 microns
 # Show that from_count*within_mean is not the same as from_with in the
 # previous computation but from_count*within_mean/to_count is the same.
-count_within(s, from='tumor', to='macrophage CD68', radius=c(10, 25)) \%>\%
+count_within(csd, from='tumor', to='macrophage CD68', radius=c(10, 25)) \%>\%
   mutate(not_to=from_count*within_mean, to_mean=not_to/to_count)
 }
 \seealso{

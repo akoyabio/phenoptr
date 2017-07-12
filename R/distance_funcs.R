@@ -8,6 +8,10 @@ if (getRversion() >= "2.15.1")
 #'
 #' Compute nearest distance to each phenotype for each cell in a
 #' (possibly merged) inForm cell seg table. Write the result to a new file.
+#'
+#' NOTE: The input file is read using [read_cell_seg_data] so the conversions
+#' and cleanup it does will be applied to the output data.
+#'
 #' @param cell_table_path Path to an inForm cell seg data file, or NULL
 #' to prompt for the path.
 #' @param out_path Path to the output file, or NULL to create a path from the
@@ -15,6 +19,7 @@ if (getRversion() >= "2.15.1")
 #' @importFrom magrittr "%>%"
 #' @export
 #' @family distance functions
+#' @md
 compute_all_nearest_distance = function(cell_table_path=NULL, out_path=NULL) {
   # Get the path to the cell seg table and check it
   if (is.null(cell_table_path))
