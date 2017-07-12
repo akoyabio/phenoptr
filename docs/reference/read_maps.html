@@ -68,6 +68,9 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
+      <a href="../articles/computing_distances.html">Computing Inter-cellular Distances</a>
+    </li>
+    <li>
       <a href="../articles/reading_image_files.html">Reading and Displaying inForm Image Files</a>
     </li>
     <li>
@@ -141,9 +144,9 @@ column corresponding to X.</p>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='co'># NOT RUN {</span>
 <span class='co'># Not included at this time</span>
-<span class='no'>path</span> <span class='kw'>=</span> <span class='fu'>system.file</span>(<span class='st'>"extdata"</span>,
-  <span class='st'>"TMA/Core[1,5,6,1]_[21302,15107]_binary_seg_maps.tif"</span>,
-  <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"informr"</span>)
+<span class='no'>path</span> <span class='kw'>=</span> <span class='fu'>system.file</span>(<span class='st'>"extdata"</span>, <span class='st'>"TMA"</span>,
+                   <span class='st'>"Core[1,5,6,1]_[21302,15107]_binary_seg_maps.tif"</span>,
+                   <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"informr"</span>)
 <span class='no'>d</span> <span class='kw'>=</span> <span class='fu'>read_maps</span>(<span class='no'>path</span>)
 <span class='fu'>names</span>(<span class='no'>d</span>)
 <span class='co'># }</span></pre>

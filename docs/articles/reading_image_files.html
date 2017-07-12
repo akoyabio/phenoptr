@@ -45,6 +45,9 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
+      <a href="../articles/computing_distances.html">Computing Inter-cellular Distances</a>
+    </li>
+    <li>
       <a href="../articles/reading_image_files.html">Reading and Displaying inForm Image Files</a>
     </li>
     <li>
@@ -78,7 +81,7 @@
       <h1>Reading and Displaying inForm Image Files</h1>
                         <h4 class="author">Kent Johnson</h4>
             
-            <h4 class="date">2017-07-06</h4>
+            <h4 class="date">2017-07-12</h4>
           </div>
 
     
@@ -107,8 +110,9 @@ img {
 <h2 class="hasAnchor">
 <a href="#reading-and-displaying-color-images" class="anchor"></a>Reading and displaying color images</h2>
 <p>Color (RGB) images output from inForm, such as the composite image and segmentation images, can be read directly using <code><a href="http://www.rdocumentation.org/packages/tiff/topics/readTIFF">tiff::readTIFF()</a></code> or <code><a href="http://www.rdocumentation.org/packages/jpeg/topics/readJPEG">jpeg::readJPEG()</a></code>. For example,</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">path =<span class="st"> </span><span class="kw">system.file</span>(<span class="st">"extdata"</span>,
-  <span class="st">"TMA/Core[1,5,6,1]_[21302,15107]_composite_image.jpg"</span>, <span class="dt">package =</span> <span class="st">"informr"</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">path =<span class="st"> </span><span class="kw">system.file</span>(<span class="st">"extdata"</span>, <span class="st">"TMA"</span>, 
+                   <span class="st">"Core[1,5,6,1]_[21302,15107]_composite_image.jpg"</span>, 
+                   <span class="dt">package =</span> <span class="st">"informr"</span>)
 img =<span class="st"> </span>jpeg::<span class="kw">readJPEG</span>(path)
 <span class="kw">dim</span>(img)</code></pre></div>
 <pre><code>[1] 2080 2784    3</code></pre>
