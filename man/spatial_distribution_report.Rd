@@ -5,8 +5,9 @@
 \title{Create a spatial distribution report.}
 \usage{
 spatial_distribution_report(cell_seg_path, phenotypes, colors,
-  output_path = NULL, pixels_per_micron = 2, plot_gx_max = 100,
-  micron_line = 25)
+  output_path = NULL,
+  pixels_per_micron = getOption("informr.pixels.per.micron"),
+  plot_gx_max = 100, micron_line = 25)
 }
 \arguments{
 \item{cell_seg_path}{Path to a cell seg data file.}

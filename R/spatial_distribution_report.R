@@ -43,10 +43,10 @@ if (getRversion() >= "2.15.1")
 #' }
 #' @md
 spatial_distribution_report = function(cell_seg_path, phenotypes, colors,
-                                       output_path=NULL,
-                                       pixels_per_micron=2,
-                                       plot_gx_max = 100,
-                                       micron_line = 25) {
+                        output_path=NULL,
+                        pixels_per_micron=getOption('informr.pixels.per.micron'),
+                        plot_gx_max = 100,
+                        micron_line = 25) {
   stopifnot(grepl('_cell_seg_data.txt', cell_seg_path))
   stopifnot(file.exists(cell_seg_path),
             length(phenotypes)==2,

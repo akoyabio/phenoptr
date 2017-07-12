@@ -4,7 +4,9 @@
 \alias{read_cell_seg_data}
 \title{Read and clean an inForm data file.}
 \usage{
-read_cell_seg_data(path = NA, pixels_per_micron = 2, remove_units = TRUE)
+read_cell_seg_data(path = NA,
+  pixels_per_micron = getOption("informr.pixels.per.micron"),
+  remove_units = TRUE)
 }
 \arguments{
 \item{path}{Path to the file to read, or NA to use a file chooser.}
@@ -35,7 +37,9 @@ and does useful cleanup on the data:
 \item Removes columns that are all NA
       (these are typically unused summary columns)
 \item Converts percent columns to numeric fractions
-\item Converts pixel distances to microns
+\item Converts pixel distances to microns. The conversion factor may be
+specfied as a parameter or by setting
+\code{options(informr.pixels.per.micron)}.
 \item Optionally removes units from expression names
 \item If the file contains multiple sample names,
       a \code{tag} column is created

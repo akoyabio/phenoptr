@@ -29,7 +29,9 @@ list_cell_seg_files = function(path, ...) {
 #' \item Removes columns that are all NA
 #'       (these are typically unused summary columns)
 #' \item Converts percent columns to numeric fractions
-#' \item Converts pixel distances to microns
+#' \item Converts pixel distances to microns. The conversion factor may be
+#' specfied as a parameter or by setting
+#' \code{options(informr.pixels.per.micron)}.
 #' \item Optionally removes units from expression names
 #' \item If the file contains multiple sample names,
 #'       a \code{tag} column is created
@@ -59,7 +61,9 @@ list_cell_seg_files = function(path, ...) {
 #' d = purrr::map_df(paths, read_cell_seg_data)
 #' }
 read_cell_seg_data <- function(
-  path=NA, pixels_per_micron=2, remove_units=TRUE) {
+  path=NA,
+  pixels_per_micron=getOption('informr.pixels.per.micron'),
+  remove_units=TRUE) {
   if (is.na(path)) {
     path <- file.choose()
     cat('Loading', path)
