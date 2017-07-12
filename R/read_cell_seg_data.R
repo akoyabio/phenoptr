@@ -88,7 +88,10 @@ read_cell_seg_data <- function(
         df[[i]] <- as.numeric(sub('\\s*%$', '', df[[i]]))/100
 
   # Remove columns that are all NA or all blank
-  na_columns <- sapply(df, function(col) all(is.na(col) | col==''))
+  # The first condition is a preflight that speeds this up a lot
+  na_columns <- sapply(df, function(col)
+    (is.na(col[1]) | col[1]=='') &&
+      all(is.na(col) | col==''))
   df <- df[!na_columns]
 
   # Convert distance to microns.
