@@ -4,7 +4,7 @@
 \alias{count_within}
 \title{Count cells within a radius.}
 \usage{
-count_within(csd, from, to, radius, category = NULL, dst = NULL)
+count_within(csd, from, to, radius, category = NA, dst = NULL)
 }
 \arguments{
 \item{csd}{A data frame with \code{Cell X Position},
@@ -73,7 +73,7 @@ results \%>\% group_by(`Slide ID`, from, to, radius) \%>\%
 }
 
 If \code{category} is specified, all reported values are for cells within
-the given tissue category. If \code{category} is NULL, values are reported
+the given tissue category. If \code{category} is NA, values are reported
 for the entire data set.
 
 \code{radius} may be a vector with multiple values.
@@ -94,6 +94,7 @@ count_within(csd, from='tumor', to='macrophage CD68', radius=c(10, 25)) \%>\%
 }
 \seealso{
 Other distance functions: \code{\link{compute_all_nearest_distance}},
+  \code{\link{count_within_batch}},
   \code{\link{distance_matrix}},
   \code{\link{find_nearest_distance}},
   \code{\link{subset_distance_matrix}}

@@ -11,7 +11,8 @@ check_within = function(within, radius, from, to) {
   expect_equal(within$to_count, to)
 }
 
-# Smoke test of average_counts. Mostly checks that it doesn't barf and
+csd_for_test =
+# Smoke test of count_within. Mostly checks that it doesn't barf and
 # that the correct cells are selected.
 test_that("count_within works", {
   csd = sample_cell_seg_data %>% filter(Phenotype != 'other')
@@ -69,4 +70,39 @@ test_that("count_within works with multiple radii", {
   check_within(within, c(15, 30), c(0, 0), c(0, 0))
   expect_equal(within$from_with, c(0, 0))
   expect_equal(within$within_mean, c(0, 0))
+})
+
+test_that("count_within errors with invalid radii", {
+  csd = sample_cell_seg_data %>% filter(Phenotype != 'other')
+  dst = distance_matrix(csd)
+
+  expect_error(count_within(csd, 'tumor', 'cytotoxic CD8', integer(0), dst),
+               'length\\(radius\\)')
+  expect_error(count_within(csd, 'tumor', 'cytotoxic CD8', c(1, -1), dst),
+               'radius > 0')
+})
+
+# Test error handling of count_within_batch
+test_that("count_within_batch error checking works", {
+  base_path = system.file("extdata", package = "informr")
+  from = list('tumor')
+  to = list('macrophage CD68')
+  radius = 10
+  expect_error(count_within_batch(base_path, from, to, radius), base_path)
+
+  base_path = system.file("extdata", "TMA", package = "informr")
+  expect_error(count_within_batch(base_path, from='tumor', to, radius),
+               'is.list\\(from\\)')
+  expect_error(count_within_batch(base_path, from=list(), to, radius),
+               'length\\(from\\)')
+
+  expect_error(count_within_batch(base_path, from, to='tumor', radius),
+               'is.list\\(to\\)')
+  expect_error(count_within_batch(base_path, from, to=list(), radius),
+               'length\\(to\\)')
+
+  from = list('tumor', ~`Entire Cell Autofluorescence Max`>0)
+  expect_error(count_within_batch(base_path, from, to, radius),
+               'Formula')
+
 })

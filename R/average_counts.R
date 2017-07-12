@@ -1,5 +1,121 @@
 # Functions to compute counts and average counts
 
+# Suppress CMD CHECK notes for things that look like global vars
+if (getRversion() >= "2.15.1")
+  utils::globalVariables(c(".", "Phenotype", "Tissue Category"))
+
+#' Count cells within a radius for multiple tissue categories, phenotypes
+#' and fields.
+#'
+#' This is a batch version of [count_within]. Given the path to a directory
+#' containing cell seg data files, for each given tissue category,
+#' 'from' phenotype, 'to' phenotype and radius, it counts the number of
+#'  `from` cells
+#' having a `to` cell within `radius` microns.
+#'
+#' `from` and `to` specify the phenotypes of interest.
+#' Each one is a list of phenotype names.
+#' Each list element is either a single name or a character vector.
+#' If the element is a vector,
+#' the phenotypes in the vector are treated collectively as a single type.
+#' All pairs of `from` and `to` values are included in the output.
+#'
+#' For example, the parameters
+#' `from=list('cd68'), to=list('cd8', 'tumor'), radius=25`
+#' would count `cd68` cells having a `cd8` cell within 25 &mu;m and,
+#' separately, `cd68` cells with a `tumor` cell within 25 &mu;m.
+#'
+#' @param base_path Path to a directory containing at least
+#' one `_cell_seg_data.txt` file.
+#' @param from Specification of 'from' phenotype(s), see Details.
+#' @param to Specification of 'to' phenotype(s), see Details.
+#' @param radius The radius or radii to search within.
+#' @param category Optional tissue categories to restrict both `from` and
+#' `to`.
+#' @param verbose If TRUE, display progress.
+#' @return A `data_frame` containing these columns:
+#'   \describe{
+#'    \item{\code{slide_id}}{Slide ID from the data files.}
+#'    \item{\code{source}}{Base file name of the source file with
+#'    `_cell_seg_data.txt` stripped off for brevity.}
+#'    \item{\code{category}}{Tissue category, if provided as a parameter,
+#'    or "all".}
+#'    \item{\code{from}}{From phenotype.}
+#'    \item{\code{to}}{To phenotype.}
+#'    \item{\code{radius}, \code{from_count}, \code{to_count},
+#'    \code{from_with}, \code{within_mean}}{Results from [count_within]
+#'    for this data file and tissue category.}
+#'  }
+#' @examples
+#' base_path = system.file("extdata", "TMA", package = "informr")
+#'
+#' # Count tumor cells near macrophages and tumor cells near CD8 separately
+#' from = list('tumor')
+#' to = list('macrophage CD68', 'cytotoxic CD8')
+#' radius = c(10, 25)
+#' count_within_batch(base_path, from, to, radius)
+#'
+#' # Count tumor cells near any T cell
+#' to = list(c('cytotoxic CD8', 'helper CD4', 'T reg Foxp3'))
+#' count_within_batch(base_path, from, to, radius)
+#' @md
+#' @export
+#' @family distance functions
+#' @importFrom magrittr "%>%"
+count_within_batch = function(base_path, from, to, radius,
+                              category=NA, verbose=TRUE) {
+  files = list_cell_seg_files(base_path)
+  if (length(files) == 0)
+    stop('No cell seg files found in ', base_path)
+
+  stopifnot(is.list(from), length(from) > 0)
+  stopifnot(is.list(to), length(to) > 0)
+
+  all_phenotypes = c(from, to, recursive=TRUE)
+  if (any(purrr::map_lgl(all_phenotypes, purrr::is_formula)))
+    stop('Formula selection is not supported in count_within.')
+
+  combos = purrr::cross_n(list(from=from, to=to, category=category))
+
+  # Loop through all the cell seg data files
+  purrr::map_df(files, function(path) {
+    name = basename(path) %>% sub('_cell_seg_data.txt', '', .)
+    if (verbose) cat('Processing', name, '\n')
+
+    # Read one file
+    csd = read_cell_seg_data(path)
+
+    slide = as.character(csd[1, 'Slide ID'])
+
+    # Subset to what we care about, for faster distance calculation
+    csd = csd %>% dplyr::filter(Phenotype %in% all_phenotypes)
+    if (!anyNA(category))
+      csd = csd %>% dplyr::filter(`Tissue Category` %in% category)
+
+    # Compute the distance matrix for these cells
+    dst = distance_matrix(csd)
+
+    # Compute counts for each from, to, and category in combos
+      purrr::map_df(combos, function(row) {
+      # Call count_within for each item in combos
+      # count_within handles multiple radii
+      purrr::invoke(.f=count_within, .x=row,
+                    csd=csd, radius=radius, dst=dst) %>%
+        # Add columns for from, to, category
+        tibble::add_column(
+          category = ifelse(is.na(row$category), 'all', row$category),
+          from=paste(row$from, collapse=' '),
+          to=paste(row$to, collapse=' '),
+          .before=1)
+      }) %>%
+      # Add columns for slide and source
+      tibble::add_column(slide_id=slide,
+                    source=name,
+                    .before=1)
+
+  })
+}
+
 #' Count cells within a radius.
 #'
 #' Count the number of \code{from} cells having a \code{to} cell within
@@ -37,7 +153,7 @@
 #' }
 #'
 #' If \code{category} is specified, all reported values are for cells within
-#' the given tissue category. If \code{category} is NULL, values are reported
+#' the given tissue category. If \code{category} is NA, values are reported
 #' for the entire data set.
 #'
 #' \code{radius} may be a vector with multiple values.
@@ -81,16 +197,18 @@
 #' count_within(csd, from='tumor', to='macrophage CD68', radius=c(10, 25)) %>%
 #'   mutate(not_to=from_count*within_mean, to_mean=not_to/to_count)
 
-count_within = function(csd, from, to, radius, category=NULL, dst=NULL) {
+count_within = function(csd, from, to, radius, category=NA, dst=NULL) {
   # Check for multiple samples, this is probably an error
   if (length(unique(csd$`Sample Name`))>1)
     stop('Data appears to contain multiple samples.')
 
-    if (is.null(dst))
+  stopifnot(length(radius) > 0, all(radius>0))
+
+  if (is.null(dst))
     dst = distance_matrix(csd)
 
   # Which cells are in the from and to phenotypes?
-  if (!is.null(category)) {
+  if (!is.na(category)) {
     tissue_f = stats::as.formula(paste0('~`Tissue Category`=="', category, '"'))
     if (is.character(from)) from = list(from)
     from = c(from, list(tissue_f))

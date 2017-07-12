@@ -32,6 +32,7 @@ csd = cbind(csd, find_nearest_distance(csd))
 }
 \seealso{
 Other distance functions: \code{\link{compute_all_nearest_distance}},
+  \code{\link{count_within_batch}},
   \code{\link{count_within}},
   \code{\link{distance_matrix}},
   \code{\link{subset_distance_matrix}}

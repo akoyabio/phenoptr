@@ -2,6 +2,7 @@
 
 export(compute_all_nearest_distance)
 export(count_within)
+export(count_within_batch)
 export(distance_matrix)
 export(find_nearest_distance)
 export(list_cell_seg_files)

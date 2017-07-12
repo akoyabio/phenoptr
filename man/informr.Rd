@@ -27,7 +27,7 @@ and makes them easier to use in R.
 \link{find_nearest_distance} finds
 the distance from each cell to the nearest cell of each phenotype.
 
-\link{count_within} counts
+\link{count_within} and \link{count_within_batch} count
 the number of cells within a fixed radius of other cells.
 
 \link{spatial_distribution_report} creates a report visualizing nearest

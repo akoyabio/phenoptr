@@ -20,7 +20,7 @@
 #' [find_nearest_distance] finds
 #' the distance from each cell to the nearest cell of each phenotype.
 #'
-#' [count_within] counts
+#' [count_within] and [count_within_batch] count
 #' the number of cells within a fixed radius of other cells.
 #'
 #' [spatial_distribution_report] creates a report visualizing nearest

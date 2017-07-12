@@ -22,7 +22,8 @@ NOTE: The input file is read using \link{read_cell_seg_data} so the conversions
 and cleanup it does will be applied to the output data.
 }
 \seealso{
-Other distance functions: \code{\link{count_within}},
+Other distance functions: \code{\link{count_within_batch}},
+  \code{\link{count_within}},
   \code{\link{distance_matrix}},
   \code{\link{find_nearest_distance}},
   \code{\link{subset_distance_matrix}}
