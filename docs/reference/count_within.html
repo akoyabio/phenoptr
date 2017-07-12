@@ -111,7 +111,7 @@ Compute the average number of <code>to</code> cells
 within <code>radius</code> of <code>from</code> cells.</p>
     
 
-    <pre class="usage"><span class='fu'>count_within</span>(<span class='no'>csd</span>, <span class='no'>from</span>, <span class='no'>to</span>, <span class='no'>radius</span>, <span class='kw'>category</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>dst</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>count_within</span>(<span class='no'>csd</span>, <span class='no'>from</span>, <span class='no'>to</span>, <span class='no'>radius</span>, <span class='kw'>category</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>dst</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -185,13 +185,14 @@ results %&gt;% group_by(`Slide ID`, from, to, radius) %&gt;%
   ungroup
 </pre>
     <p>If <code>category</code> is specified, all reported values are for cells within
-the given tissue category. If <code>category</code> is NULL, values are reported
+the given tissue category. If <code>category</code> is NA, values are reported
 for the entire data set.
     <code>radius</code> may be a vector with multiple values.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <p>Other distance functions: <code><a href='compute_all_nearest_distance.html'>compute_all_nearest_distance</a></code>,
+  <code><a href='count_within_batch.html'>count_within_batch</a></code>,
   <code><a href='distance_matrix.html'>distance_matrix</a></code>,
   <code><a href='find_nearest_distance.html'>find_nearest_distance</a></code>,
   <code><a href='subset_distance_matrix.html'>subset_distance_matrix</a></code></p>

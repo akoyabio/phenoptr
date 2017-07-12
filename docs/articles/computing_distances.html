@@ -183,6 +183,22 @@ $ Distance to tumor           &lt;dbl&gt; 3.201562, 9.552487, 3.201562, 13.7...<
 1     25       3303      359      1195   0.5634272</code></pre>
 <p>Please see <code>help(count_within)</code> for details.</p>
 </div>
+<div id="count-multiple-files-or-phenotypes-using-count_within_batch" class="section level3">
+<h3 class="hasAnchor">
+<a href="#count-multiple-files-or-phenotypes-using-count_within_batch" class="anchor"></a>Count multiple files or phenotypes using <code>count_within_batch</code>
+</h3>
+<p>You may want to run <code>count_within</code> on an entire directory of cell seg data files, or to count multiple combinations of phenotypes. Both of these are possible using <code>count_within_batch</code>. Instead of a <code>data_frame</code>, you pass it the path to a directory containing multiple cell seg data files. The <code>from</code>, <code>to</code>, and <code>category</code> parameters are lists and may contain multiple entries.</p>
+<p>For example, the following commands will count <code>T Reg</code> cells with a <code>Cytotoxic T Cell</code> or <code>PDL1+ Tumor Cell</code> within 10 or 25 μm, with separate counts for each <code>to</code> phenotype and for <code>tumor</code> and <code>stroma</code> tissue categories. Counts will be calculated for all <code>cell_seg_data.txt</code> files in <code>my_directory</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">base_path =<span class="st"> "/path/to/my_directory"</span>
+
+from =<span class="st"> </span><span class="kw">list</span>(<span class="st">'T Reg'</span>)
+to =<span class="st"> </span><span class="kw">list</span>(<span class="st">'Cytotoxic T Cell'</span>, <span class="st">'PDL1+ Tumor Cell'</span>)
+radii =<span class="st"> </span><span class="kw">c</span>(<span class="dv">10</span>, <span class="dv">25</span>)
+categories =<span class="st"> </span><span class="kw">c</span>(<span class="st">'stroma'</span>, <span class="st">'tumor'</span>)
+
+<span class="kw"><a href="../reference/count_within_batch.html">count_within_batch</a></span>(base_path, from, to, radii, categories)</code></pre></div>
+<p>See <code>help(count_within_batch)</code> for additional details.</p>
+</div>
 </div>
 <div id="visualizing-nearest-neighbors" class="section level2">
 <h2 class="hasAnchor">

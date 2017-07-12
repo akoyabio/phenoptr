@@ -25,6 +25,8 @@ if (getRversion() >= "2.15.1")
 #' would count `cd68` cells having a `cd8` cell within 25 &mu;m and,
 #' separately, `cd68` cells with a `tumor` cell within 25 &mu;m.
 #'
+#' The `category` parameter may be a single category or a list of categories.
+#'
 #' @param base_path Path to a directory containing at least
 #' one `_cell_seg_data.txt` file.
 #' @param from Specification of 'from' phenotype(s), see Details.
@@ -49,13 +51,15 @@ if (getRversion() >= "2.15.1")
 #' @examples
 #' base_path = system.file("extdata", "TMA", package = "informr")
 #'
-#' # Count tumor cells near macrophages and tumor cells near CD8 separately
+#' # Count tumor cells near macrophages and tumor cells near CD8 separately,
+#' # in tumor and stroma tissue categories separately.
 #' from = list('tumor')
 #' to = list('macrophage CD68', 'cytotoxic CD8')
 #' radius = c(10, 25)
-#' count_within_batch(base_path, from, to, radius)
+#' category = list('tumor', 'stroma')
+#' count_within_batch(base_path, from, to, radius, category)
 #'
-#' # Count tumor cells near any T cell
+#' # Count tumor cells near any T cell in all tissue categories
 #' to = list(c('cytotoxic CD8', 'helper CD4', 'T reg Foxp3'))
 #' count_within_batch(base_path, from, to, radius)
 #' @md

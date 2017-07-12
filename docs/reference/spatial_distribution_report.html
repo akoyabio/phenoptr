@@ -110,8 +110,9 @@ of cells in a single field and two chosen phenotypes.</p>
     
 
     <pre class="usage"><span class='fu'>spatial_distribution_report</span>(<span class='no'>cell_seg_path</span>, <span class='no'>phenotypes</span>, <span class='no'>colors</span>,
-  <span class='kw'>output_path</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>pixels_per_micron</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>plot_gx_max</span> <span class='kw'>=</span> <span class='fl'>100</span>,
-  <span class='kw'>micron_line</span> <span class='kw'>=</span> <span class='fl'>25</span>)</pre>
+  <span class='kw'>output_path</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>pixels_per_micron</span> <span class='kw'>=</span> <span class='fu'>getOption</span>(<span class='st'>"informr.pixels.per.micron"</span>),
+  <span class='kw'>plot_gx_max</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>micron_line</span> <span class='kw'>=</span> <span class='fl'>25</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">

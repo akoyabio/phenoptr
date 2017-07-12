@@ -45,6 +45,16 @@ count_within(csd, from='macrophage CD68', to='tumor', radius=25)
 count_within(csd, from='tumor', to='macrophage CD68', radius=25)
 
 ## ----eval=FALSE----------------------------------------------------------
+#  base_path = "/path/to/my_directory"
+#  
+#  from = list('T Reg')
+#  to = list('Cytotoxic T Cell', 'PDL1+ Tumor Cell')
+#  radii = c(10, 25)
+#  categories = c('stroma', 'tumor')
+#  
+#  count_within_batch(base_path, from, to, radii, categories)
+
+## ----eval=FALSE----------------------------------------------------------
 #  cell_seg_path = system.file("extdata", "TMA",
 #                         "Core[1,5,6,1]_[21302,15107]_cell_seg_data.txt",
 #                         package = "informr")

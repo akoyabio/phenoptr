@@ -133,12 +133,39 @@ is not symmetric. In this example, the number of `tumor` cells with a
 within 25 microns is not the same as the number of `macrophage CD68`
 cells with a `tumor` cell within 25 microns.
 
-
 ```{r}
 count_within(csd, from='tumor', to='macrophage CD68', radius=25)
 ```
 
 Please see `help(count_within)` for details.
+
+### Count multiple files or phenotypes using `count_within_batch`
+
+You may want to run `count_within` on an entire directory of cell seg data
+files, or to count multiple combinations of phenotypes. Both of
+these are possible using `count_within_batch`. Instead of a `data_frame`,
+you pass it the path to a directory containing multiple cell seg data files.
+The `from`, `to`, and `category` parameters are lists and may contain
+multiple entries.
+
+For example, the following commands will count `T Reg` cells
+with a `Cytotoxic T Cell` or `PDL1+ Tumor Cell` within 10 or 25 &mu;m, 
+with separate counts for each `to` phenotype and for
+`tumor` and `stroma` tissue categories. Counts will be calculated 
+for all `cell_seg_data.txt` files in `my_directory`.
+
+```{r eval=FALSE}
+base_path = "/path/to/my_directory"
+
+from = list('T Reg')
+to = list('Cytotoxic T Cell', 'PDL1+ Tumor Cell')
+radii = c(10, 25)
+categories = c('stroma', 'tumor')
+
+count_within_batch(base_path, from, to, radii, categories)
+```
+
+See `help(count_within_batch)` for additional details.
 
 ## Visualizing nearest neighbors
 

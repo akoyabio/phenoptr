@@ -5,8 +5,9 @@ knitr::opts_chunk$set(fig.width=7, fig.height=5,
 par(mar=rep(0, 4))
 
 ## ----read_composite------------------------------------------------------
-path = system.file("extdata",
-  "TMA/Core[1,5,6,1]_[21302,15107]_composite_image.jpg", package = "informr")
+path = system.file("extdata", "TMA", 
+                   "Core[1,5,6,1]_[21302,15107]_composite_image.jpg", 
+                   package = "informr")
 img = jpeg::readJPEG(path)
 dim(img)
 
