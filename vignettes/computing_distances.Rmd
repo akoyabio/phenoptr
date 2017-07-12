@@ -1,0 +1,166 @@
+---
+title: "Computing Inter-cellular Distances"
+author: "Kent Johnson"
+date: "`r Sys.Date()`"
+output:
+  rmarkdown::html_vignette:
+    df_print: kable
+    toc: true
+vignette: >
+  %\VignetteIndexEntry{Computing Inter-cellular Distances}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+
+```{r setup, echo=FALSE,include=FALSE,message=FALSE}
+suppressPackageStartupMessages(library(tidyverse))
+knitr::opts_chunk$set(fig.width=7, fig.height=5, 
+                      comment=NA, warning=FALSE, message=FALSE)
+theme_set(theme_bw())
+# No figure margins
+par(mar=rep(0, 4))
+```
+
+<style type="text/css">
+img { 
+  border: none;
+}
+table {
+    width: auto !important;
+}
+</style>
+
+`informr` contains several functions which analyze and report on the spatial
+relationship between cells in a single field.
+
+## Nearest neighbor distances
+
+### Computing with `find_nearest_distance`
+
+The `find_nearest_distance` function finds per-cell nearest neighbor distances.
+For each cell and each phenotype in a sample, it finds the nearest neighbor
+of that phenotype. The distances are returned in a `data_frame` with
+one column per phenotype.
+
+For example, the `informr` sample data `sample_cell_seg_data` contains
+`r length(unique(informr::sample_cell_seg_data$Phenotype))` unique
+phenotypes:
+
+```{r}
+library(tidyverse)
+library(informr)
+
+csd = sample_cell_seg_data
+csd %>% count(Phenotype)
+```
+
+This file contains only two FoxP3+ cells, and the 'other' cells are not of 
+interest, so first filter them out.
+
+```{r}
+csd = csd %>% filter(!Phenotype %in% c('T reg Foxp3', 'other'))
+```
+
+Calling `find_nearest_distance` on this file returns a `data_frame` with 
+four columns and one row for each cell:
+
+```{r}
+distances = find_nearest_distance(csd)
+glimpse(distances)
+nrow(csd)
+```
+
+To create a combined data frame, use `dplyr::bind_cols`.
+
+```{r}
+csd_with_distance = bind_cols(csd, distances)
+```
+
+Note: Cell positions in a cell seg data file are relative to the 
+top-left corner of the field, 
+so calling `find_nearest_distance` on a merged data file will fail. One 
+way to add distance columns to a merged data file is to use `dplyr::group_by`
+to process each field separately. For example, if `merged` contains merged
+cell seg data, add distance columns with this code:
+
+```{r eval=FALSE}
+merged_with_distance = merged %>%
+  dplyr::group_by(`Sample Name`) %>%
+  dplyr::do(dplyr::bind_cols(., find_nearest_distance(.)))
+```
+
+### Analyzing nearest neighbor distances
+
+Once the nearest neighbors have been computed per cell, standard aggregation,
+analysis and plotting commands can be used to examine the results. For example,
+find the mean nearest neighbor distances by phenotype:
+ 
+```{r}
+csd_with_distance %>% group_by(Phenotype) %>% 
+  select(starts_with('Distance to')) %>% 
+  summarize_all(~round(mean(.), 1))
+```
+
+Show the distribution of distances in a density plot:
+
+```{r}
+ggplot(csd_with_distance, aes(`Distance to helper CD4`, color=Phenotype)) +
+  geom_density()
+```
+
+## Cells within a radius
+
+### Computing with `count_within`
+
+The `count_within` function looks at the number of cells within a radius of
+another cell and returns summary measures. For example, use `count_within`
+to find the number of macrophages having a tumor cell within 25 microns:
+
+```{r}
+count_within(csd, from='macrophage CD68', to='tumor', radius=25)
+```
+
+In this result, `from_count` and `to_count` are the total numbers of 
+eligible cells. They agree with the counts in the first table in this
+vignette. `from_with` is the number of `macrophage CD68` cells having at least 
+one `tumor` cell within 25 &mu;m. `within_mean` is the average number of
+`tumor` cells found within 25 &mu;m of each `macrophage CD68` cell.
+
+Note there are some subtleties to `count_within`. Most importantly, it
+is not symmetric. In this example, the number of `tumor` cells with a 
+`macrophage CD68`
+within 25 microns is not the same as the number of `macrophage CD68`
+cells with a `tumor` cell within 25 microns.
+
+
+```{r}
+count_within(csd, from='tumor', to='macrophage CD68', radius=25)
+```
+
+Please see `help(count_within)` for details.
+
+## Visualizing nearest neighbors
+
+The `spatial_distribution_report` function is a bit different from the other
+functions
+mentioned in this vignette. Rather than calculate and return distance metrics,
+it creates a report which shows visually the nearest neighbor relations between
+two phenotypes in a single field. Because the result is a stand-alone HTML file,
+it can't easily be demonstrated in a vignette. For an example, 
+copy and paste this code
+into your own copy of R. It will create a sample report in your user directory.
+
+```{r eval=FALSE}
+cell_seg_path = system.file("extdata", "TMA",
+                       "Core[1,5,6,1]_[21302,15107]_cell_seg_data.txt",
+                       package = "informr")
+
+phenotypes = c("macrophage CD68", "cytotoxic CD8")
+colors = c('red', 'blue')
+out_path = path.expand('~/spatial_distribution_report.html')
+
+spatial_distribution_report(cell_seg_path, phenotypes, colors, out_path)
+
+```
+
