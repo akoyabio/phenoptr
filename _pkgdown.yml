@@ -1,0 +1,21 @@
+reference:
+  - title: "Reading data and images"
+    desc: "Read and preprocess inForm data and image files."
+    contents:
+      - list_cell_seg_files
+      - starts_with("read_")
+  - title: "Distance functions"
+    desc: "Compute and visualize spatial relationships between cells."
+    contents:
+      - find_nearest_distance
+      - compute_all_nearest_distance
+      - starts_with("count_within")
+      - spatial_distribution_report
+      - distance_matrix
+      - subset_distance_matrix
+  - title: "Helpers"
+    contents:
+      - select_rows
+  - title: "Sample data"
+    contents:
+      - sample_cell_seg_data

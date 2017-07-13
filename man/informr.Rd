@@ -6,39 +6,32 @@
 \alias{informr-package}
 \title{Helpers for working with inForm data}
 \description{
-informr contains functions that make it easier to read and
-analyze data tables and images created by PerkinElmer's inForm software.
+informr contains functions that make it easier to read and analyze data tables
+and images created by PerkinElmer's inForm software.
 }
 \details{
-informr is part of the PerkinElmer Phenoptics™ family of
-Quantitative Pathology Research Solutions. For more information
-visit the Phenoptics™
-\href{http://www.perkinelmer.com/cancer-immunology/index.html}{home page}.
+informr is part of the PerkinElmer Phenoptics family of
+Quantitative Pathology Research Solutions. For more information visit the
+Phenoptics \href{http://www.perkinelmer.com/cancer-immunology/index.html}{homepage}.
 
-\subsection{File readers}{
-\link{read_cell_seg_data} reads inForm cell segmentation data tables
-and makes them easier to use in R.
+\subsection{File readers}{ \link{read_cell_seg_data} reads inForm cell segmentation
+data tables and makes them easier to use in R.
 
-\link{read_components} reads inForm component data and
-\link{read_maps} reads inForm segmentation maps.
-}
+\link{read_components} reads inForm component data and \link{read_maps} reads inForm
+segmentation maps. }
 
-\subsection{Distance functions}{
-\link{find_nearest_distance} finds
-the distance from each cell to the nearest cell of each phenotype.
+\subsection{Distance functions}{ \link{find_nearest_distance} finds the distance
+from each cell to the nearest cell of each phenotype.
 
-\link{count_within} and \link{count_within_batch} count
-the number of cells within a fixed radius of other cells.
+\link{count_within} and \link{count_within_batch} count the number of cells within a
+fixed radius of other cells.
 
-\link{spatial_distribution_report} creates a report visualizing nearest
-neighbor relationships between cells of two phenotypes.
+\link{spatial_distribution_report} creates a report visualizing nearest neighbor
+relationships between cells of two phenotypes.
 
-\link{distance_matrix} and \link{subset_distance_matrix}
-create and subset cell distance matrices from cell segmentation data.
-}
+\link{distance_matrix} and \link{subset_distance_matrix} create and subset cell distance
+matrices from cell segmentation data. }
 
-\subsection{Helpers}{
-\link{select_rows} helps select rows in cell segmentation data
-corresponding to specific phenotypes and expression levels.
-}
+\subsection{Helpers}{ \link{select_rows} helps select rows in cell segmentation
+data corresponding to specific phenotypes and expression levels. }
 }
