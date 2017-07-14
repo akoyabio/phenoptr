@@ -3,8 +3,10 @@ Type: Package
 Title: inForm Helper Functions
 Version: 0.1.1.9000
 Description: Helper functions for working with inForm data.
+biocViews:
 Imports:
     dplyr,
+    EBImage,
     ggplot2,
     jpeg,
     knitr,

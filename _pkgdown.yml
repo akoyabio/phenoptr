@@ -7,15 +7,16 @@ reference:
   - title: "Distance functions"
     desc: "Compute and visualize spatial relationships between cells."
     contents:
-      - find_nearest_distance
       - compute_all_nearest_distance
+      - count_touching_cells
       - starts_with("count_within")
+      - find_nearest_distance
       - spatial_distribution_report
-      - distance_matrix
-      - subset_distance_matrix
   - title: "Helpers"
     contents:
+      - distance_matrix
       - select_rows
+      - subset_distance_matrix
   - title: "Sample data"
     contents:
       - sample_cell_seg_data

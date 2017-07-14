@@ -1,6 +1,12 @@
 # Package development help
 # Hat tip to http://www.masalmon.eu/2017/06/17/automatictools/
 
+# Notes:
+# Adding a new function requires several touches:
+# - The code for the function
+# - Add to _pkgdowr.yml
+# - Add to R/informr.R
+
 # Build the package reference. Output will be in a temp dir, look at
 # the console output to see where it is.
 devtools::check(manual = TRUE)
@@ -16,9 +22,8 @@ goodpractice::gp()
 
 devtools::spell_check()
 
-# Build documentation site - not working for NEWS.md?
+# Build documentation site. `build_site` seems to work better than
+# the RStudio menu which calls `build_site_rstudio`.
 devtools::install_github("hadley/pkgdown")
 pkgdown::build_site()
 
-# Hack for NEWS
-rmarkdown::render("NEWS.md", output_file='docs/news/index.html')

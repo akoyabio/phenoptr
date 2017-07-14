@@ -14,13 +14,17 @@ informr is part of the PerkinElmer Phenoptics family of
 Quantitative Pathology Research Solutions. For more information visit the
 Phenoptics \href{http://www.perkinelmer.com/cancer-immunology/index.html}{homepage}.
 
-\subsection{File readers}{ \link{read_cell_seg_data} reads inForm cell segmentation
+\subsection{Read and preprocess inForm data and image files}{
+\link{list_cell_seg_files} finds all inFor cell segmentation files in a directory.
+
+\link{read_cell_seg_data} reads inForm cell segmentation
 data tables and makes them easier to use in R.
 
 \link{read_components} reads inForm component data and \link{read_maps} reads inForm
 segmentation maps. }
 
-\subsection{Distance functions}{ \link{find_nearest_distance} finds the distance
+\subsection{Compute and visualize spatial relationships between cells}{
+\link{find_nearest_distance} finds the distance
 from each cell to the nearest cell of each phenotype.
 
 \link{count_within} and \link{count_within_batch} count the number of cells within a
@@ -29,9 +33,14 @@ fixed radius of other cells.
 \link{spatial_distribution_report} creates a report visualizing nearest neighbor
 relationships between cells of two phenotypes.
 
-\link{distance_matrix} and \link{subset_distance_matrix} create and subset cell distance
-matrices from cell segmentation data. }
+\link{count_touching_cells} uses morphological
+analysis to find, count, and visualize touching cells in paired
+phenotypes.}
 
-\subsection{Helpers}{ \link{select_rows} helps select rows in cell segmentation
+\subsection{Helpers}{
+\link{distance_matrix} and \link{subset_distance_matrix} create and subset cell distance
+matrices from cell segmentation data.
+
+\link{select_rows} helps select rows in cell segmentation
 data corresponding to specific phenotypes and expression levels. }
 }

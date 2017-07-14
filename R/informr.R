@@ -8,13 +8,17 @@
 #' Phenoptics [home
 #' page](http://www.perkinelmer.com/cancer-immunology/index.html).
 #'
-#' \subsection{File readers}{ [read_cell_seg_data] reads inForm cell segmentation
+#' \subsection{Read and preprocess inForm data and image files}{
+#' [list_cell_seg_files] finds all inFor cell segmentation files in a directory.
+#'
+#' [read_cell_seg_data] reads inForm cell segmentation
 #' data tables and makes them easier to use in R.
 #'
 #' [read_components] reads inForm component data and [read_maps] reads inForm
 #' segmentation maps. }
 #'
-#' \subsection{Distance functions}{ [find_nearest_distance] finds the distance
+#' \subsection{Compute and visualize spatial relationships between cells}{
+#' [find_nearest_distance] finds the distance
 #' from each cell to the nearest cell of each phenotype.
 #'
 #' [count_within] and [count_within_batch] count the number of cells within a
@@ -23,10 +27,15 @@
 #' [spatial_distribution_report] creates a report visualizing nearest neighbor
 #' relationships between cells of two phenotypes.
 #'
-#' [distance_matrix] and [subset_distance_matrix] create and subset cell distance
-#' matrices from cell segmentation data. }
+#' [count_touching_cells] uses morphological
+#' analysis to find, count, and visualize touching cells in paired
+#' phenotypes.}
 #'
-#' \subsection{Helpers}{ [select_rows] helps select rows in cell segmentation
+#' \subsection{Helpers}{
+#' [distance_matrix] and [subset_distance_matrix] create and subset cell distance
+#' matrices from cell segmentation data.
+#'
+#' [select_rows] helps select rows in cell segmentation
 #' data corresponding to specific phenotypes and expression levels. }
 #'
 #' @docType package
