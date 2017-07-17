@@ -69,6 +69,7 @@
 #'  }
 #' @examples
 #' \dontrun{
+#' # This example will count and image all files in the `base_path` directory.
 #' base_path = '/path/to/data'
 #' out_path = file.path(base_path, 'touches')
 #' files = list_cell_seg_files(base_path)

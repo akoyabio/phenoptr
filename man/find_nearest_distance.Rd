@@ -10,14 +10,14 @@ find_nearest_distance(csd, phenotypes = NULL)
 \item{csd}{A data frame with \code{Cell X Position},
 \code{Cell Y Position} and \code{Phenotype} columns,
 such as the result of calling
-\code{\link{read_cell_seg_data}}.}
+\link{read_cell_seg_data}.}
 
 \item{phenotypes}{Optional list of phenotypes to include. If omitted,
 \code{unique(csd$Phenotype)} will be used.}
 }
 \value{
-A data_frame containing a 'Distance to <phenotype>' column
-for each phenotype. Will contain NA values where there is no other cell
+A \code{data_frame} containing a \code{Distance to <phenotype>} column
+for each phenotype. Will contain \code{NA} values where there is no other cell
 of the phenotype.
 }
 \description{
@@ -29,6 +29,15 @@ each cell to the nearest other cell in the phenotype.
 # Compute distance columns and append them to the source data
 csd = sample_cell_seg_data
 csd = cbind(csd, find_nearest_distance(csd))
+
+\dontrun{
+# If `merged` is a data frame containing cell seg data from multiple fields,
+# this code will create a new `data_frame` with distance columns computed
+# for each `Sample Name` in the data.
+merged_with_distance = merged \%>\%
+  dplyr::group_by(`Sample Name`) \%>\%
+  dplyr::do(dplyr::bind_cols(., find_nearest_distance(.)))
+}
 }
 \seealso{
 Other distance functions: \code{\link{compute_all_nearest_distance}},

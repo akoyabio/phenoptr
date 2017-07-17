@@ -66,3 +66,9 @@ count_within(csd, from='tumor', to='macrophage CD68', radius=25)
 #  spatial_distribution_report(cell_seg_path, phenotypes, colors, out_path)
 #  
 
+## ------------------------------------------------------------------------
+base_path = '/path/to/data/'
+paths = list_cell_seg_files(base_path)
+for (path in paths)
+  spatial_distribution_report(path, phenotypes, colors)
+

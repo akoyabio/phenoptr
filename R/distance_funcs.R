@@ -7,7 +7,9 @@ if (getRversion() >= "2.15.1")
 #' Nearest neighbors from a file.
 #'
 #' Compute nearest distance to each phenotype for each cell in a
-#' (possibly merged) inForm cell seg table. Write the result to a new file.
+#' (possibly merged) inForm cell seg table. Add `Distance to <phenotype>`
+#' columns.
+#' Write the result to a new file.
 #'
 #' NOTE: The input file is read using [read_cell_seg_data] so the conversions
 #' and cleanup it does will be applied to the output data.
@@ -18,6 +20,7 @@ if (getRversion() >= "2.15.1")
 #' input file path.
 #' @importFrom magrittr "%>%"
 #' @export
+#' @seealso [find_nearest_distance] which performs the distance calculation.
 #' @family distance functions
 #' @md
 compute_all_nearest_distance = function(cell_table_path=NULL, out_path=NULL) {
@@ -48,22 +51,34 @@ compute_all_nearest_distance = function(cell_table_path=NULL, out_path=NULL) {
 #' For each phenotype in a single sample,
 #' find the distance from
 #' each cell to the nearest other cell in the phenotype.
-#' @param csd A data frame with \code{Cell X Position},
-#'        \code{Cell Y Position} and \code{Phenotype} columns,
-#'        such as the result of calling
-#'        \code{\link{read_cell_seg_data}}.
-#' @param phenotypes Optional list of phenotypes to include. If omitted,
-#' \code{unique(csd$Phenotype)} will be used.
 #'
-#' @return A data_frame containing a 'Distance to <phenotype>' column
-#' for each phenotype. Will contain NA values where there is no other cell
+#' @param csd A data frame with `Cell X Position`,
+#'        `Cell Y Position` and `Phenotype` columns,
+#'        such as the result of calling
+#'        [read_cell_seg_data].
+#' @param phenotypes Optional list of phenotypes to include. If omitted,
+#' `unique(csd$Phenotype)` will be used.
+#'
+#' @return A `data_frame` containing a `Distance to <phenotype>` column
+#' for each phenotype. Will contain `NA` values where there is no other cell
 #' of the phenotype.
+#' @md
 #' @export
 #' @family distance functions
 #' @examples
 #' # Compute distance columns and append them to the source data
 #' csd = sample_cell_seg_data
 #' csd = cbind(csd, find_nearest_distance(csd))
+#'
+#' \dontrun{
+#' # If `merged` is a data frame containing cell seg data from multiple fields,
+#' # this code will create a new `data_frame` with distance columns computed
+#' # for each `Sample Name` in the data.
+#' merged_with_distance = merged %>%
+#'   dplyr::group_by(`Sample Name`) %>%
+#'   dplyr::do(dplyr::bind_cols(., find_nearest_distance(.)))
+#' }
+
 find_nearest_distance = function(csd, phenotypes=NULL) {
   stopifnot('Phenotype' %in% names(csd))
 

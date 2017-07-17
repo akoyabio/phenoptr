@@ -81,7 +81,7 @@
       <h1>Computing Inter-cellular Distances</h1>
                         <h4 class="author">Kent Johnson</h4>
             
-            <h4 class="date">2017-07-12</h4>
+            <h4 class="date">2017-07-17</h4>
           </div>
 
     
@@ -213,6 +213,11 @@ colors =<span class="st"> </span><span class="kw">c</span>(<span class="st">'red
 out_path =<span class="st"> </span><span class="kw">path.expand</span>(<span class="st">'~/spatial_distribution_report.html'</span>)
 
 <span class="kw"><a href="../reference/spatial_distribution_report.html">spatial_distribution_report</a></span>(cell_seg_path, phenotypes, colors, out_path)</code></pre></div>
+<p>To create reports for all cell seg data files in a directory, first define <code>phenotypes</code> and <code>colors</code> as above. Use <code>list_cell_seg_files</code> to find all the files. Then call <code>spatial_distribution_report</code> for each file. This will create reports in the same directory as the data files.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">base_path =<span class="st"> '/path/to/data/'</span>
+paths =<span class="st"> </span><span class="kw"><a href="../reference/list_cell_seg_files.html">list_cell_seg_files</a></span>(base_path)
+for (path in paths)
+  <span class="kw"><a href="../reference/spatial_distribution_report.html">spatial_distribution_report</a></span>(path, phenotypes, colors)</code></pre></div>
 </div>
 </div>
   </div>

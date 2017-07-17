@@ -114,22 +114,26 @@ and images created by PerkinElmer's inForm software.</p>
 
     <p>informr is part of the PerkinElmer Phenoptics family of
 Quantitative Pathology Research Solutions. For more information visit the
-Phenoptics <a href='http://www.perkinelmer.com/cancer-immunology/index.html'>homepage</a>.</p><h3>File readers</h3>
- <a href='read_cell_seg_data.html'>read_cell_seg_data</a> reads inForm cell segmentation
+Phenoptics <a href='http://www.perkinelmer.com/cancer-immunology/index.html'>homepage</a>.</p><h3>Read and preprocess inForm data and image files</h3>
+    <a href='list_cell_seg_files.html'>list_cell_seg_files</a> finds all inFor cell segmentation files in a directory.
+    <a href='read_cell_seg_data.html'>read_cell_seg_data</a> reads inForm cell segmentation
 data tables and makes them easier to use in R.
     <a href='read_components.html'>read_components</a> reads inForm component data and <a href='read_maps.html'>read_maps</a> reads inForm
 segmentation maps.
-    <h3>Distance functions</h3>
- <a href='find_nearest_distance.html'>find_nearest_distance</a> finds the distance
+    <h3>Compute and visualize spatial relationships between cells</h3>
+    <a href='find_nearest_distance.html'>find_nearest_distance</a> finds the distance
 from each cell to the nearest cell of each phenotype.
     <a href='count_within.html'>count_within</a> and <a href='count_within_batch.html'>count_within_batch</a> count the number of cells within a
 fixed radius of other cells.
     <a href='spatial_distribution_report.html'>spatial_distribution_report</a> creates a report visualizing nearest neighbor
 relationships between cells of two phenotypes.
+    <a href='count_touching_cells.html'>count_touching_cells</a> uses morphological
+analysis to find, count, and visualize touching cells in paired
+phenotypes.
+    <h3>Helpers</h3>
     <a href='distance_matrix.html'>distance_matrix</a> and <a href='subset_distance_matrix.html'>subset_distance_matrix</a> create and subset cell distance
 matrices from cell segmentation data.
-    <h3>Helpers</h3>
- <a href='select_rows.html'>select_rows</a> helps select rows in cell segmentation
+    <a href='select_rows.html'>select_rows</a> helps select rows in cell segmentation
 data corresponding to specific phenotypes and expression levels.
     
 

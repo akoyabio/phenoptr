@@ -7,6 +7,9 @@
 # - Add to _pkgdowr.yml
 # - Add to R/informr.R
 
+# The tip about including biocViews: in DESCRIPTION is from
+# https://stackoverflow.com/questions/14343817/cran-package-depends-on-bioconductor-package-installing-error
+
 # Build the package reference. Output will be in a temp dir, look at
 # the console output to see where it is.
 devtools::check(manual = TRUE)

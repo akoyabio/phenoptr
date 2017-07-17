@@ -191,3 +191,15 @@ spatial_distribution_report(cell_seg_path, phenotypes, colors, out_path)
 
 ```
 
+To create reports for all cell seg data files in a directory, first define
+`phenotypes` and `colors` as above. Use `list_cell_seg_files` to find all
+the files. Then call `spatial_distribution_report` for each file. This will
+create reports in the same directory as the data files.
+
+```{r}
+base_path = '/path/to/data/'
+paths = list_cell_seg_files(base_path)
+for (path in paths)
+  spatial_distribution_report(path, phenotypes, colors)
+```
+
