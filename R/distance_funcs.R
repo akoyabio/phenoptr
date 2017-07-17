@@ -64,10 +64,16 @@ compute_all_nearest_distance = function(cell_table_path=NULL, out_path=NULL) {
 #' of the phenotype.
 #' @md
 #' @export
+#' @seealso [compute_all_nearest_distance] which applies this function to a
+#' (possibly merged) data file.
 #' @family distance functions
 #' @examples
-#' # Compute distance columns and append them to the source data
+#' # Compute distance columns
 #' csd = sample_cell_seg_data
+#' nearest = find_nearest_distance(csd)
+#' dplyr::glimpse(nearest)
+#'
+#' # Make a combined data frame including original data and distance columns
 #' csd = cbind(csd, find_nearest_distance(csd))
 #'
 #' \dontrun{
