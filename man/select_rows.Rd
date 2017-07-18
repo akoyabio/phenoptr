@@ -4,22 +4,22 @@
 \alias{select_rows}
 \title{Flexibly select rows of a data frame.}
 \usage{
-select_rows(d, sel, phenotype_column = "Phenotype")
+select_rows(csd, sel, phenotype_column = "Phenotype")
 }
 \arguments{
-\item{d}{A data frame}
+\item{csd}{A data frame}
 
 \item{sel}{May be a character vector, a one-sided formula or a list
 containing such. A character vector is interpreted as the name(s) of one or
 more phenotypes and selects any matching phenotype. A formula is
-interpreted as an expression on the columns of \code{d}. Multiple items are
+interpreted as an expression on the columns of \code{csd}. Multiple items are
 joined with AND.}
 
 \item{phenotype_column}{Optional, name of the phenotype column to use for
 simple selection}
 }
 \value{
-A logical vector of length \code{nrow(d)} which selects rows
+A logical vector of length \code{nrow(csd)} which selects rows
   according to sel.
 }
 \description{
@@ -27,15 +27,15 @@ Select rows of a data frame based on phenotypes or other
 expressions.
 }
 \examples{
-d = sample_cell_seg_data
+csd = sample_cell_seg_data
 
-## Select tumor cells with PDL1 expression > 4
+# Select tumor cells with PDL1 expression > 4
 selector = list('tumor', ~`Entire Cell PDL1 (Opal 620) Mean`>4)
-pdl1_pos_tumor = d[select_rows(d, selector),]
-hist(pdl1_pos_tumor$`Entire Cell PDL1 (Opal 620) Mean`)
+pdl1_pos_tumor = csd[select_rows(csd, selector),]
+range(pdl1_pos_tumor$`Entire Cell PDL1 (Opal 620) Mean`)
 
-## Select all T-cells. Note: Use c() to OR phenotypes, not list()
+# Select all T-cells. Note: Use c() to combine phenotypes, not list()
 selector = c('cytotoxic CD8', 'helper CD4', 'T reg Foxp3')
-tcells = d[select_rows(d, selector),]
+tcells = csd[select_rows(csd, selector),]
 table(tcells$Phenotype)
 }

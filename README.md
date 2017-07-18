@@ -25,7 +25,7 @@ devtools::install_github("PerkinElmer/phenoptr", build_vignettes=TRUE)
 - [readr](http://readr.tidyverse.org/) is used to read data files.
 - A [tibble](http://tibble.tidyverse.org/) (also known as `data_frame`) 
   is the preferred representation of tabular data.
-- [dplyr](http://dplyr.tidyverse.org/) 
+- [dplyr](http://dplyr.tidyverse.org/), [purrr](http://purrr.tidyverse.org/) 
   and the pipe operator ([`%>%`](http://magrittr.tidyverse.org/)) 
   are used extensively in 
   package code and examples.

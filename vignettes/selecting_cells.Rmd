@@ -1,12 +1,67 @@
 ---
 title: "Selecting cells within a cell segmentation table"
-author: "Kent S Johnson"
+author: "Kent Johnson"
 date: "`r Sys.Date()`"
-output: rmarkdown::html_vignette
+output:
+  rmarkdown::html_vignette:
+    toc: true
 vignette: >
   %\VignetteIndexEntry{Selecting cells within a cell segmentation table}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 
-(TBD)
+`phenoptr` includes a flexible mechanism for selecting cells (i.e. rows) from a
+cell seg table. The mechanism is implemented in `select_rows` and 
+usable from any function that supports it, 
+including `count_touching_cells` and `count_within`.
+
+This vignette uses the `from` parameter of `count_within` for examples.
+
+## Select a single phenotype
+
+The simplest selector is the name of a single phenotype. For example,
+to select all 'CD8' cells as the `from` phenotype, use the parameter
+
+```{r eval=FALSE}
+from='CD8'
+```
+
+## Select multiple phenotypes
+
+Multiple phenotypes may selected together by including each name in a 
+character vector.
+For example, to select cells phenotyped as either 
+'PDL1+ tumor' or 'PDL1- tumor',
+use the parameter
+
+```{r eval=FALSE}
+from=c('PDL1+ tumor', 'PDL1- tumor')
+```
+
+## Flexible selection using expressions
+
+For more flexibility, `select_rows` supports selection using any valid
+expression. Expressions are written using one-sided formulas. The formulas are evaluated in the context
+of the cell seg table so they may reference any column of the table.
+
+For example, to select cells with PDL1 expression greater than 0.5, use
+an expression like ``~`Entire Cell PDL1 (Opal 620) Mean`>0.5``. In this example, the column name is `Entire Cell PDL1 (Opal 620) Mean`.
+
+Expressions and phenotype names may be combined in a list. For example,
+to select 'CD8' cells with PDL1>0.5, use the parameter
+
+```{r eval=FALSE}
+from=list('CD8', ~`Entire Cell PDL1 (Opal 620) Mean`>0.5)
+```
+
+A few things to note about formula expressions:
+
+- Expressions are evaluated in the context of the cell seg table. Names
+  used in the expression must match column names in the table. If the table
+  was read using `read_cell_seg_data(path, remove_units=TRUE)` (the default),
+  the table names will be abbreviated compared to the names in the file.
+- Names which are not valid R symbol names---this includes most of the column
+  names in a cell seg table---must be enclosed in backticks (`) as
+  in the example above.
+  

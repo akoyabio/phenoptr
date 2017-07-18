@@ -109,13 +109,13 @@
 expressions.</p>
     
 
-    <pre class="usage"><span class='fu'>select_rows</span>(<span class='no'>d</span>, <span class='no'>sel</span>, <span class='kw'>phenotype_column</span> <span class='kw'>=</span> <span class='st'>"Phenotype"</span>)</pre>
+    <pre class="usage"><span class='fu'>select_rows</span>(<span class='no'>csd</span>, <span class='no'>sel</span>, <span class='kw'>phenotype_column</span> <span class='kw'>=</span> <span class='st'>"Phenotype"</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>d</th>
+      <th>csd</th>
       <td><p>A data frame</p></td>
     </tr>
     <tr>
@@ -123,7 +123,7 @@ expressions.</p>
       <td><p>May be a character vector, a one-sided formula or a list
 containing such. A character vector is interpreted as the name(s) of one or
 more phenotypes and selects any matching phenotype. A formula is
-interpreted as an expression on the columns of <code>d</code>. Multiple items are
+interpreted as an expression on the columns of <code>csd</code>. Multiple items are
 joined with AND.</p></td>
     </tr>
     <tr>
@@ -135,20 +135,20 @@ simple selection</p></td>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A logical vector of length <code>nrow(d)</code> which selects rows
+    <p>A logical vector of length <code>nrow(csd)</code> which selects rows
   according to sel.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>d</span> <span class='kw'>=</span> <span class='no'>sample_cell_seg_data</span>
+    <pre class="examples"><div class='input'><span class='no'>csd</span> <span class='kw'>=</span> <span class='no'>sample_cell_seg_data</span>
 
-<span class='co'>## Select tumor cells with PDL1 expression &gt; 4</span>
+<span class='co'># Select tumor cells with PDL1 expression &gt; 4</span>
 <span class='no'>selector</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='st'>'tumor'</span>, ~<span class='no'>`Entire Cell PDL1 (Opal 620) Mean`</span><span class='kw'>&gt;</span><span class='fl'>4</span>)
-<span class='no'>pdl1_pos_tumor</span> <span class='kw'>=</span> <span class='no'>d</span>[<span class='fu'>select_rows</span>(<span class='no'>d</span>, <span class='no'>selector</span>),]
-<span class='fu'>hist</span>(<span class='no'>pdl1_pos_tumor</span>$<span class='no'>`Entire Cell PDL1 (Opal 620) Mean`</span>)</div><div class='img'><img src='select_rows-1.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
-<span class='co'>## Select all T-cells. Note: Use c() to OR phenotypes, not list()</span>
+<span class='no'>pdl1_pos_tumor</span> <span class='kw'>=</span> <span class='no'>csd</span>[<span class='fu'>select_rows</span>(<span class='no'>csd</span>, <span class='no'>selector</span>),]
+<span class='fu'>range</span>(<span class='no'>pdl1_pos_tumor</span>$<span class='no'>`Entire Cell PDL1 (Opal 620) Mean`</span>)</div><div class='output co'>#&gt; [1]  4.002 16.793</div><div class='input'>
+<span class='co'># Select all T-cells. Note: Use c() to combine phenotypes, not list()</span>
 <span class='no'>selector</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>'cytotoxic CD8'</span>, <span class='st'>'helper CD4'</span>, <span class='st'>'T reg Foxp3'</span>)
-<span class='no'>tcells</span> <span class='kw'>=</span> <span class='no'>d</span>[<span class='fu'>select_rows</span>(<span class='no'>d</span>, <span class='no'>selector</span>),]
+<span class='no'>tcells</span> <span class='kw'>=</span> <span class='no'>csd</span>[<span class='fu'>select_rows</span>(<span class='no'>csd</span>, <span class='no'>selector</span>),]
 <span class='fu'>table</span>(<span class='no'>tcells</span>$<span class='no'>Phenotype</span>)</div><div class='output co'>#&gt; 
 #&gt; cytotoxic CD8    helper CD4   T reg Foxp3 
 #&gt;           293            59             2 </div></pre>
