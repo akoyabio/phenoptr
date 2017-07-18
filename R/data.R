@@ -6,7 +6,7 @@
 #' This is the data from
 #' \code{system.file("extdata", "TMA",
 #'                   "Core[1,5,6,1]_[21302,15107]_cell_seg_data.txt",
-#'                   package = "informr")}
+#'                   package = "phenoptr")}
 #'
 #' This table includes columns for components:
 #' \itemize{
@@ -23,6 +23,6 @@
 #' T reg Foxp3, and tumor.
 #'
 #' To see all the included files for this core, use
-#' \code{list.files(system.file("extdata", "TMA", package = "informr"))}
+#' \code{list.files(system.file("extdata", "TMA", package = "phenoptr"))}
 #' @format A data frame with 5726 rows and 200 variables
 "sample_cell_seg_data"

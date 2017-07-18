@@ -1,4 +1,4 @@
 library(testthat)
-library(informr)
+library(phenoptr)
 
-test_check("informr")
+test_check("phenoptr")

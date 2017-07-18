@@ -84,13 +84,13 @@ test_that("count_within errors with invalid radii", {
 
 # Test error handling of count_within_batch
 test_that("count_within_batch error checking works", {
-  base_path = system.file("extdata", package = "informr")
+  base_path = system.file("extdata", package = "phenoptr")
   from = list('tumor')
   to = list('macrophage CD68')
   radius = 10
   expect_error(count_within_batch(base_path, from, to, radius), base_path)
 
-  base_path = system.file("extdata", "TMA", package = "informr")
+  base_path = system.file("extdata", "TMA", package = "phenoptr")
   expect_error(count_within_batch(base_path, from='tumor', to, radius),
                'is.list\\(from\\)')
   expect_error(count_within_batch(base_path, from=list(), to, radius),

@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Computing Inter-cellular Distances • informr</title>
+<title>Computing Inter-cellular Distances • phenoptr</title>
 <!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 <!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
@@ -24,7 +24,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">informr</a>
+      <a class="navbar-brand" href="../index.html">phenoptr</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
@@ -61,7 +61,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/PerkinElmer/informr">
+  <a href="https://github.com/PerkinElmer/phenoptr">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -81,7 +81,7 @@
       <h1>Computing Inter-cellular Distances</h1>
                         <h4 class="author">Kent Johnson</h4>
             
-            <h4 class="date">2017-07-17</h4>
+            <h4 class="date">2017-07-18</h4>
           </div>
 
     
@@ -95,7 +95,7 @@ table {
     width: auto !important;
 }
 </style>
-<p><code>informr</code> contains several functions which analyze and report on the spatial relationship between cells in a single field.</p>
+<p><code>phenoptr</code> contains several functions which analyze and report on the spatial relationship between cells in a single field.</p>
 <div id="nearest-neighbor-distances" class="section level2">
 <h2 class="hasAnchor">
 <a href="#nearest-neighbor-distances" class="anchor"></a>Nearest neighbor distances</h2>
@@ -104,9 +104,9 @@ table {
 <a href="#computing-with-find_nearest_distance" class="anchor"></a>Computing with <code>find_nearest_distance</code>
 </h3>
 <p>The <code>find_nearest_distance</code> function finds per-cell nearest neighbor distances. For each cell and each phenotype in a sample, it finds the nearest neighbor of that phenotype. The distances are returned in a <code>data_frame</code> with one column per phenotype.</p>
-<p>For example, the <code>informr</code> sample data <code>sample_cell_seg_data</code> contains 6 unique phenotypes:</p>
+<p>For example, the <code>phenoptr</code> sample data <code>sample_cell_seg_data</code> contains 6 unique phenotypes:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidyverse)
-<span class="kw">library</span>(informr)
+<span class="kw">library</span>(phenoptr)
 
 csd =<span class="st"> </span>sample_cell_seg_data
 csd %&gt;%<span class="st"> </span><span class="kw">count</span>(Phenotype)</code></pre></div>
@@ -206,7 +206,7 @@ categories =<span class="st"> </span><span class="kw">c</span>(<span class="st">
 <p>The <code>spatial_distribution_report</code> function is a bit different from the other functions mentioned in this vignette. Rather than calculate and return distance metrics, it creates a report which shows visually the nearest neighbor relations between two phenotypes in a single field. Because the result is a stand-alone HTML file, it can’t easily be demonstrated in a vignette. For an example, copy and paste this code into your own copy of R. It will create a sample report in your user directory.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">cell_seg_path =<span class="st"> </span><span class="kw">system.file</span>(<span class="st">"extdata"</span>, <span class="st">"TMA"</span>,
                        <span class="st">"Core[1,5,6,1]_[21302,15107]_cell_seg_data.txt"</span>,
-                       <span class="dt">package =</span> <span class="st">"informr"</span>)
+                       <span class="dt">package =</span> <span class="st">"phenoptr"</span>)
 
 phenotypes =<span class="st"> </span><span class="kw">c</span>(<span class="st">"macrophage CD68"</span>, <span class="st">"cytotoxic CD8"</span>)
 colors =<span class="st"> </span><span class="kw">c</span>(<span class="st">'red'</span>, <span class="st">'blue'</span>)

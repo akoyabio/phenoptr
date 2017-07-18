@@ -5,7 +5,7 @@
 \title{Read and clean an inForm data file.}
 \usage{
 read_cell_seg_data(path = NA,
-  pixels_per_micron = getOption("informr.pixels.per.micron"),
+  pixels_per_micron = getOption("phenoptr.pixels.per.micron"),
   remove_units = TRUE)
 }
 \arguments{
@@ -39,7 +39,7 @@ and does useful cleanup on the data:
 \item Converts percent columns to numeric fractions
 \item Converts pixel distances to microns. The conversion factor may be
 specfied as a parameter or by setting
-\code{options(informr.pixels.per.micron)}.
+\code{options(phenoptr.pixels.per.micron)}.
 \item Optionally removes units from expression names
 \item If the file contains multiple sample names,
       a \code{tag} column is created
@@ -51,7 +51,7 @@ specfied as a parameter or by setting
 \examples{
 path = system.file("extdata", "TMA",
                    "Core[1,5,6,1]_[21302,15107]_cell_seg_data.txt",
-                   package = "informr")
+                   package = "phenoptr")
 d = read_cell_seg_data(path)
 
 \dontrun{

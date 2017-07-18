@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>inForm Helper Functions • informr</title>
+<title>inForm Helper Functions • phenoptr</title>
 <!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 <!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
@@ -24,7 +24,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">informr</a>
+      <a class="navbar-brand" href="index.html">phenoptr</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
@@ -61,7 +61,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/PerkinElmer/informr">
+  <a href="https://github.com/PerkinElmer/phenoptr">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -77,22 +77,22 @@
       
       </header><div class="row">
   <div class="contents col-md-9">
-    <div id="informr---helpers-for-working-with-inform-data" class="section level1">
+    <div id="phenoptr---helpers-for-working-with-inform-data" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
-<a href="#informr---helpers-for-working-with-inform-data" class="anchor"></a>informr - Helpers for working with inForm data</h1></div>
-<p>informr contains functions that make it easier to read and analyze data tables and images created by PerkinElmer’s inForm software.</p>
-<p>informr is part of the PerkinElmer Phenoptics™ family of Quantitative Pathology Research Solutions. For more information visit the Phenoptics™ <a href="http://www.perkinelmer.com/cancer-immunology/index.html">home page</a>.</p>
+<a href="#phenoptr---helpers-for-working-with-inform-data" class="anchor"></a>phenoptr - Helpers for working with inForm data</h1></div>
+<p>phenoptr contains functions that make it easier to read and analyze data tables and images created by PerkinElmer’s inForm software.</p>
+<p>phenoptr is part of the PerkinElmer Phenoptics™ family of Quantitative Pathology Research Solutions. For more information visit the Phenoptics™ <a href="http://www.perkinelmer.com/cancer-immunology/index.html">home page</a>.</p>
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
 <p>Installation is from GitHub:</p>
 <pre><code><a href="http://www.rdocumentation.org/packages/devtools/topics/install_github"># install.packages("devtools")
-devtools::install_github("PerkinElmer/informr", build_vignettes=TRUE)</a></code></pre>
+devtools::install_github("PerkinElmer/phenoptr", build_vignettes=TRUE)</a></code></pre>
 </div>
 <div id="usage" class="section level2">
 <h2 class="hasAnchor">
 <a href="#usage" class="anchor"></a>Usage</h2>
-<p><code>informr</code> is designed to work in harmony with packages in the <a href="http://tidyverse.org/">tidyverse</a>.</p>
+<p><code>phenoptr</code> is designed to work in harmony with packages in the <a href="http://tidyverse.org/">tidyverse</a>.</p>
 <ul>
 <li>
 <a href="http://readr.tidyverse.org/">readr</a> is used to read data files.</li>
@@ -107,29 +107,29 @@ devtools::install_github("PerkinElmer/informr", build_vignettes=TRUE)</a></code>
 <div id="read-and-preprocess-inform-data-and-image-files" class="section level4">
 <h4 class="hasAnchor">
 <a href="#read-and-preprocess-inform-data-and-image-files" class="anchor"></a>Read and preprocess inForm data and image files</h4>
-<p><a href="https://perkinelmer.github.io/informr/reference/list_cell_seg_files.html">list_cell_seg_files</a> finds all inForm cell segmentation files in a directory.</p>
-<p><a href="https://perkinelmer.github.io/informr/reference/read_cell_seg_data.html">read_cell_seg_data</a> reads inForm cell segmentation data tables and makes them easier to use in R.</p>
-<p><a href="https://perkinelmer.github.io/informr/reference/read_components.html">read_components</a> reads inForm component data and <a href="https://perkinelmer.github.io/informr/reference/read_maps.html">read_maps</a> reads inForm segmentation maps.</p>
+<p><a href="https://perkinelmer.github.io/phenoptr/reference/list_cell_seg_files.html">list_cell_seg_files</a> finds all inForm cell segmentation files in a directory.</p>
+<p><a href="https://perkinelmer.github.io/phenoptr/reference/read_cell_seg_data.html">read_cell_seg_data</a> reads inForm cell segmentation data tables and makes them easier to use in R.</p>
+<p><a href="https://perkinelmer.github.io/phenoptr/reference/read_components.html">read_components</a> reads inForm component data and <a href="https://perkinelmer.github.io/phenoptr/reference/read_maps.html">read_maps</a> reads inForm segmentation maps.</p>
 </div>
 <div id="compute-and-visualize-spatial-relationships-between-cells" class="section level4">
 <h4 class="hasAnchor">
 <a href="#compute-and-visualize-spatial-relationships-between-cells" class="anchor"></a>Compute and visualize spatial relationships between cells</h4>
-<p><a href="https://perkinelmer.github.io/informr/reference/find_nearest_distance.html">find_nearest_distance</a> finds the distance from each cell to the nearest cell of each phenotype.</p>
-<p><a href="https://perkinelmer.github.io/informr/reference/count_within.html">count_within</a> and <a href="https://perkinelmer.github.io/informr/reference/count_within_batch.html">count_within_batch</a> count the number of cells within a fixed radius of other cells.</p>
-<p><a href="https://perkinelmer.github.io/informr/reference/spatial_distribution_report.html">spatial_distribution_report</a> creates a report visualizing nearest neighbor relationships between cells of two phenotypes.</p>
-<p><a href="https://perkinelmer.github.io/informr/reference/count_touching_cells.html">count_touching_cells</a> uses morphological analysis to find, count, and visualize touching cells in paired phenotypes.</p>
+<p><a href="https://perkinelmer.github.io/phenoptr/reference/find_nearest_distance.html">find_nearest_distance</a> finds the distance from each cell to the nearest cell of each phenotype.</p>
+<p><a href="https://perkinelmer.github.io/phenoptr/reference/count_within.html">count_within</a> and <a href="https://perkinelmer.github.io/phenoptr/reference/count_within_batch.html">count_within_batch</a> count the number of cells within a fixed radius of other cells.</p>
+<p><a href="https://perkinelmer.github.io/phenoptr/reference/spatial_distribution_report.html">spatial_distribution_report</a> creates a report visualizing nearest neighbor relationships between cells of two phenotypes.</p>
+<p><a href="https://perkinelmer.github.io/phenoptr/reference/count_touching_cells.html">count_touching_cells</a> uses morphological analysis to find, count, and visualize touching cells in paired phenotypes.</p>
 </div>
 <div id="helpers" class="section level4">
 <h4 class="hasAnchor">
 <a href="#helpers" class="anchor"></a>Helpers</h4>
-<p><a href="https://perkinelmer.github.io/informr/reference/distance_matrix.html">distance_matrix</a> and <a href="https://perkinelmer.github.io/informr/reference/subset_distance_matrix.html">subset_distance_matrix</a> create and subset cell distance matrices from cell segmentation data.</p>
-<p><a href="https://perkinelmer.github.io/informr/reference/select_rows.html">select_rows</a> helps select rows in cell segmentation data corresponding to specific phenotypes and expression levels.</p>
+<p><a href="https://perkinelmer.github.io/phenoptr/reference/distance_matrix.html">distance_matrix</a> and <a href="https://perkinelmer.github.io/phenoptr/reference/subset_distance_matrix.html">subset_distance_matrix</a> create and subset cell distance matrices from cell segmentation data.</p>
+<p><a href="https://perkinelmer.github.io/phenoptr/reference/select_rows.html">select_rows</a> helps select rows in cell segmentation data corresponding to specific phenotypes and expression levels.</p>
 </div>
 </div>
 <div id="full-documentation" class="section level3">
 <h3 class="hasAnchor">
 <a href="#full-documentation" class="anchor"></a>Full documentation</h3>
-<p>See the <a href="https://perkinelmer.github.io/informr/articles/index.html">Articles</a> and <a href="https://perkinelmer.github.io/informr/reference/index.html">Reference</a> sections of the full documentation for details.</p>
+<p>See the <a href="https://perkinelmer.github.io/phenoptr/articles/index.html">Articles</a> and <a href="https://perkinelmer.github.io/phenoptr/reference/index.html">Reference</a> sections of the full documentation for details.</p>
 </div>
 </div>
 </div>
@@ -138,9 +138,9 @@ devtools::install_github("PerkinElmer/informr", build_vignettes=TRUE)</a></code>
   <div class="col-md-3" id="sidebar">
     <h2>Links</h2>
 <ul class="list-unstyled">
-<li>Browse source code at <br><a href="https://github.com/PerkinElmer/informr">https://​github.com/​PerkinElmer/​informr</a>
+<li>Browse source code at <br><a href="https://github.com/PerkinElmer/phenoptr">https://​github.com/​PerkinElmer/​phenoptr</a>
 </li>
-<li>Report a bug at <br><a href="https://github.com/PerkinElmer/informr/issues">https://​github.com/​PerkinElmer/​informr/​issues</a>
+<li>Report a bug at <br><a href="https://github.com/PerkinElmer/phenoptr/issues">https://​github.com/​PerkinElmer/​phenoptr/​issues</a>
 </li>
 </ul>
 <h2>License</h2>

@@ -1,18 +1,18 @@
 #' Helpers for working with inForm data
 #'
-#' informr contains functions that make it easier to read and analyze data tables
+#' phenoptr contains functions that make it easier to read and analyze data tables
 #' and images created by PerkinElmer's inForm software.
 #'
-#' informr is part of the PerkinElmer Phenoptics family of
+#' phenoptr is part of the PerkinElmer Phenoptics family of
 #' Quantitative Pathology Research Solutions. For more information visit the
 #' Phenoptics [home
 #' page](http://www.perkinelmer.com/cancer-immunology/index.html).
 #' @section Package options:
 #' `read_cell_seg_data` converts pixel measurements to microns. Several other
 #' functions also implicitly convert pixels to microns. The default conversion
-#' is given by `getOption('informr.pixels.per.micron')`, which has a default
+#' is given by `getOption('phenoptr.pixels.per.micron')`, which has a default
 #' value of 2 pixels/&mu;m, i.e. pixels are 0.5 &mu;m square. To use a different
 #' value, either pass a `pixels_per_micron` parameter to functions which take
-#' one, or set `options(informr.pixels.per.micron=<new value>)`.
+#' one, or set `options(phenoptr.pixels.per.micron=<new value>)`.
 #' @md
 "_PACKAGE"

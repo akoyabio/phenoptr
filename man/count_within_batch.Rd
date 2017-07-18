@@ -61,7 +61,7 @@ separately, \code{cd68} cells with a \code{tumor} cell within 25 μm.
 The \code{category} parameter may be a single category or a list of categories.
 }
 \examples{
-base_path = system.file("extdata", "TMA", package = "informr")
+base_path = system.file("extdata", "TMA", package = "phenoptr")
 
 # Count tumor cells near macrophages and tumor cells near CD8 separately,
 # in tumor and stroma tissue categories separately.

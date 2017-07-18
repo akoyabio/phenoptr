@@ -31,7 +31,7 @@ table {
 }
 </style>
 
-`informr` contains several functions which analyze and report on the spatial
+`phenoptr` contains several functions which analyze and report on the spatial
 relationship between cells in a single field.
 
 ## Nearest neighbor distances
@@ -43,13 +43,13 @@ For each cell and each phenotype in a sample, it finds the nearest neighbor
 of that phenotype. The distances are returned in a `data_frame` with
 one column per phenotype.
 
-For example, the `informr` sample data `sample_cell_seg_data` contains
-`r length(unique(informr::sample_cell_seg_data$Phenotype))` unique
+For example, the `phenoptr` sample data `sample_cell_seg_data` contains
+`r length(unique(phenoptr::sample_cell_seg_data$Phenotype))` unique
 phenotypes:
 
 ```{r}
 library(tidyverse)
-library(informr)
+library(phenoptr)
 
 csd = sample_cell_seg_data
 csd %>% count(Phenotype)
@@ -181,7 +181,7 @@ into your own copy of R. It will create a sample report in your user directory.
 ```{r eval=FALSE}
 cell_seg_path = system.file("extdata", "TMA",
                        "Core[1,5,6,1]_[21302,15107]_cell_seg_data.txt",
-                       package = "informr")
+                       package = "phenoptr")
 
 phenotypes = c("macrophage CD68", "cytotoxic CD8")
 colors = c('red', 'blue')

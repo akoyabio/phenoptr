@@ -13,7 +13,7 @@ A dataset containing inForm cell segmentation data for a single TMA core.
 This is the data from
 \code{system.file("extdata", "TMA",
                   "Core[1,5,6,1]_[21302,15107]_cell_seg_data.txt",
-                  package = "informr")}
+                  package = "phenoptr")}
 }
 \details{
 This table includes columns for components:
@@ -31,6 +31,6 @@ and phenotypes cytotoxic CD8, helper CD4, macrophage CD68, other,
 T reg Foxp3, and tumor.
 
 To see all the included files for this core, use
-\code{list.files(system.file("extdata", "TMA", package = "informr"))}
+\code{list.files(system.file("extdata", "TMA", package = "phenoptr"))}
 }
 \keyword{datasets}

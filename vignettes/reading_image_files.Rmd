@@ -29,7 +29,7 @@ inForm writes a variety of image files in JPEG and TIFF format. This
 vignette shows how to read the image files in R.
 
 The R packages `tiff` and `jpeg` provide functions `readTIFF` and `readJPEG`
-which read image data into R matrices. `informr` expands on these with
+which read image data into R matrices. `phenoptr` expands on these with
 `read_components` and `read_maps` which read multiple images and extract
 useful metadata from the Image Description fields.
 
@@ -47,7 +47,7 @@ the $y$ axis and `Cell Y Position` column. The _column_ (second) array dimension
 corresponds to the $x$ axis and the `Cell X Position` column. 
 
 - Image dimensions are in pixels. Cell seg tables are written with pixel 
-dimensions and converted to microns when read by `informr::read_cell_seg_data`.
+dimensions and converted to microns when read by `phenoptr::read_cell_seg_data`.
 
 - Image display methods differ in their orientation; some show $x$ and $y$ as
 described above; others transpose the image.
@@ -64,7 +64,7 @@ For example,
 ```{r read_composite}
 path = system.file("extdata", "TMA", 
                    "Core[1,5,6,1]_[21302,15107]_composite_image.jpg", 
-                   package = "informr")
+                   package = "phenoptr")
 img = jpeg::readJPEG(path)
 dim(img)
 ```
@@ -100,7 +100,7 @@ which is not supported by `readTIFF()`.
 The [`RBioFormats`](https://github.com/aoles/RBioFormats) package may
 be an alternative for reading larger component data files.
 
-`informr::read_components()` is a wrapper around `readTIFF()` which reads
+`phenoptr::read_components()` is a wrapper around `readTIFF()` which reads
 the individual component images from a `component_data.tif` file. 
 It keeps the full-resolution component images,
 extracts the component names from the image descriptions, 
@@ -117,15 +117,15 @@ are _label_ images, where each object is represented by a region whose value
 is the object number. The membrane map is a binary image where the presence
 of membrane is indicated with a "1" value.
 
-`informr::read_maps()` is a wrapper around `readTIFF()` which reads
+`phenoptr::read_maps()` is a wrapper around `readTIFF()` which reads
 map files. It returns a named list of integer-valued matrices. The
 list names reflect the content of the individual images, e.g. Nucleus,
 Cytoplasm, etc.
 
 ```{r read_map}
 map_path = system.file("extdata",
-   "TMA/Core[1,5,6,1]_[21302,15107]_binary_seg_maps.tif", package = "informr")
-maps = informr::read_maps(map_path)
+   "TMA/Core[1,5,6,1]_[21302,15107]_binary_seg_maps.tif", package = "phenoptr")
+maps = phenoptr::read_maps(map_path)
 names(maps)
 ```
 
@@ -135,7 +135,7 @@ The Nucleus label image contains values for background (0) and each Cell ID.
 nucleus = maps[['Nucleus']]
 dim(nucleus)
 range(nucleus)
-range(informr::sample_cell_seg_data$`Cell ID`)
+range(phenoptr::sample_cell_seg_data$`Cell ID`)
 ```
 
 Label images may be displayed with `plot.raster` or `EBImage::display`
@@ -166,7 +166,7 @@ by negating its $y$ limits.
 
 ```{r plotting}
 library(ggplot2)
-d = informr::sample_cell_seg_data
+d = phenoptr::sample_cell_seg_data
 d = subset(d, `Cell X Position`>=600 & `Cell X Position`<=750 &
               `Cell Y Position`>=400 & `Cell Y Position`<=500)
 ggplot(data=d, aes(`Cell X Position`, `Cell Y Position`, color=Phenotype)) +

@@ -1,4 +1,4 @@
-Package: informr
+Package: phenoptr
 Type: Package
 Title: inForm Helper Functions
 Version: 0.1.1.9000
@@ -28,8 +28,8 @@ LazyData: true
 RoxygenNote: 6.0.1
 Suggests: testthat
 VignetteBuilder: knitr
-URL: https://github.com/PerkinElmer/informr
-BugReports: https://github.com/PerkinElmer/informr/issues
+URL: https://github.com/PerkinElmer/phenoptr
+BugReports: https://github.com/PerkinElmer/phenoptr/issues
 Maintainer: Kent Johnson <kent.johnson@perkinelmer.com>
 Authors@R: c(
     person("Kent", "Johnson", role = c("aut", "cre"),

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Read and clean an inForm data file. — read_cell_seg_data â€¢ informr</title>
+<title>Read and clean an inForm data file. — read_cell_seg_data â€¢ phenoptr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -47,7 +47,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">informr</a>
+      <a class="navbar-brand" href="../index.html">phenoptr</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
@@ -85,7 +85,7 @@
       
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/PerkinElmer/informr">
+  <a href="https://github.com/PerkinElmer/phenoptr">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -114,7 +114,7 @@ be done.</p>
     
 
     <pre class="usage"><span class='fu'>read_cell_seg_data</span>(<span class='kw'>path</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
-  <span class='kw'>pixels_per_micron</span> <span class='kw'>=</span> <span class='fu'>getOption</span>(<span class='st'>"informr.pixels.per.micron"</span>),
+  <span class='kw'>pixels_per_micron</span> <span class='kw'>=</span> <span class='fu'>getOption</span>(<span class='st'>"phenoptr.pixels.per.micron"</span>),
   <span class='kw'>remove_units</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
@@ -151,7 +151,7 @@ and does useful cleanup on the data:</p><ul>
 <li><p>Converts percent columns to numeric fractions</p></li>
 <li><p>Converts pixel distances to microns. The conversion factor may be
 specfied as a parameter or by setting
-<code>options(informr.pixels.per.micron)</code>.</p></li>
+<code>options(phenoptr.pixels.per.micron)</code>.</p></li>
 <li><p>Optionally removes units from expression names</p></li>
 <li><p>If the file contains multiple sample names,
       a <code>tag</code> column is created
@@ -169,7 +169,7 @@ specfied as a parameter or by setting
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>path</span> <span class='kw'>=</span> <span class='fu'>system.file</span>(<span class='st'>"extdata"</span>, <span class='st'>"TMA"</span>,
                    <span class='st'>"Core[1,5,6,1]_[21302,15107]_cell_seg_data.txt"</span>,
-                   <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"informr"</span>)
+                   <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"phenoptr"</span>)
 <span class='no'>d</span> <span class='kw'>=</span> <span class='fu'>read_cell_seg_data</span>(<span class='no'>path</span>)</div><span class='co'># NOT RUN {</span>
 <span class='co'># Read all cell seg files in a directory and return a single data_frame</span>
 <span class='no'>paths</span> <span class='kw'>=</span> <span class='fu'><a href='list_cell_seg_files.html'>list_cell_seg_files</a></span>(<span class='no'>path</span>)

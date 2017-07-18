@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Create a spatial distribution report. — spatial_distribution_report â€¢ informr</title>
+<title>Create a spatial distribution report. — spatial_distribution_report â€¢ phenoptr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -47,7 +47,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">informr</a>
+      <a class="navbar-brand" href="../index.html">phenoptr</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
@@ -85,7 +85,7 @@
       
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/PerkinElmer/informr">
+  <a href="https://github.com/PerkinElmer/phenoptr">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -111,7 +111,7 @@ of cells in a single field and two chosen phenotypes.</p>
 
     <pre class="usage"><span class='fu'>spatial_distribution_report</span>(<span class='no'>cell_seg_path</span>, <span class='no'>phenotypes</span>, <span class='no'>colors</span>,
   <span class='kw'>output_path</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>pixels_per_micron</span> <span class='kw'>=</span> <span class='fu'>getOption</span>(<span class='st'>"informr.pixels.per.micron"</span>),
+  <span class='kw'>pixels_per_micron</span> <span class='kw'>=</span> <span class='fu'>getOption</span>(<span class='st'>"phenoptr.pixels.per.micron"</span>),
   <span class='kw'>plot_gx_max</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>micron_line</span> <span class='kw'>=</span> <span class='fl'>25</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
@@ -163,7 +163,7 @@ is available, it will be used as a background.</p>
     <pre class="examples"><span class='co'># NOT RUN {</span>
 <span class='no'>cell_seg_path</span> <span class='kw'>=</span> <span class='fu'>system.file</span>(<span class='st'>"extdata"</span>, <span class='st'>"TMA"</span>,
                        <span class='st'>"Core[1,5,6,1]_[21302,15107]_cell_seg_data.txt"</span>,
-                       <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"informr"</span>)
+                       <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"phenoptr"</span>)
 
 <span class='no'>phenotypes</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"macrophage CD68"</span>, <span class='st'>"cytotoxic CD8"</span>)
 <span class='no'>colors</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>'red'</span>, <span class='st'>'blue'</span>)

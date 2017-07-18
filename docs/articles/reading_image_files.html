@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Reading and Displaying inForm Image Files • informr</title>
+<title>Reading and Displaying inForm Image Files • phenoptr</title>
 <!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 <!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
@@ -24,7 +24,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">informr</a>
+      <a class="navbar-brand" href="../index.html">phenoptr</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
@@ -61,7 +61,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/PerkinElmer/informr">
+  <a href="https://github.com/PerkinElmer/phenoptr">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -81,7 +81,7 @@
       <h1>Reading and Displaying inForm Image Files</h1>
                         <h4 class="author">Kent Johnson</h4>
             
-            <h4 class="date">2017-07-17</h4>
+            <h4 class="date">2017-07-18</h4>
           </div>
 
     
@@ -93,7 +93,7 @@ img {
 }
 </style>
 <p>inForm writes a variety of image files in JPEG and TIFF format. This vignette shows how to read the image files in R.</p>
-<p>The R packages <code>tiff</code> and <code>jpeg</code> provide functions <code>readTIFF</code> and <code>readJPEG</code> which read image data into R matrices. <code>informr</code> expands on these with <code>read_components</code> and <code>read_maps</code> which read multiple images and extract useful metadata from the Image Description fields.</p>
+<p>The R packages <code>tiff</code> and <code>jpeg</code> provide functions <code>readTIFF</code> and <code>readJPEG</code> which read image data into R matrices. <code>phenoptr</code> expands on these with <code>read_components</code> and <code>read_maps</code> which read multiple images and extract useful metadata from the Image Description fields.</p>
 <p>A variety of functions can display image data including <code>plot.raster</code>, <code><a href="http://www.rdocumentation.org/packages/ggplot2/topics/annotation_raster">ggplot2::annotation_raster</a></code> and <code><a href="http://www.rdocumentation.org/packages/EBImage/topics/display">EBImage::display</a></code>.</p>
 <div id="coordinate-systems" class="section level2">
 <h2 class="hasAnchor">
@@ -101,7 +101,7 @@ img {
 <p>A few items to note:</p>
 <ul>
 <li><p>Images have the origin (0, 0) at the top left. This is consistent with the <code>Cell X Position</code> and <code>Cell Y Position</code> columns of an inForm cell seg table. The <em>row</em> (first) dimension of an array corresponds to the <span class="math inline">\(y\)</span> axis and <code>Cell Y Position</code> column. The <em>column</em> (second) array dimension corresponds to the <span class="math inline">\(x\)</span> axis and the <code>Cell X Position</code> column.</p></li>
-<li><p>Image dimensions are in pixels. Cell seg tables are written with pixel dimensions and converted to microns when read by <code><a href="http://www.rdocumentation.org/packages/informr/topics/read_cell_seg_data">informr::read_cell_seg_data</a></code>.</p></li>
+<li><p>Image dimensions are in pixels. Cell seg tables are written with pixel dimensions and converted to microns when read by <code><a href="http://www.rdocumentation.org/packages/phenoptr/topics/read_cell_seg_data">phenoptr::read_cell_seg_data</a></code>.</p></li>
 <li><p>Image display methods differ in their orientation; some show <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span> as described above; others transpose the image.</p></li>
 </ul>
 <p>Each of these items easily causes confusion; be careful and verify your work!</p>
@@ -112,7 +112,7 @@ img {
 <p>Color (RGB) images output from inForm, such as the composite image and segmentation images, can be read directly using <code><a href="http://www.rdocumentation.org/packages/tiff/topics/readTIFF">tiff::readTIFF()</a></code> or <code><a href="http://www.rdocumentation.org/packages/jpeg/topics/readJPEG">jpeg::readJPEG()</a></code>. For example,</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">path =<span class="st"> </span><span class="kw">system.file</span>(<span class="st">"extdata"</span>, <span class="st">"TMA"</span>, 
                    <span class="st">"Core[1,5,6,1]_[21302,15107]_composite_image.jpg"</span>, 
-                   <span class="dt">package =</span> <span class="st">"informr"</span>)
+                   <span class="dt">package =</span> <span class="st">"phenoptr"</span>)
 img =<span class="st"> </span>jpeg::<span class="kw">readJPEG</span>(path)
 <span class="kw">dim</span>(img)</code></pre></div>
 <pre><code>[1] 2080 2784    3</code></pre>
@@ -129,17 +129,17 @@ EBImage::<span class="kw">display</span>(EBImage::<span class="kw">Image</span>(
 <h2 class="hasAnchor">
 <a href="#reading-and-displaying-component-data" class="anchor"></a>Reading and displaying component data</h2>
 <p>inForm saves component data as multiple 32-bit floating-point images within a single TIFF file. Images smaller than 2K by 2K pixels are saved in “strip” format and may be read by <code><a href="http://www.rdocumentation.org/packages/tiff/topics/readTIFF">tiff::readTIFF()</a></code>. Larger images are saved in “tiled” format which is not supported by <code>readTIFF()</code>. The <a href="https://github.com/aoles/RBioFormats"><code>RBioFormats</code></a> package may be an alternative for reading larger component data files.</p>
-<p><code><a href="http://www.rdocumentation.org/packages/informr/topics/read_components">informr::read_components()</a></code> is a wrapper around <code>readTIFF()</code> which reads the individual component images from a <code>component_data.tif</code> file. It keeps the full-resolution component images, extracts the component names from the image descriptions, and returns a named list of image matrices.</p>
+<p><code><a href="http://www.rdocumentation.org/packages/phenoptr/topics/read_components">phenoptr::read_components()</a></code> is a wrapper around <code>readTIFF()</code> which reads the individual component images from a <code>component_data.tif</code> file. It keeps the full-resolution component images, extracts the component names from the image descriptions, and returns a named list of image matrices.</p>
 <p>Component data may be displayed using <code>plot.raster</code> or <code><a href="http://www.rdocumentation.org/packages/EBImage/topics/display">EBImage::display</a></code>. See the next section for examples of displaying grayscale images.</p>
 </div>
 <div id="reading-and-displaying-segmentation-maps" class="section level2">
 <h2 class="hasAnchor">
 <a href="#reading-and-displaying-segmentation-maps" class="anchor"></a>Reading and displaying segmentation maps</h2>
 <p>inForm saves segmentation maps (nuclear segmentation, etc.) as multiple 16-bit grayscale images within a single TIFF file. Most segmentation images are <em>label</em> images, where each object is represented by a region whose value is the object number. The membrane map is a binary image where the presence of membrane is indicated with a “1” value.</p>
-<p><code><a href="http://www.rdocumentation.org/packages/informr/topics/read_maps">informr::read_maps()</a></code> is a wrapper around <code>readTIFF()</code> which reads map files. It returns a named list of integer-valued matrices. The list names reflect the content of the individual images, e.g. Nucleus, Cytoplasm, etc.</p>
+<p><code><a href="http://www.rdocumentation.org/packages/phenoptr/topics/read_maps">phenoptr::read_maps()</a></code> is a wrapper around <code>readTIFF()</code> which reads map files. It returns a named list of integer-valued matrices. The list names reflect the content of the individual images, e.g. Nucleus, Cytoplasm, etc.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">map_path =<span class="st"> </span><span class="kw">system.file</span>(<span class="st">"extdata"</span>,
-   <span class="st">"TMA/Core[1,5,6,1]_[21302,15107]_binary_seg_maps.tif"</span>, <span class="dt">package =</span> <span class="st">"informr"</span>)
-maps =<span class="st"> </span>informr::<span class="kw"><a href="../reference/read_maps.html">read_maps</a></span>(map_path)
+   <span class="st">"TMA/Core[1,5,6,1]_[21302,15107]_binary_seg_maps.tif"</span>, <span class="dt">package =</span> <span class="st">"phenoptr"</span>)
+maps =<span class="st"> </span>phenoptr::<span class="kw"><a href="../reference/read_maps.html">read_maps</a></span>(map_path)
 <span class="kw">names</span>(maps)</code></pre></div>
 <pre><code>[1] "Nucleus"   "Cytoplasm" "Membrane"  "Tissue"   </code></pre>
 <p>The Nucleus label image contains values for background (0) and each Cell ID.</p>
@@ -148,7 +148,7 @@ maps =<span class="st"> </span>informr::<span class="kw"><a href="../reference/r
 <pre><code>[1] 2080 2784</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">range</span>(nucleus)</code></pre></div>
 <pre><code>[1]    0 5727</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">range</span>(informr::sample_cell_seg_data$<span class="st">`</span><span class="dt">Cell ID</span><span class="st">`</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">range</span>(phenoptr::sample_cell_seg_data$<span class="st">`</span><span class="dt">Cell ID</span><span class="st">`</span>)</code></pre></div>
 <pre><code>[1]    1 5727</code></pre>
 <p>Label images may be displayed with <code>plot.raster</code> or <code><a href="http://www.rdocumentation.org/packages/EBImage/topics/display">EBImage::display</a></code> (which requires swapping axes).</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">nucleus_snippet =<span class="st"> </span>nucleus[<span class="dv">800</span>:<span class="dv">1000</span>, <span class="dv">1200</span>:<span class="dv">1500</span>]
@@ -163,7 +163,7 @@ EBImage::<span class="kw">display</span>(<span class="kw">t</span>(maps[[<span c
 <p>Images have the origin (0, 0) at the top left. This is consistent with the <code>Cell X Position</code> and <code>Cell Y Position</code> columns of an inForm cell seg table but it is reversed (in <span class="math inline">\(y\)</span>) from the usual plotting conventions. If you plot images and points together, you will have to reverse one or the other.</p>
 <p>Here is an example using <code>ggplot2</code>. The <span class="math inline">\(y\)</span>-axis is reversed using <code><a href="http://www.rdocumentation.org/packages/ggplot2/topics/scale_continuous">ggplot2::scale_y_reverse()</a></code> and the image is then un-reversed by negating its <span class="math inline">\(y\)</span> limits.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggplot2)
-d =<span class="st"> </span>informr::sample_cell_seg_data
+d =<span class="st"> </span>phenoptr::sample_cell_seg_data
 d =<span class="st"> </span><span class="kw">subset</span>(d, <span class="st">`</span><span class="dt">Cell X Position</span><span class="st">`</span>&gt;=<span class="dv">600</span> &amp;<span class="st"> `</span><span class="dt">Cell X Position</span><span class="st">`</span>&lt;=<span class="dv">750</span> &amp;
 <span class="st">              `</span><span class="dt">Cell Y Position</span><span class="st">`</span>&gt;=<span class="dv">400</span> &amp;<span class="st"> `</span><span class="dt">Cell Y Position</span><span class="st">`</span>&lt;=<span class="dv">500</span>)
 <span class="kw">ggplot</span>(<span class="dt">data=</span>d, <span class="kw">aes</span>(<span class="st">`</span><span class="dt">Cell X Position</span><span class="st">`</span>, <span class="st">`</span><span class="dt">Cell Y Position</span><span class="st">`</span>, <span class="dt">color=</span>Phenotype)) +

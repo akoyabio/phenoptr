@@ -33,7 +33,7 @@ if (getRversion() >= "2.15.1")
 #' \dontrun{
 #' cell_seg_path = system.file("extdata", "TMA",
 #'                        "Core[1,5,6,1]_[21302,15107]_cell_seg_data.txt",
-#'                        package = "informr")
+#'                        package = "phenoptr")
 #'
 #' phenotypes = c("macrophage CD68", "cytotoxic CD8")
 #' colors = c('red', 'blue')
@@ -44,7 +44,7 @@ if (getRversion() >= "2.15.1")
 #' @md
 spatial_distribution_report = function(cell_seg_path, phenotypes, colors,
                         output_path=NULL,
-                        pixels_per_micron=getOption('informr.pixels.per.micron'),
+                        pixels_per_micron=getOption('phenoptr.pixels.per.micron'),
                         plot_gx_max = 100,
                         micron_line = 25) {
   stopifnot(grepl('_cell_seg_data.txt', cell_seg_path))
@@ -56,7 +56,7 @@ spatial_distribution_report = function(cell_seg_path, phenotypes, colors,
     output_path = sub('_cell_seg_data.txt',
                       '_spatial_distribution.html', cell_seg_path)
   rmd_path = system.file("rmd", "SpatialDistributionReport.Rmd",
-                         package="informr")
+                         package="phenoptr")
 
   rmarkdown::render(rmd_path, 'html_document', output_path)
 }

@@ -1,7 +1,8 @@
-# informr 0.1.1.9000
+# phenoptr 0.1.1.9000
 
-## Backwards incompatible change
+## Backwards incompatible changes
 
+- Renamed the package from `informr` to `phenoptr`.
 - This version changed the order of arguments to `subset_distance_matrix`
   in a backwards-incompatible way. This was done to put the `csd` parameter
   first, matching other functions with a `csd` parameter.
@@ -32,7 +33,7 @@
 - Internal cleanup using `lintr` and `goodpractices`.
 - zlib license
 
-# informr 0.1.0.9001
+# phenoptr 0.1.0.9001
 
 ## New features
 

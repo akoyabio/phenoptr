@@ -5,7 +5,7 @@
 # Adding a new function requires several touches:
 # - The code for the function
 # - Add to _pkgdowr.yml
-# - Add to R/informr.R
+# - Add to README.md
 
 # The tip about including biocViews: in DESCRIPTION is from
 # https://stackoverflow.com/questions/14343817/cran-package-depends-on-bioconductor-package-installing-error

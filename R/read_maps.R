@@ -20,7 +20,7 @@
 #' # Not included at this time
 #' path = system.file("extdata", "TMA",
 #'                    "Core[1,5,6,1]_[21302,15107]_binary_seg_maps.tif",
-#'                    package = "informr")
+#'                    package = "phenoptr")
 #' d = read_maps(path)
 #' names(d)
 #' }
