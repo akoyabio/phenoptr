@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>All news • informr</title>
+<title>Helpers for working with inForm data � informr-package • informr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -37,7 +37,7 @@
   </head>
 
   <body>
-    <div class="container template-news">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -99,89 +99,63 @@
       </header>
 
       <div class="row">
-
-  <div class="col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Change log <small>All releases</small></h1>
+    <h1>Helpers for working with inForm data</h1>
     </div>
 
-    <div class="contents">
-    <div id="informr-0-1-1-9000" class="section level1">
-<h1 class="hasAnchor">
-<a href="#informr-0-1-1-9000" class="anchor"></a>informr 0.1.1.9000</h1>
-<div id="backwards-incompatible-change" class="section level2">
-<h2 class="hasAnchor">
-<a href="#backwards-incompatible-change" class="anchor"></a>Backwards incompatible change</h2>
-<ul>
-<li>This version changed the order of arguments to <code>subset_distance_matrix</code> in a backwards-incompatible way. This was done to put the <code>csd</code> parameter first, matching other functions with a <code>csd</code> parameter.</li>
+    
+    <p>informr contains functions that make it easier to read and analyze data tables
+and images created by PerkinElmer's inForm software.</p>
+    
+
+        
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>informr is part of the PerkinElmer Phenoptics family of
+Quantitative Pathology Research Solutions. For more information visit the
+Phenoptics <a href='http://www.perkinelmer.com/cancer-immunology/index.html'>homepage</a>.</p>
+    
+    <h2 class="hasAnchor" id="package-options"><a class="anchor" href="#package-options"></a>Package options</h2>
+
+    <p><code>read_cell_seg_data</code> converts pixel measurements to microns. Several other
+functions also implicitly convert pixels to microns. The default conversion
+is given by <code>getOption('informr.pixels.per.micron')</code>, which has a default
+value of 2 pixels/�m, i.e. pixels are 0.5 �m square. To use a different
+value, either pass a <code>pixels_per_micron</code> parameter to functions which take
+one, or set <code>options(informr.pixels.per.micron=&lt;new value&gt;)</code>.</p>
+    
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <p>Useful links:</p><ul>
+<li><p><a href='https://github.com/PerkinElmer/informr'>https://github.com/PerkinElmer/informr</a></p></li>
+<li><p>Report bugs at <a href='https://github.com/PerkinElmer/informr/issues'>https://github.com/PerkinElmer/informr/issues</a></p></li>
 </ul>
-</div>
-<div id="new-features" class="section level2">
-<h2 class="hasAnchor">
-<a href="#new-features" class="anchor"></a>New features</h2>
-<ul>
-<li>
-<code>spatial_distribution_report</code> creates an HTML report showing the location and nearest-neighbor relations of cells in a single field.</li>
-<li>
-<code>count_touching_cells</code> uses morphological analysis of nuclear and membrane segmentation maps to find touching cells of paired phenotypes.</li>
-<li>
-<code>read_components</code> reads component image files.</li>
-<li>
-<code>count_within</code> and <code>count_within_batch</code> count the number of <code>from</code> cells having a <code>to</code> cell within a given radius.</li>
-<li>
-<code>list_cell_seg_files</code> lists all cell seg data files in a folder.</li>
-<li>Added vignettes
-<ul>
-<li>“Reading and Displaying inForm Image Files”</li>
-<li>“Computing Inter-cellular Distances”</li>
-</ul>
-</li>
-</ul>
-</div>
-<div id="bug-fixes" class="section level2">
-<h2 class="hasAnchor">
-<a href="#bug-fixes" class="anchor"></a>Bug fixes</h2>
-<ul>
-<li>Better handling of <code>NA</code> values in distance columns of cell seg tables. Previously <code>NA</code> values could cause the column to be read as character data.</li>
-</ul>
-</div>
-<div id="other-changes" class="section level2">
-<h2 class="hasAnchor">
-<a href="#other-changes" class="anchor"></a>Other changes</h2>
-<ul>
-<li>
-<code>read_maps</code> will find the correct path when given a cell seg table path.</li>
-<li>Many documentation improvements.</li>
-<li>Internal cleanup using <code>lintr</code> and <code>goodpractices</code>.</li>
-<li>zlib license</li>
-</ul>
-</div>
-</div>
-    <div id="informr-0-1-0-9001" class="section level1">
-<h1 class="hasAnchor">
-<a href="#informr-0-1-0-9001" class="anchor"></a>informr 0.1.0.9001</h1>
-<div id="new-features-1" class="section level2">
-<h2 class="hasAnchor">
-<a href="#new-features-1" class="anchor"></a>New features</h2>
-<ul>
-<li>
-<code>compute_all_nearest_distance</code> is a convenience functien which reads a cell seg table, adds <code>Distance to &lt;phenotype&gt;</code> columns, and writes it out again.</li>
-</ul>
-</div>
-</div>
-    </div>
+    
+
   </div>
-
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <div id="tocnav">
-      <h2>Contents</h2>
-      <ul class="nav nav-pills nav-stacked">
-        <li><a href="#informr-0-1-1-9000">0.1.1.9000</a></li>
-        <li><a href="#informr-0-1-0-9001">0.1.0.9001</a></li>
-      </ul>
-    </div>
-  </div>
+    <h2>Contents</h2>
+    <ul class="nav nav-pills nav-stacked">
+      
+      <li><a href="#details">Details</a></li>
 
+      <li><a href="#package-options">Package options</a></li>
+
+      <li><a href="#see-also">See also</a></li>
+          </ul>
+
+    <h2>Author</h2>
+    
+<strong>Maintainer</strong>: Kent Johnson <a href='mailto:kent.johnson@perkinelmer.com'>kent.johnson@perkinelmer.com</a>
+
+Other contributors:
+<ul>
+<li><p>PerkinElmer, Inc. [copyright holder]</p></li>
+</ul>
+
+
+  </div>
 </div>
 
       <footer>

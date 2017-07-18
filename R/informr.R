@@ -7,39 +7,12 @@
 #' Quantitative Pathology Research Solutions. For more information visit the
 #' Phenoptics [home
 #' page](http://www.perkinelmer.com/cancer-immunology/index.html).
-#'
-#' \subsection{Read and preprocess inForm data and image files}{
-#' [list_cell_seg_files] finds all inFor cell segmentation files in a directory.
-#'
-#' [read_cell_seg_data] reads inForm cell segmentation
-#' data tables and makes them easier to use in R.
-#'
-#' [read_components] reads inForm component data and [read_maps] reads inForm
-#' segmentation maps. }
-#'
-#' \subsection{Compute and visualize spatial relationships between cells}{
-#' [find_nearest_distance] finds the distance
-#' from each cell to the nearest cell of each phenotype.
-#'
-#' [count_within] and [count_within_batch] count the number of cells within a
-#' fixed radius of other cells.
-#'
-#' [spatial_distribution_report] creates a report visualizing nearest neighbor
-#' relationships between cells of two phenotypes.
-#'
-#' [count_touching_cells] uses morphological
-#' analysis to find, count, and visualize touching cells in paired
-#' phenotypes.}
-#'
-#' \subsection{Helpers}{
-#' [distance_matrix] and [subset_distance_matrix] create and subset cell distance
-#' matrices from cell segmentation data.
-#'
-#' [select_rows] helps select rows in cell segmentation
-#' data corresponding to specific phenotypes and expression levels. }
-#'
-#' @docType package
-#' @name informr
-#' @aliases informr
+#' @section Package options:
+#' `read_cell_seg_data` converts pixel measurements to microns. Several other
+#' functions also implicitly convert pixels to microns. The default conversion
+#' is given by `getOption('informr.pixels.per.micron')`, which has a default
+#' value of 2 pixels/&mu;m, i.e. pixels are 0.5 &mu;m square. To use a different
+#' value, either pass a `pixels_per_micron` parameter to functions which take
+#' one, or set `options(informr.pixels.per.micron=<new value>)`.
 #' @md
-NULL
+"_PACKAGE"

@@ -10,6 +10,8 @@
 
 - `spatial_distribution_report` creates an HTML report showing the 
   location and nearest-neighbor relations of cells in a single field.
+- `count_touching_cells` uses morphological analysis of nuclear and
+  membrane segmentation maps to find touching cells of paired phenotypes.
 - `read_components` reads component image files.
 - `count_within` and `count_within_batch` count the number of `from` 
    cells having a `to` cell within a given radius.
