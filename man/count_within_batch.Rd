@@ -55,8 +55,8 @@ All pairs of \code{from} and \code{to} values are included in the output.
 
 For example, the parameters
 \code{from=list('cd68'), to=list('cd8', 'tumor'), radius=25}
-would count \code{cd68} cells having a \code{cd8} cell within 25 μm and,
-separately, \code{cd68} cells with a \code{tumor} cell within 25 μm.
+would count \code{cd68} cells having a \code{cd8} cell within 25 microns and,
+separately, \code{cd68} cells with a \code{tumor} cell within 25 microns.
 
 The \code{category} parameter may be a single category or a list of categories.
 }

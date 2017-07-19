@@ -22,8 +22,8 @@ if (getRversion() >= "2.15.1")
 #'
 #' For example, the parameters
 #' `from=list('cd68'), to=list('cd8', 'tumor'), radius=25`
-#' would count `cd68` cells having a `cd8` cell within 25 &mu;m and,
-#' separately, `cd68` cells with a `tumor` cell within 25 &mu;m.
+#' would count `cd68` cells having a `cd8` cell within 25 microns and,
+#' separately, `cd68` cells with a `tumor` cell within 25 microns.
 #'
 #' The `category` parameter may be a single category or a list of categories.
 #'

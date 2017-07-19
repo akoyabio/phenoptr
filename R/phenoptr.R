@@ -11,7 +11,7 @@
 #' `read_cell_seg_data` converts pixel measurements to microns. Several other
 #' functions also implicitly convert pixels to microns. The default conversion
 #' is given by `getOption('phenoptr.pixels.per.micron')`, which has a default
-#' value of 2 pixels/&mu;m, i.e. pixels are 0.5 &mu;m square. To use a different
+#' value of 2 pixels/micron, i.e. pixels are 0.5 micron square. To use a different
 #' value, either pass a `pixels_per_micron` parameter to functions which take
 #' one, or set `options(phenoptr.pixels.per.micron=<new value>)`.
 #' @md
