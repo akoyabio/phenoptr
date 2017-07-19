@@ -5,8 +5,8 @@
 \title{Find and count touching cells for pairs of phenotypes.}
 \usage{
 count_touching_cells(cell_seg_path, pairs, phenotype_rules = NULL,
-  categories = NULL, colors = NULL, mutual = FALSE,
-  write_images = !is.null(colors), output_base = NULL)
+  categories = NULL, colors = NULL, write_images = !is.null(colors),
+  output_base = NULL)
 }
 \arguments{
 \item{cell_seg_path}{The path to the cell seg data file. The same directory
@@ -14,7 +14,7 @@ must also contain \code{_memb_seg_map.tif} or \code{_binary_seg_maps.tif} and, i
 \code{write_images} is true, a  TIFF or JPEG composite image.}
 
 \item{pairs}{A list of pairs of phenotypes. Each entry is a two-element
-vector. The result will contain one or two lines for each pair showing the
+vector. The result will contain one line for each pair showing the
 number of cells and number of touches.}
 
 \item{phenotype_rules}{A named list. The item names are the phenotype
@@ -29,9 +29,6 @@ Categories not in the list will be excluded from the analysis.}
 \item{colors}{A named list of phenotype colors to use when drawing
 the output. Only used when \code{write_images} is \code{TRUE}.}
 
-\item{mutual}{If \code{TRUE}, returns stats on mutually touching pairs,
-rather than separate counts of cells for each phenotype.}
-
 \item{write_images}{If \code{TRUE}, for each pair, write an image showing the
 touching pairs. Requires \code{colors} and a composite image in the same
 directory as the cell seg table.}
@@ -41,32 +38,25 @@ If \code{NULL}, output will be to the same
 directory as the cell table.}
 }
 \value{
-If \strong{\code{mutual} is \code{TRUE}}, returns a \code{data_frame} with one row per
-\code{pair}, containing these columns:
+Returns a \code{data_frame} with one row for each pair in
+\code{pairs}, containing these columns:
 \describe{
+\item{\code{slide_id}}{Slide ID from the data file.}
 \item{\code{source}}{Base file name of the source file with
 \code{_cell_seg_data.txt} stripped off for brevity.}
-\item{\code{phenotype1}}{The first phenotype in the touching pair.}
-\item{\code{phenotype2}}{The second phenotype in the touching pair.}
-\item{\code{count}}{The number of touching pairs.}
+\item{\code{phenotype1}}{The name of the first phenotype in
+the touching pair.}
+\item{\code{phenotype2}}{The name of the second phenotype in
+the touching pair.}
 \item{\code{total1}}{The total number of \code{phenotype1} cells
 in the image.}
 \item{\code{total2}}{The total number of \code{phenotype2} cells
 in the image.}
-}
-
-If \strong{\code{mutual} is \code{FALSE}}, returns a \code{data_frame} with two rows per \code{pair},
-containing these columns:
-\describe{
-\item{\code{source}}{Base file name of the source file with
-\code{_cell_seg_data.txt} stripped off for brevity.}
-\item{\code{phenotype}}{The phenotype of cells being counted.}
-\item{\code{touching}}{The phenotype of cells being touched.}
-\item{\code{count}}{The number of \code{phenotype} cells touching a \code{touching}
-cell.}
-\item{\code{fraction}}{The fraction of \code{phenotype} cells touching a
-\code{touching} cell.}
-\item{\code{total}}{The total number of \code{phenotype} cells in the image.}
+\item{\code{p1_touch_p2}}{The number of \code{phenotype1} cells
+touching a \code{phenotype2} cell.}
+\item{\code{p2_touch_p1}}{The number of \code{phenotype2} cells
+touching a \code{phenotype1} cell.}
+\item{\code{touch_mutual}}{The number of mutually touching pairs.}
 }
 }
 \description{
@@ -76,6 +66,13 @@ It reports the number of touching cells found and, optionally,
 writes image files showing the touching cells.
 }
 \details{
+The number of touching cells is reported in three ways. For a pair of
+phenotypes A and B, this function reports the number of A touching a B,
+the number of B touching an A, and the number of mutually touching pairs.
+Note that the number of mutual touches is often larger than the count of
+either "A touching B" or "B touching A" because a single touching cell
+may be part of multiple pairs.
+
 The image files written show cells of the selected phenotypes on a background
 of the composite. Touching cells are filled in the provided color;
 cells which are not touching the other phenotype are outlined.
@@ -86,9 +83,22 @@ Images are only written when both phenotypes of the pair are represented.
 }
 \examples{
 \dontrun{
+# This example creates an image in the a subdirectory of the
+# current user's directory.
+cell_seg_path = system.file("extdata", "TMA",
+                       "Core[1,5,6,1]_[21302,15107]_cell_seg_data.txt",
+                       package = "phenoptr")
+
+pairs = list(c("macrophage CD68", "cytotoxic CD8"))
+colors = c("macrophage CD68"='red', "cytotoxic CD8"='blue')
+output_base = path.expand('~/touches')
+
+count_touching_cells(cell_seg_path, pairs, colors=colors,
+  output_base=output_base)
+
 # This example will count and image all files in the `base_path` directory.
 base_path = '/path/to/data'
-out_path = file.path(base_path, 'touches')
+output_base = file.path(base_path, 'touches')
 files = list_cell_seg_files(base_path)
 
 # The phenotype pairs to locate. This will find CD8 cells touching
@@ -104,23 +114,22 @@ colors = list(
 )
 
 # Count and visualize touching cells
-r = purrr::map_df(files, function(path) {
+touch_counts = purrr::map_df(files, function(path) {
   cat('Processing', path, '\\n')
   count_touching_cells(path, pairs, colors=colors, output_base=output_base)
 })
 
 # Save the result
-outPath = file.path(output_base, 'TouchCounts.csv')
-write.csv(r, outPath, row.names=FALSE)
+touches_path = file.path(output_base, 'TouchCounts.csv')
+readr::write_csv(touch_counts, touches_path)
 
 # The phenotype definitions can be more complex. The default is to use
 # the names in `pairs`. Using `phenotype_rules`, the definition can be
 # anything allowed by select_rows().
 
-# You can also limit the tissue category, and count mutual touches (pairs)
-# instead of individual touching cells.
+# You can also limit the tissue category.
 
-# For example, find all mutual touches between lymphocytes and tumor cells
+# For example, find all touches between lymphocytes and tumor cells
 # within the tumor:
 pairs = list(c('Tumor', 'Lymphocyte'))
 colors = list(Tumor='cyan', Lymphocyte='yellow')
@@ -129,10 +138,10 @@ phenotype_rules = list(
   Lymphocyte=c('CD4', 'CD8', 'TReg')
 )
 
-r = map_df(full_paths, function(path) {
+touch_counts = map_df(files, function(path) {
   cat('Processing', path, '\\n')
   count_touching_cells(path, pairs, phenotype_rules,
-                       categories='tumor', colors=colors, mutual=TRUE,
+                       categories='tumor', colors=colors,
                        output_base=output_base)
 })
 

@@ -9,6 +9,13 @@
 #' It reports the number of touching cells found and, optionally,
 #' writes image files showing the touching cells.
 #'
+#' The number of touching cells is reported in three ways. For a pair of
+#' phenotypes A and B, this function reports the number of A touching a B,
+#' the number of B touching an A, and the number of mutually touching pairs.
+#' Note that the number of mutual touches is often larger than the count of
+#' either "A touching B" or "B touching A" because a single touching cell
+#' may be part of multiple pairs.
+#'
 #' The image files written show cells of the selected phenotypes on a background
 #' of the composite. Touching cells are filled in the provided color;
 #' cells which are not touching the other phenotype are outlined.
@@ -21,7 +28,7 @@
 #'   must also contain `_memb_seg_map.tif` or `_binary_seg_maps.tif` and, if
 #'   `write_images` is true, a  TIFF or JPEG composite image.
 #' @param pairs A list of pairs of phenotypes. Each entry is a two-element
-#'   vector. The result will contain one or two lines for each pair showing the
+#'   vector. The result will contain one line for each pair showing the
 #'   number of cells and number of touches.
 #' @param phenotype_rules A named list. The item names are the phenotype
 #'   names and must include all the names in `pairs`.
@@ -32,46 +39,50 @@
 #' Categories not in the list will be excluded from the analysis.
 #' @param colors A named list of phenotype colors to use when drawing
 #'   the output. Only used when `write_images` is `TRUE`.
-#' @param mutual If `TRUE`, returns stats on mutually touching pairs,
-#' rather than separate counts of cells for each phenotype.
 #' @param write_images If `TRUE`, for each pair, write an image showing the
 #' touching pairs. Requires `colors` and a composite image in the same
 #' directory as the cell seg table.
 #' @param output_base Base path for image output.
 #' If `NULL`, output will be to the same
 #' directory as the cell table.
-#' @return If **`mutual` is `TRUE`**, returns a `data_frame` with one row per
-#' `pair`, containing these columns:
+#' @return Returns a `data_frame` with one row for each pair in
+#' `pairs`, containing these columns:
 #'   \describe{
+#'    \item{\code{slide_id}}{Slide ID from the data file.}
 #'    \item{\code{source}}{Base file name of the source file with
 #'    `_cell_seg_data.txt` stripped off for brevity.}
-#'    \item{\code{phenotype1}}{The first phenotype in the touching pair.}
-#'    \item{\code{phenotype2}}{The second phenotype in the touching pair.}
-#'    \item{\code{count}}{The number of touching pairs.}
+#'    \item{\code{phenotype1}}{The name of the first phenotype in
+#'    the touching pair.}
+#'    \item{\code{phenotype2}}{The name of the second phenotype in
+#'    the touching pair.}
 #'    \item{\code{total1}}{The total number of `phenotype1` cells
 #'    in the image.}
 #'    \item{\code{total2}}{The total number of `phenotype2` cells
 #'    in the image.}
-#'  }
-#'
-#' If **`mutual` is `FALSE`**, returns a `data_frame` with two rows per `pair`,
-#' containing these columns:
-#'   \describe{
-#'    \item{\code{source}}{Base file name of the source file with
-#'    `_cell_seg_data.txt` stripped off for brevity.}
-#'    \item{\code{phenotype}}{The phenotype of cells being counted.}
-#'    \item{\code{touching}}{The phenotype of cells being touched.}
-#'    \item{\code{count}}{The number of `phenotype` cells touching a `touching`
-#'    cell.}
-#'    \item{\code{fraction}}{The fraction of `phenotype` cells touching a
-#'    `touching` cell.}
-#'    \item{\code{total}}{The total number of `phenotype` cells in the image.}
+#'    \item{\code{p1_touch_p2}}{The number of `phenotype1` cells
+#'    touching a `phenotype2` cell.}
+#'    \item{\code{p2_touch_p1}}{The number of `phenotype2` cells
+#'    touching a `phenotype1` cell.}
+#'    \item{\code{touch_mutual}}{The number of mutually touching pairs.}
 #'  }
 #' @examples
 #' \dontrun{
+#' # This example creates an image in the a subdirectory of the
+#' # current user's directory.
+#' cell_seg_path = system.file("extdata", "TMA",
+#'                        "Core[1,5,6,1]_[21302,15107]_cell_seg_data.txt",
+#'                        package = "phenoptr")
+#'
+#' pairs = list(c("macrophage CD68", "cytotoxic CD8"))
+#' colors = c("macrophage CD68"='red', "cytotoxic CD8"='blue')
+#' output_base = path.expand('~/touches')
+#'
+#' count_touching_cells(cell_seg_path, pairs, colors=colors,
+#'   output_base=output_base)
+#'
 #' # This example will count and image all files in the `base_path` directory.
 #' base_path = '/path/to/data'
-#' out_path = file.path(base_path, 'touches')
+#' output_base = file.path(base_path, 'touches')
 #' files = list_cell_seg_files(base_path)
 #'
 #' # The phenotype pairs to locate. This will find CD8 cells touching
@@ -87,23 +98,22 @@
 #' )
 #'
 #' # Count and visualize touching cells
-#' r = purrr::map_df(files, function(path) {
+#' touch_counts = purrr::map_df(files, function(path) {
 #'   cat('Processing', path, '\n')
 #'   count_touching_cells(path, pairs, colors=colors, output_base=output_base)
 #' })
 #'
 #' # Save the result
-#' outPath = file.path(output_base, 'TouchCounts.csv')
-#' write.csv(r, outPath, row.names=FALSE)
+#' touches_path = file.path(output_base, 'TouchCounts.csv')
+#' readr::write_csv(touch_counts, touches_path)
 #'
 #' # The phenotype definitions can be more complex. The default is to use
 #' # the names in `pairs`. Using `phenotype_rules`, the definition can be
 #' # anything allowed by select_rows().
 #'
-#' # You can also limit the tissue category, and count mutual touches (pairs)
-#' # instead of individual touching cells.
+#' # You can also limit the tissue category.
 #'
-#' # For example, find all mutual touches between lymphocytes and tumor cells
+#' # For example, find all touches between lymphocytes and tumor cells
 #' # within the tumor:
 #' pairs = list(c('Tumor', 'Lymphocyte'))
 #' colors = list(Tumor='cyan', Lymphocyte='yellow')
@@ -112,10 +122,10 @@
 #'   Lymphocyte=c('CD4', 'CD8', 'TReg')
 #' )
 #'
-#' r = map_df(full_paths, function(path) {
+#' touch_counts = map_df(files, function(path) {
 #'   cat('Processing', path, '\n')
 #'   count_touching_cells(path, pairs, phenotype_rules,
-#'                        categories='tumor', colors=colors, mutual=TRUE,
+#'                        categories='tumor', colors=colors,
 #'                        output_base=output_base)
 #' })
 #'
@@ -125,7 +135,7 @@
 #' @export
 #' @importFrom magrittr %>%
 count_touching_cells = function(cell_seg_path, pairs, phenotype_rules=NULL,
-                                categories=NULL, colors=NULL, mutual=FALSE,
+                                categories=NULL, colors=NULL,
                                 write_images=!is.null(colors), output_base=NULL)
 {
   # Check or make phenotype_rules
@@ -170,6 +180,8 @@ count_touching_cells = function(cell_seg_path, pairs, phenotype_rules=NULL,
     stopifnot('Tissue Category' %in% names(csd))
     csd = csd %>% dplyr::filter(`Tissue Category` %in% categories)
   }
+
+  slide = as.character(csd[1, 'Slide ID'])
 
   # Read the membrane and nuclear masks.
   # Convert the membrane to single values. Use 0.5 to avoid conflict with cell labeling
@@ -227,79 +239,45 @@ count_touching_cells = function(cell_seg_path, pairs, phenotype_rules=NULL,
 
     touches_found = 0
 
-    if (mutual)
+    if (p1_count == 0 || p2_count == 0)
     {
-      # Count pairs of touching cells
-      # Note we don't report fractions here.
-      # One cell could have two touches; that would give a fraction of 200% !
-
-      if (p1_count == 0 || p2_count == 0)
-      {
-        # No data for one of the phenotypes in this pair
-        # Report empty result and go on
-        result = rbind(result,
-                     tibble::data_frame(source=name,
-                                phenotype1=p1,
-                                phenotype2=p2,
-                                count=0,
-                                total1=p1_count,
-                                total2=p2_count))
-        if (write_images)
-          warning('No image for ', name, ', ', p1, ' touching ', p2)
-        next
-      }
-
-      touch_pairs = find_touching_cell_pairs(i1, i2)
-
-      # Need individual IDs for imaging
-      touching_ids = list(touch_pairs[,1], touch_pairs[,2])
-      touches_found = nrow(touch_pairs)
-
+      # No data for one of the phenotypes in this pair
+      # Report empty result and go on
       result = rbind(result,
-                   tibble::data_frame(source=name,
-                              phenotype1=p1,
-                              phenotype2=p2,
-                              count=touches_found,
-                              total1=p1_count,
-                              total2=p2_count))
+                   tibble::data_frame(
+                      slide_id=slide,
+                      source=name,
+                      phenotype1=p1,
+                      phenotype2=p2,
+                      total1=p1_count,
+                      total2=p2_count,
+                      p1_touch_p2=0,
+                      p2_touch_p1=0,
+                      touch_pairs=0))
+      if (write_images)
+        warning('No image for ', name, ', ', p1, ' touching ', p2)
+      next
     }
-    else
-    {
-      # Separate touch counts for each phenotype
-      if (p1_count == 0 || p2_count == 0)
-      {
-        # No data for one of the phenotypes in this pair
-        # Report empty result and go on
-        # Note: including the division in the fraction result gives NA
-        # when the count is 0; this is more correct than defaulting to just 0.
-        result = rbind(result,
-                     tibble::data_frame(source=name,
-                                phenotype=c(p1, p2),
-                                touching=c(p2, p1),
-                                count=c(0, 0),
-                                fraction=c(0/p1_count, 0/p2_count),
-                                total=c(p1_count, p2_count)))
-        if (write_images)
-          warning('No image for ', name, ', ', p1, ' touching ', p2)
-        next
-      }
 
-      touching_ids = find_touching_cell_ids(i1, i2)
+    touch_pairs = find_touching_cell_pairs(i1, i2)
 
-      p1_touching_count = length(touching_ids[[1]])
-      p2_touching_count = length(touching_ids[[2]])
-      touches_found = p1_touching_count
+    # Need individual IDs for imaging and counting
+    touching_ids = list(unique(touch_pairs[,1]), unique(touch_pairs[,2]))
+    p1_touching_count = length(touching_ids[[1]])
+    p2_touching_count = length(touching_ids[[2]])
+    touches_found = nrow(touch_pairs)
 
-      # Accumulate results
-      result = rbind(result,
-                     tibble::data_frame(source=name,
-                                phenotype=c(p1, p2),
-                                touching=c(p2, p1),
-                                count=c(p1_touching_count, p2_touching_count),
-                                fraction=c(p1_touching_count/p1_count,
-                                           p2_touching_count/p2_count),
-                                total=c(p1_count, p2_count)))
-    }
+    result = rbind(result,
+                 tibble::data_frame(
+                    slide_id=slide,
+                    source=name,
+                    phenotype1=p1,
+                    phenotype2=p2,
+                    total1=p1_count,
+                    total2=p2_count,
+                    p1_touch_p2=p1_touching_count,
+                    p2_touch_p1=p2_touching_count,
+                    touch_pairs=touches_found))
 
     if (write_images)
     {
