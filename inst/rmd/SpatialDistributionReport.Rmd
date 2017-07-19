@@ -33,7 +33,7 @@ code, pre {
 knitr::opts_chunk$set(echo=FALSE,fig.width=11, fig.height=8, 
                       comment=NA, warning=FALSE, message=FALSE)
 
-data = read_cell_seg_data(cell_seg_path)
+csd = read_cell_seg_data(cell_seg_path)
 
 pheno1 = list(
   name=phenotypes[1], color=colors[1])
@@ -42,17 +42,13 @@ pheno2 = list(
   name=phenotypes[2], color=colors[2])
 
 # Get point pattern datasets and distance matrices; direction matters...
-window = spatstat::owin(xrange=c(0, max(data$`Cell X Position`)),
-                        yrange=c(0, max(data$`Cell Y Position`)))
-pheno_data1 = phenotype_as_ppp(data, pheno1, window)
-pheno_data2 = phenotype_as_ppp(data, pheno2, window)
+window = spatstat::owin(xrange=c(0, max(csd$`Cell X Position`)),
+                        yrange=c(0, max(csd$`Cell Y Position`)))
+pheno_data1 = phenotype_as_ppp(csd, pheno1, window)
+pheno_data2 = phenotype_as_ppp(csd, pheno2, window)
 
 nn_dist12 = find_nearest_neighbor(pheno_data1, pheno_data2)
 nn_dist21 = find_nearest_neighbor(pheno_data2, pheno_data1)
-
-# Combined data for some reports
-# Both phenotypes in one ppp
-pp = spatstat::superimpose(pheno_data1$pp, pheno_data2$pp)
 
 # Segmented image for background
 if (grepl('cell_seg_data.txt', cell_seg_path))
@@ -85,14 +81,14 @@ if (exists('tissue_seg_path') && file.exists(tissue_seg_path))
 } else {
   # If no background image guess at dimensions
   background = NA
-  xlim = guessXMax(data)
-  ylim = guessYMax(data)
+  xlim = max(csd$`Cell X Position`)
+  ylim = max(csd$`Cell Y Position`)
 }
 
 # Remove def'n of tissue_seg_path so we will recompute next time for new image
 rm(tissue_seg_path)
 
-# Color palette for plots
+# Color palette for nearest-neighbor plots
 palette = c(pheno1$color, pheno2$color)
 names(palette) = c(pheno1$name, pheno2$name)
 legend=TRUE
@@ -116,9 +112,9 @@ cat('-', pheno2$name, '\n')
 ```{r results='asis'}
 cat('Number of cells:', nrow(data), '\n\n')
 
-data %>% dplyr::group_by(Phenotype) %>% 
+csd %>% dplyr::group_by(Phenotype) %>% 
   dplyr::summarize(Count=n(), 
-                   Proportion=scales::percent(round(Count/nrow(data), 2))) %>% 
+                   Proportion=scales::percent(round(Count/nrow(csd), 2))) %>% 
   knitr::kable(caption='Cell count and fraction of total per phenotype',
                table.attr='style="width: 30%"')
 
@@ -129,31 +125,19 @@ data %>% dplyr::group_by(Phenotype) %>%
 #### All cells  
 
 ```{r}
-p = ggplot(data, aes(x=`Cell X Position`, y=`Cell Y Position`, color=Phenotype))
+# Colorbrewer Dark2 palette
+dark2 = c('#1b9e77','#d95f02','#7570b3','#e7298a',
+          '#66a61e','#e6ab02','#a6761d','#666666')
+p = ggplot(csd, aes(x=`Cell X Position`, y=`Cell Y Position`, color=Phenotype))
 p = add_scales_and_background(p, background, xlim, ylim)
-p = p + geom_point()
+p = p + geom_point() 
+if (length(unique(csd$Phenotype<=8)))
+  p = p + scale_color_manual(values=dark2)
 p + labs(title='Locations of all cells')
 ```
 
-```{r fig.height=6+2*(length(levels(data$Phenotype))-1) %/% 3}
+```{r fig.height=6+2*(length(levels(csd$Phenotype))-1) %/% 3}
 p + facet_wrap(~Phenotype) + guides(color=FALSE)
-```
-
-#### Selected phenotypes only  
-
-```{r}
-p = ggplot(as.data.frame(pp), aes(x=x, y=y, color=marks))
-p = add_scales_and_background(p, background, xlim, ylim)
-p = p + geom_point()
-p = p + scale_color_manual('Phenotype', values=palette)
-p = p + labs(x='Cell X Position', y='Cell Y Position',
-             title='Locations of selected phenotypes')
-p
-```
-
-```{r fig.height=6}
-# p from previous chunk...
-p + facet_wrap(~marks) + guides(color=FALSE)
 ```
 
 ### Nearest neighbors, selected phenotypes
@@ -161,71 +145,26 @@ p + facet_wrap(~marks) + guides(color=FALSE)
 ```{r}
 nn_plot(pheno_data1, pheno_data2, nn_dist12, background, xlim, ylim)
 nn_plot(pheno_data2, pheno_data1, nn_dist21, background, xlim, ylim)
+
+# Find mutual pairs by merging nn_dist12 and nn_dist21
+# First get just the nnDist21 cell ids and rename them to match nnDist12
+nn_mutual = nn_dist21[, c('Cell ID', 'To Cell ID')]
+names(nn_mutual) = c('To Cell ID', 'Cell ID')
+nn_mutual = merge(nn_mutual, nn_dist12)
+nn_plot_mutual(pheno_data1, pheno_data2, nn_mutual, background, xlim, ylim)
 ```
 
-### Spatial statistics
+### Summary of mutual nearest neighbor pairs
 
-#### Second-order statistics for selected phenotypes - G function 
-
-G shows the distribution of nearest neigbors. 
-It is the cumulative distribution function of the distance from
-a typical cell to its nearest neighbor.
-
-```{r, fig.height=5}
-# Show G in a grid, cross-G only
-x_label_microns = expression(paste('radius (', mu, 'm)'))
-g_correction = 'km' # Kaplan-Meier edge correction only
-plot_G = function(g, main)
-{
-  plot(g, cbind(km, theo) ~ r, legend=legend, 
-       xlim=c(0,plot_gx_max), ylim=c(0,1),
-       xlab=x_label_microns, main=main)
-  micron_frac = as.function(g)(micron_line)
-  abline(h=micron_frac, col = "lightgray", lty = 3)
-  abline(v=micron_line, col='lightgray', lty=3)
-  text(0, micron_frac, round(micron_frac, 2), adj=c(0, 0.4))
-}
-
-if (length(levels(pp$marks))<=1)
-{
-  cat('Not every phenotype has cells.\n')
-} else {
-  oldpar=par(mfrow=c(1,2))
-  ignore = plot_G(Gcross(pp, pheno1$name, pheno2$name, correction=g_correction),
-       main=bquote('Nearest neighbor,' 
-                   ~ italic(.(pheno1$name) ~ 'to' ~ italic(.(pheno2$name)))))
-  
-  ignore = plot_G(Gcross(pp, pheno2$name, pheno1$name, correction=g_correction),
-       main=bquote('Nearest neighbor,' 
-                   ~ italic(.(pheno2$name)) ~ 'to' ~ italic(.(pheno1$name))))
-  
-  par(oldpar)
-}
-```
-
-
-#### Cross-correlation for selected phenotypes  
-
-Cross-correlation summarizes the relative density of cells of one type from cells of a second type.
-
-```{r, fig.height=5}
-pcf_correction = 'Ripley'
-
-if (length(levels(pp$marks))<=1)
-{
-  cat('Not every phenotype has cells.\n')
-} else {
-  oldpar=par(mfrow=c(1,2))
-  ignore = plot(pcfcross(pp, pheno1$name, pheno2$name, correction=pcf_correction), 
-                legend=legend, xlab=x_label_microns, 
-       main=bquote('Cross-correlation from' ~ italic(.(pheno1$name)) ~ 'to' 
-                   ~ italic(.(pheno2$name))))
-  
-  ignore = plot(pcfcross(pp, pheno2$name, pheno1$name, correction=pcf_correction), 
-                legend=legend, xlab=x_label_microns, 
-       main=bquote('Cross-correlation from' ~ italic(.(pheno2$name)) ~ 'to' 
-                   ~ italic(.(pheno1$name))))
-  
-  par(oldpar)
-}
+```{r}
+pairs = tibble::data_frame(
+  From = pheno_data1$pheno$name,
+  To = pheno_data2$pheno$name,
+  'From Count' = nrow(pheno_data1$data),
+  'To Count' = nrow(pheno_data2$data),
+  Pairs = nrow(nn_mutual),
+  'From Fraction' = round(Pairs/`From Count`, 3),
+  'To Fraction' = round(Pairs/`To Count`, 3)
+)
+knitr::kable(pairs)
 ```

@@ -8,8 +8,9 @@ if (getRversion() >= "2.15.1")
 
 #' Create a spatial distribution report.
 #'
-#' Creates an HTML report showing the location and nearest-neighbor relations
-#' of cells in a single field and two chosen phenotypes.
+#' Creates an HTML report visualizing the location
+#' and nearest-neighbor relations for cells of two chosen phenotypes
+#' in a single field.
 #'
 #' A cell seg data file for the field is required. If a tissue segmentation
 #' or composite image of the field
@@ -23,14 +24,12 @@ if (getRversion() >= "2.15.1")
 #' @param output_path Optional, path to the output HTML file. If omitted,
 #' output will be written to the directory containing `cell_seg_path`.
 #' @param pixels_per_micron Conversion factor to microns
-#'        (default 2 pixels/micron),
-#' @param plot_gx_max Optional, maximum value of radius to show on G
-#' function plots.
-#' @param micron_line Optional, X location (radius in microns)
-#'  of crosshair on G function plots.
+#'        (default 2 pixels/micron).
 #' @export
 #' @examples
 #' \dontrun{
+#' # This example creates a report in the current user's
+#' # home or Document directory.
 #' cell_seg_path = system.file("extdata", "TMA",
 #'                        "Core[1,5,6,1]_[21302,15107]_cell_seg_data.txt",
 #'                        package = "phenoptr")
@@ -43,10 +42,9 @@ if (getRversion() >= "2.15.1")
 #' }
 #' @md
 spatial_distribution_report = function(cell_seg_path, phenotypes, colors,
-                        output_path=NULL,
-                        pixels_per_micron=getOption('phenoptr.pixels.per.micron'),
-                        plot_gx_max = 100,
-                        micron_line = 25) {
+                      output_path=NULL,
+                      pixels_per_micron=getOption('phenoptr.pixels.per.micron')
+                      ) {
   stopifnot(grepl('_cell_seg_data.txt', cell_seg_path))
   stopifnot(file.exists(cell_seg_path),
             length(phenotypes)==2,
@@ -99,9 +97,10 @@ find_nearest_neighbor = function(pheno_data1, pheno_data2)
   d = spatstat::nncross(pheno_data1$pp, pheno_data2$pp)
   names(d)[1] = 'Distance'
   from_data = pheno_data1$data %>%
-    dplyr::select(`Cell X Position`, `Cell Y Position`)
+    dplyr::select(`Cell ID`, `Cell X Position`, `Cell Y Position`)
   to_data = pheno_data2$data[d$which,] %>%
-    dplyr::select('To X Position'=`Cell X Position`,
+    dplyr::select('To Cell ID'=`Cell ID`,
+                  'To X Position'=`Cell X Position`,
                   'To Y Position'=`Cell Y Position`)
   result = cbind(from_data, d, to_data)
   result$which = NULL
@@ -118,14 +117,27 @@ find_nearest_neighbor = function(pheno_data1, pheno_data2)
 # @return a ggplot object
 nn_plot <- function (pheno_data1, pheno_data2, nn_dist,
                      background, xlim, ylim,
-                     lineColor='gray40') {
+                     line_color='gray40') {
   title = bquote('Nearest neighbor from'
                  ~ italic(.(pheno_data1$pheno$name))
                  ~ 'to'
                  ~ italic(.(pheno_data2$pheno$name)))
   nn_plot_impl(nn_dist, pheno_data1, pheno_data2, title,
                background, xlim, ylim,
-               lineColor)
+               line_color)
+}
+
+# Make a plot of mutual nearest neighbors in phenoData -
+# points for which each is the NN of the other
+nn_plot_mutual = function(pheno_data1, pheno_data2, nn_mutual,
+                          background, xlim, ylim,
+                          line_color='gray40') {
+  title = bquote('Mutual nearest neighbors for'
+                 ~ italic(.(pheno_data1$pheno$name))
+                 ~ 'and'
+                 ~ italic(.(pheno_data2$pheno$name)))
+  nn_plot_impl(nn_mutual, pheno_data1, pheno_data2, title,
+               background, xlim, ylim, line_color)
 }
 
 # Shared implementation for nearest-neighbor plots
@@ -135,12 +147,17 @@ nn_plot_impl <- function (nn_dist, pheno_data1, pheno_data2, title,
   p = nn_plot_base(title, background, xlim, ylim)
   p = add_dist_data(p, nn_dist, lineColor)
 
+  # Draw non-paired cells fainter than paired cells
+  alphas = c(0.3, 1)
+  from_alpha = alphas[(pheno_data1$data$`Cell ID` %in% nn_dist$`Cell ID`) + 1]
   p = p + geom_point(data=pheno_data1$data,
                      aes(x=`Cell X Position`, y=`Cell Y Position`),
-                     color=pheno_data1$pheno$color)
+                     color=pheno_data1$pheno$color, alpha=from_alpha)
+
+  to_alpha = alphas[(pheno_data2$data$`Cell ID` %in% nn_dist$`To Cell ID`) + 1]
   p = p + geom_point(data=pheno_data2$data,
                      aes(`Cell X Position`, `Cell Y Position`),
-                     color=pheno_data2$pheno$color)
+                     color=pheno_data2$pheno$color, alpha=to_alpha)
   p
 }
 

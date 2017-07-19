@@ -6,8 +6,7 @@
 \usage{
 spatial_distribution_report(cell_seg_path, phenotypes, colors,
   output_path = NULL,
-  pixels_per_micron = getOption("phenoptr.pixels.per.micron"),
-  plot_gx_max = 100, micron_line = 25)
+  pixels_per_micron = getOption("phenoptr.pixels.per.micron"))
 }
 \arguments{
 \item{cell_seg_path}{Path to a cell seg data file.}
@@ -20,17 +19,12 @@ spatial_distribution_report(cell_seg_path, phenotypes, colors,
 output will be written to the directory containing \code{cell_seg_path}.}
 
 \item{pixels_per_micron}{Conversion factor to microns
-(default 2 pixels/micron),}
-
-\item{plot_gx_max}{Optional, maximum value of radius to show on G
-function plots.}
-
-\item{micron_line}{Optional, X location (radius in microns)
-of crosshair on G function plots.}
+(default 2 pixels/micron).}
 }
 \description{
-Creates an HTML report showing the location and nearest-neighbor relations
-of cells in a single field and two chosen phenotypes.
+Creates an HTML report visualizing the location
+and nearest-neighbor relations for cells of two chosen phenotypes
+in a single field.
 }
 \details{
 A cell seg data file for the field is required. If a tissue segmentation
@@ -41,6 +35,8 @@ The report is saved to the same directory as the input file.
 }
 \examples{
 \dontrun{
+# This example creates a report in the current user's
+# home or Document directory.
 cell_seg_path = system.file("extdata", "TMA",
                        "Core[1,5,6,1]_[21302,15107]_cell_seg_data.txt",
                        package = "phenoptr")
