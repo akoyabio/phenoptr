@@ -20,6 +20,7 @@
 - Added vignettes
     - "Reading and Displaying inForm Image Files"
     - "Computing Inter-cellular Distances"
+    - "Find and count touching cells"
     - "Selecting cells within a cell segmentation table"
 
 ## Bug fixes

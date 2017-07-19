@@ -1,0 +1,96 @@
+---
+title: "Find and count touching cells"
+author: "Kent Johnson"
+date: "`r Sys.Date()`"
+output:
+  rmarkdown::html_vignette:
+    df_print: kable
+    toc: true
+vignette: >
+  %\VignetteIndexEntry{Find and count touching cells}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup,echo=FALSE}
+knitr::opts_chunk$set(eval=FALSE)
+```
+
+
+The `count_touching_cells` function uses morphological analysis of nuclear and
+membrane segmentation maps to find touching cells of paired phenotypes. It
+reports the number of touching cells found and, optionally, writes image files
+showing the touching cells.
+
+`count_touching_cells` uses the results of inForm cell segmentation to
+determine which cells are touching. It uses both nuclear and membrane
+segmentation to determine the extent of each cell.
+
+`count_touching_cells` processes a single field and multiple pairs of 
+phenotypes. The specification of pairs and phenotypes is flexible to 
+accommodate any requirement. The simplest case uses the phenotype names
+from inForm to select cells. For this case, only the `pairs` argument
+is needed. 
+
+For example, this code finds and visualizes touches between 
+`tumor` and `CD8` cells, and also
+between `tumor` and `CD68` cells:
+
+```{r pairs_only}
+cell_seg_path = '/path/to/cell_seg_data/'
+pairs = list(
+  c('tumor', 'CD8'),
+  c('tumor', 'CD68')
+)
+colors=list(tumor='cyan', CD8='yellow', CD68='magenta')
+count_touching_cells(cell_seg_path, pairs, colors=colors)
+```
+
+For more flexibility, use the `phenotype_rules` argument. For example,
+this code repeats the previous analysis limiting it to tumor cells with PDL1
+above a threshold. Note that if `phenotype_rules` is provided, it must
+include definitions for all phenotypes.
+
+```{r phenotype_rules}
+pairs = list(
+  c('tumor PLD1+', 'CD8'),
+  c('tumor PLD1+', 'CD68')
+)
+
+phenotype_rules = list(
+  'tumor PLD1+'=list('tumor', ~`Entire Cell PDL1 (Opal 620) Mean`>0.5), 
+  CD8='CD8', 
+  CD68='CD68'
+)
+colors=list('tumor PLD1+'='cyan', CD8='yellow', CD68='magenta')
+count_touching_cells(cell_seg_path, pairs, phenotype_rules, colors=colors)
+```
+
+Using `purrr::map`, you can find touching cells for all cell seg data
+files in a single directory.
+
+```{r process_directory}
+# Directory containing data files
+base_path = '/path/to/data'
+
+# A subdirectory for the results
+output_base = file.path(base_path, 'touches')
+
+# All cell seg data files in base_path
+files = list_cell_seg_files(base_path)
+
+# Count and visualize touching cells
+touch_counts = purrr::map_df(files, function(path) {
+  cat('Processing', path, '\n')
+  count_touching_cells(path, pairs, colors=colors, phenotype_rules,
+                       output_base=output_base)
+})
+```
+
+The result of the above is a `data_frame` which may be written to 
+a CSV file:
+
+```{r write_csv}
+touches_path = file.path(output_base, 'TouchCounts.csv')
+readr::write_csv(touch_counts, touches_path)
+```
