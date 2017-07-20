@@ -50,6 +50,8 @@ For more flexibility, use the `phenotype_rules` argument. For example,
 this code repeats the previous analysis limiting it to tumor cells with PDL1
 above a threshold. Note that `phenotype_rules` only needs to include
 definitions for phenotypes which don't match the names in `pairs`.
+(See vignette('selecting_cells', package='phenoptr') for more details on
+selecting pairs.)
 
 ```{r phenotype_rules}
 pairs = list(

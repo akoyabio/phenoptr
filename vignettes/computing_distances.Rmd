@@ -145,7 +145,7 @@ You may want to run `count_within` on an entire directory of cell seg data
 files, or to count multiple combinations of phenotypes. Both of
 these are possible using `count_within_batch`. Instead of a `data_frame`,
 you pass it the path to a directory containing multiple cell seg data files.
-The `from`, `to`, and `category` parameters are lists and may contain
+The `pairs` and `category` parameters are lists and may contain
 multiple entries.
 
 For example, the following commands will count `T Reg` cells
@@ -157,15 +157,17 @@ for all `cell_seg_data.txt` files in `my_directory`.
 ```{r eval=FALSE}
 base_path = "/path/to/my_directory"
 
-from = list('T Reg')
-to = list('Cytotoxic T Cell', 'PDL1+ Tumor Cell')
+pairs = list(c('T Reg', 'Cytotoxic T Cell'),
+             c('T Reg', 'PDL1+ Tumor Cell'))
 radii = c(10, 25)
 categories = c('stroma', 'tumor')
 
-count_within_batch(base_path, from, to, radii, categories)
+count_within_batch(base_path, pairs, radii, categories)
 ```
 
-See `help(count_within_batch)` for additional details.
+See `help(count_within_batch)` and 
+vignette('selecting_cells', package='phenoptr')
+for additional details.
 
 ## Visualizing nearest neighbors
 

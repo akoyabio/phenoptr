@@ -5,21 +5,27 @@
 \title{Count cells within a radius for multiple tissue categories, phenotypes
 and fields.}
 \usage{
-count_within_batch(base_path, from, to, radius, category = NA,
-  verbose = TRUE)
+count_within_batch(base_path, pairs, radius, category = NA,
+  phenotype_rules = NULL, verbose = TRUE)
 }
 \arguments{
 \item{base_path}{Path to a directory containing at least
 one \code{_cell_seg_data.txt} file.}
 
-\item{from}{Specification of 'from' phenotype(s), see Details.}
-
-\item{to}{Specification of 'to' phenotype(s), see Details.}
+\item{pairs}{A list of pairs of phenotypes. Each entry is a two-element
+vector. The result will contain values for each pair.
+A single pair can be passed as a plain vector.}
 
 \item{radius}{The radius or radii to search within.}
 
 \item{category}{Optional tissue categories to restrict both \code{from} and
-\code{to}.}
+\code{to} phenotypes.}
+
+\item{phenotype_rules}{(Optional) A named list.
+The item names are the phenotype names.
+The values are selectors for \link{select_rows}.
+For any phenotype not included in \code{phenotype_rules},
+the name in \code{pairs} is used directly as the phenotype.}
 
 \item{verbose}{If TRUE, display progress.}
 }
@@ -63,17 +69,20 @@ The \code{category} parameter may be a single category or a list of categories.
 \examples{
 base_path = system.file("extdata", "TMA", package = "phenoptr")
 
-# Count tumor cells near macrophages and tumor cells near CD8 separately,
+# Count tumor cells near macrophages, and tumor cells near CD8 separately,
 # in tumor and stroma tissue categories separately.
-from = list('tumor')
-to = list('macrophage CD68', 'cytotoxic CD8')
+pairs = list(c('tumor', 'macrophage CD68'),
+             c('tumor', 'cytotoxic CD8'))
 radius = c(10, 25)
 category = list('tumor', 'stroma')
-count_within_batch(base_path, from, to, radius, category)
+count_within_batch(base_path, pairs, radius, category)
 
-# Count tumor cells near any T cell in all tissue categories
-to = list(c('cytotoxic CD8', 'helper CD4', 'T reg Foxp3'))
-count_within_batch(base_path, from, to, radius)
+# Count tumor cells near any T cell in all tissue categories.
+# Use `phenotype_rules` to define the T cell phenotype
+pairs = c('tumor', 'T cell')
+rules = list(
+'T cell'=c('cytotoxic CD8', 'helper CD4', 'T reg Foxp3'))
+count_within_batch(base_path, pairs, radius, phenotype_rules=rules)
 }
 \seealso{
 Other distance functions: \code{\link{compute_all_nearest_distance}},

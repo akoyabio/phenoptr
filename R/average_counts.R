@@ -29,11 +29,17 @@ if (getRversion() >= "2.15.1")
 #'
 #' @param base_path Path to a directory containing at least
 #' one `_cell_seg_data.txt` file.
-#' @param from Specification of 'from' phenotype(s), see Details.
-#' @param to Specification of 'to' phenotype(s), see Details.
+#' @param pairs A list of pairs of phenotypes. Each entry is a two-element
+#'   vector. The result will contain values for each pair.
+#'   A single pair can be passed as a plain vector.
 #' @param radius The radius or radii to search within.
+#' @param phenotype_rules (Optional) A named list.
+#'   The item names are the phenotype names.
+#'   The values are selectors for [select_rows].
+#'   For any phenotype not included in `phenotype_rules`,
+#'   the name in `pairs` is used directly as the phenotype.
 #' @param category Optional tissue categories to restrict both `from` and
-#' `to`.
+#' `to` phenotypes.
 #' @param verbose If TRUE, display progress.
 #' @return A `data_frame` containing these columns:
 #'   \describe{
@@ -51,35 +57,40 @@ if (getRversion() >= "2.15.1")
 #' @examples
 #' base_path = system.file("extdata", "TMA", package = "phenoptr")
 #'
-#' # Count tumor cells near macrophages and tumor cells near CD8 separately,
+#' # Count tumor cells near macrophages, and tumor cells near CD8 separately,
 #' # in tumor and stroma tissue categories separately.
-#' from = list('tumor')
-#' to = list('macrophage CD68', 'cytotoxic CD8')
+#' pairs = list(c('tumor', 'macrophage CD68'),
+#'              c('tumor', 'cytotoxic CD8'))
 #' radius = c(10, 25)
 #' category = list('tumor', 'stroma')
-#' count_within_batch(base_path, from, to, radius, category)
+#' count_within_batch(base_path, pairs, radius, category)
 #'
-#' # Count tumor cells near any T cell in all tissue categories
-#' to = list(c('cytotoxic CD8', 'helper CD4', 'T reg Foxp3'))
-#' count_within_batch(base_path, from, to, radius)
+#' # Count tumor cells near any T cell in all tissue categories.
+#' # Use `phenotype_rules` to define the T cell phenotype
+#' pairs = c('tumor', 'T cell')
+#' rules = list(
+#' 'T cell'=c('cytotoxic CD8', 'helper CD4', 'T reg Foxp3'))
+#' count_within_batch(base_path, pairs, radius, phenotype_rules=rules)
 #' @md
 #' @export
 #' @family distance functions
 #' @importFrom magrittr "%>%"
-count_within_batch = function(base_path, from, to, radius,
-                              category=NA, verbose=TRUE) {
+count_within_batch = function(base_path, pairs, radius, category=NA,
+                              phenotype_rules=NULL, verbose=TRUE) {
   files = list_cell_seg_files(base_path)
   if (length(files) == 0)
     stop('No cell seg files found in ', base_path)
 
-  stopifnot(is.list(from), length(from) > 0)
-  stopifnot(is.list(to), length(to) > 0)
+  # Allow a single pair to be specified as a plain vector
+  if (is.character(pairs) && length(pairs)==2)
+    pairs = list(pairs)
 
-  all_phenotypes = c(from, to, recursive=TRUE)
-  if (any(purrr::map_lgl(all_phenotypes, purrr::is_formula)))
-    stop('Formula selection is not supported in count_within.')
+  stopifnot(is.list(pairs), length(pairs) > 0)
 
-  combos = purrr::cross_n(list(from=from, to=to, category=category))
+  all_phenotypes = unique(do.call(c, pairs))
+  phenotype_rules = make_phenotype_rules(all_phenotypes, phenotype_rules)
+
+  combos = purrr::cross_n(list(pair=pairs, category=category))
 
   # Loop through all the cell seg data files
   purrr::map_df(files, function(path) {
@@ -92,7 +103,6 @@ count_within_batch = function(base_path, from, to, radius,
     slide = as.character(csd[1, 'Slide ID'])
 
     # Subset to what we care about, for faster distance calculation
-    csd = csd %>% dplyr::filter(Phenotype %in% all_phenotypes)
     if (!anyNA(category))
       csd = csd %>% dplyr::filter(`Tissue Category` %in% category)
 
@@ -103,13 +113,17 @@ count_within_batch = function(base_path, from, to, radius,
       purrr::map_df(combos, function(row) {
       # Call count_within for each item in combos
       # count_within handles multiple radii
-      purrr::invoke(.f=count_within, .x=row,
-                    csd=csd, radius=radius, dst=dst) %>%
+      from = row$pair[1]
+      from_sel = phenotype_rules[[from]]
+      to = row$pair[2]
+      to_sel = phenotype_rules[[to]]
+      count_within(csd=csd, from=from_sel, to=to_sel, category=row$category,
+                    radius=radius, dst=dst) %>%
         # Add columns for from, to, category
         tibble::add_column(
           category = ifelse(is.na(row$category), 'all', row$category),
-          from=paste(row$from, collapse=' '),
-          to=paste(row$to, collapse=' '),
+          from=from,
+          to=to,
           .before=1)
       }) %>%
       # Add columns for slide and source
@@ -208,17 +222,16 @@ count_within = function(csd, from, to, radius, category=NA, dst=NULL) {
 
   stopifnot(length(radius) > 0, all(radius>0))
 
+  # If a category is provided, subset now
+  if (!is.na(category)) {
+    category_cells = csd$`Tissue Category`==category
+    csd = csd[category_cells,]
+    if (!is.null(dst))
+      dst = dst[category_cells, category_cells, drop=FALSE]
+  }
+
   if (is.null(dst))
     dst = distance_matrix(csd)
-
-  # Which cells are in the from and to phenotypes?
-  if (!is.na(category)) {
-    tissue_f = stats::as.formula(paste0('~`Tissue Category`=="', category, '"'))
-    if (is.character(from)) from = list(from)
-    from = c(from, list(tissue_f))
-    if (is.character(to)) to = list(to)
-    to = c(to, list(tissue_f))
-  }
 
   dst = subset_distance_matrix(csd, dst, from, to)
   if (prod(dim(dst))>0) {

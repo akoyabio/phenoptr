@@ -12,7 +12,7 @@
 
 <meta name="author" content="Kent Johnson" />
 
-<meta name="date" content="2017-07-18" />
+<meta name="date" content="2017-07-20" />
 
 <title>Selecting cells within a cell segmentation table</title>
 
@@ -70,40 +70,80 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">Selecting cells within a cell segmentation table</h1>
 <h4 class="author"><em>Kent Johnson</em></h4>
-<h4 class="date"><em>2017-07-18</em></h4>
+<h4 class="date"><em>2017-07-20</em></h4>
 
 
 <div id="TOC">
 <ul>
+<li><a href="#selecting-phenotypes">Selecting phenotypes</a><ul>
 <li><a href="#select-a-single-phenotype">Select a single phenotype</a></li>
-<li><a href="#select-multiple-phenotypes">Select multiple phenotypes</a></li>
+<li><a href="#group-multiple-phenotypes">Group multiple phenotypes</a></li>
 <li><a href="#flexible-selection-using-expressions">Flexible selection using expressions</a></li>
+</ul></li>
+<li><a href="#selecting-pairs-of-phenotypes">Selecting pairs of phenotypes</a><ul>
+<li><a href="#pairs-of-existing-phenotypes">Pairs of existing phenotypes</a></li>
+<li><a href="#defining-new-phenotypes">Defining new phenotypes</a></li>
+</ul></li>
 </ul>
 </div>
 
 <p><code>phenoptr</code> includes a flexible mechanism for selecting cells (i.e. rows) from a cell seg table. The mechanism is implemented in <code>select_rows</code> and usable from any function that supports it, including <code>count_touching_cells</code> and <code>count_within</code>.</p>
-<p>This vignette uses the <code>from</code> parameter of <code>count_within</code> for examples.</p>
-<div id="select-a-single-phenotype" class="section level2">
-<h2>Select a single phenotype</h2>
-<p>The simplest selector is the name of a single phenotype. For example, to select all ‘CD8’ cells as the <code>from</code> phenotype, use the parameter</p>
+<div id="selecting-phenotypes" class="section level2">
+<h2>Selecting phenotypes</h2>
+<p>This section of the vignette uses the <code>from</code> parameter of <code>count_within</code> for examples.</p>
+<div id="select-a-single-phenotype" class="section level3">
+<h3>Select a single phenotype</h3>
+<p>The simplest selector is the name of a single phenotype. For example, to select all <code>CD8</code> cells as the <code>from</code> phenotype, use the parameter</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">from=<span class="st">'CD8'</span></code></pre></div>
 </div>
-<div id="select-multiple-phenotypes" class="section level2">
-<h2>Select multiple phenotypes</h2>
-<p>Multiple phenotypes may selected together by including each name in a character vector. For example, to select cells phenotyped as either ‘PDL1+ tumor’ or ‘PDL1- tumor’, use the parameter</p>
+<div id="group-multiple-phenotypes" class="section level3">
+<h3>Group multiple phenotypes</h3>
+<p>Multiple phenotypes may selected together by including each name in a character vector. For example, to select cells phenotyped as either <code>PDL1+ tumor</code> or <code>PDL1- tumor</code>, use the parameter</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">from=<span class="kw">c</span>(<span class="st">'PDL1+ tumor'</span>, <span class="st">'PDL1- tumor'</span>)</code></pre></div>
 </div>
-<div id="flexible-selection-using-expressions" class="section level2">
-<h2>Flexible selection using expressions</h2>
+<div id="flexible-selection-using-expressions" class="section level3">
+<h3>Flexible selection using expressions</h3>
 <p>For more flexibility, <code>select_rows</code> supports selection using any valid expression. Expressions are written using one-sided formulas. The formulas are evaluated in the context of the cell seg table so they may reference any column of the table.</p>
 <p>For example, to select cells with PDL1 expression greater than 0.5, use an expression like <code>~`Entire Cell PDL1 (Opal 620) Mean`&gt;0.5</code>. In this example, the column name is <code>Entire Cell PDL1 (Opal 620) Mean</code>.</p>
-<p>Expressions and phenotype names may be combined in a list. For example, to select ‘CD8’ cells with PDL1&gt;0.5, use the parameter</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">from=<span class="kw">list</span>(<span class="st">'CD8'</span>, ~<span class="st">`</span><span class="dt">Entire Cell PDL1 (Opal 620) Mean</span><span class="st">`</span>&gt;<span class="fl">0.5</span>)</code></pre></div>
+<p>Expressions and phenotype names may be combined in a list. For example, to select <code>tumor</code> cells with PDL1&gt;0.5, use the parameter</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">from=<span class="kw">list</span>(<span class="st">'tumor'</span>, ~<span class="st">`</span><span class="dt">Entire Cell PDL1 (Opal 620) Mean</span><span class="st">`</span>&gt;<span class="fl">0.5</span>)</code></pre></div>
 <p>A few things to note about formula expressions:</p>
 <ul>
 <li>Expressions are evaluated in the context of the cell seg table. Names used in the expression must match column names in the table. If the table was read using <code>read_cell_seg_data(path, remove_units=TRUE)</code> (the default), the table names will be abbreviated compared to the names in the file.</li>
 <li>Names which are not valid R symbol names—this includes most of the column names in a cell seg table—must be enclosed in backticks (`) as in the example above.</li>
 </ul>
+</div>
+</div>
+<div id="selecting-pairs-of-phenotypes" class="section level2">
+<h2>Selecting pairs of phenotypes</h2>
+<p>Several functions in <code>phenoptr</code> operate on pairs of phenotypes and have arguments <code>pairs</code> and <code>phenotype_rules</code>. These functions build on <code>select_rows</code> to allow allow flexible selection of pairs of phenotypes.</p>
+<div id="pairs-of-existing-phenotypes" class="section level3">
+<h3>Pairs of existing phenotypes</h3>
+<p>In the simplest usage, the names in <code>pairs</code> are the names of phenotypes in the cell seg data. In this case, <code>pairs</code> just lists the desired phenotypes. For example, to pair <code>tumor</code> cells with <code>CD8</code> cells, use the argument</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pairs =<span class="st"> </span><span class="kw">list</span>(<span class="kw">c</span>(<span class="st">'tumor'</span>, <span class="st">'CD8'</span>))</code></pre></div>
+<p>For a single pair, a list is not required so this can be simplified to</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pairs =<span class="st"> </span><span class="kw">c</span>(<span class="st">'tumor'</span>, <span class="st">'CD8'</span>)</code></pre></div>
+<p>For multiple pairs, list each pair separately. For example, to pair <code>tumor</code> cells first with <code>CD8</code> cells and then with <code>CD68</code> cells, use the argument</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pairs =<span class="st"> </span><span class="kw">list</span>(<span class="kw">c</span>(<span class="st">'tumor'</span>, <span class="st">'CD8'</span>),
+             <span class="kw">c</span>(<span class="st">'tumor'</span>, <span class="st">'CD68'</span>))</code></pre></div>
+</div>
+<div id="defining-new-phenotypes" class="section level3">
+<h3>Defining new phenotypes</h3>
+<p>You may want to define a new phenotype using grouping or expressions as shown in the “Selecting phenotypes” sections above. To do this, use the <code>phenotype_rules</code> argument to associate a <code>select_rows</code> rule with a name; then use the new name in the pairs argument.</p>
+<p>For example, to create a <code>T Cell</code> phenotype which matches <code>CD8</code> and <code>T reg</code> phenotypes, and pair it with a <code>PDL1+ tumor</code> phenotype which applies a threshold to tumor cells, use these arguments:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pairs =<span class="st"> </span><span class="kw">c</span>(<span class="st">'PDL1+ tumor'</span>, <span class="st">'T Cell'</span>)
+phenotype_rules =<span class="st"> </span><span class="kw">list</span>(
+  <span class="st">'PDL1+ tumor'</span>=<span class="kw">list</span>(<span class="st">'tumor'</span>, ~<span class="st">`</span><span class="dt">Entire Cell PDL1 (Opal 620) Mean</span><span class="st">`</span>&gt;<span class="fl">0.5</span>),
+  <span class="st">'T Cell'</span>=<span class="kw">c</span>(<span class="st">'CD8'</span>, <span class="st">'T reg'</span>))</code></pre></div>
+<p><code>phenotype_rules</code> only needs to include phenotypes which are not in the cell seg data. For example, to extend the previous example to include a pairing from <code>PDL1+ tumor</code> to <code>CD68</code> cells, where <code>CD68</code> is an existing phenotype, extend the <code>pairs</code> argument without changing <code>phenotype_rules</code>:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pairs =<span class="st"> </span><span class="kw">list</span>(
+  <span class="kw">c</span>(<span class="st">'PDL1+ tumor'</span>, <span class="st">'T Cell'</span>),
+  <span class="kw">c</span>(<span class="st">'PDL1+ tumor'</span>, <span class="st">'CD68'</span>))
+phenotype_rules =<span class="st"> </span><span class="kw">list</span>(
+  <span class="st">'PDL1+ tumor'</span>=<span class="kw">list</span>(<span class="st">'tumor'</span>, ~<span class="st">`</span><span class="dt">Entire Cell PDL1 (Opal 620) Mean</span><span class="st">`</span>&gt;<span class="fl">0.5</span>),
+  <span class="st">'T Cell'</span>=<span class="kw">c</span>(<span class="st">'CD8'</span>, <span class="st">'T reg'</span>)
+)</code></pre></div>
+</div>
 </div>
 
 
