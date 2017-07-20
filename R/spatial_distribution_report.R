@@ -1,6 +1,7 @@
 # Suppress CMD CHECK notes for things that look like global vars
 if (getRversion() >= "2.15.1")
   utils::globalVariables(c(
+    "Cell ID",
     "Cell X Position", "Cell Y Position",
     "To X Position", "To Y Position",
     "x", "y"

@@ -11,7 +11,6 @@ check_within = function(within, radius, from, to) {
   expect_equal(within$to_count, to)
 }
 
-csd_for_test =
 # Smoke test of count_within. Mostly checks that it doesn't barf and
 # that the correct cells are selected.
 test_that("count_within works", {
