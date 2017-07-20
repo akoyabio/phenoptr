@@ -8,7 +8,7 @@ knitr::opts_chunk$set(eval=FALSE)
 #    c('tumor', 'CD68')
 #  )
 #  colors=list(tumor='cyan', CD8='yellow', CD68='magenta')
-#  count_touching_cells(cell_seg_path, pairs, colors=colors)
+#  count_touching_cells(cell_seg_path, pairs, colors)
 
 ## ----phenotype_rules-----------------------------------------------------
 #  pairs = list(
@@ -20,7 +20,7 @@ knitr::opts_chunk$set(eval=FALSE)
 #    'tumor PLD1+'=list('tumor', ~`Entire Cell PDL1 (Opal 620) Mean`>0.5)
 #  )
 #  colors=list('tumor PLD1+'='cyan', CD8='yellow', CD68='magenta')
-#  count_touching_cells(cell_seg_path, pairs, phenotype_rules, colors=colors)
+#  count_touching_cells(cell_seg_path, pairs, colors, phenotype_rules)
 
 ## ----process_directory---------------------------------------------------
 #  # Directory containing data files
@@ -35,7 +35,7 @@ knitr::opts_chunk$set(eval=FALSE)
 #  # Count and visualize touching cells
 #  touch_counts = purrr::map_df(files, function(path) {
 #    cat('Processing', path, '\n')
-#    count_touching_cells(path, pairs, colors=colors, phenotype_rules,
+#    count_touching_cells(path, pairs, colors, phenotype_rules,
 #                         output_base=output_base)
 #  })
 

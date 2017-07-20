@@ -4,9 +4,9 @@
 \alias{count_touching_cells}
 \title{Find and count touching cells for pairs of phenotypes.}
 \usage{
-count_touching_cells(cell_seg_path, pairs, phenotype_rules = NULL,
-  categories = NULL, colors = NULL, write_images = !is.null(colors),
-  output_base = NULL)
+count_touching_cells(cell_seg_path, pairs, colors = NULL,
+  phenotype_rules = NULL, categories = NULL,
+  write_images = !is.null(colors), output_base = NULL)
 }
 \arguments{
 \item{cell_seg_path}{The path to the cell seg data file. The same directory
@@ -17,6 +17,9 @@ must also contain \code{_memb_seg_map.tif} or \code{_binary_seg_maps.tif} and, i
 vector. The result will contain one line for each pair showing the
 number of cells and number of touches.}
 
+\item{colors}{A named list of phenotype colors to use when drawing
+the output. Only used when \code{write_images} is \code{TRUE}.}
+
 \item{phenotype_rules}{A named list. The item names are the phenotype
 names.
 The values are selectors for \link{select_rows}.
@@ -25,9 +28,6 @@ the name in \code{pairs} are used directly as the phenotype.}
 
 \item{categories}{If given, a vector or list of tissue category names.
 Categories not in the list will be excluded from the analysis.}
-
-\item{colors}{A named list of phenotype colors to use when drawing
-the output. Only used when \code{write_images} is \code{TRUE}.}
 
 \item{write_images}{If \code{TRUE}, for each pair, write an image showing the
 touching pairs. Requires \code{colors} and a composite image in the same
@@ -93,7 +93,7 @@ pairs = list(c("macrophage CD68", "cytotoxic CD8"))
 colors = c("macrophage CD68"='red', "cytotoxic CD8"='blue')
 output_base = path.expand('~/touches')
 
-count_touching_cells(cell_seg_path, pairs, colors=colors,
+count_touching_cells(cell_seg_path, pairs, color,
   output_base=output_base)
 
 # This example will count and image all files in the `base_path` directory.
@@ -116,7 +116,7 @@ colors = list(
 # Count and visualize touching cells
 touch_counts = purrr::map_df(files, function(path) {
   cat('Processing', path, '\\n')
-  count_touching_cells(path, pairs, colors=colors, output_base=output_base)
+  count_touching_cells(path, pairs, colors, output_base=output_base)
 })
 
 # Save the result
@@ -140,8 +140,8 @@ phenotype_rules = list(
 
 touch_counts = map_df(files, function(path) {
   cat('Processing', path, '\\n')
-  count_touching_cells(path, pairs, phenotype_rules,
-                       categories='tumor', colors=colors,
+  count_touching_cells(path, pairs, colors, phenotype_rules,
+                       categories='tumor',
                        output_base=output_base)
 })
 

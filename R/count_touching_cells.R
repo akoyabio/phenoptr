@@ -30,6 +30,8 @@
 #' @param pairs A list of pairs of phenotypes. Each entry is a two-element
 #'   vector. The result will contain one line for each pair showing the
 #'   number of cells and number of touches.
+#' @param colors A named list of phenotype colors to use when drawing
+#'   the output. Only used when `write_images` is `TRUE`.
 #' @param phenotype_rules A named list. The item names are the phenotype
 #'   names.
 #'   The values are selectors for [select_rows].
@@ -37,8 +39,6 @@
 #'   the name in `pairs` are used directly as the phenotype.
 #' @param categories If given, a vector or list of tissue category names.
 #' Categories not in the list will be excluded from the analysis.
-#' @param colors A named list of phenotype colors to use when drawing
-#'   the output. Only used when `write_images` is `TRUE`.
 #' @param write_images If `TRUE`, for each pair, write an image showing the
 #' touching pairs. Requires `colors` and a composite image in the same
 #' directory as the cell seg table.
@@ -77,7 +77,7 @@
 #' colors = c("macrophage CD68"='red', "cytotoxic CD8"='blue')
 #' output_base = path.expand('~/touches')
 #'
-#' count_touching_cells(cell_seg_path, pairs, colors=colors,
+#' count_touching_cells(cell_seg_path, pairs, color,
 #'   output_base=output_base)
 #'
 #' # This example will count and image all files in the `base_path` directory.
@@ -100,7 +100,7 @@
 #' # Count and visualize touching cells
 #' touch_counts = purrr::map_df(files, function(path) {
 #'   cat('Processing', path, '\n')
-#'   count_touching_cells(path, pairs, colors=colors, output_base=output_base)
+#'   count_touching_cells(path, pairs, colors, output_base=output_base)
 #' })
 #'
 #' # Save the result
@@ -124,8 +124,8 @@
 #'
 #' touch_counts = map_df(files, function(path) {
 #'   cat('Processing', path, '\n')
-#'   count_touching_cells(path, pairs, phenotype_rules,
-#'                        categories='tumor', colors=colors,
+#'   count_touching_cells(path, pairs, colors, phenotype_rules,
+#'                        categories='tumor',
 #'                        output_base=output_base)
 #' })
 #'
@@ -134,8 +134,8 @@
 #' @md
 #' @export
 #' @importFrom magrittr %>%
-count_touching_cells = function(cell_seg_path, pairs, phenotype_rules=NULL,
-                                categories=NULL, colors=NULL,
+count_touching_cells = function(cell_seg_path, pairs, colors=NULL,
+                                phenotype_rules=NULL, categories=NULL,
                                 write_images=!is.null(colors), output_base=NULL)
 {
   # Make phenotype_rules for any not already specified
