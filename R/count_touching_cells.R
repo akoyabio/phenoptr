@@ -31,10 +31,10 @@
 #'   vector. The result will contain one line for each pair showing the
 #'   number of cells and number of touches.
 #' @param phenotype_rules A named list. The item names are the phenotype
-#'   names and must include all the names in `pairs`.
+#'   names.
 #'   The values are selectors for [select_rows].
-#'   If `phenotype_rules` is `NULL`, the names in `pairs` are used directly as
-#'   the phenotypes.
+#'   For any phenotype not included in `phenotype_rules`,
+#'   the name in `pairs` are used directly as the phenotype.
 #' @param categories If given, a vector or list of tissue category names.
 #' Categories not in the list will be excluded from the analysis.
 #' @param colors A named list of phenotype colors to use when drawing
@@ -138,14 +138,9 @@ count_touching_cells = function(cell_seg_path, pairs, phenotype_rules=NULL,
                                 categories=NULL, colors=NULL,
                                 write_images=!is.null(colors), output_base=NULL)
 {
-  # Check or make phenotype_rules
+  # Make phenotype_rules for any not already specified
   phenotypes = unique(do.call(c, pairs))
-  if (is.null(phenotype_rules))
-  {
-    phenotype_rules = make_phenotype_rules(phenotypes)
-  } else {
-    stopifnot(all(phenotypes %in% names(phenotype_rules)))
-  }
+  phenotype_rules = make_phenotype_rules(phenotypes, phenotype_rules)
 
   # Check the requirements for writing images, if requested
   if (write_images) {
@@ -323,12 +318,6 @@ count_touching_cells = function(cell_seg_path, pairs, phenotype_rules=NULL,
 
   # Return the data
   result
-}
-
-# Make rules that select phenotypes. This is the simplest selection, for
-# when phenotypes are defined directly and there is no positivity criterion.
-make_phenotype_rules <- function (phenotypes) {
-  as.list(phenotypes) %>% purrr::set_names()
 }
 
 # Given a data frame of cells and membrane and nuclear masks, make an image with

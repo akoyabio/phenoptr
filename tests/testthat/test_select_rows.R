@@ -107,3 +107,34 @@ test_that('Normalize selector works', {
       tumor='tumor'
     ))
 })
+
+test_that("make_phenotype_rules works", {
+  phenotypes = c('CD8', 'CD68', 'tumor')
+
+  # Test no existing rules
+  expected = purrr::set_names(as.list(phenotypes))
+  expect_equal(make_phenotype_rules(phenotypes), expected)
+
+  rules = list()
+  expect_equal(make_phenotype_rules(phenotypes, rules), expected)
+
+  # Test errors
+  rules = list('tumor')
+  expect_error(make_phenotype_rules(phenotypes, rules), "named")
+  expect_error(make_phenotype_rules(phenotypes, ''), "list")
+
+  rules = c(expected, list(CD4='CD4'))
+  expect_error(make_phenotype_rules(phenotypes, rules), "unused.*CD4")
+
+  # Specify some rules
+  rules = list(tumor=c('tumor PDL1+', 'tumor PDL1-'))
+  expected = list(tumor=c('tumor PDL1+', 'tumor PDL1-'),
+                  CD8='CD8', CD68='CD68')
+  expect_equal(make_phenotype_rules(phenotypes, rules), expected)
+
+  rules = list(
+    CD8=~`Membrane Expression`>3,
+    CD68=list('CD68', ~Expression2>1),
+    tumor= c('tumor PDL1+', 'tumor PDL1-'))
+  expect_equal(make_phenotype_rules(phenotypes, rules), rules)
+})

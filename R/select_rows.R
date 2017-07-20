@@ -75,3 +75,33 @@ normalize_selector = function(sel) {
   names(sel) = purrr::map_chr(sel, name_item)
   sel
 }
+
+# Make rules that select phenotypes.
+#
+# Given a list of phenotype names and a (possibly empty) list of rules
+# which create some or all of the phenotypes, return a complete list of
+# rules.
+# @param phenotypes A list or vector of phenotype names. Values may be
+# existing phenotypes or compound phenotypes.
+# @param existing_rules A named list of phenotype rules.
+# @return A named list of rules containing one entry for each member
+# of `phenotypes`.
+make_phenotype_rules <- function (phenotypes, existing_rules=NULL) {
+  if (is.null(existing_rules))
+    existing_rules = list()
+  else if (!is.list(existing_rules)
+           ||(length(existing_rules)>0 && is.null(names(existing_rules))))
+      stop("existing_rules must be a named list.")
+
+  existing_names = names(existing_rules)
+  extra_names = setdiff(existing_names, phenotypes)
+  if (length(extra_names) > 0)
+    stop("A rule was given for an unused phenotype: ",
+         paste(extra_names, sep=', '))
+
+  # The default rule is just the phenotype name itself.
+  missing_names = setdiff(phenotypes, existing_names)
+  new_rules = purrr::set_names(as.list(missing_names))
+
+  c(existing_rules, new_rules)
+}

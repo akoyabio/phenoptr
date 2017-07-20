@@ -18,10 +18,10 @@ vector. The result will contain one line for each pair showing the
 number of cells and number of touches.}
 
 \item{phenotype_rules}{A named list. The item names are the phenotype
-names and must include all the names in \code{pairs}.
+names.
 The values are selectors for \link{select_rows}.
-If \code{phenotype_rules} is \code{NULL}, the names in \code{pairs} are used directly as
-the phenotypes.}
+For any phenotype not included in \code{phenotype_rules},
+the name in \code{pairs} are used directly as the phenotype.}
 
 \item{categories}{If given, a vector or list of tissue category names.
 Categories not in the list will be excluded from the analysis.}

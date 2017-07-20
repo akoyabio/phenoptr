@@ -17,9 +17,7 @@ knitr::opts_chunk$set(eval=FALSE)
 #  )
 #  
 #  phenotype_rules = list(
-#    'tumor PLD1+'=list('tumor', ~`Entire Cell PDL1 (Opal 620) Mean`>0.5),
-#    CD8='CD8',
-#    CD68='CD68'
+#    'tumor PLD1+'=list('tumor', ~`Entire Cell PDL1 (Opal 620) Mean`>0.5)
 #  )
 #  colors=list('tumor PLD1+'='cyan', CD8='yellow', CD68='magenta')
 #  count_touching_cells(cell_seg_path, pairs, phenotype_rules, colors=colors)

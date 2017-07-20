@@ -48,8 +48,8 @@ count_touching_cells(cell_seg_path, pairs, colors=colors)
 
 For more flexibility, use the `phenotype_rules` argument. For example,
 this code repeats the previous analysis limiting it to tumor cells with PDL1
-above a threshold. Note that if `phenotype_rules` is provided, it must
-include definitions for all phenotypes.
+above a threshold. Note that `phenotype_rules` only needs to include
+definitions for phenotypes which don't match the names in `pairs`.
 
 ```{r phenotype_rules}
 pairs = list(
@@ -58,9 +58,7 @@ pairs = list(
 )
 
 phenotype_rules = list(
-  'tumor PLD1+'=list('tumor', ~`Entire Cell PDL1 (Opal 620) Mean`>0.5), 
-  CD8='CD8', 
-  CD68='CD68'
+  'tumor PLD1+'=list('tumor', ~`Entire Cell PDL1 (Opal 620) Mean`>0.5)
 )
 colors=list('tumor PLD1+'='cyan', CD8='yellow', CD68='magenta')
 count_touching_cells(cell_seg_path, pairs, phenotype_rules, colors=colors)
