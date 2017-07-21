@@ -143,7 +143,7 @@ count_touching_cells = function(cell_seg_path, pairs, colors=NULL,
   if (is.character(pairs) && length(pairs)==2)
     pairs = list(pairs)
 
-    # Make phenotype_rules for any not already specified
+  # Make phenotype_rules for any not already specified
   phenotypes = unique(do.call(c, pairs))
   phenotype_rules = make_phenotype_rules(phenotypes, phenotype_rules)
 
