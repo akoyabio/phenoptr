@@ -109,12 +109,12 @@
 
     
     <p>Creates an HTML report visualizing the location
-and nearest-neighbor relations for cells of two chosen phenotypes
+and nearest-neighbor relations for cells of pairs of phenotypes
 in a single field.</p>
     
 
-    <pre class="usage"><span class='fu'>spatial_distribution_report</span>(<span class='no'>cell_seg_path</span>, <span class='no'>phenotypes</span>, <span class='no'>colors</span>,
-  <span class='kw'>output_path</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+    <pre class="usage"><span class='fu'>spatial_distribution_report</span>(<span class='no'>cell_seg_path</span>, <span class='no'>pairs</span>, <span class='no'>colors</span>,
+  <span class='kw'>phenotype_rules</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>output_path</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>pixels_per_micron</span> <span class='kw'>=</span> <span class='fu'>getOption</span>(<span class='st'>"phenoptr.pixels.per.micron"</span>))</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
@@ -125,12 +125,21 @@ in a single field.</p>
       <td><p>Path to a cell seg data file.</p></td>
     </tr>
     <tr>
-      <th>phenotypes</th>
-      <td><p>A character vector containing two phenotype names.</p></td>
+      <th>pairs</th>
+      <td><p>A list of pairs of phenotypes. Each entry is a two-element
+vector. The report will contain one section for each pair showing the
+nearest neighbor relations between the two phenotypes.</p></td>
     </tr>
     <tr>
       <th>colors</th>
-      <td><p>A character vector of two color specifications.</p></td>
+      <td><p>A named list of phenotype colors to use when drawing
+the output.</p></td>
+    </tr>
+    <tr>
+      <th>phenotype_rules</th>
+      <td><p>(Optional) A named list.
+Item names are phenotype names and must match entries in <code>pairs</code>.
+Item values are selectors for <a href='select_rows.html'>select_rows</a>.</p></td>
     </tr>
     <tr>
       <th>output_path</th>
@@ -150,6 +159,8 @@ output will be written to the directory containing <code>cell_seg_path</code>.</
 or composite image of the field
 is available, it will be used as a background.</p>
 <p>The report is saved to the same directory as the input file.</p>
+<p>See <code><a href='https://cran.rstudio.com/web/packages/phenoptr/vignettes/selecting_cells.html'>vignette('selecting_cells', package='phenoptr')</a></code> for more on
+the use of <code>pairs</code> and <code>phenotype_rules</code>.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
@@ -170,11 +181,26 @@ is available, it will be used as a background.</p>
                        <span class='st'>"Core[1,5,6,1]_[21302,15107]_cell_seg_data.txt"</span>,
                        <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"phenoptr"</span>)
 
-<span class='no'>phenotypes</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"macrophage CD68"</span>, <span class='st'>"cytotoxic CD8"</span>)
-<span class='no'>colors</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>'red'</span>, <span class='st'>'blue'</span>)
+<span class='no'>pairs</span> <span class='kw'>=</span> <span class='fu'>list</span>(
+  <span class='fu'>c</span>(<span class='st'>"tumor"</span>, <span class='st'>"cytotoxic CD8"</span>),
+  <span class='fu'>c</span>(<span class='st'>"tumor"</span>, <span class='st'>"macrophage CD68"</span>))
+<span class='no'>colors</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='kw'>tumor</span><span class='kw'>=</span><span class='st'>"cyan"</span>, <span class='st'>"macrophage CD68"</span><span class='kw'>=</span><span class='st'>"red"</span>, <span class='st'>"cytotoxic CD8"</span><span class='kw'>=</span><span class='st'>"yellow"</span>)
 <span class='no'>out_path</span> <span class='kw'>=</span> <span class='fu'>path.expand</span>(<span class='st'>'~/spatial_distribution_report.html'</span>)
 
-<span class='fu'>spatial_distribution_report</span>(<span class='no'>cell_seg_path</span>, <span class='no'>phenotypes</span>, <span class='no'>colors</span>, <span class='no'>out_path</span>)
+<span class='fu'>spatial_distribution_report</span>(<span class='no'>cell_seg_path</span>, <span class='no'>pairs</span>, <span class='no'>colors</span>,
+  <span class='kw'>output_path</span><span class='kw'>=</span><span class='no'>out_path</span>)
+
+<span class='co'># This example extends the previous example to restrict tumor cells to</span>
+<span class='co'># only PDL1+ cells.</span>
+<span class='no'>pairs</span> <span class='kw'>=</span> <span class='fu'>list</span>(
+  <span class='fu'>c</span>(<span class='st'>"tumor PDL1+"</span>, <span class='st'>"cytotoxic CD8"</span>),
+  <span class='fu'>c</span>(<span class='st'>"tumor PDL1+"</span>, <span class='st'>"macrophage CD68"</span>))
+<span class='no'>colors</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"tumor PDL1+"</span><span class='kw'>=</span><span class='st'>"cyan"</span>, <span class='st'>"macrophage CD68"</span><span class='kw'>=</span><span class='st'>"red"</span>, <span class='st'>"cytotoxic CD8"</span><span class='kw'>=</span><span class='st'>"yellow"</span>)
+<span class='no'>phenotype_rules</span><span class='kw'>=</span><span class='fu'>list</span>(
+  <span class='st'>"tumor PDL1+"</span><span class='kw'>=</span><span class='fu'>list</span>(<span class='st'>"tumor"</span>, ~<span class='no'>`Entire Cell PDL1 (Opal 620) Mean`</span><span class='kw'>&gt;</span><span class='fl'>5</span>))
+
+<span class='fu'>spatial_distribution_report</span>(<span class='no'>cell_seg_path</span>, <span class='no'>pairs</span>, <span class='no'>colors</span>, <span class='no'>phenotype_rules</span>,
+  <span class='kw'>output_path</span><span class='kw'>=</span><span class='no'>out_path</span>)
 <span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

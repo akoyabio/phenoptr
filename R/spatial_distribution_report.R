@@ -10,7 +10,7 @@ if (getRversion() >= "2.15.1")
 #' Create a spatial distribution report.
 #'
 #' Creates an HTML report visualizing the location
-#' and nearest-neighbor relations for cells of two chosen phenotypes
+#' and nearest-neighbor relations for cells of pairs of phenotypes
 #' in a single field.
 #'
 #' A cell seg data file for the field is required. If a tissue segmentation
@@ -19,9 +19,18 @@ if (getRversion() >= "2.15.1")
 #'
 #' The report is saved to the same directory as the input file.
 #'
+#' See `vignette('selecting_cells', package='phenoptr')` for more on
+#' the use of `pairs` and `phenotype_rules`.
+#'
 #' @param cell_seg_path Path to a cell seg data file.
-#' @param phenotypes A character vector containing two phenotype names.
-#' @param colors A character vector of two color specifications.
+#' @param pairs A list of pairs of phenotypes. Each entry is a two-element
+#'   vector. The report will contain one section for each pair showing the
+#'   nearest neighbor relations between the two phenotypes.
+#' @param colors A named list of phenotype colors to use when drawing
+#'   the output.
+#' @param phenotype_rules (Optional) A named list.
+#'   Item names are phenotype names and must match entries in `pairs`.
+#'   Item values are selectors for [select_rows].
 #' @param output_path Optional, path to the output HTML file. If omitted,
 #' output will be written to the directory containing `cell_seg_path`.
 #' @param pixels_per_micron Conversion factor to microns
@@ -36,21 +45,41 @@ if (getRversion() >= "2.15.1")
 #'                        "Core[1,5,6,1]_[21302,15107]_cell_seg_data.txt",
 #'                        package = "phenoptr")
 #'
-#' phenotypes = c("macrophage CD68", "cytotoxic CD8")
-#' colors = c('red', 'blue')
+#' pairs = list(
+#'   c("tumor", "cytotoxic CD8"),
+#'   c("tumor", "macrophage CD68"))
+#' colors = c(tumor="cyan", "macrophage CD68"="red", "cytotoxic CD8"="yellow")
 #' out_path = path.expand('~/spatial_distribution_report.html')
 #'
-#' spatial_distribution_report(cell_seg_path, phenotypes, colors, out_path)
+#' spatial_distribution_report(cell_seg_path, pairs, colors,
+#'   output_path=out_path)
+#'
+#' # This example extends the previous example to restrict tumor cells to
+#' # only PDL1+ cells.
+#' pairs = list(
+#'   c("tumor PDL1+", "cytotoxic CD8"),
+#'   c("tumor PDL1+", "macrophage CD68"))
+#' colors = c("tumor PDL1+"="cyan", "macrophage CD68"="red", "cytotoxic CD8"="yellow")
+#' phenotype_rules=list(
+#'   "tumor PDL1+"=list("tumor", ~`Entire Cell PDL1 (Opal 620) Mean`>5))
+#'
+#' spatial_distribution_report(cell_seg_path, pairs, colors, phenotype_rules,
+#'   output_path=out_path)
 #' }
 #' @md
-spatial_distribution_report = function(cell_seg_path, phenotypes, colors,
-                      output_path=NULL,
+spatial_distribution_report = function(cell_seg_path, pairs, colors,
+                      phenotype_rules=NULL, output_path=NULL,
                       pixels_per_micron=getOption('phenoptr.pixels.per.micron')
                       ) {
   stopifnot(grepl('_cell_seg_data.txt', cell_seg_path))
-  stopifnot(file.exists(cell_seg_path),
-            length(phenotypes)==2,
-            length(colors)==2)
+  stopifnot(file.exists(cell_seg_path))
+
+  # Make phenotype_rules for any not already specified
+  phenotypes = unique(do.call(c, pairs))
+  phenotype_rules = make_phenotype_rules(phenotypes, phenotype_rules)
+
+  stopifnot(length(colors)==length(phenotypes),
+            all(phenotypes %in% names(colors)))
 
   if (is.null(output_path))
     output_path = sub('_cell_seg_data.txt',
@@ -67,17 +96,15 @@ spatial_distribution_report = function(cell_seg_path, phenotypes, colors,
 
 # Get a point pattern for a single phenotype
 # @param data Cell seg data
-# @param pheno List of (name, color)
+# @param pheno List of (name, color, select)
 # @param window spatstat::owin containing the points
 # @return List of (data subset, ppp, pheno)
 phenotype_as_ppp = function(data, pheno, window)
 {
-  stopifnot(pheno$name %in% unique(data$Phenotype))
-
   # Keep just the rows corresponding to the desired expression and phenotypes
   # for our data and columns containing fields of interest
   fixedColumns = c('Cell ID', 'Cell X Position', 'Cell Y Position', 'Phenotype')
-  data = droplevels(data[data$Phenotype==pheno$name,fixedColumns])
+  data = data[select_rows(data, pheno$select),fixedColumns]
 
   data = stats::na.omit(data)
 

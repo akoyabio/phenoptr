@@ -7,8 +7,10 @@ output: html_vignette
 ```{r parameters, echo=FALSE,include=FALSE,message=FALSE}
 # This document creates a spatial distribution report for two phenotypes in a
 # single frame with optional positivity thresholds for each phenotype. It
-# requires a cell seg table with phenotypes Optionally, a tissue segmentation
-# TIFF image, if provided it will be used as a background for the image plots.
+# requires a cell seg table with phenotypes. A composite
+# image, if available, will be used as a background for the plots.
+# Note: this is run in the environment of `spatial_distribution_report`
+# so local variables defined there are available here.
 library(ggplot2)
 library(magrittr)
 library(spatstat)
@@ -34,21 +36,10 @@ knitr::opts_chunk$set(echo=FALSE,fig.width=11, fig.height=8,
                       comment=NA, warning=FALSE, message=FALSE)
 
 csd = read_cell_seg_data(cell_seg_path)
+phenotype_specials = setdiff(phenotypes, unique(csd$Phenotype))
 
-pheno1 = list(
-  name=phenotypes[1], color=colors[1])
-
-pheno2 = list(
-  name=phenotypes[2], color=colors[2])
-
-# Get point pattern datasets and distance matrices; direction matters...
 window = spatstat::owin(xrange=c(0, max(csd$`Cell X Position`)),
                         yrange=c(0, max(csd$`Cell Y Position`)))
-pheno_data1 = phenotype_as_ppp(csd, pheno1, window)
-pheno_data2 = phenotype_as_ppp(csd, pheno2, window)
-
-nn_dist12 = find_nearest_neighbor(pheno_data1, pheno_data2)
-nn_dist21 = find_nearest_neighbor(pheno_data2, pheno_data1)
 
 # Segmented image for background
 if (grepl('cell_seg_data.txt', cell_seg_path))
@@ -87,11 +78,6 @@ if (exists('tissue_seg_path') && file.exists(tissue_seg_path))
 
 # Remove def'n of tissue_seg_path so we will recompute next time for new image
 rm(tissue_seg_path)
-
-# Color palette for nearest-neighbor plots
-palette = c(pheno1$color, pheno2$color)
-names(palette) = c(pheno1$name, pheno2$name)
-legend=TRUE
 ```
 
 ### Data
@@ -102,19 +88,23 @@ Spatial distribution of phenotypes from
 #### Selected phenotypes  
 
 ```{r results='asis'}
-cat('-', pheno1$name, '\n')
-cat('-', pheno2$name, '\n')
+for (name in phenotypes)
+  cat('-', name, '\n')
 ```
 
 
 ### First-order statistics
 
 ```{r results='asis'}
-cat('Number of cells:', nrow(data), '\n\n')
+cat('Number of cells:', nrow(csd), '\n\n')
 
-csd %>% dplyr::group_by(Phenotype) %>% 
-  dplyr::summarize(Count=n(), 
-                   Proportion=scales::percent(round(Count/nrow(csd), 2))) %>% 
+counts = csd %>% dplyr::group_by(Phenotype) %>% 
+  dplyr::summarize(Count=n())
+for (special in phenotype_specials)
+  counts = dplyr::add_row(counts, Phenotype=special, 
+                 Count=sum(select_rows(csd, phenotype_rules[[special]])))
+
+  counts %>% mutate(Proportion=scales::percent(round(Count/nrow(csd), 2))) %>% 
   knitr::kable(caption='Cell count and fraction of total per phenotype',
                table.attr='style="width: 30%"')
 
@@ -136,35 +126,52 @@ if (length(unique(csd$Phenotype<=8)))
 p + labs(title='Locations of all cells')
 ```
 
-```{r fig.height=6+2*(length(levels(csd$Phenotype))-1) %/% 3}
+```{r fig.height=6+2*(length(unique(csd$Phenotype))-1) %/% 3}
 p + facet_wrap(~Phenotype) + guides(color=FALSE)
 ```
 
 ### Nearest neighbors, selected phenotypes
 
 ```{r}
-nn_plot(pheno_data1, pheno_data2, nn_dist12, background, xlim, ylim)
-nn_plot(pheno_data2, pheno_data1, nn_dist21, background, xlim, ylim)
+pair_counts = NULL
+for (pair in pairs) {
+  pheno1 = list(
+    name=pair[1], color=colors[pair[[1]]], select=phenotype_rules[[pair[1]]])
+  
+  pheno2 = list(
+    name=pair[2], color=colors[pair[[2]]], select=phenotype_rules[[pair[2]]])
+  
+  # Get point pattern datasets and distance matrices; direction matters...
+  pheno_data1 = phenotype_as_ppp(csd, pheno1, window)
+  pheno_data2 = phenotype_as_ppp(csd, pheno2, window)
+  
+  nn_dist12 = find_nearest_neighbor(pheno_data1, pheno_data2)
+  nn_dist21 = find_nearest_neighbor(pheno_data2, pheno_data1)
 
-# Find mutual pairs by merging nn_dist12 and nn_dist21
-# First get just the nnDist21 cell ids and rename them to match nnDist12
-nn_mutual = nn_dist21[, c('Cell ID', 'To Cell ID')]
-names(nn_mutual) = c('To Cell ID', 'Cell ID')
-nn_mutual = merge(nn_mutual, nn_dist12)
-nn_plot_mutual(pheno_data1, pheno_data2, nn_mutual, background, xlim, ylim)
+  print(nn_plot(pheno_data1, pheno_data2, nn_dist12, background, xlim, ylim))
+  print(nn_plot(pheno_data2, pheno_data1, nn_dist21, background, xlim, ylim))
+
+  # Find mutual pairs by merging nn_dist12 and nn_dist21
+  # First get just the nnDist21 cell ids and rename them to match nnDist12
+  nn_mutual = nn_dist21[, c('Cell ID', 'To Cell ID')]
+  names(nn_mutual) = c('To Cell ID', 'Cell ID')
+  nn_mutual = merge(nn_mutual, nn_dist12)
+  print(nn_plot_mutual(pheno_data1, pheno_data2, nn_mutual, background, xlim, ylim))
+
+  pair_counts = dplyr::bind_rows(pair_counts, tibble::data_frame(
+    From = pheno_data1$pheno$name,
+    To = pheno_data2$pheno$name,
+    'From Count' = nrow(pheno_data1$data),
+    'To Count' = nrow(pheno_data2$data),
+    Pairs = nrow(nn_mutual),
+    'From Fraction' = round(Pairs/`From Count`, 3),
+    'To Fraction' = round(Pairs/`To Count`, 3)
+  ))
+}
 ```
 
 ### Summary of mutual nearest neighbor pairs
 
 ```{r}
-pairs = tibble::data_frame(
-  From = pheno_data1$pheno$name,
-  To = pheno_data2$pheno$name,
-  'From Count' = nrow(pheno_data1$data),
-  'To Count' = nrow(pheno_data2$data),
-  Pairs = nrow(nn_mutual),
-  'From Fraction' = round(Pairs/`From Count`, 3),
-  'To Fraction' = round(Pairs/`To Count`, 3)
-)
-knitr::kable(pairs)
+knitr::kable(pair_counts)
 ```

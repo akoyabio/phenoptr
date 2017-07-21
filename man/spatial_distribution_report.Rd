@@ -4,16 +4,23 @@
 \alias{spatial_distribution_report}
 \title{Create a spatial distribution report.}
 \usage{
-spatial_distribution_report(cell_seg_path, phenotypes, colors,
-  output_path = NULL,
+spatial_distribution_report(cell_seg_path, pairs, colors,
+  phenotype_rules = NULL, output_path = NULL,
   pixels_per_micron = getOption("phenoptr.pixels.per.micron"))
 }
 \arguments{
 \item{cell_seg_path}{Path to a cell seg data file.}
 
-\item{phenotypes}{A character vector containing two phenotype names.}
+\item{pairs}{A list of pairs of phenotypes. Each entry is a two-element
+vector. The report will contain one section for each pair showing the
+nearest neighbor relations between the two phenotypes.}
 
-\item{colors}{A character vector of two color specifications.}
+\item{colors}{A named list of phenotype colors to use when drawing
+the output.}
+
+\item{phenotype_rules}{(Optional) A named list.
+Item names are phenotype names and must match entries in \code{pairs}.
+Item values are selectors for \link{select_rows}.}
 
 \item{output_path}{Optional, path to the output HTML file. If omitted,
 output will be written to the directory containing \code{cell_seg_path}.}
@@ -23,7 +30,7 @@ output will be written to the directory containing \code{cell_seg_path}.}
 }
 \description{
 Creates an HTML report visualizing the location
-and nearest-neighbor relations for cells of two chosen phenotypes
+and nearest-neighbor relations for cells of pairs of phenotypes
 in a single field.
 }
 \details{
@@ -32,6 +39,9 @@ or composite image of the field
 is available, it will be used as a background.
 
 The report is saved to the same directory as the input file.
+
+See \code{vignette('selecting_cells', package='phenoptr')} for more on
+the use of \code{pairs} and \code{phenotype_rules}.
 }
 \examples{
 \dontrun{
@@ -41,11 +51,26 @@ cell_seg_path = system.file("extdata", "TMA",
                        "Core[1,5,6,1]_[21302,15107]_cell_seg_data.txt",
                        package = "phenoptr")
 
-phenotypes = c("macrophage CD68", "cytotoxic CD8")
-colors = c('red', 'blue')
+pairs = list(
+  c("tumor", "cytotoxic CD8"),
+  c("tumor", "macrophage CD68"))
+colors = c(tumor="cyan", "macrophage CD68"="red", "cytotoxic CD8"="yellow")
 out_path = path.expand('~/spatial_distribution_report.html')
 
-spatial_distribution_report(cell_seg_path, phenotypes, colors, out_path)
+spatial_distribution_report(cell_seg_path, pairs, colors,
+  output_path=out_path)
+
+# This example extends the previous example to restrict tumor cells to
+# only PDL1+ cells.
+pairs = list(
+  c("tumor PDL1+", "cytotoxic CD8"),
+  c("tumor PDL1+", "macrophage CD68"))
+colors = c("tumor PDL1+"="cyan", "macrophage CD68"="red", "cytotoxic CD8"="yellow")
+phenotype_rules=list(
+  "tumor PDL1+"=list("tumor", ~`Entire Cell PDL1 (Opal 620) Mean`>5))
+
+spatial_distribution_report(cell_seg_path, pairs, colors, phenotype_rules,
+  output_path=out_path)
 }
 }
 \seealso{
