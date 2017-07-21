@@ -20,11 +20,9 @@ number of cells and number of touches.}
 \item{colors}{A named list of phenotype colors to use when drawing
 the output. Only used when \code{write_images} is \code{TRUE}.}
 
-\item{phenotype_rules}{A named list. The item names are the phenotype
-names.
-The values are selectors for \link{select_rows}.
-For any phenotype not included in \code{phenotype_rules},
-the name in \code{pairs} are used directly as the phenotype.}
+\item{phenotype_rules}{(Optional) A named list.
+Item names are phenotype names and must match entries in \code{pairs}.
+Item values are selectors for \link{select_rows}.}
 
 \item{categories}{If given, a vector or list of tissue category names.
 Categories not in the list will be excluded from the analysis.}
@@ -80,10 +78,13 @@ Image files are written as
 TIFF files to preserve the fine detail of cell boundaries.
 
 Images are only written when both phenotypes of the pair are represented.
+
+See \code{vignette('selecting_cells', package='phenoptr')} for more on
+the use of \code{pairs} and \code{phenotype_rules}.
 }
 \examples{
 \dontrun{
-# This example creates an image in the a subdirectory of the
+# This example creates an image in a subdirectory of the
 # current user's directory.
 cell_seg_path = system.file("extdata", "TMA",
                        "Core[1,5,6,1]_[21302,15107]_cell_seg_data.txt",
@@ -134,7 +135,6 @@ readr::write_csv(touch_counts, touches_path)
 pairs = list(c('Tumor', 'Lymphocyte'))
 colors = list(Tumor='cyan', Lymphocyte='yellow')
 phenotype_rules = list(
-  Tumor='Tumor',
   Lymphocyte=c('CD4', 'CD8', 'TReg')
 )
 
@@ -147,4 +147,13 @@ touch_counts = map_df(files, function(path) {
 
 # Then write the results as above.
 }
+}
+\seealso{
+Other distance functions: \code{\link{compute_all_nearest_distance}},
+  \code{\link{count_within_batch}},
+  \code{\link{count_within}},
+  \code{\link{distance_matrix}},
+  \code{\link{find_nearest_distance}},
+  \code{\link{spatial_distribution_report}},
+  \code{\link{subset_distance_matrix}}
 }

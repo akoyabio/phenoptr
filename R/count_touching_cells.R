@@ -24,6 +24,9 @@
 #'
 #' Images are only written when both phenotypes of the pair are represented.
 #'
+#' See `vignette('selecting_cells', package='phenoptr')` for more on
+#' the use of `pairs` and `phenotype_rules`.
+#'
 #' @param cell_seg_path The path to the cell seg data file. The same directory
 #'   must also contain `_memb_seg_map.tif` or `_binary_seg_maps.tif` and, if
 #'   `write_images` is true, a  TIFF or JPEG composite image.
@@ -32,11 +35,9 @@
 #'   number of cells and number of touches.
 #' @param colors A named list of phenotype colors to use when drawing
 #'   the output. Only used when `write_images` is `TRUE`.
-#' @param phenotype_rules A named list. The item names are the phenotype
-#'   names.
-#'   The values are selectors for [select_rows].
-#'   For any phenotype not included in `phenotype_rules`,
-#'   the name in `pairs` are used directly as the phenotype.
+#' @param phenotype_rules (Optional) A named list.
+#'   Item names are phenotype names and must match entries in `pairs`.
+#'   Item values are selectors for [select_rows].
 #' @param categories If given, a vector or list of tissue category names.
 #' Categories not in the list will be excluded from the analysis.
 #' @param write_images If `TRUE`, for each pair, write an image showing the
@@ -67,7 +68,7 @@
 #'  }
 #' @examples
 #' \dontrun{
-#' # This example creates an image in the a subdirectory of the
+#' # This example creates an image in a subdirectory of the
 #' # current user's directory.
 #' cell_seg_path = system.file("extdata", "TMA",
 #'                        "Core[1,5,6,1]_[21302,15107]_cell_seg_data.txt",
@@ -118,7 +119,6 @@
 #' pairs = list(c('Tumor', 'Lymphocyte'))
 #' colors = list(Tumor='cyan', Lymphocyte='yellow')
 #' phenotype_rules = list(
-#'   Tumor='Tumor',
 #'   Lymphocyte=c('CD4', 'CD8', 'TReg')
 #' )
 #'
@@ -133,6 +133,7 @@
 #' }
 #' @md
 #' @export
+#' @family distance functions
 #' @importFrom magrittr %>%
 count_touching_cells = function(cell_seg_path, pairs, colors=NULL,
                                 phenotype_rules=NULL, categories=NULL,

@@ -27,6 +27,7 @@ if (getRversion() >= "2.15.1")
 #' @param pixels_per_micron Conversion factor to microns
 #'        (default 2 pixels/micron).
 #' @export
+#' @family distance functions
 #' @examples
 #' \dontrun{
 #' # This example creates a report in the current user's

@@ -48,3 +48,12 @@ out_path = path.expand('~/spatial_distribution_report.html')
 spatial_distribution_report(cell_seg_path, phenotypes, colors, out_path)
 }
 }
+\seealso{
+Other distance functions: \code{\link{compute_all_nearest_distance}},
+  \code{\link{count_touching_cells}},
+  \code{\link{count_within_batch}},
+  \code{\link{count_within}},
+  \code{\link{distance_matrix}},
+  \code{\link{find_nearest_distance}},
+  \code{\link{subset_distance_matrix}}
+}

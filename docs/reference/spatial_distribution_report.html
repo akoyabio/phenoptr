@@ -71,6 +71,9 @@
       <a href="../articles/computing_distances.html">Computing Inter-cellular Distances</a>
     </li>
     <li>
+      <a href="../articles/find_and_count_touching_cells.html">Find and count touching cells</a>
+    </li>
+    <li>
       <a href="../articles/reading_image_files.html">Reading and Displaying inForm Image Files</a>
     </li>
     <li>
@@ -105,14 +108,14 @@
     </div>
 
     
-    <p>Creates an HTML report showing the location and nearest-neighbor relations
-of cells in a single field and two chosen phenotypes.</p>
+    <p>Creates an HTML report visualizing the location
+and nearest-neighbor relations for cells of two chosen phenotypes
+in a single field.</p>
     
 
     <pre class="usage"><span class='fu'>spatial_distribution_report</span>(<span class='no'>cell_seg_path</span>, <span class='no'>phenotypes</span>, <span class='no'>colors</span>,
   <span class='kw'>output_path</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>pixels_per_micron</span> <span class='kw'>=</span> <span class='fu'>getOption</span>(<span class='st'>"phenoptr.pixels.per.micron"</span>),
-  <span class='kw'>plot_gx_max</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>micron_line</span> <span class='kw'>=</span> <span class='fl'>25</span>)</pre>
+  <span class='kw'>pixels_per_micron</span> <span class='kw'>=</span> <span class='fu'>getOption</span>(<span class='st'>"phenoptr.pixels.per.micron"</span>))</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -137,17 +140,7 @@ output will be written to the directory containing <code>cell_seg_path</code>.</
     <tr>
       <th>pixels_per_micron</th>
       <td><p>Conversion factor to microns
-(default 2 pixels/micron),</p></td>
-    </tr>
-    <tr>
-      <th>plot_gx_max</th>
-      <td><p>Optional, maximum value of radius to show on G
-function plots.</p></td>
-    </tr>
-    <tr>
-      <th>micron_line</th>
-      <td><p>Optional, X location (radius in microns)
-of crosshair on G function plots.</p></td>
+(default 2 pixels/micron).</p></td>
     </tr>
     </table>
     
@@ -158,9 +151,21 @@ or composite image of the field
 is available, it will be used as a background.</p>
 <p>The report is saved to the same directory as the input file.</p>
     
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <p>Other distance functions: <code><a href='compute_all_nearest_distance.html'>compute_all_nearest_distance</a></code>,
+  <code><a href='count_touching_cells.html'>count_touching_cells</a></code>,
+  <code><a href='count_within_batch.html'>count_within_batch</a></code>,
+  <code><a href='count_within.html'>count_within</a></code>,
+  <code><a href='distance_matrix.html'>distance_matrix</a></code>,
+  <code><a href='find_nearest_distance.html'>find_nearest_distance</a></code>,
+  <code><a href='subset_distance_matrix.html'>subset_distance_matrix</a></code></p>
+    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='co'># NOT RUN {</span>
+<span class='co'># This example creates a report in the current user's</span>
+<span class='co'># home or Document directory.</span>
 <span class='no'>cell_seg_path</span> <span class='kw'>=</span> <span class='fu'>system.file</span>(<span class='st'>"extdata"</span>, <span class='st'>"TMA"</span>,
                        <span class='st'>"Core[1,5,6,1]_[21302,15107]_cell_seg_data.txt"</span>,
                        <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"phenoptr"</span>)
@@ -178,6 +183,8 @@ is available, it will be used as a background.</p>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#details">Details</a></li>
+
+      <li><a href="#see-also">See also</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>

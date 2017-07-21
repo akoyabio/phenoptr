@@ -13,8 +13,7 @@ count_within_batch(base_path, pairs, radius, category = NA,
 one \code{_cell_seg_data.txt} file.}
 
 \item{pairs}{A list of pairs of phenotypes. Each entry is a two-element
-vector. The result will contain values for each pair.
-A single pair can be passed as a plain vector.}
+vector. The result will contain values for each pair.}
 
 \item{radius}{The radius or radii to search within.}
 
@@ -22,10 +21,8 @@ A single pair can be passed as a plain vector.}
 \code{to} phenotypes.}
 
 \item{phenotype_rules}{(Optional) A named list.
-The item names are the phenotype names.
-The values are selectors for \link{select_rows}.
-For any phenotype not included in \code{phenotype_rules},
-the name in \code{pairs} is used directly as the phenotype.}
+Item names are phenotype names and must match entries in \code{pairs}.
+Item values are selectors for \link{select_rows}.}
 
 \item{verbose}{If TRUE, display progress.}
 }
@@ -47,24 +44,16 @@ for this data file and tissue category.}
 \description{
 This is a batch version of \link{count_within}. Given the path to a directory
 containing cell seg data files, for each given tissue category,
-'from' phenotype, 'to' phenotype and radius, it counts the number of
-\code{from} cells
-having a \code{to} cell within \code{radius} microns.
+pair of
+'from' phenotype and 'to' phenotype, and radius, it counts the number of
+'from' cells
+having a 'to' cell within \code{radius} microns.
 }
 \details{
-\code{from} and \code{to} specify the phenotypes of interest.
-Each one is a list of phenotype names.
-Each list element is either a single name or a character vector.
-If the element is a vector,
-the phenotypes in the vector are treated collectively as a single type.
-All pairs of \code{from} and \code{to} values are included in the output.
-
-For example, the parameters
-\code{from=list('cd68'), to=list('cd8', 'tumor'), radius=25}
-would count \code{cd68} cells having a \code{cd8} cell within 25 microns and,
-separately, \code{cd68} cells with a \code{tumor} cell within 25 microns.
-
 The \code{category} parameter may be a single category or a list of categories.
+
+See \code{vignette('selecting_cells', package='phenoptr')} for more on
+the use of \code{pairs} and \code{phenotype_rules}.
 }
 \examples{
 base_path = system.file("extdata", "TMA", package = "phenoptr")
@@ -86,8 +75,10 @@ count_within_batch(base_path, pairs, radius, phenotype_rules=rules)
 }
 \seealso{
 Other distance functions: \code{\link{compute_all_nearest_distance}},
+  \code{\link{count_touching_cells}},
   \code{\link{count_within}},
   \code{\link{distance_matrix}},
   \code{\link{find_nearest_distance}},
+  \code{\link{spatial_distribution_report}},
   \code{\link{subset_distance_matrix}}
 }

@@ -72,6 +72,9 @@ and fields. — count_within_batch â€¢ phenoptr</title>
       <a href="../articles/computing_distances.html">Computing Inter-cellular Distances</a>
     </li>
     <li>
+      <a href="../articles/find_and_count_touching_cells.html">Find and count touching cells</a>
+    </li>
+    <li>
       <a href="../articles/reading_image_files.html">Reading and Displaying inForm Image Files</a>
     </li>
     <li>
@@ -109,13 +112,14 @@ and fields.</h1>
     
     <p>This is a batch version of <a href='count_within.html'>count_within</a>. Given the path to a directory
 containing cell seg data files, for each given tissue category,
-'from' phenotype, 'to' phenotype and radius, it counts the number of
-<code>from</code> cells
-having a <code>to</code> cell within <code>radius</code> microns.</p>
+pair of
+'from' phenotype and 'to' phenotype, and radius, it counts the number of
+'from' cells
+having a 'to' cell within <code>radius</code> microns.</p>
     
 
-    <pre class="usage"><span class='fu'>count_within_batch</span>(<span class='no'>base_path</span>, <span class='no'>from</span>, <span class='no'>to</span>, <span class='no'>radius</span>, <span class='kw'>category</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
-  <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+    <pre class="usage"><span class='fu'>count_within_batch</span>(<span class='no'>base_path</span>, <span class='no'>pairs</span>, <span class='no'>radius</span>, <span class='kw'>category</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
+  <span class='kw'>phenotype_rules</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -126,12 +130,9 @@ having a <code>to</code> cell within <code>radius</code> microns.</p>
 one <code>_cell_seg_data.txt</code> file.</p></td>
     </tr>
     <tr>
-      <th>from</th>
-      <td><p>Specification of 'from' phenotype(s), see Details.</p></td>
-    </tr>
-    <tr>
-      <th>to</th>
-      <td><p>Specification of 'to' phenotype(s), see Details.</p></td>
+      <th>pairs</th>
+      <td><p>A list of pairs of phenotypes. Each entry is a two-element
+vector. The result will contain values for each pair.</p></td>
     </tr>
     <tr>
       <th>radius</th>
@@ -140,7 +141,13 @@ one <code>_cell_seg_data.txt</code> file.</p></td>
     <tr>
       <th>category</th>
       <td><p>Optional tissue categories to restrict both <code>from</code> and
-<code>to</code>.</p></td>
+<code>to</code> phenotypes.</p></td>
+    </tr>
+    <tr>
+      <th>phenotype_rules</th>
+      <td><p>(Optional) A named list.
+Item names are phenotype names and must match entries in <code>pairs</code>.
+Item values are selectors for <a href='select_rows.html'>select_rows</a>.</p></td>
     </tr>
     <tr>
       <th>verbose</th>
@@ -166,37 +173,31 @@ for this data file and tissue category.</p></dd>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p><code>from</code> and <code>to</code> specify the phenotypes of interest.
-Each one is a list of phenotype names.
-Each list element is either a single name or a character vector.
-If the element is a vector,
-the phenotypes in the vector are treated collectively as a single type.
-All pairs of <code>from</code> and <code>to</code> values are included in the output.</p>
-<p>For example, the parameters
-<code>from=list('cd68'), to=list('cd8', 'tumor'), radius=25</code>
-would count <code>cd68</code> cells having a <code>cd8</code> cell within 25 µm and,
-separately, <code>cd68</code> cells with a <code>tumor</code> cell within 25 µm.</p>
-<p>The <code>category</code> parameter may be a single category or a list of categories.</p>
+    <p>The <code>category</code> parameter may be a single category or a list of categories.</p>
+<p>See <code><a href='https://cran.rstudio.com/web/packages/phenoptr/vignettes/selecting_cells.html'>vignette('selecting_cells', package='phenoptr')</a></code> for more on
+the use of <code>pairs</code> and <code>phenotype_rules</code>.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <p>Other distance functions: <code><a href='compute_all_nearest_distance.html'>compute_all_nearest_distance</a></code>,
+  <code><a href='count_touching_cells.html'>count_touching_cells</a></code>,
   <code><a href='count_within.html'>count_within</a></code>,
   <code><a href='distance_matrix.html'>distance_matrix</a></code>,
   <code><a href='find_nearest_distance.html'>find_nearest_distance</a></code>,
+  <code><a href='spatial_distribution_report.html'>spatial_distribution_report</a></code>,
   <code><a href='subset_distance_matrix.html'>subset_distance_matrix</a></code></p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>base_path</span> <span class='kw'>=</span> <span class='fu'>system.file</span>(<span class='st'>"extdata"</span>, <span class='st'>"TMA"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"phenoptr"</span>)
 
-<span class='co'># Count tumor cells near macrophages and tumor cells near CD8 separately,</span>
+<span class='co'># Count tumor cells near macrophages, and tumor cells near CD8 separately,</span>
 <span class='co'># in tumor and stroma tissue categories separately.</span>
-<span class='no'>from</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='st'>'tumor'</span>)
-<span class='no'>to</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='st'>'macrophage CD68'</span>, <span class='st'>'cytotoxic CD8'</span>)
+<span class='no'>pairs</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='fu'>c</span>(<span class='st'>'tumor'</span>, <span class='st'>'macrophage CD68'</span>),
+             <span class='fu'>c</span>(<span class='st'>'tumor'</span>, <span class='st'>'cytotoxic CD8'</span>))
 <span class='no'>radius</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>10</span>, <span class='fl'>25</span>)
 <span class='no'>category</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='st'>'tumor'</span>, <span class='st'>'stroma'</span>)
-<span class='fu'>count_within_batch</span>(<span class='no'>base_path</span>, <span class='no'>from</span>, <span class='no'>to</span>, <span class='no'>radius</span>, <span class='no'>category</span>)</div><div class='output co'>#&gt; Processing Core[1,5,6,1]_[21302,15107] </div><div class='output co'>#&gt; # A tibble: 8 x 10
+<span class='fu'>count_within_batch</span>(<span class='no'>base_path</span>, <span class='no'>pairs</span>, <span class='no'>radius</span>, <span class='no'>category</span>)</div><div class='output co'>#&gt; Processing Core[1,5,6,1]_[21302,15107] </div><div class='output co'>#&gt; # A tibble: 8 x 10
 #&gt;   slide_id                      source category  from              to radius
 #&gt;      &lt;chr&gt;                       &lt;chr&gt;    &lt;chr&gt; &lt;chr&gt;           &lt;chr&gt;  &lt;dbl&gt;
 #&gt; 1  TMA_316 Core[1,5,6,1]_[21302,15107]    tumor tumor macrophage CD68     10
@@ -209,15 +210,17 @@ separately, <code>cd68</code> cells with a <code>tumor</code> cell within 25 µm.
 #&gt; 8  TMA_316 Core[1,5,6,1]_[21302,15107]   stroma tumor   cytotoxic CD8     25
 #&gt; # ... with 4 more variables: from_count &lt;int&gt;, to_count &lt;int&gt;, from_with &lt;int&gt;,
 #&gt; #   within_mean &lt;dbl&gt;</div><div class='input'>
-<span class='co'># Count tumor cells near any T cell in all tissue categories</span>
-<span class='no'>to</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='fu'>c</span>(<span class='st'>'cytotoxic CD8'</span>, <span class='st'>'helper CD4'</span>, <span class='st'>'T reg Foxp3'</span>))
-<span class='fu'>count_within_batch</span>(<span class='no'>base_path</span>, <span class='no'>from</span>, <span class='no'>to</span>, <span class='no'>radius</span>)</div><div class='output co'>#&gt; Processing Core[1,5,6,1]_[21302,15107] </div><div class='output co'>#&gt; # A tibble: 2 x 10
-#&gt;   slide_id                      source category  from
-#&gt;      &lt;chr&gt;                       &lt;chr&gt;    &lt;chr&gt; &lt;chr&gt;
-#&gt; 1  TMA_316 Core[1,5,6,1]_[21302,15107]      all tumor
-#&gt; 2  TMA_316 Core[1,5,6,1]_[21302,15107]      all tumor
-#&gt; # ... with 6 more variables: to &lt;chr&gt;, radius &lt;dbl&gt;, from_count &lt;int&gt;,
-#&gt; #   to_count &lt;int&gt;, from_with &lt;int&gt;, within_mean &lt;dbl&gt;</div></pre>
+<span class='co'># Count tumor cells near any T cell in all tissue categories.</span>
+<span class='co'># Use `phenotype_rules` to define the T cell phenotype</span>
+<span class='no'>pairs</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>'tumor'</span>, <span class='st'>'T cell'</span>)
+<span class='no'>rules</span> <span class='kw'>=</span> <span class='fu'>list</span>(
+<span class='st'>'T cell'</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='st'>'cytotoxic CD8'</span>, <span class='st'>'helper CD4'</span>, <span class='st'>'T reg Foxp3'</span>))
+<span class='fu'>count_within_batch</span>(<span class='no'>base_path</span>, <span class='no'>pairs</span>, <span class='no'>radius</span>, <span class='kw'>phenotype_rules</span><span class='kw'>=</span><span class='no'>rules</span>)</div><div class='output co'>#&gt; Processing Core[1,5,6,1]_[21302,15107] </div><div class='output co'>#&gt; # A tibble: 2 x 10
+#&gt;   slide_id                      source category  from     to radius from_count
+#&gt;      &lt;chr&gt;                       &lt;chr&gt;    &lt;chr&gt; &lt;chr&gt;  &lt;chr&gt;  &lt;dbl&gt;      &lt;int&gt;
+#&gt; 1  TMA_316 Core[1,5,6,1]_[21302,15107]      all tumor T cell     10       3303
+#&gt; 2  TMA_316 Core[1,5,6,1]_[21302,15107]      all tumor T cell     25       3303
+#&gt; # ... with 3 more variables: to_count &lt;int&gt;, from_with &lt;int&gt;, within_mean &lt;dbl&gt;</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

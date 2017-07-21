@@ -9,35 +9,24 @@ if (getRversion() >= "2.15.1")
 #'
 #' This is a batch version of [count_within]. Given the path to a directory
 #' containing cell seg data files, for each given tissue category,
-#' 'from' phenotype, 'to' phenotype and radius, it counts the number of
-#'  `from` cells
-#' having a `to` cell within `radius` microns.
-#'
-#' `from` and `to` specify the phenotypes of interest.
-#' Each one is a list of phenotype names.
-#' Each list element is either a single name or a character vector.
-#' If the element is a vector,
-#' the phenotypes in the vector are treated collectively as a single type.
-#' All pairs of `from` and `to` values are included in the output.
-#'
-#' For example, the parameters
-#' `from=list('cd68'), to=list('cd8', 'tumor'), radius=25`
-#' would count `cd68` cells having a `cd8` cell within 25 microns and,
-#' separately, `cd68` cells with a `tumor` cell within 25 microns.
+#' pair of
+#' 'from' phenotype and 'to' phenotype, and radius, it counts the number of
+#'  'from' cells
+#' having a 'to' cell within `radius` microns.
 #'
 #' The `category` parameter may be a single category or a list of categories.
+#'
+#' See `vignette('selecting_cells', package='phenoptr')` for more on
+#' the use of `pairs` and `phenotype_rules`.
 #'
 #' @param base_path Path to a directory containing at least
 #' one `_cell_seg_data.txt` file.
 #' @param pairs A list of pairs of phenotypes. Each entry is a two-element
 #'   vector. The result will contain values for each pair.
-#'   A single pair can be passed as a plain vector.
 #' @param radius The radius or radii to search within.
 #' @param phenotype_rules (Optional) A named list.
-#'   The item names are the phenotype names.
-#'   The values are selectors for [select_rows].
-#'   For any phenotype not included in `phenotype_rules`,
-#'   the name in `pairs` is used directly as the phenotype.
+#'   Item names are phenotype names and must match entries in `pairs`.
+#'   Item values are selectors for [select_rows].
 #' @param category Optional tissue categories to restrict both `from` and
 #' `to` phenotypes.
 #' @param verbose If TRUE, display progress.

@@ -71,6 +71,9 @@
       <a href="../articles/computing_distances.html">Computing Inter-cellular Distances</a>
     </li>
     <li>
+      <a href="../articles/find_and_count_touching_cells.html">Find and count touching cells</a>
+    </li>
+    <li>
       <a href="../articles/reading_image_files.html">Reading and Displaying inForm Image Files</a>
     </li>
     <li>
@@ -111,8 +114,8 @@ It reports the number of touching cells found and, optionally,
 writes image files showing the touching cells.</p>
     
 
-    <pre class="usage"><span class='fu'>count_touching_cells</span>(<span class='no'>cell_seg_path</span>, <span class='no'>pairs</span>, <span class='kw'>phenotype_rules</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>categories</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>colors</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>mutual</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+    <pre class="usage"><span class='fu'>count_touching_cells</span>(<span class='no'>cell_seg_path</span>, <span class='no'>pairs</span>, <span class='kw'>colors</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>phenotype_rules</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>categories</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>write_images</span> <span class='kw'>=</span> !<span class='fu'>is.null</span>(<span class='no'>colors</span>), <span class='kw'>output_base</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
@@ -127,21 +130,8 @@ must also contain <code>_memb_seg_map.tif</code> or <code>_binary_seg_maps.tif</
     <tr>
       <th>pairs</th>
       <td><p>A list of pairs of phenotypes. Each entry is a two-element
-vector. The result will contain one or two lines for each pair showing the
+vector. The result will contain one line for each pair showing the
 number of cells and number of touches.</p></td>
-    </tr>
-    <tr>
-      <th>phenotype_rules</th>
-      <td><p>A named list. The item names are the phenotype
-names and must include all the names in <code>pairs</code>.
-The values are selectors for <a href='select_rows.html'>select_rows</a>.
-If <code>phenotype_rules</code> is <code>NULL</code>, the names in <code>pairs</code> are used directly as
-the phenotypes.</p></td>
-    </tr>
-    <tr>
-      <th>categories</th>
-      <td><p>If given, a vector or list of tissue category names.
-Categories not in the list will be excluded from the analysis.</p></td>
     </tr>
     <tr>
       <th>colors</th>
@@ -149,9 +139,15 @@ Categories not in the list will be excluded from the analysis.</p></td>
 the output. Only used when <code>write_images</code> is <code>TRUE</code>.</p></td>
     </tr>
     <tr>
-      <th>mutual</th>
-      <td><p>If <code>TRUE</code>, returns stats on mutually touching pairs,
-rather than separate counts of cells for each phenotype.</p></td>
+      <th>phenotype_rules</th>
+      <td><p>(Optional) A named list.
+Item names are phenotype names and must match entries in <code>pairs</code>.
+Item values are selectors for <a href='select_rows.html'>select_rows</a>.</p></td>
+    </tr>
+    <tr>
+      <th>categories</th>
+      <td><p>If given, a vector or list of tissue category names.
+Categories not in the list will be excluded from the analysis.</p></td>
     </tr>
     <tr>
       <th>write_images</th>
@@ -169,48 +165,73 @@ directory as the cell table.</p></td>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>If <strong><code>mutual</code> is <code>TRUE</code></strong>, returns a <code>data_frame</code> with one row per
-<code>pair</code>, containing these columns:</p><dl class='dl-horizontal'>
+    <p>Returns a <code>data_frame</code> with one row for each pair in
+<code>pairs</code>, containing these columns:</p><dl class='dl-horizontal'>
+<dt><code>slide_id</code></dt><dd><p>Slide ID from the data file.</p></dd>
 <dt><code>source</code></dt><dd><p>Base file name of the source file with
 <code>_cell_seg_data.txt</code> stripped off for brevity.</p></dd>
-<dt><code>phenotype1</code></dt><dd><p>The first phenotype in the touching pair.</p></dd>
-<dt><code>phenotype2</code></dt><dd><p>The second phenotype in the touching pair.</p></dd>
-<dt><code>count</code></dt><dd><p>The number of touching pairs.</p></dd>
+<dt><code>phenotype1</code></dt><dd><p>The name of the first phenotype in
+the touching pair.</p></dd>
+<dt><code>phenotype2</code></dt><dd><p>The name of the second phenotype in
+the touching pair.</p></dd>
 <dt><code>total1</code></dt><dd><p>The total number of <code>phenotype1</code> cells
 in the image.</p></dd>
 <dt><code>total2</code></dt><dd><p>The total number of <code>phenotype2</code> cells
 in the image.</p></dd>
-</dl>
-
-<p>If <strong><code>mutual</code> is <code>FALSE</code></strong>, returns a <code>data_frame</code> with two rows per <code>pair</code>,
-containing these columns:</p><dl class='dl-horizontal'>
-<dt><code>source</code></dt><dd><p>Base file name of the source file with
-<code>_cell_seg_data.txt</code> stripped off for brevity.</p></dd>
-<dt><code>phenotype</code></dt><dd><p>The phenotype of cells being counted.</p></dd>
-<dt><code>touching</code></dt><dd><p>The phenotype of cells being touched.</p></dd>
-<dt><code>count</code></dt><dd><p>The number of <code>phenotype</code> cells touching a <code>touching</code>
-cell.</p></dd>
-<dt><code>fraction</code></dt><dd><p>The fraction of <code>phenotype</code> cells touching a
-<code>touching</code> cell.</p></dd>
-<dt><code>total</code></dt><dd><p>The total number of <code>phenotype</code> cells in the image.</p></dd>
+<dt><code>p1_touch_p2</code></dt><dd><p>The number of <code>phenotype1</code> cells
+touching a <code>phenotype2</code> cell.</p></dd>
+<dt><code>p2_touch_p1</code></dt><dd><p>The number of <code>phenotype2</code> cells
+touching a <code>phenotype1</code> cell.</p></dd>
+<dt><code>touch_mutual</code></dt><dd><p>The number of mutually touching pairs.</p></dd>
 </dl>
 
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>The image files written show cells of the selected phenotypes on a background
+    <p>The number of touching cells is reported in three ways. For a pair of
+phenotypes A and B, this function reports the number of A touching a B,
+the number of B touching an A, and the number of mutually touching pairs.
+Note that the number of mutual touches is often larger than the count of
+either "A touching B" or "B touching A" because a single touching cell
+may be part of multiple pairs.</p>
+<p>The image files written show cells of the selected phenotypes on a background
 of the composite. Touching cells are filled in the provided color;
 cells which are not touching the other phenotype are outlined.
 Image files are written as
 TIFF files to preserve the fine detail of cell boundaries.</p>
 <p>Images are only written when both phenotypes of the pair are represented.</p>
+<p>See <code><a href='https://cran.rstudio.com/web/packages/phenoptr/vignettes/selecting_cells.html'>vignette('selecting_cells', package='phenoptr')</a></code> for more on
+the use of <code>pairs</code> and <code>phenotype_rules</code>.</p>
+    
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <p>Other distance functions: <code><a href='compute_all_nearest_distance.html'>compute_all_nearest_distance</a></code>,
+  <code><a href='count_within_batch.html'>count_within_batch</a></code>,
+  <code><a href='count_within.html'>count_within</a></code>,
+  <code><a href='distance_matrix.html'>distance_matrix</a></code>,
+  <code><a href='find_nearest_distance.html'>find_nearest_distance</a></code>,
+  <code><a href='spatial_distribution_report.html'>spatial_distribution_report</a></code>,
+  <code><a href='subset_distance_matrix.html'>subset_distance_matrix</a></code></p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='co'># NOT RUN {</span>
+<span class='co'># This example creates an image in a subdirectory of the</span>
+<span class='co'># current user's directory.</span>
+<span class='no'>cell_seg_path</span> <span class='kw'>=</span> <span class='fu'>system.file</span>(<span class='st'>"extdata"</span>, <span class='st'>"TMA"</span>,
+                       <span class='st'>"Core[1,5,6,1]_[21302,15107]_cell_seg_data.txt"</span>,
+                       <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"phenoptr"</span>)
+
+<span class='no'>pairs</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='fu'>c</span>(<span class='st'>"macrophage CD68"</span>, <span class='st'>"cytotoxic CD8"</span>))
+<span class='no'>colors</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"macrophage CD68"</span><span class='kw'>=</span><span class='st'>'red'</span>, <span class='st'>"cytotoxic CD8"</span><span class='kw'>=</span><span class='st'>'blue'</span>)
+<span class='no'>output_base</span> <span class='kw'>=</span> <span class='fu'>path.expand</span>(<span class='st'>'~/touches'</span>)
+
+<span class='fu'>count_touching_cells</span>(<span class='no'>cell_seg_path</span>, <span class='no'>pairs</span>, <span class='no'>color</span>,
+  <span class='kw'>output_base</span><span class='kw'>=</span><span class='no'>output_base</span>)
+
 <span class='co'># This example will count and image all files in the `base_path` directory.</span>
 <span class='no'>base_path</span> <span class='kw'>=</span> <span class='st'>'/path/to/data'</span>
-<span class='no'>out_path</span> <span class='kw'>=</span> <span class='fu'>file.path</span>(<span class='no'>base_path</span>, <span class='st'>'touches'</span>)
+<span class='no'>output_base</span> <span class='kw'>=</span> <span class='fu'>file.path</span>(<span class='no'>base_path</span>, <span class='st'>'touches'</span>)
 <span class='no'>files</span> <span class='kw'>=</span> <span class='fu'><a href='list_cell_seg_files.html'>list_cell_seg_files</a></span>(<span class='no'>base_path</span>)
 
 <span class='co'># The phenotype pairs to locate. This will find CD8 cells touching</span>
@@ -226,35 +247,33 @@ TIFF files to preserve the fine detail of cell boundaries.</p>
 )
 
 <span class='co'># Count and visualize touching cells</span>
-<span class='no'>r</span> <span class='kw'>=</span> <span class='kw pkg'>purrr</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/purrr/topics/map'>map_df</a></span>(<span class='no'>files</span>, <span class='kw'>function</span>(<span class='no'>path</span>) {
+<span class='no'>touch_counts</span> <span class='kw'>=</span> <span class='kw pkg'>purrr</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/purrr/topics/map'>map_df</a></span>(<span class='no'>files</span>, <span class='kw'>function</span>(<span class='no'>path</span>) {
   <span class='fu'>cat</span>(<span class='st'>'Processing'</span>, <span class='no'>path</span>, <span class='st'>'\n'</span>)
-  <span class='fu'>count_touching_cells</span>(<span class='no'>path</span>, <span class='no'>pairs</span>, <span class='kw'>colors</span><span class='kw'>=</span><span class='no'>colors</span>, <span class='kw'>output_base</span><span class='kw'>=</span><span class='no'>output_base</span>)
+  <span class='fu'>count_touching_cells</span>(<span class='no'>path</span>, <span class='no'>pairs</span>, <span class='no'>colors</span>, <span class='kw'>output_base</span><span class='kw'>=</span><span class='no'>output_base</span>)
 })
 
 <span class='co'># Save the result</span>
-<span class='no'>outPath</span> <span class='kw'>=</span> <span class='fu'>file.path</span>(<span class='no'>output_base</span>, <span class='st'>'TouchCounts.csv'</span>)
-<span class='fu'>write.csv</span>(<span class='no'>r</span>, <span class='no'>outPath</span>, <span class='kw'>row.names</span><span class='kw'>=</span><span class='fl'>FALSE</span>)
+<span class='no'>touches_path</span> <span class='kw'>=</span> <span class='fu'>file.path</span>(<span class='no'>output_base</span>, <span class='st'>'TouchCounts.csv'</span>)
+<span class='kw pkg'>readr</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/readr/topics/write_delim'>write_csv</a></span>(<span class='no'>touch_counts</span>, <span class='no'>touches_path</span>)
 
 <span class='co'># The phenotype definitions can be more complex. The default is to use</span>
 <span class='co'># the names in `pairs`. Using `phenotype_rules`, the definition can be</span>
 <span class='co'># anything allowed by select_rows().</span>
 
-<span class='co'># You can also limit the tissue category, and count mutual touches (pairs)</span>
-<span class='co'># instead of individual touching cells.</span>
+<span class='co'># You can also limit the tissue category.</span>
 
-<span class='co'># For example, find all mutual touches between lymphocytes and tumor cells</span>
+<span class='co'># For example, find all touches between lymphocytes and tumor cells</span>
 <span class='co'># within the tumor:</span>
 <span class='no'>pairs</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='fu'>c</span>(<span class='st'>'Tumor'</span>, <span class='st'>'Lymphocyte'</span>))
 <span class='no'>colors</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>Tumor</span><span class='kw'>=</span><span class='st'>'cyan'</span>, <span class='kw'>Lymphocyte</span><span class='kw'>=</span><span class='st'>'yellow'</span>)
 <span class='no'>phenotype_rules</span> <span class='kw'>=</span> <span class='fu'>list</span>(
-  <span class='kw'>Tumor</span><span class='kw'>=</span><span class='st'>'Tumor'</span>,
   <span class='kw'>Lymphocyte</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='st'>'CD4'</span>, <span class='st'>'CD8'</span>, <span class='st'>'TReg'</span>)
 )
 
-<span class='no'>r</span> <span class='kw'>=</span> <span class='fu'>map_df</span>(<span class='no'>full_paths</span>, <span class='kw'>function</span>(<span class='no'>path</span>) {
+<span class='no'>touch_counts</span> <span class='kw'>=</span> <span class='fu'>map_df</span>(<span class='no'>files</span>, <span class='kw'>function</span>(<span class='no'>path</span>) {
   <span class='fu'>cat</span>(<span class='st'>'Processing'</span>, <span class='no'>path</span>, <span class='st'>'\n'</span>)
-  <span class='fu'>count_touching_cells</span>(<span class='no'>path</span>, <span class='no'>pairs</span>, <span class='no'>phenotype_rules</span>,
-                       <span class='kw'>categories</span><span class='kw'>=</span><span class='st'>'tumor'</span>, <span class='kw'>colors</span><span class='kw'>=</span><span class='no'>colors</span>, <span class='kw'>mutual</span><span class='kw'>=</span><span class='fl'>TRUE</span>,
+  <span class='fu'>count_touching_cells</span>(<span class='no'>path</span>, <span class='no'>pairs</span>, <span class='no'>colors</span>, <span class='no'>phenotype_rules</span>,
+                       <span class='kw'>categories</span><span class='kw'>=</span><span class='st'>'tumor'</span>,
                        <span class='kw'>output_base</span><span class='kw'>=</span><span class='no'>output_base</span>)
 })
 
@@ -269,6 +288,8 @@ TIFF files to preserve the fine detail of cell boundaries.</p>
       <li><a href="#value">Value</a></li>
 
       <li><a href="#details">Details</a></li>
+
+      <li><a href="#see-also">See also</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>
