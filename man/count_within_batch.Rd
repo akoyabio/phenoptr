@@ -56,21 +56,21 @@ See \code{vignette('selecting_cells', package='phenoptr')} for more on
 the use of \code{pairs} and \code{phenotype_rules}.
 }
 \examples{
-base_path = system.file("extdata", "TMA", package = "phenoptr")
+base_path = system.file("extdata", "sample", package = "phenoptr")
 
 # Count tumor cells near macrophages, and tumor cells near CD8 separately,
 # in tumor and stroma tissue categories separately.
-pairs = list(c('tumor', 'macrophage CD68'),
-             c('tumor', 'cytotoxic CD8'))
+pairs = list(c('CK+', 'CD68+'),
+             c('CK+', 'CD8+'))
 radius = c(10, 25)
-category = list('tumor', 'stroma')
+category = list('Tumor', 'Stroma')
 count_within_batch(base_path, pairs, radius, category)
 
 # Count tumor cells near any T cell in all tissue categories.
 # Use `phenotype_rules` to define the T cell phenotype
-pairs = c('tumor', 'T cell')
+pairs = c('CK+', 'T cell')
 rules = list(
-'T cell'=c('cytotoxic CD8', 'helper CD4', 'T reg Foxp3'))
+'T cell'=c('CD8+', 'FoxP3+'))
 count_within_batch(base_path, pairs, radius, phenotype_rules=rules)
 }
 \seealso{

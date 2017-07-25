@@ -75,15 +75,15 @@
 #' \dontrun{
 #' # This example creates an image in a subdirectory of the
 #' # current user's directory.
-#' cell_seg_path = system.file("extdata", "TMA",
-#'                        "Core[1,5,6,1]_[21302,15107]_cell_seg_data.txt",
+#' cell_seg_path = system.file("extdata", "sample",
+#'                        "Set4_1-6plex_[16142,55840]_cell_seg_data.txt",
 #'                        package = "phenoptr")
 #'
-#' pairs = list(c("macrophage CD68", "cytotoxic CD8"))
-#' colors = c("macrophage CD68"='red', "cytotoxic CD8"='blue')
+#' pairs = list(c("CD68+", "CD8+"))
+#' colors = c("CD68+"='magenta', "CD8+"='yellow')
 #' output_base = path.expand('~/touches')
 #'
-#' count_touching_cells(cell_seg_path, pairs, color,
+#' count_touching_cells(cell_seg_path, pairs, colors,
 #'   output_base=output_base)
 #'
 #' # This example will count and image all files in the `base_path` directory.
@@ -93,14 +93,14 @@
 #'
 #' # The phenotype pairs to locate. This will find CD8 cells touching
 #' # tumor cells, and, separately, CD8 cells touching CD68 cells.
-#' pairs = list(c("CD8", "Tumor"),
-#'              c("CD8", "CD68"))
+#' pairs = list(c("CD8+", "CK+"),
+#'              c("CD8+", "CD68"))
 #'
 #' # Colors for all the phenotypes mentioned in pairs
 #' colors = list(
-#'   CD8 = 'yellow',
-#'   Tumor = 'cyan',
-#'   CD68 = 'pink'
+#'   'CD8+' = 'yellow',
+#'   'CK+' = 'cyan',
+#'   'CD68+' = 'magenta'
 #' )
 #'
 #' # Count and visualize touching cells
@@ -124,7 +124,7 @@
 #' pairs = list(c('Tumor', 'Lymphocyte'))
 #' colors = list(Tumor='cyan', Lymphocyte='yellow')
 #' phenotype_rules = list(
-#'   Lymphocyte=c('CD4', 'CD8', 'TReg')
+#'   Lymphocyte=c('CD8+', 'FoxP3+')
 #' )
 #'
 #' touch_counts = map_df(files, function(path) {

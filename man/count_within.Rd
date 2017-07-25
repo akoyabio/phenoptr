@@ -66,10 +66,10 @@ To aggregate \code{within_mean} across multiple samples (e.g. by Slide ID)
 use code such as
 \preformatted{
 results \%>\% group_by(`Slide ID`, from, to, radius) \%>\%
-  summarize(count=sum(from_count),
+  summarize(from_count=sum(from_count),
             within=sum(from_count*within_mean),
-            avg=within/count) \%>\%
-  ungroup
+            avg=within/from_count) \%>\%
+  ungroup %>% select(-within)
 }
 
 If \code{category} is specified, all reported values are for cells within
@@ -83,13 +83,13 @@ library(tidyverse)
 csd = sample_cell_seg_data
 
 # Find the number of macrophages with a tumor cell within 10 or 25 microns
-count_within(csd, from='macrophage CD68', to='tumor', radius=c(10, 25)) \%>\%
+count_within(csd, from='CD68+', to='CK+', radius=c(10, 25)) \%>\%
   mutate(not_to=from_count*within_mean, to_mean=not_to/to_count)
 
 # Find the number of tumor cells with a macrophage within 10 or 25 microns
 # Show that from_count*within_mean is not the same as from_with in the
 # previous computation but from_count*within_mean/to_count is the same.
-count_within(csd, from='tumor', to='macrophage CD68', radius=c(10, 25)) \%>\%
+count_within(csd, from='CK+', to='CD68+', radius=c(10, 25)) \%>\%
   mutate(not_to=from_count*within_mean, to_mean=not_to/to_count)
 }
 \seealso{

@@ -2,27 +2,36 @@
 
 #' Sample cell segmentation data.
 #'
-#' A dataset containing inForm cell segmentation data for a single TMA core.
+#' A dataset containing inForm cell segmentation data for a single field.
 #' This is the data from
-#' \code{system.file("extdata", "TMA",
-#'                   "Core[1,5,6,1]_[21302,15107]_cell_seg_data.txt",
-#'                   package = "phenoptr")}
+#' ```
+#' system.file("extdata", "sample",
+#'                   "Set4_1-6plex_[16142,55840]_cell_seg_data.txt",
+#'                   package = "phenoptr")
+#' ```
 #'
-#' This table includes columns for components:
-#' \itemize{
-#'   \item DAPI
-#'   \item CD4 (Opal 520)
-#'   \item CK (Opal 540)
-#'   \item CD8 (Opal 570)
-#'   \item PDL1 (Opal 620)
-#'   \item CD68 (Opal 650)
-#'   \item Foxp3 (Opal 690)
-#' }
+#' This table shows the Opal stains used, the epitope they were bound to,
+#' and the colors used to show the stain in the composite and phenotype views.
 #'
-#' and phenotypes cytotoxic CD8, helper CD4, macrophage CD68, other,
-#' T reg Foxp3, and tumor.
+#' Stain   | Epitope | Composite | Phenotype
+#' --------|---------|-----------|----------
+#' DAPI    | Nucleus | Blue      | N/A
+#' Opal520 | PDL1    | Red       | N/A
+#' Opal540 | CD8     | Yellow    | Yellow
+#' Opal570 | FoxP3   | Orange    | Orange
+#' Opal620 | CD68    | Magenta   | Magenta
+#' Opal650 | PD1     | Green     | N/A
+#' Opal690 | CK      | Cyan      | Cyan
 #'
-#' To see all the included files for this core, use
-#' \code{list.files(system.file("extdata", "TMA", package = "phenoptr"))}
-#' @format A data frame with 5726 rows and 200 variables
+#' The sample cell data includes phenotypes CD8+ (cytotoxic T cell),
+#' CD68+ (macrophage),
+#' FoxP3+ (regulatory T cell), CK+ (tumor), and other.
+#'
+#' To see all the files included for this field, use
+#' `list.files(system.file("extdata", "sample", package = "phenoptr"))`.
+#'
+#' For more sample data from this and related samples, see the
+#' [phenoptrExamples](https://perkinelmer.github.io/phenoptrExamples) package.
+#' @format A data frame with 6072 rows and 199 variables
+#' @md
 "sample_cell_seg_data"

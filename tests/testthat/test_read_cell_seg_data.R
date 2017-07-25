@@ -1,8 +1,8 @@
 # Tests for read_cell_seg_data
 library(testthat)
 
-path = system.file("extdata", "TMA",
-   "Core[1,5,6,1]_[21302,15107]_cell_seg_data.txt",
+path = system.file("extdata", "sample",
+   "Set4_1-6plex_[16142,55840]_cell_seg_data.txt",
    package = "phenoptr")
 
 expect_contains = function(container, items) {
@@ -19,8 +19,8 @@ expect_does_not_contain = function(container, items) {
 test_that("read_cell_seg_data works", {
   d = read_cell_seg_data(path)
   # Check size
-  expect_equal(nrow(d), 5726)
-  expect_equal(ncol(d), 200)
+  expect_equal(nrow(d), 6072)
+  expect_equal(ncol(d), 199)
 
   # Check column names
   expect_contains(names(d), c('Sample Name', 'Cell Y Position',
@@ -33,34 +33,34 @@ test_that("read_cell_seg_data works", {
           ))
 
   # Check values
-  expect_equal(as.numeric(d[1, 'Cell X Position']), 1211/2)
+  expect_equal(as.numeric(d[1, 'Cell X Position']), 515/2)
   expect_equal(as.numeric(d[1, 'Nucleus Area (percent)']), 0.0001)
 })
 
 test_that('Skipping pixels_per_micron works', {
   d = read_cell_seg_data(path, pixels_per_micron=NA)
   # Check size
-  expect_equal(nrow(d), 5726)
-  expect_equal(ncol(d), 200)
+  expect_equal(nrow(d), 6072)
+  expect_equal(ncol(d), 199)
 
-    # Check column names
+  # Check column names
   expect_contains(names(d), 'Nucleus Area (pixels)')
   expect_does_not_contain(names(d),
         c('Tissue Category Area (pixels)', # Empty column
-          'Nucleus Area (sq microns)' # Converted
+          'Nucleus Area (sq microns)' # Not converted
           ))
 
   # Check values
-  expect_equal(as.numeric(d[1, 'Cell X Position']), 1211)
+  expect_equal(as.numeric(d[1, 'Cell X Position']), 515)
 })
 
 test_that('Setting pixels_per_micron works', {
   d = read_cell_seg_data(path, pixels_per_micron=4)
   # Check size
-  expect_equal(nrow(d), 5726)
-  expect_equal(ncol(d), 200)
+  expect_equal(nrow(d), 6072)
+  expect_equal(ncol(d), 199)
 
-    # Check column names
+  # Check column names
   expect_contains(names(d), 'Nucleus Area (sq microns)')
   expect_does_not_contain(names(d),
         c('Tissue Category Area (pixels)', # Empty column
@@ -68,14 +68,14 @@ test_that('Setting pixels_per_micron works', {
           ))
 
   # Check values
-  expect_equal(as.numeric(d[1, 'Cell X Position']), 1211/4)
+  expect_equal(as.numeric(d[1, 'Cell X Position']), 515/4)
 })
 
 test_that('remove_units=FALSE works', {
   d = read_cell_seg_data(path, remove_units=FALSE)
   # Check size
-  expect_equal(nrow(d), 5726)
-  expect_equal(ncol(d), 200)
+  expect_equal(nrow(d), 6072)
+  expect_equal(ncol(d), 199)
 
     # Check column names
   expect_contains(names(d), c('Nucleus Area (sq microns)',
@@ -85,5 +85,5 @@ test_that('remove_units=FALSE works', {
           ))
 
   # Check values
-  expect_equal(as.numeric(d[1, 'Cell X Position']), 1211/2)
+  expect_equal(as.numeric(d[1, 'Cell X Position']), 515/2)
 })

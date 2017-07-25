@@ -12,7 +12,7 @@
 
 <meta name="author" content="Kent Johnson" />
 
-<meta name="date" content="2017-07-21" />
+<meta name="date" content="2017-07-25" />
 
 <title>Computing Inter-cellular Distances</title>
 
@@ -70,7 +70,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">Computing Inter-cellular Distances</h1>
 <h4 class="author"><em>Kent Johnson</em></h4>
-<h4 class="date"><em>2017-07-21</em></h4>
+<h4 class="date"><em>2017-07-25</em></h4>
 
 
 <div id="TOC">
@@ -101,7 +101,7 @@ table {
 <div id="computing-with-find_nearest_distance" class="section level3">
 <h3>Computing with <code>find_nearest_distance</code></h3>
 <p>The <code>find_nearest_distance</code> function finds per-cell nearest neighbor distances. For each cell and each phenotype in a sample, it finds the nearest neighbor of that phenotype. The distances are returned in a <code>data_frame</code> with one column per phenotype.</p>
-<p>For example, the <code>phenoptr</code> sample data <code>sample_cell_seg_data</code> contains 6 unique phenotypes:</p>
+<p>For example, the <code>phenoptr</code> sample data <code>sample_cell_seg_data</code> contains 5 unique phenotypes:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidyverse)
 <span class="kw">library</span>(phenoptr)
 
@@ -117,45 +117,41 @@ csd %&gt;%<span class="st"> </span><span class="kw">count</span>(Phenotype)</cod
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">T reg Foxp3</td>
-<td align="right">2</td>
+<td align="left">CD68+</td>
+<td align="right">417</td>
 </tr>
 <tr class="even">
-<td align="left">cytotoxic CD8</td>
-<td align="right">293</td>
+<td align="left">CD8+</td>
+<td align="right">228</td>
 </tr>
 <tr class="odd">
-<td align="left">helper CD4</td>
-<td align="right">59</td>
+<td align="left">CK+</td>
+<td align="right">2257</td>
 </tr>
 <tr class="even">
-<td align="left">macrophage CD68</td>
-<td align="right">359</td>
+<td align="left">FoxP3+</td>
+<td align="right">228</td>
 </tr>
 <tr class="odd">
 <td align="left">other</td>
-<td align="right">1710</td>
-</tr>
-<tr class="even">
-<td align="left">tumor</td>
-<td align="right">3303</td>
+<td align="right">2942</td>
 </tr>
 </tbody>
 </table>
 </div>
-<p>This file contains only two FoxP3+ cells, and the ‘other’ cells are not of interest, so first filter them out.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">csd =<span class="st"> </span>csd %&gt;%<span class="st"> </span><span class="kw">filter</span>(!Phenotype %in%<span class="st"> </span><span class="kw">c</span>(<span class="st">'T reg Foxp3'</span>, <span class="st">'other'</span>))</code></pre></div>
+<p>The <code>other</code> cells are not of interest, so first filter them out.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">csd =<span class="st"> </span>csd %&gt;%<span class="st"> </span><span class="kw">filter</span>(Phenotype!=<span class="st">'other'</span>)</code></pre></div>
 <p>Calling <code>find_nearest_distance</code> on this file returns a <code>data_frame</code> with four columns and one row for each cell:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">distances =<span class="st"> </span><span class="kw">find_nearest_distance</span>(csd)
 <span class="kw">glimpse</span>(distances)</code></pre></div>
-<pre><code>Observations: 4,014
+<pre><code>Observations: 3,130
 Variables: 4
-$ Distance to cytotoxic CD8   &lt;dbl&gt; 15.231546, 21.505813, 14.008926, 1...
-$ Distance to helper CD4      &lt;dbl&gt; 140.12584, 136.88042, 137.29530, 1...
-$ Distance to macrophage CD68 &lt;dbl&gt; 11.597414, 28.160256, 9.552487, 24...
-$ Distance to tumor           &lt;dbl&gt; 3.201562, 9.552487, 3.201562, 13.7...</code></pre>
+$ Distance to CD68+  &lt;dbl&gt; 29.529646, 38.082148, 36.674242, 73.119765,...
+$ Distance to CD8+   &lt;dbl&gt; 18.03469, 64.37585, 67.57403, 91.44397, 37....
+$ Distance to CK+    &lt;dbl&gt; 36.830694, 109.317199, 3.605551, 4.031129, ...
+$ Distance to FoxP3+ &lt;dbl&gt; 16.347783, 40.140379, 30.870698, 65.408333,...</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">nrow</span>(csd)</code></pre></div>
-<pre><code>[1] 4014</code></pre>
+<pre><code>[1] 3130</code></pre>
 <p>To create a combined data frame, use <code>dplyr::bind_cols</code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">csd_with_distance =<span class="st"> </span><span class="kw">bind_cols</span>(csd, distances)</code></pre></div>
 <p>Note: Cell positions in a cell seg data file are relative to the top-left corner of the field, so calling <code>find_nearest_distance</code> on a merged data file will fail. One way to add distance columns to a merged data file is to use <code>dplyr::group_by</code> to process each field separately. For example, if <code>merged</code> contains merged cell seg data, add distance columns with this code:</p>
@@ -174,56 +170,56 @@ $ Distance to tumor           &lt;dbl&gt; 3.201562, 9.552487, 3.201562, 13.7...<
 <thead>
 <tr class="header">
 <th align="left">Phenotype</th>
-<th align="right">Distance to cytotoxic CD8</th>
-<th align="right">Distance to helper CD4</th>
-<th align="right">Distance to macrophage CD68</th>
-<th align="right">Distance to tumor</th>
+<th align="right">Distance to CD68+</th>
+<th align="right">Distance to CD8+</th>
+<th align="right">Distance to CK+</th>
+<th align="right">Distance to FoxP3+</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">cytotoxic CD8</td>
-<td align="right">21.4</td>
-<td align="right">75.0</td>
-<td align="right">24.7</td>
-<td align="right">16.7</td>
+<td align="left">CD68+</td>
+<td align="right">14.2</td>
+<td align="right">30.6</td>
+<td align="right">23.1</td>
+<td align="right">24.8</td>
 </tr>
 <tr class="even">
-<td align="left">helper CD4</td>
-<td align="right">24.8</td>
-<td align="right">34.8</td>
-<td align="right">25.5</td>
-<td align="right">21.0</td>
+<td align="left">CD8+</td>
+<td align="right">23.1</td>
+<td align="right">17.5</td>
+<td align="right">19.3</td>
+<td align="right">28.4</td>
 </tr>
 <tr class="odd">
-<td align="left">macrophage CD68</td>
-<td align="right">31.6</td>
-<td align="right">70.2</td>
-<td align="right">18.9</td>
-<td align="right">21.8</td>
+<td align="left">CK+</td>
+<td align="right">44.3</td>
+<td align="right">48.2</td>
+<td align="right">7.9</td>
+<td align="right">50.5</td>
 </tr>
 <tr class="even">
-<td align="left">tumor</td>
-<td align="right">38.1</td>
-<td align="right">91.8</td>
-<td align="right">35.0</td>
-<td align="right">7.8</td>
+<td align="left">FoxP3+</td>
+<td align="right">19.1</td>
+<td align="right">29.1</td>
+<td align="right">23.3</td>
+<td align="right">22.3</td>
 </tr>
 </tbody>
 </table>
 </div>
 <p>Show the distribution of distances in a density plot:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(csd_with_distance, <span class="kw">aes</span>(<span class="st">`</span><span class="dt">Distance to helper CD4</span><span class="st">`</span>, <span class="dt">color=</span>Phenotype)) +
-<span class="st">  </span><span class="kw">geom_density</span>()</code></pre></div>
-<p><img src="data:image/png;base64,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" /><!-- --></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(csd_with_distance, <span class="kw">aes</span>(<span class="st">`</span><span class="dt">Distance to CD8+</span><span class="st">`</span>, <span class="dt">color=</span>Phenotype)) +
+<span class="st">  </span><span class="kw">geom_density</span>(<span class="dt">size=</span><span class="dv">1</span>) +<span class="st"> </span><span class="kw">theme_minimal</span>()</code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
 </div>
 </div>
 <div id="cells-within-a-radius" class="section level2">
 <h2>Cells within a radius</h2>
 <div id="computing-with-count_within" class="section level3">
 <h3>Computing with <code>count_within</code></h3>
-<p>The <code>count_within</code> function looks at the number of cells within a radius of another cell and returns summary measures. For example, use <code>count_within</code> to find the number of macrophages having a tumor cell within 25 microns:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">count_within</span>(csd, <span class="dt">from=</span><span class="st">'macrophage CD68'</span>, <span class="dt">to=</span><span class="st">'tumor'</span>, <span class="dt">radius=</span><span class="dv">25</span>)</code></pre></div>
+<p>The <code>count_within</code> function looks at the number of cells within a radius of another cell and returns summary measures. For example, use <code>count_within</code> to find the number of <code>macrophage CD68</code> cells having a <code>CK+</code> cell within 25 microns:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">count_within</span>(csd, <span class="dt">from=</span><span class="st">'CD68+'</span>, <span class="dt">to=</span><span class="st">'CK+'</span>, <span class="dt">radius=</span><span class="dv">25</span>)</code></pre></div>
 <div class="kable-table">
 <table>
 <thead>
@@ -238,17 +234,17 @@ $ Distance to tumor           &lt;dbl&gt; 3.201562, 9.552487, 3.201562, 13.7...<
 <tbody>
 <tr class="odd">
 <td align="right">25</td>
-<td align="right">359</td>
-<td align="right">3303</td>
-<td align="right">257</td>
-<td align="right">5.183844</td>
+<td align="right">417</td>
+<td align="right">2257</td>
+<td align="right">274</td>
+<td align="right">3.278177</td>
 </tr>
 </tbody>
 </table>
 </div>
 <p>In this result, <code>from_count</code> and <code>to_count</code> are the total numbers of eligible cells. They agree with the counts in the first table in this vignette. <code>from_with</code> is the number of <code>macrophage CD68</code> cells having at least one <code>tumor</code> cell within 25 μm. <code>within_mean</code> is the average number of <code>tumor</code> cells found within 25 μm of each <code>macrophage CD68</code> cell.</p>
-<p>Note there are some subtleties to <code>count_within</code>. Most importantly, it is not symmetric. In this example, the number of <code>tumor</code> cells with a <code>macrophage CD68</code> within 25 microns is not the same as the number of <code>macrophage CD68</code> cells with a <code>tumor</code> cell within 25 microns.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">count_within</span>(csd, <span class="dt">from=</span><span class="st">'tumor'</span>, <span class="dt">to=</span><span class="st">'macrophage CD68'</span>, <span class="dt">radius=</span><span class="dv">25</span>)</code></pre></div>
+<p>Note there are some subtleties to <code>count_within</code>. Most importantly, it is not symmetric. In this example, the number of <code>CK+</code> cells with a <code>CD68+</code> within 25 microns is not the same as the number of <code>macrophage CD68</code> cells with a <code>CK+</code> cell within 25 microns.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">count_within</span>(csd, <span class="dt">from=</span><span class="st">'CK+'</span>, <span class="dt">to=</span><span class="st">'CD68+'</span>, <span class="dt">radius=</span><span class="dv">25</span>)</code></pre></div>
 <div class="kable-table">
 <table>
 <thead>
@@ -263,10 +259,10 @@ $ Distance to tumor           &lt;dbl&gt; 3.201562, 9.552487, 3.201562, 13.7...<
 <tbody>
 <tr class="odd">
 <td align="right">25</td>
-<td align="right">3303</td>
-<td align="right">359</td>
-<td align="right">1195</td>
-<td align="right">0.5634272</td>
+<td align="right">2257</td>
+<td align="right">417</td>
+<td align="right">664</td>
+<td align="right">0.6056712</td>
 </tr>
 </tbody>
 </table>
@@ -276,13 +272,13 @@ $ Distance to tumor           &lt;dbl&gt; 3.201562, 9.552487, 3.201562, 13.7...<
 <div id="count-multiple-files-or-phenotypes-using-count_within_batch" class="section level3">
 <h3>Count multiple files or phenotypes using <code>count_within_batch</code></h3>
 <p>You may want to run <code>count_within</code> on an entire directory of cell seg data files, or to count multiple combinations of phenotypes. Both of these are possible using <code>count_within_batch</code>. Instead of a <code>data_frame</code>, you pass it the path to a directory containing multiple cell seg data files. The <code>pairs</code> and <code>category</code> parameters are lists and may contain multiple entries.</p>
-<p>For example, the following commands will count <code>T Reg</code> cells with a <code>Cytotoxic T Cell</code> or <code>PDL1+ Tumor Cell</code> within 10 or 25 μm, with separate counts for each <code>to</code> phenotype and for <code>tumor</code> and <code>stroma</code> tissue categories. Counts will be calculated for all <code>cell_seg_data.txt</code> files in <code>my_directory</code>.</p>
+<p>For example, the following commands will count <code>FoxP3+</code> cells with a <code>CD8+</code> or <code>CK+</code> within 10 or 25 μm, with separate counts for each <code>to</code> phenotype and for <code>Tumor</code> and <code>Stroma</code> tissue categories. Counts will be calculated for all <code>cell_seg_data.txt</code> files in <code>my_directory</code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">base_path =<span class="st"> &quot;/path/to/my_directory&quot;</span>
 
-pairs =<span class="st"> </span><span class="kw">list</span>(<span class="kw">c</span>(<span class="st">'T Reg'</span>, <span class="st">'Cytotoxic T Cell'</span>),
-             <span class="kw">c</span>(<span class="st">'T Reg'</span>, <span class="st">'PDL1+ Tumor Cell'</span>))
+pairs =<span class="st"> </span><span class="kw">list</span>(<span class="kw">c</span>(<span class="st">'FoxP3+'</span>, <span class="st">'CD8+'</span>),
+             <span class="kw">c</span>(<span class="st">'FoxP3+'</span>, <span class="st">'CK+'</span>))
 radii =<span class="st"> </span><span class="kw">c</span>(<span class="dv">10</span>, <span class="dv">25</span>)
-categories =<span class="st"> </span><span class="kw">c</span>(<span class="st">'stroma'</span>, <span class="st">'tumor'</span>)
+categories =<span class="st"> </span><span class="kw">c</span>(<span class="st">'Stroma'</span>, <span class="st">'Tumor'</span>)
 
 <span class="kw">count_within_batch</span>(base_path, pairs, radii, categories)</code></pre></div>
 <p>See <code>help(count_within_batch)</code> and <code>vignette('selecting_cells', package='phenoptr')</code> for additional details.</p>
@@ -291,15 +287,15 @@ categories =<span class="st"> </span><span class="kw">c</span>(<span class="st">
 <div id="visualizing-nearest-neighbors" class="section level2">
 <h2>Visualizing nearest neighbors</h2>
 <p>The <code>spatial_distribution_report</code> function is a bit different from the other functions mentioned in this vignette. Rather than calculate and return distance metrics, it creates a report which shows visually the nearest neighbor relations between two phenotypes in a single field. Because the result is a stand-alone HTML file, it can’t easily be demonstrated in a vignette. For an example, copy and paste this code into your own copy of R. It will create a sample report in your user directory.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">cell_seg_path =<span class="st"> </span><span class="kw">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;TMA&quot;</span>,
-                       <span class="st">&quot;Core[1,5,6,1]_[21302,15107]_cell_seg_data.txt&quot;</span>,
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">cell_seg_path =<span class="st"> </span><span class="kw">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;sample&quot;</span>,
+                       <span class="st">&quot;Set4_1-6plex_[16142,55840]_cell_seg_data.txt&quot;</span>,
                        <span class="dt">package =</span> <span class="st">&quot;phenoptr&quot;</span>)
 
-phenotypes =<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;macrophage CD68&quot;</span>, <span class="st">&quot;cytotoxic CD8&quot;</span>)
-colors =<span class="st"> </span><span class="kw">c</span>(<span class="st">'red'</span>, <span class="st">'blue'</span>)
+pairs =<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;CD68+&quot;</span>, <span class="st">&quot;CD8+&quot;</span>)
+colors =<span class="st"> </span><span class="kw">c</span>(<span class="st">'magenta'</span>, <span class="st">'yellow'</span>)
 out_path =<span class="st"> </span><span class="kw">path.expand</span>(<span class="st">'~/spatial_distribution_report.html'</span>)
 
-<span class="kw">spatial_distribution_report</span>(cell_seg_path, phenotypes, colors, out_path)</code></pre></div>
+<span class="kw">spatial_distribution_report</span>(cell_seg_path, pairs, colors, out_path)</code></pre></div>
 <p>To create reports for all cell seg data files in a directory, first define <code>phenotypes</code> and <code>colors</code> as above. Use <code>list_cell_seg_files</code> to find all the files. Then call <code>spatial_distribution_report</code> for each file. This will create reports in the same directory as the data files.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">base_path =<span class="st"> '/path/to/data/'</span>
 paths =<span class="st"> </span><span class="kw">list_cell_seg_files</span>(base_path)

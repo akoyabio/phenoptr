@@ -26,14 +26,11 @@ i.e. (0, 0) at the top left and the row corresponding to Y and
 column corresponding to X.
 }
 \examples{
-\dontrun{
-# Not included at this time
-path = system.file("extdata", "TMA",
-                   "Core[1,5,6,1]_[21302,15107]_binary_seg_maps.tif",
+path = system.file("extdata", "sample",
+                   "Set4_1-6plex_[16142,55840]_binary_seg_maps.tif",
                    package = "phenoptr")
-d = read_maps(path)
-names(d)
-}
+maps = read_maps(path)
+names(maps)
 }
 \seealso{
 Other file readers: \code{\link{list_cell_seg_files}},

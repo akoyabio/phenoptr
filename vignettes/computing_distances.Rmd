@@ -55,11 +55,11 @@ csd = sample_cell_seg_data
 csd %>% count(Phenotype)
 ```
 
-This file contains only two FoxP3+ cells, and the 'other' cells are not of 
+The `other` cells are not of 
 interest, so first filter them out.
 
 ```{r}
-csd = csd %>% filter(!Phenotype %in% c('T reg Foxp3', 'other'))
+csd = csd %>% filter(Phenotype!='other')
 ```
 
 Calling `find_nearest_distance` on this file returns a `data_frame` with 
@@ -105,8 +105,8 @@ csd_with_distance %>% group_by(Phenotype) %>%
 Show the distribution of distances in a density plot:
 
 ```{r}
-ggplot(csd_with_distance, aes(`Distance to helper CD4`, color=Phenotype)) +
-  geom_density()
+ggplot(csd_with_distance, aes(`Distance to CD8+`, color=Phenotype)) +
+  geom_density(size=1) + theme_minimal()
 ```
 
 ## Cells within a radius
@@ -115,10 +115,11 @@ ggplot(csd_with_distance, aes(`Distance to helper CD4`, color=Phenotype)) +
 
 The `count_within` function looks at the number of cells within a radius of
 another cell and returns summary measures. For example, use `count_within`
-to find the number of macrophages having a tumor cell within 25 microns:
+to find the number of `macrophage CD68` cells
+having a `CK+` cell within 25 microns:
 
 ```{r}
-count_within(csd, from='macrophage CD68', to='tumor', radius=25)
+count_within(csd, from='CD68+', to='CK+', radius=25)
 ```
 
 In this result, `from_count` and `to_count` are the total numbers of 
@@ -128,13 +129,13 @@ one `tumor` cell within 25 &mu;m. `within_mean` is the average number of
 `tumor` cells found within 25 &mu;m of each `macrophage CD68` cell.
 
 Note there are some subtleties to `count_within`. Most importantly, it
-is not symmetric. In this example, the number of `tumor` cells with a 
-`macrophage CD68`
+is not symmetric. In this example, the number of `CK+` cells with a 
+`CD68+`
 within 25 microns is not the same as the number of `macrophage CD68`
-cells with a `tumor` cell within 25 microns.
+cells with a `CK+` cell within 25 microns.
 
 ```{r}
-count_within(csd, from='tumor', to='macrophage CD68', radius=25)
+count_within(csd, from='CK+', to='CD68+', radius=25)
 ```
 
 Please see `help(count_within)` for details.
@@ -148,19 +149,19 @@ you pass it the path to a directory containing multiple cell seg data files.
 The `pairs` and `category` parameters are lists and may contain
 multiple entries.
 
-For example, the following commands will count `T Reg` cells
-with a `Cytotoxic T Cell` or `PDL1+ Tumor Cell` within 10 or 25 &mu;m, 
+For example, the following commands will count `FoxP3+` cells
+with a `CD8+` or `CK+` within 10 or 25 &mu;m, 
 with separate counts for each `to` phenotype and for
-`tumor` and `stroma` tissue categories. Counts will be calculated 
+`Tumor` and `Stroma` tissue categories. Counts will be calculated 
 for all `cell_seg_data.txt` files in `my_directory`.
 
 ```{r eval=FALSE}
 base_path = "/path/to/my_directory"
 
-pairs = list(c('T Reg', 'Cytotoxic T Cell'),
-             c('T Reg', 'PDL1+ Tumor Cell'))
+pairs = list(c('FoxP3+', 'CD8+'),
+             c('FoxP3+', 'CK+'))
 radii = c(10, 25)
-categories = c('stroma', 'tumor')
+categories = c('Stroma', 'Tumor')
 
 count_within_batch(base_path, pairs, radii, categories)
 ```
@@ -181,15 +182,15 @@ copy and paste this code
 into your own copy of R. It will create a sample report in your user directory.
 
 ```{r eval=FALSE}
-cell_seg_path = system.file("extdata", "TMA",
-                       "Core[1,5,6,1]_[21302,15107]_cell_seg_data.txt",
+cell_seg_path = system.file("extdata", "sample",
+                       "Set4_1-6plex_[16142,55840]_cell_seg_data.txt",
                        package = "phenoptr")
 
-phenotypes = c("macrophage CD68", "cytotoxic CD8")
-colors = c('red', 'blue')
+pairs = c("CD68+", "CD8+")
+colors = c('magenta', 'yellow')
 out_path = path.expand('~/spatial_distribution_report.html')
 
-spatial_distribution_report(cell_seg_path, phenotypes, colors, out_path)
+spatial_distribution_report(cell_seg_path, pairs, colors, out_path)
 
 ```
 
@@ -198,7 +199,7 @@ To create reports for all cell seg data files in a directory, first define
 the files. Then call `spatial_distribution_report` for each file. This will
 create reports in the same directory as the data files.
 
-```{r}
+```{r eval=FALSE}
 base_path = '/path/to/data/'
 paths = list_cell_seg_files(base_path)
 for (path in paths)

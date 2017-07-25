@@ -14,7 +14,7 @@ csd = sample_cell_seg_data
 csd %>% count(Phenotype)
 
 ## ------------------------------------------------------------------------
-csd = csd %>% filter(!Phenotype %in% c('T reg Foxp3', 'other'))
+csd = csd %>% filter(Phenotype!='other')
 
 ## ------------------------------------------------------------------------
 distances = find_nearest_distance(csd)
@@ -35,40 +35,40 @@ csd_with_distance %>% group_by(Phenotype) %>%
   summarize_all(~round(mean(.), 1))
 
 ## ------------------------------------------------------------------------
-ggplot(csd_with_distance, aes(`Distance to helper CD4`, color=Phenotype)) +
-  geom_density()
+ggplot(csd_with_distance, aes(`Distance to CD8+`, color=Phenotype)) +
+  geom_density(size=1) + theme_minimal()
 
 ## ------------------------------------------------------------------------
-count_within(csd, from='macrophage CD68', to='tumor', radius=25)
+count_within(csd, from='CD68+', to='CK+', radius=25)
 
 ## ------------------------------------------------------------------------
-count_within(csd, from='tumor', to='macrophage CD68', radius=25)
+count_within(csd, from='CK+', to='CD68+', radius=25)
 
 ## ----eval=FALSE----------------------------------------------------------
 #  base_path = "/path/to/my_directory"
 #  
-#  pairs = list(c('T Reg', 'Cytotoxic T Cell'),
-#               c('T Reg', 'PDL1+ Tumor Cell'))
+#  pairs = list(c('FoxP3+', 'CD8+'),
+#               c('FoxP3+', 'CK+'))
 #  radii = c(10, 25)
-#  categories = c('stroma', 'tumor')
+#  categories = c('Stroma', 'Tumor')
 #  
 #  count_within_batch(base_path, pairs, radii, categories)
 
 ## ----eval=FALSE----------------------------------------------------------
-#  cell_seg_path = system.file("extdata", "TMA",
-#                         "Core[1,5,6,1]_[21302,15107]_cell_seg_data.txt",
+#  cell_seg_path = system.file("extdata", "sample",
+#                         "Set4_1-6plex_[16142,55840]_cell_seg_data.txt",
 #                         package = "phenoptr")
 #  
-#  phenotypes = c("macrophage CD68", "cytotoxic CD8")
-#  colors = c('red', 'blue')
+#  pairs = c("CD68+", "CD8+")
+#  colors = c('magenta', 'yellow')
 #  out_path = path.expand('~/spatial_distribution_report.html')
 #  
-#  spatial_distribution_report(cell_seg_path, phenotypes, colors, out_path)
+#  spatial_distribution_report(cell_seg_path, pairs, colors, out_path)
 #  
 
-## ------------------------------------------------------------------------
-base_path = '/path/to/data/'
-paths = list_cell_seg_files(base_path)
-for (path in paths)
-  spatial_distribution_report(path, phenotypes, colors)
+## ----eval=FALSE----------------------------------------------------------
+#  base_path = '/path/to/data/'
+#  paths = list_cell_seg_files(base_path)
+#  for (path in paths)
+#    spatial_distribution_report(path, phenotypes, colors)
 

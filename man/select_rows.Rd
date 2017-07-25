@@ -29,13 +29,13 @@ expressions.
 \examples{
 csd = sample_cell_seg_data
 
-# Select tumor cells with PDL1 expression > 4
-selector = list('tumor', ~`Entire Cell PDL1 (Opal 620) Mean`>4)
+# Select tumor cells with PDL1 expression > 3
+selector = list('CK+', ~`Entire Cell PDL1 (Opal 520) Mean`>3)
 pdl1_pos_tumor = csd[select_rows(csd, selector),]
-range(pdl1_pos_tumor$`Entire Cell PDL1 (Opal 620) Mean`)
+range(pdl1_pos_tumor$`Entire Cell PDL1 (Opal 520) Mean`)
 
 # Select all T-cells. Note: Use c() to combine phenotypes, not list()
-selector = c('cytotoxic CD8', 'helper CD4', 'T reg Foxp3')
+selector = c('CD8+', 'FoxP3+')
 tcells = csd[select_rows(csd, selector),]
 table(tcells$Phenotype)
 }

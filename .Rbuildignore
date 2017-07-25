@@ -3,19 +3,6 @@
 
 ^docs$
 ^tools$
-# For now, exclude most of the sample image files
-Core[1,5,6,1]_[21302,15107].jpg
-Core[1,5,6,1]_[21302,15107]_binary_seg_maps.tif
-Core[1,5,6,1]_[21302,15107]_cell_seg_data.txt
-Core[1,5,6,1]_[21302,15107]_cell_seg_data_summary.txt
-# This is used in a vignette, include it
-#Core[1,5,6,1]_[21302,15107]_composite_image.jpg
-Core[1,5,6,1]_[21302,15107]_image_with_all_seg.jpg
-Core[1,5,6,1]_[21302,15107]_image_with_phenotype_map.jpg
-Core[1,5,6,1]_[21302,15107]_image_with_tissue_seg.jpg
-Core[1,5,6,1]_[21302,15107]_phenotype_map.jpg
-Core[1,5,6,1]_[21302,15107]_tissue_seg_data.txt
-Core[1,5,6,1]_[21302,15107]_tissue_seg_data_summary.txt
 TODO
 .lintr
 ^NEWS\.md$

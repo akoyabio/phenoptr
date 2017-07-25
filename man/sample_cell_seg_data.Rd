@@ -4,33 +4,40 @@
 \name{sample_cell_seg_data}
 \alias{sample_cell_seg_data}
 \title{Sample cell segmentation data.}
-\format{A data frame with 5726 rows and 200 variables}
+\format{A data frame with 6072 rows and 199 variables}
 \usage{
 sample_cell_seg_data
 }
 \description{
-A dataset containing inForm cell segmentation data for a single TMA core.
-This is the data from
-\code{system.file("extdata", "TMA",
-                  "Core[1,5,6,1]_[21302,15107]_cell_seg_data.txt",
-                  package = "phenoptr")}
+A dataset containing inForm cell segmentation data for a single field.
+This is the data from\preformatted{system.file("extdata", "sample",
+                  "Set4_1-6plex_[16142,55840]_cell_seg_data.txt",
+                  package = "phenoptr")
+}
 }
 \details{
-This table includes columns for components:
-\itemize{
-  \item DAPI
-  \item CD4 (Opal 520)
-  \item CK (Opal 540)
-  \item CD8 (Opal 570)
-  \item PDL1 (Opal 620)
-  \item CD68 (Opal 650)
-  \item Foxp3 (Opal 690)
+This table shows the Opal stains used, the epitope they were bound to,
+and the colors used to show the stain in the composite and phenotype views.
+
+\tabular{llll}{
+\tab Stain \tab Epitope \tab Composite \tab Phenotype\cr
+\tab DAPI \tab Nucleus \tab Blue \tab N/A\cr
+\tab Opal520 \tab PDL1 \tab Red \tab N/A\cr
+\tab Opal540 \tab CD8 \tab Yellow \tab Yellow\cr
+\tab Opal570 \tab FoxP3 \tab Orange \tab Orange\cr
+\tab Opal620 \tab CD68 \tab Magenta \tab Magenta\cr
+\tab Opal650 \tab PD1 \tab Green \tab N/A\cr
+\tab Opal690 \tab CK \tab Cyan \tab Cyan\cr
 }
 
-and phenotypes cytotoxic CD8, helper CD4, macrophage CD68, other,
-T reg Foxp3, and tumor.
+The sample cell data includes phenotypes CD8+ (cytotoxic T cell),
+CD68+ (macrophage),
+FoxP3+ (regulatory T cell), CK+ (tumor), and other.
 
-To see all the included files for this core, use
-\code{list.files(system.file("extdata", "TMA", package = "phenoptr"))}
+To see all the files included for this field, use
+\code{list.files(system.file("extdata", "sample", package = "phenoptr"))}.
+
+For more sample data from this and related samples, see the
+\href{https://perkinelmer.github.io/phenoptrExamples}{phenoptrExamples} package.
 }
 \keyword{datasets}

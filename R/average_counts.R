@@ -44,21 +44,21 @@ if (getRversion() >= "2.15.1")
 #'    for this data file and tissue category.}
 #'  }
 #' @examples
-#' base_path = system.file("extdata", "TMA", package = "phenoptr")
+#' base_path = system.file("extdata", "sample", package = "phenoptr")
 #'
 #' # Count tumor cells near macrophages, and tumor cells near CD8 separately,
 #' # in tumor and stroma tissue categories separately.
-#' pairs = list(c('tumor', 'macrophage CD68'),
-#'              c('tumor', 'cytotoxic CD8'))
+#' pairs = list(c('CK+', 'CD68+'),
+#'              c('CK+', 'CD8+'))
 #' radius = c(10, 25)
-#' category = list('tumor', 'stroma')
+#' category = list('Tumor', 'Stroma')
 #' count_within_batch(base_path, pairs, radius, category)
 #'
 #' # Count tumor cells near any T cell in all tissue categories.
 #' # Use `phenotype_rules` to define the T cell phenotype
-#' pairs = c('tumor', 'T cell')
+#' pairs = c('CK+', 'T cell')
 #' rules = list(
-#' 'T cell'=c('cytotoxic CD8', 'helper CD4', 'T reg Foxp3'))
+#' 'T cell'=c('CD8+', 'FoxP3+'))
 #' count_within_batch(base_path, pairs, radius, phenotype_rules=rules)
 #' @md
 #' @export
@@ -153,10 +153,10 @@ count_within_batch = function(base_path, pairs, radius, category=NA,
 #' use code such as
 #' \preformatted{
 #' results \%>\% group_by(`Slide ID`, from, to, radius) \%>\%
-#'   summarize(count=sum(from_count),
+#'   summarize(from_count=sum(from_count),
 #'             within=sum(from_count*within_mean),
-#'             avg=within/count) \%>\%
-#'   ungroup
+#'             avg=within/from_count) \%>\%
+#'   ungroup %>% select(-within)
 #' }
 #'
 #' If \code{category} is specified, all reported values are for cells within
@@ -195,13 +195,13 @@ count_within_batch = function(base_path, pairs, radius, category=NA,
 #' csd = sample_cell_seg_data
 #'
 #' # Find the number of macrophages with a tumor cell within 10 or 25 microns
-#' count_within(csd, from='macrophage CD68', to='tumor', radius=c(10, 25)) %>%
+#' count_within(csd, from='CD68+', to='CK+', radius=c(10, 25)) %>%
 #'   mutate(not_to=from_count*within_mean, to_mean=not_to/to_count)
 #'
 #' # Find the number of tumor cells with a macrophage within 10 or 25 microns
 #' # Show that from_count*within_mean is not the same as from_with in the
 #' # previous computation but from_count*within_mean/to_count is the same.
-#' count_within(csd, from='tumor', to='macrophage CD68', radius=c(10, 25)) %>%
+#' count_within(csd, from='CK+', to='CD68+', radius=c(10, 25)) %>%
 #'   mutate(not_to=from_count*within_mean, to_mean=not_to/to_count)
 
 count_within = function(csd, from, to, radius, category=NA, dst=NULL) {

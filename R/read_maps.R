@@ -16,14 +16,11 @@
 #' @export
 #' @family file readers
 #' @examples
-#' \dontrun{
-#' # Not included at this time
-#' path = system.file("extdata", "TMA",
-#'                    "Core[1,5,6,1]_[21302,15107]_binary_seg_maps.tif",
+#' path = system.file("extdata", "sample",
+#'                    "Set4_1-6plex_[16142,55840]_binary_seg_maps.tif",
 #'                    package = "phenoptr")
-#' d = read_maps(path)
-#' names(d)
-#' }
+#' maps = read_maps(path)
+#' names(maps)
 #' @md
 read_maps = function(map_path) {
   # Allow a cell seg path to be passed in

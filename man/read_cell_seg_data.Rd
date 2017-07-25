@@ -49,15 +49,15 @@ specfied as a parameter or by setting
 }
 }
 \examples{
-path = system.file("extdata", "TMA",
-                   "Core[1,5,6,1]_[21302,15107]_cell_seg_data.txt",
+path = system.file("extdata", "sample",
+                   "Set4_1-6plex_[16142,55840]_cell_seg_data.txt",
                    package = "phenoptr")
-d = read_cell_seg_data(path)
+csd = read_cell_seg_data(path)
 
 \dontrun{
 # Read all cell seg files in a directory and return a single data_frame
 paths = list_cell_seg_files(path)
-d = purrr::map_df(paths, read_cell_seg_data)
+csd = purrr::map_df(paths, read_cell_seg_data)
 }
 }
 \seealso{

@@ -17,38 +17,38 @@ test_that("count_within works", {
   csd = sample_cell_seg_data %>% filter(Phenotype != 'other')
   dst = distance_matrix(csd)
 
-  within15 = count_within(csd, 'tumor', 'cytotoxic CD8', 15, dst=dst)
-  check_within(within15, 15, 3303, 293)
+  within15 = count_within(csd, 'CK+', 'CD8+', 15, dst=dst)
+  check_within(within15, 15, 2257, 228)
 
-  within30 = count_within(csd, 'tumor', 'cytotoxic CD8', 30, dst=dst)
-  check_within(within30, 30, 3303, 293)
+  within30 = count_within(csd, 'CK+', 'CD8+', 30, dst=dst)
+  check_within(within30, 30, 2257, 228)
   expect_gt(within30$within_mean, within15$within_mean)
 
-  within15tumor = count_within(csd, 'tumor', 'cytotoxic CD8', 15,
-                                       'tumor', dst=dst)
-  check_within(within15tumor, 15, 3221, 129)
+  within15tumor = count_within(csd, 'CK+', 'CD8+', 15,
+                                       'Tumor', dst=dst)
+  check_within(within15tumor, 15, 2192, 51)
 
-  within = count_within(csd, 'tumor',
-                        c('cytotoxic CD8', 'helper CD4'), 15, 'tumor', dst=dst)
-  check_within(within, 15, 3221, 129+6)
+  within = count_within(csd, 'CK+',
+                        c('CD8+', 'FoxP3+'), 15, 'Tumor', dst=dst)
+  check_within(within, 15, 2192, 51+34)
 
   within = count_within(csd,
-                        c('cytotoxic CD8', 'helper CD4'),
-                        'tumor',  15, 'tumor', dst=dst)
-  check_within(within, 15, 129+6, 3221)
+                        c('CD8+', 'FoxP3+'),
+                        'CK+',  15, 'Tumor', dst=dst)
+  check_within(within, 15, 51+34, 2192)
 })
 
 test_that("count_within works with no data", {
   csd = sample_cell_seg_data %>% filter(Phenotype != 'other')
   dst = distance_matrix(csd)
 
-  within = count_within(csd, 'other', 'cytotoxic CD8', 15, dst=dst)
-  check_within(within, 15, 0, 293)
+  within = count_within(csd, 'other', 'CD8+', 15, dst=dst)
+  check_within(within, 15, 0, 228)
   expect_equal(within$from_with, 0)
   expect_equal(within$within_mean, 0)
 
-  within = count_within(csd, 'tumor', 'other', 15, dst=dst)
-  check_within(within, 15, 3303, 0)
+  within = count_within(csd, 'CK+', 'other', 15, dst=dst)
+  check_within(within, 15, 2257, 0)
   expect_equal(within$from_with, 0)
   expect_equal(within$within_mean, 0)
 
@@ -62,8 +62,8 @@ test_that("count_within works with multiple radii", {
   csd = sample_cell_seg_data %>% filter(Phenotype != 'other')
   dst = distance_matrix(csd)
 
-  within = count_within(csd, 'tumor', 'cytotoxic CD8', c(15, 30), dst=dst)
-  check_within(within, c(15, 30), c(3303, 3303), c(293, 293))
+  within = count_within(csd, 'CK+', 'CD8+', c(15, 30), dst=dst)
+  check_within(within, c(15, 30), c(2257, 2257), c(228, 228))
 
   within = count_within(csd, 'other', 'other', c(15, 30), dst=dst)
   check_within(within, c(15, 30), c(0, 0), c(0, 0))
@@ -75,21 +75,21 @@ test_that("count_within errors with invalid radii", {
   csd = sample_cell_seg_data %>% filter(Phenotype != 'other')
   dst = distance_matrix(csd)
 
-  expect_error(count_within(csd, 'tumor', 'cytotoxic CD8', integer(0), dst),
+  expect_error(count_within(csd, 'CK+', 'CD8+', integer(0), dst),
                'length\\(radius\\)')
-  expect_error(count_within(csd, 'tumor', 'cytotoxic CD8', c(1, -1), dst),
+  expect_error(count_within(csd, 'CK+', 'CD8+', c(1, -1), dst),
                'radius > 0')
 })
 
 # Test error handling of count_within_batch
 test_that("count_within_batch error checking works", {
   base_path = system.file("extdata", package = "phenoptr")
-  pairs = c('tumor', 'macrophage CD68')
+  pairs = c('CK+', 'macrophage CD68')
   radius = 10
   expect_error(count_within_batch(base_path, pairs, radius), base_path)
 
-  base_path = system.file("extdata", "TMA", package = "phenoptr")
-  expect_error(count_within_batch(base_path, pairs='tumor', radius),
+  base_path = system.file("extdata", "sample", package = "phenoptr")
+  expect_error(count_within_batch(base_path, pairs='CK+', radius),
                'is.list\\(pairs\\)')
   expect_error(count_within_batch(base_path, pairs=list(), radius),
                'length\\(pairs\\)')

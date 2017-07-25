@@ -41,14 +41,14 @@ if (getRversion() >= "2.15.1")
 #' \dontrun{
 #' # This example creates a report in the current user's
 #' # home or Document directory.
-#' cell_seg_path = system.file("extdata", "TMA",
-#'                        "Core[1,5,6,1]_[21302,15107]_cell_seg_data.txt",
+#' cell_seg_path = system.file("extdata", "sample",
+#'                        "Set4_1-6plex_[16142,55840]_cell_seg_data.txt",
 #'                        package = "phenoptr")
 #'
 #' pairs = list(
-#'   c("tumor", "cytotoxic CD8"),
-#'   c("tumor", "macrophage CD68"))
-#' colors = c(tumor="cyan", "macrophage CD68"="red", "cytotoxic CD8"="yellow")
+#'   c("CK+", "CD8+"),
+#'   c("CK+", "CD68+"))
+#' colors = c('CK+'="cyan", "CD68+"="magenta", "CD8+"="yellow")
 #' out_path = path.expand('~/spatial_distribution_report.html')
 #'
 #' spatial_distribution_report(cell_seg_path, pairs, colors,
@@ -57,11 +57,11 @@ if (getRversion() >= "2.15.1")
 #' # This example extends the previous example to restrict tumor cells to
 #' # only PDL1+ cells.
 #' pairs = list(
-#'   c("tumor PDL1+", "cytotoxic CD8"),
-#'   c("tumor PDL1+", "macrophage CD68"))
-#' colors = c("tumor PDL1+"="cyan", "macrophage CD68"="red", "cytotoxic CD8"="yellow")
+#'   c("CK+ PDL1+", "CD8+"),
+#'   c("CK+ PDL1+", "CD68+"))
+#' colors = c("CK+ PDL1+"="cyan", "CD68+"="magenta", "CD8+"="yellow")
 #' phenotype_rules=list(
-#'   "tumor PDL1+"=list("tumor", ~`Entire Cell PDL1 (Opal 620) Mean`>5))
+#'   "CK+ PDL1+"=list("CK+", ~`Entire Cell PDL1 (Opal 520) Mean`>3))
 #'
 #' spatial_distribution_report(cell_seg_path, pairs, colors, phenotype_rules,
 #'   output_path=out_path)
