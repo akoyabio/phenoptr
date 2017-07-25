@@ -13,7 +13,6 @@ output: html_vignette
 # so local variables defined there are available here.
 library(ggplot2)
 library(magrittr)
-library(spatstat)
 ```
 
 <style type="text/css">
@@ -104,7 +103,7 @@ for (special in phenotype_specials)
   counts = dplyr::add_row(counts, Phenotype=special, 
                  Count=sum(select_rows(csd, phenotype_rules[[special]])))
 
-  counts %>% mutate(Proportion=scales::percent(round(Count/nrow(csd), 2))) %>% 
+  counts %>% dplyr::mutate(Proportion=scales::percent(round(Count/nrow(csd), 2))) %>% 
   knitr::kable(caption='Cell count and fraction of total per phenotype',
                table.attr='style="width: 30%"')
 
