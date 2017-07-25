@@ -5,7 +5,7 @@ Version: 0.1.1.9000
 Description: Helper functions for working with inForm data.
 biocViews:
 Imports:
-    dplyr,
+    dplyr (>=0.7.0),
     EBImage,
     ggplot2,
     jpeg,
@@ -20,7 +20,7 @@ Imports:
     tibble,
     tidyverse,
     tiff
-Depends: R (>= 3.1.0)
+Depends: R (>= 3.3.0)
 License: Zlib | file LICENSE
 Copyright: PerkinElmer
 Encoding: UTF-8
