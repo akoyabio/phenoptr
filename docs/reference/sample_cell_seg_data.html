@@ -108,34 +108,78 @@
     </div>
 
     
-    <p>A dataset containing inForm cell segmentation data for a single TMA core.
-This is the data from
-<code>system.file("extdata", "TMA",
-                  "Core[1,5,6,1]_[21302,15107]_cell_seg_data.txt",
-                  package = "phenoptr")</code></p>
+    <p>A dataset containing inForm cell segmentation data for a single field.
+This is the data from</p><pre>system.file("extdata", "sample",
+                  "Set4_1-6plex_[16142,55840]_cell_seg_data.txt",
+                  package = "phenoptr")
+</pre>
     
 
     <pre class="usage"><span class='no'>sample_cell_seg_data</span></pre>
         
     <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
 
-    <p>A data frame with 5726 rows and 200 variables</p>
+    <p>A data frame with 6072 rows and 199 variables</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>This table includes columns for components:</p><ul>
-<li><p>DAPI</p></li>
-<li><p>CD4 (Opal 520)</p></li>
-<li><p>CK (Opal 540)</p></li>
-<li><p>CD8 (Opal 570)</p></li>
-<li><p>PDL1 (Opal 620)</p></li>
-<li><p>CD68 (Opal 650)</p></li>
-<li><p>Foxp3 (Opal 690)</p></li>
-</ul>
-    <p>and phenotypes cytotoxic CD8, helper CD4, macrophage CD68, other,
-T reg Foxp3, and tumor.</p>
-<p>To see all the included files for this core, use
-<code>list.files(system.file("extdata", "TMA", package = "phenoptr"))</code></p>
+    <p>This table shows the Opal stains used, the epitope they were bound to,
+and the colors used to show the stain in the composite and phenotype views.</p><table><tr><td>
+</td>
+<td> Stain </td>
+<td> Epitope </td>
+<td> Composite </td>
+</tr><tr><td> Phenotype</td>
+<td>
+</td>
+<td> DAPI </td>
+<td> Nucleus </td>
+</tr><tr><td> Blue </td>
+<td> N/A</td>
+<td>
+</td>
+<td> Opal520 </td>
+</tr><tr><td> PDL1 </td>
+<td> Red </td>
+<td> N/A</td>
+<td>
+</td>
+</tr><tr><td> Opal540 </td>
+<td> CD8 </td>
+<td> Yellow </td>
+<td> Yellow</td>
+</tr><tr><td>
+</td>
+<td> Opal570 </td>
+<td> FoxP3 </td>
+<td> Orange </td>
+</tr><tr><td> Orange</td>
+<td>
+</td>
+<td> Opal620 </td>
+<td> CD68 </td>
+</tr><tr><td> Magenta </td>
+<td> Magenta</td>
+<td>
+</td>
+<td> Opal650 </td>
+</tr><tr><td> PD1 </td>
+<td> Green </td>
+<td> N/A</td>
+<td>
+</td>
+</tr><tr><td> Opal690 </td>
+<td> CK </td>
+<td> Cyan </td>
+<td> Cyan</td>
+</tr></table>
+    <p>The sample cell data includes phenotypes CD8+ (cytotoxic T cell),
+CD68+ (macrophage),
+FoxP3+ (regulatory T cell), CK+ (tumor), and other.</p>
+<p>To see all the files included for this field, use
+<code>list.files(system.file("extdata", "sample", package = "phenoptr"))</code>.</p>
+<p>For more sample data from this and related samples, see the
+<a href='https://perkinelmer.github.io/phenoptrExamples'>phenoptrExamples</a> package.</p>
     
 
   </div>

@@ -5,8 +5,8 @@ knitr::opts_chunk$set(fig.width=7, fig.height=5,
 par(mar=rep(0, 4))
 
 ## ----read_composite------------------------------------------------------
-path = system.file("extdata", "TMA", 
-                   "Core[1,5,6,1]_[21302,15107]_composite_image.jpg", 
+path = system.file("extdata", "sample", 
+                   "Set4_1-6plex_[16142,55840]_composite_image.jpg", 
                    package = "phenoptr")
 img = jpeg::readJPEG(path)
 dim(img)
@@ -21,8 +21,8 @@ plot(snippet)
 #  EBImage::display(EBImage::Image(img_transposed, colormode='Color'))
 
 ## ----read_map------------------------------------------------------------
-map_path = system.file("extdata",
-   "TMA/Core[1,5,6,1]_[21302,15107]_binary_seg_maps.tif", package = "phenoptr")
+map_path = system.file("extdata", "sample",
+   "Set4_1-6plex_[16142,55840]_binary_seg_maps.tif", package = "phenoptr")
 maps = phenoptr::read_maps(map_path)
 names(maps)
 
@@ -42,15 +42,15 @@ plot(as.raster(nucleus_snippet, max=max(nucleus_snippet)))
 
 ## ----plotting------------------------------------------------------------
 library(ggplot2)
-d = phenoptr::sample_cell_seg_data
-d = subset(d, `Cell X Position`>=600 & `Cell X Position`<=750 &
+csd = phenoptr::sample_cell_seg_data
+csd = subset(csd, `Cell X Position`>=600 & `Cell X Position`<=750 &
               `Cell Y Position`>=400 & `Cell Y Position`<=500)
-ggplot(data=d, aes(`Cell X Position`, `Cell Y Position`, color=Phenotype)) +
+ggplot(data=csd, aes(`Cell X Position`, `Cell Y Position`, color=Phenotype)) +
   scale_x_continuous(limits=c(600, 750)) + 
   scale_y_reverse(limits=c(500, 400)) +
   annotation_raster(snippet, 600, 750, -400, -500) +
   geom_point(size=2) + coord_equal() +
-  scale_color_manual(values=c("tumor"="cyan", "cytotoxic CD8"="yellow",
-                              "other"="blue", "macrophage CD68"="red", 
-                              "helper CD4"="green"))
+  scale_color_manual(values=c("CK+"="cyan", "CD8+"="yellow",
+                              "other"="blue", "CD68+"="magenta", 
+                              "FoxP3+"="orange"))
 

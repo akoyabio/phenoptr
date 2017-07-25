@@ -182,10 +182,10 @@ for a demonstration.</p><ul>
 </ul><p>To aggregate <code>within_mean</code> across multiple samples (e.g. by Slide ID)
 use code such as</p><pre>
 results %&gt;% group_by(`Slide ID`, from, to, radius) %&gt;%
-  summarize(count=sum(from_count),
+  summarize(from_count=sum(from_count),
             within=sum(from_count*within_mean),
-            avg=within/count) %&gt;%
-  ungroup
+            avg=within/from_count) %&gt;%
+  ungroup <!-- %&gt;% select(-within) -->
 </pre>
     <p>If <code>category</code> is specified, all reported values are for cells within
 the given tissue category. If <code>category</code> is NA, values are reported
@@ -208,21 +208,21 @@ for the entire data set.
 <span class='no'>csd</span> <span class='kw'>=</span> <span class='no'>sample_cell_seg_data</span>
 
 <span class='co'># Find the number of macrophages with a tumor cell within 10 or 25 microns</span>
-<span class='fu'>count_within</span>(<span class='no'>csd</span>, <span class='kw'>from</span><span class='kw'>=</span><span class='st'>'macrophage CD68'</span>, <span class='kw'>to</span><span class='kw'>=</span><span class='st'>'tumor'</span>, <span class='kw'>radius</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='fl'>10</span>, <span class='fl'>25</span>)) <span class='kw'>%&gt;%</span>
+<span class='fu'>count_within</span>(<span class='no'>csd</span>, <span class='kw'>from</span><span class='kw'>=</span><span class='st'>'CD68+'</span>, <span class='kw'>to</span><span class='kw'>=</span><span class='st'>'CK+'</span>, <span class='kw'>radius</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='fl'>10</span>, <span class='fl'>25</span>)) <span class='kw'>%&gt;%</span>
   <span class='fu'>mutate</span>(<span class='kw'>not_to</span><span class='kw'>=</span><span class='no'>from_count</span>*<span class='no'>within_mean</span>, <span class='kw'>to_mean</span><span class='kw'>=</span><span class='no'>not_to</span>/<span class='no'>to_count</span>)</div><div class='output co'>#&gt; # A tibble: 2 x 7
 #&gt;   radius from_count to_count from_with within_mean not_to    to_mean
 #&gt;    &lt;dbl&gt;      &lt;int&gt;    &lt;int&gt;     &lt;int&gt;       &lt;dbl&gt;  &lt;dbl&gt;      &lt;dbl&gt;
-#&gt; 1     10        359     3303       109   0.4066852    146 0.04420224
-#&gt; 2     25        359     3303       257   5.1838440   1861 0.56342719</div><div class='input'>
+#&gt; 1     10        417     2257        89   0.2877698    120 0.05316792
+#&gt; 2     25        417     2257       274   3.2781775   1367 0.60567125</div><div class='input'>
 <span class='co'># Find the number of tumor cells with a macrophage within 10 or 25 microns</span>
 <span class='co'># Show that from_count*within_mean is not the same as from_with in the</span>
 <span class='co'># previous computation but from_count*within_mean/to_count is the same.</span>
-<span class='fu'>count_within</span>(<span class='no'>csd</span>, <span class='kw'>from</span><span class='kw'>=</span><span class='st'>'tumor'</span>, <span class='kw'>to</span><span class='kw'>=</span><span class='st'>'macrophage CD68'</span>, <span class='kw'>radius</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='fl'>10</span>, <span class='fl'>25</span>)) <span class='kw'>%&gt;%</span>
+<span class='fu'>count_within</span>(<span class='no'>csd</span>, <span class='kw'>from</span><span class='kw'>=</span><span class='st'>'CK+'</span>, <span class='kw'>to</span><span class='kw'>=</span><span class='st'>'CD68+'</span>, <span class='kw'>radius</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='fl'>10</span>, <span class='fl'>25</span>)) <span class='kw'>%&gt;%</span>
   <span class='fu'>mutate</span>(<span class='kw'>not_to</span><span class='kw'>=</span><span class='no'>from_count</span>*<span class='no'>within_mean</span>, <span class='kw'>to_mean</span><span class='kw'>=</span><span class='no'>not_to</span>/<span class='no'>to_count</span>)</div><div class='output co'>#&gt; # A tibble: 2 x 7
 #&gt;   radius from_count to_count from_with within_mean not_to   to_mean
 #&gt;    &lt;dbl&gt;      &lt;int&gt;    &lt;int&gt;     &lt;int&gt;       &lt;dbl&gt;  &lt;dbl&gt;     &lt;dbl&gt;
-#&gt; 1     10       3303      359       137  0.04420224    146 0.4066852
-#&gt; 2     25       3303      359      1195  0.56342719   1861 5.1838440</div></pre>
+#&gt; 1     10       2257      417       109  0.05316792    120 0.2877698
+#&gt; 2     25       2257      417       664  0.60567125   1367 3.2781775</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

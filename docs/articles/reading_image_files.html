@@ -84,7 +84,7 @@
       <h1>Reading and Displaying inForm Image Files</h1>
                         <h4 class="author">Kent Johnson</h4>
             
-            <h4 class="date">2017-07-21</h4>
+            <h4 class="date">2017-07-25</h4>
           </div>
 
     
@@ -113,12 +113,12 @@ img {
 <h2 class="hasAnchor">
 <a href="#reading-and-displaying-color-images" class="anchor"></a>Reading and displaying color images</h2>
 <p>Color (RGB) images output from inForm, such as the composite image and segmentation images, can be read directly using <code><a href="http://www.rdocumentation.org/packages/tiff/topics/readTIFF">tiff::readTIFF()</a></code> or <code><a href="http://www.rdocumentation.org/packages/jpeg/topics/readJPEG">jpeg::readJPEG()</a></code>. For example,</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">path =<span class="st"> </span><span class="kw">system.file</span>(<span class="st">"extdata"</span>, <span class="st">"TMA"</span>, 
-                   <span class="st">"Core[1,5,6,1]_[21302,15107]_composite_image.jpg"</span>, 
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">path =<span class="st"> </span><span class="kw">system.file</span>(<span class="st">"extdata"</span>, <span class="st">"sample"</span>, 
+                   <span class="st">"Set4_1-6plex_[16142,55840]_composite_image.jpg"</span>, 
                    <span class="dt">package =</span> <span class="st">"phenoptr"</span>)
 img =<span class="st"> </span>jpeg::<span class="kw">readJPEG</span>(path)
 <span class="kw">dim</span>(img)</code></pre></div>
-<pre><code>[1] 2080 2784    3</code></pre>
+<pre><code>[1] 1400 1868    3</code></pre>
 <p>Color images are read as 3D arrays. They can be displayed by converting to a raster.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">snippet =<span class="st"> </span><span class="kw">as.raster</span>(img[<span class="dv">800</span>:<span class="dv">1000</span>, <span class="dv">1200</span>:<span class="dv">1500</span>,])
 <span class="kw">plot</span>(snippet)</code></pre></div>
@@ -140,19 +140,19 @@ EBImage::<span class="kw">display</span>(EBImage::<span class="kw">Image</span>(
 <a href="#reading-and-displaying-segmentation-maps" class="anchor"></a>Reading and displaying segmentation maps</h2>
 <p>inForm saves segmentation maps (nuclear segmentation, etc.) as multiple 16-bit grayscale images within a single TIFF file. Most segmentation images are <em>label</em> images, where each object is represented by a region whose value is the object number. The membrane map is a binary image where the presence of membrane is indicated with a “1” value.</p>
 <p><code><a href="http://www.rdocumentation.org/packages/phenoptr/topics/read_maps">phenoptr::read_maps()</a></code> is a wrapper around <code>readTIFF()</code> which reads map files. It returns a named list of integer-valued matrices. The list names reflect the content of the individual images, e.g. Nucleus, Cytoplasm, etc.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">map_path =<span class="st"> </span><span class="kw">system.file</span>(<span class="st">"extdata"</span>,
-   <span class="st">"TMA/Core[1,5,6,1]_[21302,15107]_binary_seg_maps.tif"</span>, <span class="dt">package =</span> <span class="st">"phenoptr"</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">map_path =<span class="st"> </span><span class="kw">system.file</span>(<span class="st">"extdata"</span>, <span class="st">"sample"</span>,
+   <span class="st">"Set4_1-6plex_[16142,55840]_binary_seg_maps.tif"</span>, <span class="dt">package =</span> <span class="st">"phenoptr"</span>)
 maps =<span class="st"> </span>phenoptr::<span class="kw"><a href="../reference/read_maps.html">read_maps</a></span>(map_path)
 <span class="kw">names</span>(maps)</code></pre></div>
 <pre><code>[1] "Nucleus"   "Cytoplasm" "Membrane"  "Tissue"   </code></pre>
 <p>The Nucleus label image contains values for background (0) and each Cell ID.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">nucleus =<span class="st"> </span>maps[[<span class="st">'Nucleus'</span>]]
 <span class="kw">dim</span>(nucleus)</code></pre></div>
-<pre><code>[1] 2080 2784</code></pre>
+<pre><code>[1] 1400 1868</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">range</span>(nucleus)</code></pre></div>
-<pre><code>[1]    0 5727</code></pre>
+<pre><code>[1]    0 6183</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">range</span>(phenoptr::sample_cell_seg_data$<span class="st">`</span><span class="dt">Cell ID</span><span class="st">`</span>)</code></pre></div>
-<pre><code>[1]    1 5727</code></pre>
+<pre><code>[1]   11 6183</code></pre>
 <p>Label images may be displayed with <code>plot.raster</code> or <code><a href="http://www.rdocumentation.org/packages/EBImage/topics/display">EBImage::display</a></code> (which requires swapping axes).</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">nucleus_snippet =<span class="st"> </span>nucleus[<span class="dv">800</span>:<span class="dv">1000</span>, <span class="dv">1200</span>:<span class="dv">1500</span>]
 <span class="kw">plot</span>(<span class="kw">as.raster</span>(nucleus_snippet, <span class="dt">max=</span><span class="kw">max</span>(nucleus_snippet)))</code></pre></div>
@@ -166,17 +166,17 @@ EBImage::<span class="kw">display</span>(<span class="kw">t</span>(maps[[<span c
 <p>Images have the origin (0, 0) at the top left. This is consistent with the <code>Cell X Position</code> and <code>Cell Y Position</code> columns of an inForm cell seg table but it is reversed (in <span class="math inline">\(y\)</span>) from the usual plotting conventions. If you plot images and points together, you will have to reverse one or the other.</p>
 <p>Here is an example using <code>ggplot2</code>. The <span class="math inline">\(y\)</span>-axis is reversed using <code><a href="http://www.rdocumentation.org/packages/ggplot2/topics/scale_continuous">ggplot2::scale_y_reverse()</a></code> and the image is then un-reversed by negating its <span class="math inline">\(y\)</span> limits.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggplot2)
-d =<span class="st"> </span>phenoptr::sample_cell_seg_data
-d =<span class="st"> </span><span class="kw">subset</span>(d, <span class="st">`</span><span class="dt">Cell X Position</span><span class="st">`</span>&gt;=<span class="dv">600</span> &amp;<span class="st"> `</span><span class="dt">Cell X Position</span><span class="st">`</span>&lt;=<span class="dv">750</span> &amp;
+csd =<span class="st"> </span>phenoptr::sample_cell_seg_data
+csd =<span class="st"> </span><span class="kw">subset</span>(csd, <span class="st">`</span><span class="dt">Cell X Position</span><span class="st">`</span>&gt;=<span class="dv">600</span> &amp;<span class="st"> `</span><span class="dt">Cell X Position</span><span class="st">`</span>&lt;=<span class="dv">750</span> &amp;
 <span class="st">              `</span><span class="dt">Cell Y Position</span><span class="st">`</span>&gt;=<span class="dv">400</span> &amp;<span class="st"> `</span><span class="dt">Cell Y Position</span><span class="st">`</span>&lt;=<span class="dv">500</span>)
-<span class="kw">ggplot</span>(<span class="dt">data=</span>d, <span class="kw">aes</span>(<span class="st">`</span><span class="dt">Cell X Position</span><span class="st">`</span>, <span class="st">`</span><span class="dt">Cell Y Position</span><span class="st">`</span>, <span class="dt">color=</span>Phenotype)) +
+<span class="kw">ggplot</span>(<span class="dt">data=</span>csd, <span class="kw">aes</span>(<span class="st">`</span><span class="dt">Cell X Position</span><span class="st">`</span>, <span class="st">`</span><span class="dt">Cell Y Position</span><span class="st">`</span>, <span class="dt">color=</span>Phenotype)) +
 <span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="dt">limits=</span><span class="kw">c</span>(<span class="dv">600</span>, <span class="dv">750</span>)) +<span class="st"> </span>
 <span class="st">  </span><span class="kw">scale_y_reverse</span>(<span class="dt">limits=</span><span class="kw">c</span>(<span class="dv">500</span>, <span class="dv">400</span>)) +
 <span class="st">  </span><span class="kw">annotation_raster</span>(snippet, <span class="dv">600</span>, <span class="dv">750</span>, -<span class="dv">400</span>, -<span class="dv">500</span>) +
 <span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">size=</span><span class="dv">2</span>) +<span class="st"> </span><span class="kw">coord_equal</span>() +
-<span class="st">  </span><span class="kw">scale_color_manual</span>(<span class="dt">values=</span><span class="kw">c</span>(<span class="st">"tumor"</span>=<span class="st">"cyan"</span>, <span class="st">"cytotoxic CD8"</span>=<span class="st">"yellow"</span>,
-                              <span class="st">"other"</span>=<span class="st">"blue"</span>, <span class="st">"macrophage CD68"</span>=<span class="st">"red"</span>, 
-                              <span class="st">"helper CD4"</span>=<span class="st">"green"</span>))</code></pre></div>
+<span class="st">  </span><span class="kw">scale_color_manual</span>(<span class="dt">values=</span><span class="kw">c</span>(<span class="st">"CK+"</span>=<span class="st">"cyan"</span>, <span class="st">"CD8+"</span>=<span class="st">"yellow"</span>,
+                              <span class="st">"other"</span>=<span class="st">"blue"</span>, <span class="st">"CD68+"</span>=<span class="st">"magenta"</span>, 
+                              <span class="st">"FoxP3+"</span>=<span class="st">"orange"</span>))</code></pre></div>
 <p><img src="reading_image_files_files/figure-html/plotting-1.png" width="672"></p>
 </div>
 </div>

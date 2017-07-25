@@ -84,7 +84,7 @@
       <h1>Computing Inter-cellular Distances</h1>
                         <h4 class="author">Kent Johnson</h4>
             
-            <h4 class="date">2017-07-21</h4>
+            <h4 class="date">2017-07-25</h4>
           </div>
 
     
@@ -107,34 +107,33 @@ table {
 <a href="#computing-with-find_nearest_distance" class="anchor"></a>Computing with <code>find_nearest_distance</code>
 </h3>
 <p>The <code>find_nearest_distance</code> function finds per-cell nearest neighbor distances. For each cell and each phenotype in a sample, it finds the nearest neighbor of that phenotype. The distances are returned in a <code>data_frame</code> with one column per phenotype.</p>
-<p>For example, the <code>phenoptr</code> sample data <code>sample_cell_seg_data</code> contains 6 unique phenotypes:</p>
+<p>For example, the <code>phenoptr</code> sample data <code>sample_cell_seg_data</code> contains 5 unique phenotypes:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidyverse)
 <span class="kw">library</span>(phenoptr)
 
 csd =<span class="st"> </span>sample_cell_seg_data
 csd %&gt;%<span class="st"> </span><span class="kw">count</span>(Phenotype)</code></pre></div>
-<pre><code># A tibble: 6 x 2
-        Phenotype     n
-            &lt;chr&gt; &lt;int&gt;
-1   cytotoxic CD8   293
-2      helper CD4    59
-3 macrophage CD68   359
-4           other  1710
-5     T reg Foxp3     2
-6           tumor  3303</code></pre>
-<p>This file contains only two FoxP3+ cells, and the ‘other’ cells are not of interest, so first filter them out.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">csd =<span class="st"> </span>csd %&gt;%<span class="st"> </span><span class="kw">filter</span>(!Phenotype %in%<span class="st"> </span><span class="kw">c</span>(<span class="st">'T reg Foxp3'</span>, <span class="st">'other'</span>))</code></pre></div>
+<pre><code># A tibble: 5 x 2
+  Phenotype     n
+      &lt;chr&gt; &lt;int&gt;
+1     CD68+   417
+2      CD8+   228
+3       CK+  2257
+4    FoxP3+   228
+5     other  2942</code></pre>
+<p>The <code>other</code> cells are not of interest, so first filter them out.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">csd =<span class="st"> </span>csd %&gt;%<span class="st"> </span><span class="kw">filter</span>(Phenotype!=<span class="st">'other'</span>)</code></pre></div>
 <p>Calling <code>find_nearest_distance</code> on this file returns a <code>data_frame</code> with four columns and one row for each cell:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">distances =<span class="st"> </span><span class="kw"><a href="../reference/find_nearest_distance.html">find_nearest_distance</a></span>(csd)
 <span class="kw">glimpse</span>(distances)</code></pre></div>
-<pre><code>Observations: 4,014
+<pre><code>Observations: 3,130
 Variables: 4
-$ Distance to cytotoxic CD8   &lt;dbl&gt; 15.231546, 21.505813, 14.008926, 1...
-$ Distance to helper CD4      &lt;dbl&gt; 140.12584, 136.88042, 137.29530, 1...
-$ Distance to macrophage CD68 &lt;dbl&gt; 11.597414, 28.160256, 9.552487, 24...
-$ Distance to tumor           &lt;dbl&gt; 3.201562, 9.552487, 3.201562, 13.7...</code></pre>
+$ Distance to CD68+  &lt;dbl&gt; 29.529646, 38.082148, 36.674242, 73.119765,...
+$ Distance to CD8+   &lt;dbl&gt; 18.03469, 64.37585, 67.57403, 91.44397, 37....
+$ Distance to CK+    &lt;dbl&gt; 36.830694, 109.317199, 3.605551, 4.031129, ...
+$ Distance to FoxP3+ &lt;dbl&gt; 16.347783, 40.140379, 30.870698, 65.408333,...</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">nrow</span>(csd)</code></pre></div>
-<pre><code>[1] 4014</code></pre>
+<pre><code>[1] 3130</code></pre>
 <p>To create a combined data frame, use <code><a href="http://dplyr.tidyverse.org/reference/bind.html">dplyr::bind_cols</a></code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">csd_with_distance =<span class="st"> </span><span class="kw">bind_cols</span>(csd, distances)</code></pre></div>
 <p>Note: Cell positions in a cell seg data file are relative to the top-left corner of the field, so calling <code>find_nearest_distance</code> on a merged data file will fail. One way to add distance columns to a merged data file is to use <code><a href="http://dplyr.tidyverse.org/reference/group_by.html">dplyr::group_by</a></code> to process each field separately. For example, if <code>merged</code> contains merged cell seg data, add distance columns with this code:</p>
@@ -150,17 +149,16 @@ $ Distance to tumor           &lt;dbl&gt; 3.201562, 9.552487, 3.201562, 13.7...<
 <span class="st">  </span><span class="kw">select</span>(<span class="kw">starts_with</span>(<span class="st">'Distance to'</span>)) %&gt;%<span class="st"> </span>
 <span class="st">  </span><span class="kw">summarize_all</span>(~<span class="kw">round</span>(<span class="kw">mean</span>(.), <span class="dv">1</span>))</code></pre></div>
 <pre><code># A tibble: 4 x 5
-        Phenotype `Distance to cytotoxic CD8` `Distance to helper CD4`
-            &lt;chr&gt;                       &lt;dbl&gt;                    &lt;dbl&gt;
-1   cytotoxic CD8                        21.4                     75.0
-2      helper CD4                        24.8                     34.8
-3 macrophage CD68                        31.6                     70.2
-4           tumor                        38.1                     91.8
-# ... with 2 more variables: `Distance to macrophage CD68` &lt;dbl&gt;,
-#   `Distance to tumor` &lt;dbl&gt;</code></pre>
+  Phenotype `Distance to CD68+` `Distance to CD8+` `Distance to CK+`
+      &lt;chr&gt;               &lt;dbl&gt;              &lt;dbl&gt;             &lt;dbl&gt;
+1     CD68+                14.2               30.6              23.1
+2      CD8+                23.1               17.5              19.3
+3       CK+                44.3               48.2               7.9
+4    FoxP3+                19.1               29.1              23.3
+# ... with 1 more variables: `Distance to FoxP3+` &lt;dbl&gt;</code></pre>
 <p>Show the distribution of distances in a density plot:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(csd_with_distance, <span class="kw">aes</span>(<span class="st">`</span><span class="dt">Distance to helper CD4</span><span class="st">`</span>, <span class="dt">color=</span>Phenotype)) +
-<span class="st">  </span><span class="kw">geom_density</span>()</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(csd_with_distance, <span class="kw">aes</span>(<span class="st">`</span><span class="dt">Distance to CD8+</span><span class="st">`</span>, <span class="dt">color=</span>Phenotype)) +
+<span class="st">  </span><span class="kw">geom_density</span>(<span class="dt">size=</span><span class="dv">1</span>) +<span class="st"> </span><span class="kw">theme_minimal</span>()</code></pre></div>
 <p><img src="computing_distances_files/figure-html/unnamed-chunk-7-1.png" width="672"></p>
 </div>
 </div>
@@ -171,19 +169,19 @@ $ Distance to tumor           &lt;dbl&gt; 3.201562, 9.552487, 3.201562, 13.7...<
 <h3 class="hasAnchor">
 <a href="#computing-with-count_within" class="anchor"></a>Computing with <code>count_within</code>
 </h3>
-<p>The <code>count_within</code> function looks at the number of cells within a radius of another cell and returns summary measures. For example, use <code>count_within</code> to find the number of macrophages having a tumor cell within 25 microns:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/count_within.html">count_within</a></span>(csd, <span class="dt">from=</span><span class="st">'macrophage CD68'</span>, <span class="dt">to=</span><span class="st">'tumor'</span>, <span class="dt">radius=</span><span class="dv">25</span>)</code></pre></div>
+<p>The <code>count_within</code> function looks at the number of cells within a radius of another cell and returns summary measures. For example, use <code>count_within</code> to find the number of <code>macrophage CD68</code> cells having a <code>CK+</code> cell within 25 microns:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/count_within.html">count_within</a></span>(csd, <span class="dt">from=</span><span class="st">'CD68+'</span>, <span class="dt">to=</span><span class="st">'CK+'</span>, <span class="dt">radius=</span><span class="dv">25</span>)</code></pre></div>
 <pre><code># A tibble: 1 x 5
   radius from_count to_count from_with within_mean
    &lt;dbl&gt;      &lt;int&gt;    &lt;int&gt;     &lt;int&gt;       &lt;dbl&gt;
-1     25        359     3303       257    5.183844</code></pre>
+1     25        417     2257       274    3.278177</code></pre>
 <p>In this result, <code>from_count</code> and <code>to_count</code> are the total numbers of eligible cells. They agree with the counts in the first table in this vignette. <code>from_with</code> is the number of <code>macrophage CD68</code> cells having at least one <code>tumor</code> cell within 25 μm. <code>within_mean</code> is the average number of <code>tumor</code> cells found within 25 μm of each <code>macrophage CD68</code> cell.</p>
-<p>Note there are some subtleties to <code>count_within</code>. Most importantly, it is not symmetric. In this example, the number of <code>tumor</code> cells with a <code>macrophage CD68</code> within 25 microns is not the same as the number of <code>macrophage CD68</code> cells with a <code>tumor</code> cell within 25 microns.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/count_within.html">count_within</a></span>(csd, <span class="dt">from=</span><span class="st">'tumor'</span>, <span class="dt">to=</span><span class="st">'macrophage CD68'</span>, <span class="dt">radius=</span><span class="dv">25</span>)</code></pre></div>
+<p>Note there are some subtleties to <code>count_within</code>. Most importantly, it is not symmetric. In this example, the number of <code>CK+</code> cells with a <code>CD68+</code> within 25 microns is not the same as the number of <code>macrophage CD68</code> cells with a <code>CK+</code> cell within 25 microns.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/count_within.html">count_within</a></span>(csd, <span class="dt">from=</span><span class="st">'CK+'</span>, <span class="dt">to=</span><span class="st">'CD68+'</span>, <span class="dt">radius=</span><span class="dv">25</span>)</code></pre></div>
 <pre><code># A tibble: 1 x 5
   radius from_count to_count from_with within_mean
    &lt;dbl&gt;      &lt;int&gt;    &lt;int&gt;     &lt;int&gt;       &lt;dbl&gt;
-1     25       3303      359      1195   0.5634272</code></pre>
+1     25       2257      417       664   0.6056712</code></pre>
 <p>Please see <code>help(count_within)</code> for details.</p>
 </div>
 <div id="count-multiple-files-or-phenotypes-using-count_within_batch" class="section level3">
@@ -191,13 +189,13 @@ $ Distance to tumor           &lt;dbl&gt; 3.201562, 9.552487, 3.201562, 13.7...<
 <a href="#count-multiple-files-or-phenotypes-using-count_within_batch" class="anchor"></a>Count multiple files or phenotypes using <code>count_within_batch</code>
 </h3>
 <p>You may want to run <code>count_within</code> on an entire directory of cell seg data files, or to count multiple combinations of phenotypes. Both of these are possible using <code>count_within_batch</code>. Instead of a <code>data_frame</code>, you pass it the path to a directory containing multiple cell seg data files. The <code>pairs</code> and <code>category</code> parameters are lists and may contain multiple entries.</p>
-<p>For example, the following commands will count <code>T Reg</code> cells with a <code>Cytotoxic T Cell</code> or <code>PDL1+ Tumor Cell</code> within 10 or 25 μm, with separate counts for each <code>to</code> phenotype and for <code>tumor</code> and <code>stroma</code> tissue categories. Counts will be calculated for all <code>cell_seg_data.txt</code> files in <code>my_directory</code>.</p>
+<p>For example, the following commands will count <code>FoxP3+</code> cells with a <code>CD8+</code> or <code>CK+</code> within 10 or 25 μm, with separate counts for each <code>to</code> phenotype and for <code>Tumor</code> and <code>Stroma</code> tissue categories. Counts will be calculated for all <code>cell_seg_data.txt</code> files in <code>my_directory</code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">base_path =<span class="st"> "/path/to/my_directory"</span>
 
-pairs =<span class="st"> </span><span class="kw">list</span>(<span class="kw">c</span>(<span class="st">'T Reg'</span>, <span class="st">'Cytotoxic T Cell'</span>),
-             <span class="kw">c</span>(<span class="st">'T Reg'</span>, <span class="st">'PDL1+ Tumor Cell'</span>))
+pairs =<span class="st"> </span><span class="kw">list</span>(<span class="kw">c</span>(<span class="st">'FoxP3+'</span>, <span class="st">'CD8+'</span>),
+             <span class="kw">c</span>(<span class="st">'FoxP3+'</span>, <span class="st">'CK+'</span>))
 radii =<span class="st"> </span><span class="kw">c</span>(<span class="dv">10</span>, <span class="dv">25</span>)
-categories =<span class="st"> </span><span class="kw">c</span>(<span class="st">'stroma'</span>, <span class="st">'tumor'</span>)
+categories =<span class="st"> </span><span class="kw">c</span>(<span class="st">'Stroma'</span>, <span class="st">'Tumor'</span>)
 
 <span class="kw"><a href="../reference/count_within_batch.html">count_within_batch</a></span>(base_path, pairs, radii, categories)</code></pre></div>
 <p>See <code>help(count_within_batch)</code> and <code><a href="https://cran.rstudio.com/web/packages/phenoptr/vignettes/selecting_cells.html">vignette('selecting_cells', package='phenoptr')</a></code> for additional details.</p>
@@ -207,15 +205,15 @@ categories =<span class="st"> </span><span class="kw">c</span>(<span class="st">
 <h2 class="hasAnchor">
 <a href="#visualizing-nearest-neighbors" class="anchor"></a>Visualizing nearest neighbors</h2>
 <p>The <code>spatial_distribution_report</code> function is a bit different from the other functions mentioned in this vignette. Rather than calculate and return distance metrics, it creates a report which shows visually the nearest neighbor relations between two phenotypes in a single field. Because the result is a stand-alone HTML file, it can’t easily be demonstrated in a vignette. For an example, copy and paste this code into your own copy of R. It will create a sample report in your user directory.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">cell_seg_path =<span class="st"> </span><span class="kw">system.file</span>(<span class="st">"extdata"</span>, <span class="st">"TMA"</span>,
-                       <span class="st">"Core[1,5,6,1]_[21302,15107]_cell_seg_data.txt"</span>,
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">cell_seg_path =<span class="st"> </span><span class="kw">system.file</span>(<span class="st">"extdata"</span>, <span class="st">"sample"</span>,
+                       <span class="st">"Set4_1-6plex_[16142,55840]_cell_seg_data.txt"</span>,
                        <span class="dt">package =</span> <span class="st">"phenoptr"</span>)
 
-phenotypes =<span class="st"> </span><span class="kw">c</span>(<span class="st">"macrophage CD68"</span>, <span class="st">"cytotoxic CD8"</span>)
-colors =<span class="st"> </span><span class="kw">c</span>(<span class="st">'red'</span>, <span class="st">'blue'</span>)
+pairs =<span class="st"> </span><span class="kw">c</span>(<span class="st">"CD68+"</span>, <span class="st">"CD8+"</span>)
+colors =<span class="st"> </span><span class="kw">c</span>(<span class="st">'magenta'</span>, <span class="st">'yellow'</span>)
 out_path =<span class="st"> </span><span class="kw">path.expand</span>(<span class="st">'~/spatial_distribution_report.html'</span>)
 
-<span class="kw"><a href="../reference/spatial_distribution_report.html">spatial_distribution_report</a></span>(cell_seg_path, phenotypes, colors, out_path)</code></pre></div>
+<span class="kw"><a href="../reference/spatial_distribution_report.html">spatial_distribution_report</a></span>(cell_seg_path, pairs, colors, out_path)</code></pre></div>
 <p>To create reports for all cell seg data files in a directory, first define <code>phenotypes</code> and <code>colors</code> as above. Use <code>list_cell_seg_files</code> to find all the files. Then call <code>spatial_distribution_report</code> for each file. This will create reports in the same directory as the data files.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">base_path =<span class="st"> '/path/to/data/'</span>
 paths =<span class="st"> </span><span class="kw"><a href="../reference/list_cell_seg_files.html">list_cell_seg_files</a></span>(base_path)
