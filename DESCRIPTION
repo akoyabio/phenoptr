@@ -5,7 +5,7 @@ Version: 0.1.1.9000
 Description: Helper functions for working with inForm data.
 biocViews:
 Imports:
-    dplyr (>=0.7.0),
+    dplyr (>= 0.7.0),
     EBImage,
     ggplot2,
     jpeg,
