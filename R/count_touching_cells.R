@@ -9,6 +9,11 @@
 #' It reports the number of touching cells found and, optionally,
 #' writes image files showing the touching cells.
 #'
+#' Cells are considered to touch if they have any amount of common membrane
+#' as determined by the inForm membrane segmentation. Cells with meet only
+#' at a corner, like black squares on a checkerboard, are not counted as
+#' touching.
+#'
 #' The number of touching cells is reported in three ways. For a pair of
 #' phenotypes A and B, this function reports the number of A touching a B,
 #' the number of B touching an A, and the number of mutually touching pairs.
