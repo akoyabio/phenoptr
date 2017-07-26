@@ -177,9 +177,7 @@ the use of <code>pairs</code> and <code>phenotype_rules</code>.</p>
     <pre class="examples"><span class='co'># NOT RUN {</span>
 <span class='co'># This example creates a report in the current user's</span>
 <span class='co'># home or Document directory.</span>
-<span class='no'>cell_seg_path</span> <span class='kw'>=</span> <span class='fu'>system.file</span>(<span class='st'>"extdata"</span>, <span class='st'>"sample"</span>,
-                       <span class='st'>"Set4_1-6plex_[16142,55840]_cell_seg_data.txt"</span>,
-                       <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"phenoptr"</span>)
+<span class='no'>cell_seg_path</span> <span class='kw'>=</span> <span class='fu'><a href='sample_cell_seg_data.html'>sample_cell_seg_path</a></span>()
 
 <span class='no'>pairs</span> <span class='kw'>=</span> <span class='fu'>list</span>(
   <span class='fu'>c</span>(<span class='st'>"CK+"</span>, <span class='st'>"CD8+"</span>),

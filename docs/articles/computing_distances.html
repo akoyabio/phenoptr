@@ -84,7 +84,7 @@
       <h1>Computing Inter-cellular Distances</h1>
                         <h4 class="author">Kent Johnson</h4>
             
-            <h4 class="date">2017-07-25</h4>
+            <h4 class="date">2017-07-26</h4>
           </div>
 
     
@@ -169,14 +169,14 @@ $ Distance to FoxP3+ &lt;dbl&gt; 16.347783, 40.140379, 30.870698, 65.408333,...<
 <h3 class="hasAnchor">
 <a href="#computing-with-count_within" class="anchor"></a>Computing with <code>count_within</code>
 </h3>
-<p>The <code>count_within</code> function looks at the number of cells within a radius of another cell and returns summary measures. For example, use <code>count_within</code> to find the number of <code>macrophage CD68</code> cells having a <code>CK+</code> cell within 25 microns:</p>
+<p>The <code>count_within</code> function looks at the number of cells within a radius of another cell and returns summary measures. For example, use <code>count_within</code> to find the number of <code>CD68+</code> cells having a <code>CK+</code> cell within 25 microns:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/count_within.html">count_within</a></span>(csd, <span class="dt">from=</span><span class="st">'CD68+'</span>, <span class="dt">to=</span><span class="st">'CK+'</span>, <span class="dt">radius=</span><span class="dv">25</span>)</code></pre></div>
 <pre><code># A tibble: 1 x 5
   radius from_count to_count from_with within_mean
    &lt;dbl&gt;      &lt;int&gt;    &lt;int&gt;     &lt;int&gt;       &lt;dbl&gt;
 1     25        417     2257       274    3.278177</code></pre>
-<p>In this result, <code>from_count</code> and <code>to_count</code> are the total numbers of eligible cells. They agree with the counts in the first table in this vignette. <code>from_with</code> is the number of <code>macrophage CD68</code> cells having at least one <code>tumor</code> cell within 25 μm. <code>within_mean</code> is the average number of <code>tumor</code> cells found within 25 μm of each <code>macrophage CD68</code> cell.</p>
-<p>Note there are some subtleties to <code>count_within</code>. Most importantly, it is not symmetric. In this example, the number of <code>CK+</code> cells with a <code>CD68+</code> within 25 microns is not the same as the number of <code>macrophage CD68</code> cells with a <code>CK+</code> cell within 25 microns.</p>
+<p>In this result, <code>from_count</code> and <code>to_count</code> are the total numbers of eligible cells. They agree with the counts in the first table in this vignette. <code>from_with</code> is the number of <code>CD68+</code> cells having at least one <code>CK+</code> cell within 25 μm. <code>within_mean</code> is the average number of <code>CK+</code> cells found within 25 μm of each <code>CD68+</code> cell.</p>
+<p>Note there are some subtleties to <code>count_within</code>. Most importantly, it is not symmetric. In this example, the number of <code>CK+</code> cells with a <code>CD68+</code> within 25 microns is not the same as the number of <code>CD68+</code> cells with a <code>CK+</code> cell within 25 microns.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/count_within.html">count_within</a></span>(csd, <span class="dt">from=</span><span class="st">'CK+'</span>, <span class="dt">to=</span><span class="st">'CD68+'</span>, <span class="dt">radius=</span><span class="dv">25</span>)</code></pre></div>
 <pre><code># A tibble: 1 x 5
   radius from_count to_count from_with within_mean
@@ -205,9 +205,7 @@ categories =<span class="st"> </span><span class="kw">c</span>(<span class="st">
 <h2 class="hasAnchor">
 <a href="#visualizing-nearest-neighbors" class="anchor"></a>Visualizing nearest neighbors</h2>
 <p>The <code>spatial_distribution_report</code> function is a bit different from the other functions mentioned in this vignette. Rather than calculate and return distance metrics, it creates a report which shows visually the nearest neighbor relations between two phenotypes in a single field. Because the result is a stand-alone HTML file, it can’t easily be demonstrated in a vignette. For an example, copy and paste this code into your own copy of R. It will create a sample report in your user directory.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">cell_seg_path =<span class="st"> </span><span class="kw">system.file</span>(<span class="st">"extdata"</span>, <span class="st">"sample"</span>,
-                       <span class="st">"Set4_1-6plex_[16142,55840]_cell_seg_data.txt"</span>,
-                       <span class="dt">package =</span> <span class="st">"phenoptr"</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">cell_seg_path =<span class="st"> </span><span class="kw"><a href="../reference/sample_cell_seg_data.html">sample_cell_seg_path</a></span>()
 
 pairs =<span class="st"> </span><span class="kw">c</span>(<span class="st">"CD68+"</span>, <span class="st">"CD8+"</span>)
 colors =<span class="st"> </span><span class="kw">c</span>(<span class="st">'magenta'</span>, <span class="st">'yellow'</span>)

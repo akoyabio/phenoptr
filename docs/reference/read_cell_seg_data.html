@@ -170,9 +170,7 @@ specfied as a parameter or by setting
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>path</span> <span class='kw'>=</span> <span class='fu'>system.file</span>(<span class='st'>"extdata"</span>, <span class='st'>"sample"</span>,
-                   <span class='st'>"Set4_1-6plex_[16142,55840]_cell_seg_data.txt"</span>,
-                   <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"phenoptr"</span>)
+    <pre class="examples"><div class='input'><span class='no'>path</span> <span class='kw'>=</span> <span class='fu'><a href='sample_cell_seg_data.html'>sample_cell_seg_path</a></span>()
 <span class='no'>csd</span> <span class='kw'>=</span> <span class='fu'>read_cell_seg_data</span>(<span class='no'>path</span>)</div><span class='co'># NOT RUN {</span>
 <span class='co'># Read all cell seg files in a directory and return a single data_frame</span>
 <span class='no'>paths</span> <span class='kw'>=</span> <span class='fu'><a href='list_cell_seg_files.html'>list_cell_seg_files</a></span>(<span class='no'>path</span>)

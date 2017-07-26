@@ -108,14 +108,14 @@
     </div>
 
     
-    <p>A dataset containing inForm cell segmentation data for a single field.
-This is the data from</p><pre>system.file("extdata", "sample",
-                  "Set4_1-6plex_[16142,55840]_cell_seg_data.txt",
-                  package = "phenoptr")
-</pre>
+    <p>A dataset containing inForm cell segmentation data for a single field.</p>
     
 
-    <pre class="usage"><span class='no'>sample_cell_seg_data</span></pre>
+    <pre class="usage"><span class='no'>sample_cell_seg_data</span>
+
+<span class='fu'>sample_cell_seg_path</span>()
+
+<span class='fu'>sample_cell_seg_folder</span>()</pre>
         
     <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
 
@@ -123,61 +123,58 @@ This is the data from</p><pre>system.file("extdata", "sample",
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>This table shows the Opal stains used, the epitope they were bound to,
-and the colors used to show the stain in the composite and phenotype views.</p><table><tr><td>
-</td>
-<td> Stain </td>
+    <p><code>sample_cell_seg_data</code> contains the <code>data_table</code> returned from</p><pre>read_cell_seg_data(sample_cell_seg_path())
+</pre>
+    <p>This table shows the stains used, the epitopes they were bound to,
+and the colors used to show the stains in the composite and phenotype views.</p><table><tr><td>
+Stain   </td>
 <td> Epitope </td>
 <td> Composite </td>
-</tr><tr><td> Phenotype</td>
-<td>
-</td>
-<td> DAPI </td>
-<td> Nucleus </td>
-</tr><tr><td> Blue </td>
-<td> N/A</td>
-<td>
-</td>
-<td> Opal520 </td>
-</tr><tr><td> PDL1 </td>
-<td> Red </td>
-<td> N/A</td>
-<td>
-</td>
-</tr><tr><td> Opal540 </td>
-<td> CD8 </td>
-<td> Yellow </td>
-<td> Yellow</td>
+<td> Phenotype </td>
 </tr><tr><td>
-</td>
-<td> Opal570 </td>
-<td> FoxP3 </td>
+----------- </td>
+<td> ----------- </td>
+<td> ------------- </td>
+<td> ------------- </td>
+</tr><tr><td>
+DAPI    </td>
+<td> Nucleus </td>
+<td> Blue    </td>
+<td> N/A    </td>
+</tr><tr><td>
+Opal520 </td>
+<td> PDL1    </td>
+<td> Red     </td>
+<td> N/A    </td>
+</tr><tr><td>
+Opal540 </td>
+<td> CD8     </td>
+<td> Yellow  </td>
+<td> Yellow </td>
+</tr><tr><td>
+Opal570 </td>
+<td> FoxP3   </td>
+<td> Orange  </td>
 <td> Orange </td>
-</tr><tr><td> Orange</td>
-<td>
-</td>
-<td> Opal620 </td>
-<td> CD68 </td>
-</tr><tr><td> Magenta </td>
+</tr><tr><td>
+Opal620 </td>
+<td> CD68    </td>
+<td> Magenta </td>
 <td> Magenta</td>
-<td>
-</td>
-<td> Opal650 </td>
-</tr><tr><td> PD1 </td>
-<td> Green </td>
-<td> N/A</td>
-<td>
-</td>
-</tr><tr><td> Opal690 </td>
-<td> CK </td>
-<td> Cyan </td>
-<td> Cyan</td>
-</tr></table>
-    <p>The sample cell data includes phenotypes CD8+ (cytotoxic T cell),
-CD68+ (macrophage),
-FoxP3+ (regulatory T cell), CK+ (tumor), and other.</p>
+</tr><tr><td>
+Opal650 </td>
+<td> PD1     </td>
+<td> Green   </td>
+<td> N/A    </td>
+</tr></table><p>The sample cell data includes phenotypes <code>CD8+</code> (cytotoxic T cell),
+<code>CD68+</code> (macrophage),
+<code>FoxP3+</code> (regulatory T cell), <code>CK+</code> (tumor), and <code>other</code>.
+    sample_cell_seg_path and sample_cell_seg_folder are
+convenience functions which return the path to the sample cell seg file
+included in this package, or the folder containing
+sample cell seg data, respectively.</p>
 <p>To see all the files included for this field, use
-<code>list.files(system.file("extdata", "sample", package = "phenoptr"))</code>.</p>
+<code>list.files(sample_cell_seg_folder())</code>.</p>
 <p>For more sample data from this and related samples, see the
 <a href='https://perkinelmer.github.io/phenoptrExamples'>phenoptrExamples</a> package.</p>
     
