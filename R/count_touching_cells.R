@@ -189,7 +189,8 @@ count_touching_cells = function(cell_seg_path, pairs, colors=NULL,
   slide = as.character(csd[1, 'Slide ID'])
 
   # Read the membrane and nuclear masks.
-  # Convert the membrane to single values. Use 0.5 to avoid conflict with cell labeling
+  # Convert the membrane to single values.
+  # Use 0.5 to avoid conflict with cell labeling
   mask_path = sub('cell_seg_data.txt', 'memb_seg_map.tif', cell_seg_path)
   if (file.exists(mask_path))
   {
@@ -306,18 +307,23 @@ count_touching_cells = function(cell_seg_path, pairs, colors=NULL,
       composite = EBImage::readImage(composite_path)
       if (!is.null(colors))
       {
-        # If we have colors, outline all cells of a type; fill the touching cells
+        # If we have colors, outline all cells of a type
+        # and fill the touching cells
         i1_touching = i1
         i1_touching[!i1 %in% touching_ids[[1]]] = 0
 
-        composite = EBImage::paintObjects(i1, composite, col=c(colors[[p1]], NA))
-        composite = EBImage::paintObjects(i1_touching, composite, col=c(colors[[p1]], colors[[p1]]))
+        composite = EBImage::paintObjects(i1, composite,
+                                          col=c(colors[[p1]], NA))
+        composite = EBImage::paintObjects(i1_touching, composite,
+                                          col=c(colors[[p1]], colors[[p1]]))
 
         i2_touching = i2
         i2_touching[!i2 %in% touching_ids[[2]]] = 0
 
-        composite = EBImage::paintObjects(i2, composite, col=c(colors[[p2]], NA))
-        composite = EBImage::paintObjects(i2_touching, composite, col=c(colors[[p2]], colors[[p2]]))
+        composite = EBImage::paintObjects(i2, composite,
+                                          col=c(colors[[p2]], NA))
+        composite = EBImage::paintObjects(i2_touching, composite,
+                                          col=c(colors[[p2]], colors[[p2]]))
       }
 
       # Draw the cell outlines onto the composite image and save
@@ -340,7 +346,7 @@ make_cell_image <- function (d, nuclei, membrane) {
   if (nrow(d)==0) return(NULL) # No cells in this data
 
   image = membrane
-  for (i in 1:nrow(d))
+  for (i in seq_len(nrow(d)))
   {
     cell_id = d$`Cell ID`[i]
 

@@ -156,7 +156,8 @@ distance_matrix = function(csd) {
 subset_distance_matrix = function(csd, dst, row_selection, col_selection) {
   # Check for pre-0.1.0.9002 parameter order
   if (is.matrix(csd) && is.data.frame(dst))
-    stop('csd and dst parameters to subset_distance_matrix are in the wrong order')
+    stop(
+      'csd and dst parameters to subset_distance_matrix are in the wrong order')
 
   rows = select_rows(csd, row_selection)
   cols = select_rows(csd, col_selection)

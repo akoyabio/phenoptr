@@ -93,9 +93,8 @@ read_cell_seg_data <- function(
 
   # Remove columns that are all NA or all blank
   # The first condition is a preflight that speeds this up a lot
-  na_columns <- sapply(df, function(col)
-    (is.na(col[1]) | col[1]=='') &&
-      all(is.na(col) | col==''))
+  na_columns <- purrr::map_lgl(df, function(col)
+    (is.na(col[1]) | col[1]=='') && all(is.na(col) | col==''))
   df <- df[!na_columns]
 
   # Convert distance to microns.

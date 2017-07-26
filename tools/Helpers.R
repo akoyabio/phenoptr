@@ -21,7 +21,10 @@ lintr::lint_package()
 # Good practices
 # This takes a while to run and requires working R CMD CHECK
 devtools::install_github('mangothecat/goodpractice')
-goodpractice::gp()
+checks = goodpractice::all_checks()
+checks_to_omit = c("lintr_assignment_linter")
+checks = setdiff(checks, checks_to_omit)
+(gp=goodpractice::gp(checks=checks))
 
 devtools::spell_check()
 
