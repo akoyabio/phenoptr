@@ -20,16 +20,16 @@ This table shows the Opal stains used, the epitope they were bound to,
 and the colors used to show the stain in the composite and phenotype views.
 
 \tabular{llll}{
-\tab Stain \tab Epitope \tab Composite \tab Phenotype\cr
-\tab DAPI \tab Nucleus \tab Blue \tab N/A\cr
-\tab Opal520 \tab PDL1 \tab Red \tab N/A\cr
-\tab Opal540 \tab CD8 \tab Yellow \tab Yellow\cr
-\tab Opal570 \tab FoxP3 \tab Orange \tab Orange\cr
-\tab Opal620 \tab CD68 \tab Magenta \tab Magenta\cr
-\tab Opal650 \tab PD1 \tab Green \tab N/A\cr
-\tab Opal690 \tab CK \tab Cyan \tab Cyan\cr
+Stain   \tab Epitope \tab Composite \tab Phenotype \cr
+----------- \tab ----------- \tab ------------- \tab ------------- \cr
+DAPI    \tab Nucleus \tab Blue    \tab N/A    \cr
+Opal520 \tab PDL1    \tab Red     \tab N/A    \cr
+Opal540 \tab CD8     \tab Yellow  \tab Yellow \cr
+Opal570 \tab FoxP3   \tab Orange  \tab Orange \cr
+Opal620 \tab CD68    \tab Magenta \tab Magenta\cr
+Opal650 \tab PD1     \tab Green   \tab N/A    \cr
+Opal690 \tab CK      \tab Cyan    \tab Cyan
 }
-
 The sample cell data includes phenotypes CD8+ (cytotoxic T cell),
 CD68+ (macrophage),
 FoxP3+ (regulatory T cell), CK+ (tumor), and other.
