@@ -84,14 +84,30 @@ test_that("count_within errors with invalid radii", {
 # Test error handling of count_within_batch
 test_that("count_within_batch error checking works", {
   base_path = system.file("extdata", package = "phenoptr")
-  pairs = c('CK+', 'macrophage CD68')
+  pairs = c('CK+', 'CD68+')
   radius = 10
   expect_error(count_within_batch(base_path, pairs, radius), base_path)
 
-  base_path = system.file("extdata", "sample", package = "phenoptr")
+  base_path = sample_cell_seg_folder()
   expect_error(count_within_batch(base_path, pairs='CK+', radius),
                'is.list\\(pairs\\)')
   expect_error(count_within_batch(base_path, pairs=list(), radius),
                'length\\(pairs\\)')
+})
 
+test_that('count_within_batch works', {
+  base_path = sample_cell_seg_folder()
+  pairs = list(c('CK+', 'CD8+'),
+               c('CK+', 'CD68+'),
+               c('CK+ PDL1+', 'CD68+'))
+  rules = list('CK+ PDL1+'=list('CK+', ~`Entire Cell PDL1 (Opal 520) Mean`>3))
+  radius = c(10, 25)
+  categories = c('Tumor', 'Stroma')
+  counts = count_within_batch(base_path, pairs, radius, categories, rules)
+
+  expect_equal(dim(counts), c(12, 10))
+  expect_equal(unique(counts$category), c('Tumor', 'Stroma'))
+  expect_equal(unique(counts$from), c('CK+', 'CK+ PDL1+'))
+  expect_equal(unique(counts$to), c('CD8+', 'CD68+'))
+  expect_equal(unique(counts$radius), c(10, 25))
 })

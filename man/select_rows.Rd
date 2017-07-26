@@ -12,8 +12,8 @@ select_rows(csd, sel, phenotype_column = "Phenotype")
 \item{sel}{May be a character vector, a one-sided formula or a list
 containing such. A character vector is interpreted as the name(s) of one or
 more phenotypes and selects any matching phenotype. A formula is
-interpreted as an expression on the columns of \code{csd}. Multiple items are
-joined with AND.}
+interpreted as an expression on the columns of \code{csd}. Multiple items
+are joined with AND.}
 
 \item{phenotype_column}{Optional, name of the phenotype column to use for
 simple selection}

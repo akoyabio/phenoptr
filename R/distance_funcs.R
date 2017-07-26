@@ -106,7 +106,7 @@ find_nearest_distance = function(csd, phenotypes=NULL) {
       phenotype_mins = apply(dst[, phenotype_cells, drop=FALSE], 1, row_min)
     }
     else {
-      phenotype_mins = rep(NA, nrow(csd))
+      phenotype_mins = rep(NA_real_, nrow(csd))
     }
     phenotype_mins
   })

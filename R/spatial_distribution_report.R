@@ -41,9 +41,7 @@ if (getRversion() >= "2.15.1")
 #' \dontrun{
 #' # This example creates a report in the current user's
 #' # home or Document directory.
-#' cell_seg_path = system.file("extdata", "sample",
-#'                        "Set4_1-6plex_[16142,55840]_cell_seg_data.txt",
-#'                        package = "phenoptr")
+#' cell_seg_path = sample_cell_seg_path()
 #'
 #' pairs = list(
 #'   c("CK+", "CD8+"),

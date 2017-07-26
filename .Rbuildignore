@@ -7,3 +7,4 @@ TODO
 .lintr
 ^NEWS\.md$
 ^_pkgdown\.yml$
+^tests/testthat/test_data$

@@ -75,9 +75,7 @@
 #' \dontrun{
 #' # This example creates an image in a subdirectory of the
 #' # current user's directory.
-#' cell_seg_path = system.file("extdata", "sample",
-#'                        "Set4_1-6plex_[16142,55840]_cell_seg_data.txt",
-#'                        package = "phenoptr")
+#' cell_seg_path = sample_cell_seg_path()
 #'
 #' pairs = list(c("CD68+", "CD8+"))
 #' colors = c("CD68+"='magenta', "CD8+"='yellow')
@@ -94,7 +92,7 @@
 #' # The phenotype pairs to locate. This will find CD8 cells touching
 #' # tumor cells, and, separately, CD8 cells touching CD68 cells.
 #' pairs = list(c("CD8+", "CK+"),
-#'              c("CD8+", "CD68"))
+#'              c("CD8+", "CD68+"))
 #'
 #' # Colors for all the phenotypes mentioned in pairs
 #' colors = list(
@@ -156,7 +154,7 @@ count_touching_cells = function(cell_seg_path, pairs, colors=NULL,
   if (write_images) {
     if (is.null(colors))
       stop('Colors are required when write_images is TRUE.')
-    stopifnot(is.null(colors) || all(phenotypes %in% names(colors)))
+    stopifnot(all(phenotypes %in% names(colors)))
 
     # Look for composite as TIFF or JPEG
     composite_path =
@@ -403,41 +401,6 @@ find_interior_point = function(nuclei, cell_id)
   # Offset by the patch origin. Subtract one because we are adding
   # two one-based indices
   c(row+row_min-1, col+col_min-1)
-}
-
-# Given two cell images (from make_cell_image), find the IDs of the cells in
-# each image that touch cells in the other image.
-find_touching_cell_ids <- function (i1, i2) {
-  # Make binary masks for the cells
-  i1_mask = i1
-  i1_mask[i1_mask>0] = 1
-
-  i2_mask = i2
-  i2_mask[i2_mask>0] = 1
-
-  # Dilate and look for intersections.
-  # Order matters here. If we want to know how many p1s are touching a p2, we
-  # should dilate the p2s. To count p2's touching a p1, dilate the p2s.
-  # We are doing both...
-  kern5 = EBImage::makeBrush(5, shape='diamond')
-  i1_big = EBImage::dilate(i1_mask, kern5)
-  i2_big = EBImage::dilate(i2_mask, kern5)
-
-  # Find p1s touching p2s. overlap will have a non-zero strip within each p1
-  # that touches a p2. The value in the strip will be the p1 ID. The number of
-  # unique, non-zero IDs is the count of touching cells.
-  overlap = i1
-  overlap[i2_big==0] = 0
-  p1_touching_ids = unique(as.numeric(overlap))
-  p1_touching_ids = p1_touching_ids[p1_touching_ids>0]
-
-  # Same thing for p2s touching p1s.
-  overlap2 = i2
-  overlap2[i1_big==0] = 0
-  p2_touching_ids = unique(as.numeric(overlap2))
-  p2_touching_ids = p2_touching_ids[p2_touching_ids>0]
-
-  list(p1_touching_ids, p2_touching_ids)
 }
 
 # Given two cell images (from make_cell_image), find the IDs of the cells in

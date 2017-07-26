@@ -50,9 +50,7 @@ list_cell_seg_files = function(path, ...) {
 #' @export
 #' @family file readers
 #' @examples
-#' path = system.file("extdata", "sample",
-#'                    "Set4_1-6plex_[16142,55840]_cell_seg_data.txt",
-#'                    package = "phenoptr")
+#' path = sample_cell_seg_path()
 #' csd = read_cell_seg_data(path)
 #'
 #' \dontrun{
@@ -71,7 +69,7 @@ read_cell_seg_data <- function(
   if (path=='')
     stop("File name is missing.")
 
-  # Read the data
+  # Read the data. Supplying col_types prevents output of the imputed types
   df <- readr::read_tsv(path, na=c('NA', '#N/A'), col_types=readr::cols())
 
   sample_name = 'Sample Name'
@@ -81,7 +79,7 @@ read_cell_seg_data <- function(
   # Use the 'tag' column when you need a short name for the sample,
   # e.g. in chart legends
   if (length(unique(df[[sample_name]])) > 1 && !('tag' %in% names(df))) {
-    tag <- as.factor(removeExtensions(remove_common_prefix(df[[sample_name]])))
+    tag <- as.factor(remove_extensions(remove_common_prefix(df[[sample_name]])))
     df <- cbind(tag, df)
   }
 
@@ -122,7 +120,7 @@ read_cell_seg_data <- function(
       if (!is.numeric(df[[col]]))
         df[[col]] = as.numeric(df[[col]])
       df[[col]] = df[[col]] * (pixels_per_micron^2)
-      names(df)[col] = sub('megapixels', 'sq mm', names(df)[col])
+      names(df)[col] = sub('megapixel', 'sq mm', names(df)[col])
     }
   }
 
@@ -147,13 +145,14 @@ get_area_columns = function(df) {
 }
 
 get_density_columns = function(df) {
-  rx = 'megapixels'
+  rx = 'megapixel'
   grep(rx, names(df), ignore.case=TRUE)
 }
 
 
 # Remove the common prefix from a vector of strings
 remove_common_prefix <- function(x) {
+  # Lexicographic min and max
   .min <- min(x)
   .max <- max(x)
   if (.min == .max) return (x)  # All strings are the same
@@ -170,6 +169,6 @@ remove_common_prefix <- function(x) {
 }
 
 # Remove the extensions from a vector of strings
-removeExtensions <- function(x) {
+remove_extensions <- function(x) {
   sub('\\.[^.]+$', '', x)
 }

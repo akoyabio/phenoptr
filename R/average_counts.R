@@ -44,7 +44,7 @@ if (getRversion() >= "2.15.1")
 #'    for this data file and tissue category.}
 #'  }
 #' @examples
-#' base_path = system.file("extdata", "sample", package = "phenoptr")
+#' base_path = sample_cell_seg_folder()
 #'
 #' # Count tumor cells near macrophages, and tumor cells near CD8 separately,
 #' # in tumor and stroma tissue categories separately.

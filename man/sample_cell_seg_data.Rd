@@ -3,21 +3,26 @@
 \docType{data}
 \name{sample_cell_seg_data}
 \alias{sample_cell_seg_data}
+\alias{sample_cell_seg_path}
+\alias{sample_cell_seg_folder}
 \title{Sample cell segmentation data.}
 \format{A data frame with 6072 rows and 199 variables}
 \usage{
 sample_cell_seg_data
+
+sample_cell_seg_path()
+
+sample_cell_seg_folder()
 }
 \description{
 A dataset containing inForm cell segmentation data for a single field.
-This is the data from\preformatted{system.file("extdata", "sample",
-                  "Set4_1-6plex_[16142,55840]_cell_seg_data.txt",
-                  package = "phenoptr")
-}
 }
 \details{
-This table shows the Opal stains used, the epitope they were bound to,
-and the colors used to show the stain in the composite and phenotype views.
+\code{sample_cell_seg_data} contains the \code{data_table} returned from\preformatted{read_cell_seg_data(sample_cell_seg_path())
+}
+
+This table shows the stains used, the epitopes they were bound to,
+and the colors used to show the stains in the composite and phenotype views.
 
 \tabular{llll}{
 Stain   \tab Epitope \tab Composite \tab Phenotype \cr
@@ -30,12 +35,17 @@ Opal620 \tab CD68    \tab Magenta \tab Magenta\cr
 Opal650 \tab PD1     \tab Green   \tab N/A    \cr
 Opal690 \tab CK      \tab Cyan    \tab Cyan
 }
-The sample cell data includes phenotypes CD8+ (cytotoxic T cell),
-CD68+ (macrophage),
-FoxP3+ (regulatory T cell), CK+ (tumor), and other.
+The sample cell data includes phenotypes \code{CD8+} (cytotoxic T cell),
+\code{CD68+} (macrophage),
+\code{FoxP3+} (regulatory T cell), \code{CK+} (tumor), and \code{other}.
+
+\link{sample_cell_seg_path} and \link{sample_cell_seg_folder} are
+convenience functions which return the path to the sample cell seg file
+included in this package, or the folder containing
+sample cell seg data, respectively.
 
 To see all the files included for this field, use
-\code{list.files(system.file("extdata", "sample", package = "phenoptr"))}.
+\code{list.files(sample_cell_seg_folder())}.
 
 For more sample data from this and related samples, see the
 \href{https://perkinelmer.github.io/phenoptrExamples}{phenoptrExamples} package.

@@ -49,9 +49,7 @@ specfied as a parameter or by setting
 }
 }
 \examples{
-path = system.file("extdata", "sample",
-                   "Set4_1-6plex_[16142,55840]_cell_seg_data.txt",
-                   package = "phenoptr")
+path = sample_cell_seg_path()
 csd = read_cell_seg_data(path)
 
 \dontrun{

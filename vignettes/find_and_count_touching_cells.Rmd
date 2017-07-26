@@ -33,16 +33,16 @@ from inForm to select cells. For this case, only the `pairs` argument
 is needed. 
 
 For example, this code finds and visualizes touches between 
-`tumor` and `CD8` cells, and also
-between `tumor` and `CD68` cells:
+`CK+` and `CD8+` cells, and also
+between `CK+` and `CD68+` cells:
 
 ```{r pairs_only}
 cell_seg_path = '/path/to/cell_seg_data/'
 pairs = list(
-  c('tumor', 'CD8'),
-  c('tumor', 'CD68')
+  c('CK+', 'CD8+'),
+  c('CK+', 'CD68+')
 )
-colors=list(tumor='cyan', CD8='yellow', CD68='magenta')
+colors=list('CK+'='cyan', 'CD8+'='yellow', 'CD68+'='magenta')
 count_touching_cells(cell_seg_path, pairs, colors)
 ```
 
@@ -55,14 +55,14 @@ selecting pairs.)
 
 ```{r phenotype_rules}
 pairs = list(
-  c('tumor PLD1+', 'CD8'),
-  c('tumor PLD1+', 'CD68')
+  c('CK+ PLD1+', 'CD8+'),
+  c('CK+ PLD1+', 'CD68+')
 )
 
 phenotype_rules = list(
-  'tumor PLD1+'=list('tumor', ~`Entire Cell PDL1 (Opal 620) Mean`>0.5)
+  'CK+ PLD1+'=list('CK+', ~`Entire Cell PDL1 (Opal 520) Mean`>3)
 )
-colors=list('tumor PLD1+'='cyan', CD8='yellow', CD68='magenta')
+colors=list('CK+ PLD1+'='cyan', 'CD8+'='yellow', 'CD68+'='magenta')
 count_touching_cells(cell_seg_path, pairs, colors, phenotype_rules)
 ```
 

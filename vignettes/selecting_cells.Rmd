@@ -28,22 +28,22 @@ of `count_within` for examples.
 ### Select a single phenotype
 
 The simplest selector is the name of a single phenotype. For example,
-to select all `CD8` cells as the `from` phenotype, use the parameter
+to select all `CD8+` cells as the `from` phenotype, use the parameter
 
 ```{r}
-from='CD8'
+from='CD8+'
 ```
 
 ### Group multiple phenotypes
 
 Multiple phenotypes may selected together by including each name in a 
-character vector.
+character vector (not a list!).
 For example, to select cells phenotyped as either 
-`PDL1+ tumor` or `PDL1- tumor`,
+`PDL1+ CK+` or `PDL1- CK+`,
 use the parameter
 
 ```{r}
-from=c('PDL1+ tumor', 'PDL1- tumor')
+from=c('PDL1+ CK+', 'PDL1- CK+')
 ```
 
 ### Flexible selection using expressions
@@ -53,15 +53,15 @@ expression. Expressions are written using one-sided formulas.
 The formulas are evaluated in the context
 of the cell seg table so they may reference any column of the table.
 
-For example, to select cells with PDL1 expression greater than 0.5, use
-an expression like ``~`Entire Cell PDL1 (Opal 620) Mean`>0.5``. 
-In this example, the column name is `Entire Cell PDL1 (Opal 620) Mean`.
+For example, to select cells with PDL1 expression greater than 3, use
+an expression like ``~`Entire Cell PDL1 (Opal 520) Mean`>3``. 
+In this example, the column name is `Entire Cell PDL1 (Opal 520) Mean`.
 
 Expressions and phenotype names may be combined in a list. For example,
-to select `tumor` cells with PDL1>0.5, use the parameter
+to select `CK+` cells with PDL1>3, use the parameter
 
 ```{r}
-from=list('tumor', ~`Entire Cell PDL1 (Opal 620) Mean`>0.5)
+from=list('CK+', ~`Entire Cell PDL1 (Opal 520) Mean`>3)
 ```
 
 A few things to note about formula expressions:
@@ -85,24 +85,24 @@ allow allow flexible selection of pairs of phenotypes.
 
 In the simplest usage, the names in `pairs` are the names of phenotypes in
 the cell seg data. In this case, `pairs` just lists the desired phenotypes.
-For example, to pair `tumor` cells with `CD8` cells, use the argument
+For example, to pair `CK+` cells with `CD8+` cells, use the argument
 
 ```{r}
-pairs = list(c('tumor', 'CD8'))
+pairs = list(c('CK+', 'CD8+'))
 ```
 
 For a single pair, a list is not required so this can be simplified to
 
 ```{r}
-pairs = c('tumor', 'CD8')
+pairs = c('CK+', 'CD8+')
 ```
 
-For multiple pairs, list each pair separately. For example, to pair `tumor` 
-cells first with `CD8` cells and then with `CD68` cells, use the argument
+For multiple pairs, list each pair separately. For example, to pair `CK+` 
+cells first with `CD8+` cells and then with `CD68+` cells, use the argument
 
 ```{r}
-pairs = list(c('tumor', 'CD8'),
-             c('tumor', 'CD68'))
+pairs = list(c('CK+', 'CD8+'),
+             c('CK+', 'CD68+'))
 ```
 
 ### Defining new phenotypes
@@ -112,30 +112,30 @@ in the "Selecting phenotypes" sections above. To do
 this, use the `phenotype_rules` argument to associate a `select_rows` rule
 with a name; then use the new name in the pairs argument.
 
-For example, to create a `T Cell` phenotype which matches `CD8` and `T reg`
-phenotypes, and pair it with a `PDL1+ tumor` phenotype which 
+For example, to create a `T Cell` phenotype which matches `CD8+` and `FoxP3+`
+phenotypes, and pair it with a `PDL1+ CK+` phenotype which 
 applies a threshold to
 tumor cells, use these arguments:
 
 ```{r}
-pairs = c('PDL1+ tumor', 'T Cell')
+pairs = c('PDL1+ CK+', 'T Cell')
 phenotype_rules = list(
-  'PDL1+ tumor'=list('tumor', ~`Entire Cell PDL1 (Opal 620) Mean`>0.5),
-  'T Cell'=c('CD8', 'T reg'))
+  'PDL1+ tumor'=list('CK+', ~`Entire Cell PDL1 (Opal 520) Mean`>3),
+  'T Cell'=c('CD8+', 'FoxP3+'))
 ```
 
 `phenotype_rules` only needs to include phenotypes which are not in the cell
 seg data. For example, to extend the previous example to include a pairing
-from `PDL1+ tumor` to `CD68` cells, where `CD68` is an existing phenotype,
+from `PDL1+ CK+` to `CD68+` cells, where `CD68+` is an existing phenotype,
 extend the `pairs` argument without changing `phenotype_rules`:
 
 
 ```{r}
 pairs = list(
-  c('PDL1+ tumor', 'T Cell'),
-  c('PDL1+ tumor', 'CD68'))
+  c('PDL1+ CK+', 'T Cell'),
+  c('PDL1+ CK+', 'CD68+'))
 phenotype_rules = list(
-  'PDL1+ tumor'=list('tumor', ~`Entire Cell PDL1 (Opal 620) Mean`>0.5),
-  'T Cell'=c('CD8', 'T reg')
+  'PDL1+ CK+'=list('CK+', ~`Entire Cell PDL1 (Opal 520) Mean`>3),
+  'T Cell'=c('CD8+', 'FoxP3+')
 )
 ```
