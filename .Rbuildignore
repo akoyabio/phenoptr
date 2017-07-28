@@ -8,3 +8,4 @@ TODO
 ^NEWS\.md$
 ^_pkgdown\.yml$
 ^\.travis\.yml$
+^codecov\.yml$
