@@ -1,0 +1,13 @@
+slide_id,source,category,from,to,radius,from_count,to_count,from_with,within_mean
+Set4_1-6plex,"Set4_1-6plex_[16142,55840]",Tumor,CK+,CD8+,10,2192,51,63,0.0342
+Set4_1-6plex,"Set4_1-6plex_[16142,55840]",Tumor,CK+,CD8+,25,2192,51,320,0.2035
+Set4_1-6plex,"Set4_1-6plex_[16142,55840]",Tumor,CK+,CD68+,10,2192,101,79,0.0397
+Set4_1-6plex,"Set4_1-6plex_[16142,55840]",Tumor,CK+,CD68+,25,2192,101,397,0.3079
+Set4_1-6plex,"Set4_1-6plex_[16142,55840]",Tumor,CK+ PDL1+,CD68+,10,503,101,42,0.0954
+Set4_1-6plex,"Set4_1-6plex_[16142,55840]",Tumor,CK+ PDL1+,CD68+,25,503,101,208,0.7455
+Set4_1-6plex,"Set4_1-6plex_[16142,55840]",Stroma,CK+,CD8+,10,65,177,4,0.0769
+Set4_1-6plex,"Set4_1-6plex_[16142,55840]",Stroma,CK+,CD8+,25,65,177,22,0.6
+Set4_1-6plex,"Set4_1-6plex_[16142,55840]",Stroma,CK+,CD68+,10,65,316,6,0.0923
+Set4_1-6plex,"Set4_1-6plex_[16142,55840]",Stroma,CK+,CD68+,25,65,316,34,0.7846
+Set4_1-6plex,"Set4_1-6plex_[16142,55840]",Stroma,CK+ PDL1+,CD68+,10,28,316,1,0.0357
+Set4_1-6plex,"Set4_1-6plex_[16142,55840]",Stroma,CK+ PDL1+,CD68+,25,28,316,16,1

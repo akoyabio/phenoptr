@@ -1,0 +1,15 @@
+Color assignments
+
+Components:
+DAPI - Blue
+FITC - Green
+Cy3 - Yellow
+Alexa 594 - Orange
+Cy5 - Red
+
+Phenotypes:
+B - Red
+Cytotoxic T - Yellow
+Helper T - Green
+Epi - Orange
+Other - Blue

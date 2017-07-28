@@ -11,12 +11,12 @@ check_within = function(within, radius, from, to) {
   expect_equal(within$to_count, to)
 }
 
+csd = sample_cell_seg_data %>% filter(Phenotype != 'other')
+dst = distance_matrix(csd)
+
 # Smoke test of count_within. Mostly checks that it doesn't barf and
 # that the correct cells are selected.
-test_that("count_within works", {
-  csd = sample_cell_seg_data %>% filter(Phenotype != 'other')
-  dst = distance_matrix(csd)
-
+test_that("count_within smoke test", {
   within15 = count_within(csd, 'CK+', 'CD8+', 15, dst=dst)
   check_within(within15, 15, 2257, 228)
 
@@ -38,10 +38,16 @@ test_that("count_within works", {
   check_within(within, 15, 51+34, 2192)
 })
 
-test_that("count_within works with no data", {
-  csd = sample_cell_seg_data %>% filter(Phenotype != 'other')
-  dst = distance_matrix(csd)
+test_that('count_within works', {
+  path = file.path('test_data',
+              'FIHC4__0929309_HP_IM3_2_cell_seg_data.txt')
+  d = read_cell_seg_data(path)
+  counts = count_within(d, 'Helper T', 'Cytotoxic T', 40)
+  expected = c(40, 15, 6, 8, 23/15)
+  expect_equal(as.numeric(counts), expected)
+})
 
+test_that("count_within works with no data", {
   within = count_within(csd, 'other', 'CD8+', 15, dst=dst)
   check_within(within, 15, 0, 228)
   expect_equal(within$from_with, 0)
@@ -59,9 +65,6 @@ test_that("count_within works with no data", {
 })
 
 test_that("count_within works with multiple radii", {
-  csd = sample_cell_seg_data %>% filter(Phenotype != 'other')
-  dst = distance_matrix(csd)
-
   within = count_within(csd, 'CK+', 'CD8+', c(15, 30), dst=dst)
   check_within(within, c(15, 30), c(2257, 2257), c(228, 228))
 
@@ -72,9 +75,6 @@ test_that("count_within works with multiple radii", {
 })
 
 test_that("count_within errors with invalid radii", {
-  csd = sample_cell_seg_data %>% filter(Phenotype != 'other')
-  dst = distance_matrix(csd)
-
   expect_error(count_within(csd, 'CK+', 'CD8+', integer(0), dst),
                'length\\(radius\\)')
   expect_error(count_within(csd, 'CK+', 'CD8+', c(1, -1), dst),
@@ -96,6 +96,8 @@ test_that("count_within_batch error checking works", {
 })
 
 test_that('count_within_batch works', {
+  # This is a bit slow but it seems worth doing, the data set is a bit
+  # more robust than the toy test_data
   base_path = sample_cell_seg_folder()
   pairs = list(c('CK+', 'CD8+'),
                c('CK+', 'CD68+'),
@@ -103,11 +105,14 @@ test_that('count_within_batch works', {
   rules = list('CK+ PDL1+'=list('CK+', ~`Entire Cell PDL1 (Opal 520) Mean`>3))
   radius = c(10, 25)
   categories = c('Tumor', 'Stroma')
-  counts = count_within_batch(base_path, pairs, radius, categories, rules)
+  counts = count_within_batch(base_path, pairs, radius, categories, rules) %>%
+    dplyr::mutate(within_mean=round(within_mean, 4))
 
   expect_equal(dim(counts), c(12, 10))
-  expect_equal(unique(counts$category), c('Tumor', 'Stroma'))
-  expect_equal(unique(counts$from), c('CK+', 'CK+ PDL1+'))
-  expect_equal(unique(counts$to), c('CD8+', 'CD68+'))
-  expect_equal(unique(counts$radius), c(10, 25))
+
+  # Regression test; these values haven't been hand-checked
+  expected = readr::read_csv(file.path('test_results', 'count_within.csv'),
+                             col_types='cccccniiin') %>%
+    dplyr::mutate(within_mean=round(within_mean, 4))
+  expect_equal(counts, expected)
 })

@@ -1,13 +1,12 @@
 # Tests for read_cell_seg_data
 library(testthat)
 
-path = system.file("extdata", "sample",
-   "Set4_1-6plex_[16142,55840]_cell_seg_data.txt",
-   package = "phenoptr")
+path = file.path('test_data',
+              'FIHC4__0929309_HP_IM3_2_cell_seg_data.txt')
 
-summary_path = system.file("extdata", "sample",
-   "Set4_1-6plex_[16142,55840]_cell_seg_data_summary.txt",
-   package = "phenoptr")
+summary_path =
+  file.path('test_data',
+          'FIHC4__0929309_HP_IM3_2_cell_seg_data_summary.txt')
 
 expect_contains = function(container, items) {
   for (item in items)
@@ -20,8 +19,8 @@ expect_does_not_contain = function(container, items) {
 }
 
 test_that('list_cell_seg_files works', {
-  files = list_cell_seg_files(sample_cell_seg_folder())
-  expect_equal(length(files), 1)
+  files = list_cell_seg_files('test_data')
+  expect_equal(length(files), 4)
 })
 
 test_that("Blank file name is an error", {
@@ -31,8 +30,7 @@ test_that("Blank file name is an error", {
 test_that("read_cell_seg_data works", {
   d = read_cell_seg_data(path)
   # Check size
-  expect_equal(nrow(d), 6072)
-  expect_equal(ncol(d), 199)
+  expect_equal(dim(d), c(270, 40))
 
   # Check column names
   expect_contains(names(d),
@@ -50,8 +48,8 @@ test_that("read_cell_seg_data works", {
 
   # Check values
   # Calling as.numeric converts from a tibble to an atomic value
-  expect_equal(as.numeric(d[1, 'Cell X Position']), 515/2)
-  expect_equal(as.numeric(d[1, 'Nucleus Area (percent)']), 0.0001)
+  expect_equal(as.numeric(d[1, 'Cell X Position']), 268/2)
+  expect_equal(as.numeric(d[1, 'Nucleus Area (percent)']), 0.0017)
 
   # Summary file
   d = read_cell_seg_data(summary_path)
@@ -73,16 +71,15 @@ test_that("read_cell_seg_data works", {
           ))
 
   expect_equal(as.character(d[1, 'Cell ID']), 'all')
-  expect_equal(as.numeric(d[1, 'Tissue Category Area (sq microns)']), 1208520/4)
-  expect_equal(as.numeric(d[1, 'Cell Density (per sq mm)']), 83.57*4)
-  expect_equal(as.numeric(d[1, 'Nucleus Area (percent)']), 0.0173)
+  expect_equal(as.numeric(d[1, 'Tissue Category Area (sq microns)']), 89904/4)
+  expect_equal(as.numeric(d[1, 'Cell Density (per sq mm)']), 2770*4)
+  expect_equal(as.numeric(d[1, 'Nucleus Area (percent)']), 0.5961)
 })
 
 test_that('Skipping pixels_per_micron works', {
   d = read_cell_seg_data(path, pixels_per_micron=NA)
   # Check size
-  expect_equal(nrow(d), 6072)
-  expect_equal(ncol(d), 199)
+  expect_equal(dim(d), c(270, 40))
 
   # Check column names
   expect_contains(names(d), 'Nucleus Area (pixels)')
@@ -92,14 +89,13 @@ test_that('Skipping pixels_per_micron works', {
           ))
 
   # Check values
-  expect_equal(as.numeric(d[1, 'Cell X Position']), 515)
+  expect_equal(as.numeric(d[1, 'Cell X Position']), 268)
 })
 
 test_that('Setting pixels_per_micron works', {
   d = read_cell_seg_data(path, pixels_per_micron=4)
   # Check size
-  expect_equal(nrow(d), 6072)
-  expect_equal(ncol(d), 199)
+  expect_equal(dim(d), c(270, 40))
 
   # Check column names
   expect_contains(names(d), 'Nucleus Area (sq microns)')
@@ -109,14 +105,13 @@ test_that('Setting pixels_per_micron works', {
           ))
 
   # Check values
-  expect_equal(as.numeric(d[1, 'Cell X Position']), 515/4)
+  expect_equal(as.numeric(d[1, 'Cell X Position']), 268/4)
 })
 
 test_that('remove_units=FALSE works', {
   d = read_cell_seg_data(path, remove_units=FALSE)
   # Check size
-  expect_equal(nrow(d), 6072)
-  expect_equal(ncol(d), 199)
+  expect_equal(dim(d), c(270, 40))
 
     # Check column names
   expect_contains(names(d), c('Nucleus Area (sq microns)',
@@ -126,7 +121,7 @@ test_that('remove_units=FALSE works', {
           ))
 
   # Check values
-  expect_equal(as.numeric(d[1, 'Cell X Position']), 515/2)
+  expect_equal(as.numeric(d[1, 'Cell X Position']), 268/2)
 })
 
 test_that('Making tags works', {

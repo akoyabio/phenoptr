@@ -1,9 +1,10 @@
 # Tests for read_components and read_maps
-# Uses data from phenoptrExamples so don't run on CRAN
 library(testthat)
 
 test_that("read_components works", {
-  skip_on_cran()
+  # component_data files are big, even for our toy test data.
+  # Use phenoptrExamples data here to keep the package size down a bit,
+  # though it makes the test take longer...
   skip_if_not_installed('phenoptrExamples')
   path = system.file('extdata', 'samples',
                      'Set4_1-6plex_[16142,55840]_component_data.tif',
@@ -19,15 +20,12 @@ test_that("read_components works", {
 })
 
 test_that('read_maps works', {
-  skip_on_cran()
-  skip_if_not_installed('phenoptrExamples')
-  path = system.file('extdata', 'samples',
-                     'Set4_1-6plex_[16142,55840]_binary_seg_maps.tif',
-                     package='phenoptrExamples')
-
+  path =
+    file.path('test_data',
+              'FIHC4__0929309_HP_IM3_2_binary_seg_maps.tif')
   maps = read_maps(path)
 
   expected_names = c("Nucleus", "Cytoplasm", "Membrane", "Tissue")
   expect_equal(names(maps), expected_names)
-  expect_equivalent(purrr::map(maps, dim), rep(list(c(1400, 1868)), 4))
+  expect_equivalent(purrr::map(maps, dim), rep(list(c(260, 348)), 4))
 })

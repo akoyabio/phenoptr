@@ -2,18 +2,20 @@
 library(testthat)
 
 test_that('spatial_distribution_report runs', {
-  skip_on_cran()
-
-  cell_seg_path = sample_cell_seg_path()
+  cell_seg_path =
+    file.path('test_data',
+              'FIHC4__0929309_HP_IM3_2_cell_seg_data.txt') %>%
+    normalizePath
 
   pairs = list(
-    c("CK+", "CD8+"),
-    c("CK+", "CD68+"))
-  colors = c('CK+'="cyan", "CD68+"="magenta", "CD8+"="yellow")
+    c("B", 'Cytotoxic T'),
+    c("B", 'Helper T'))
+  colors = c(B='red', 'Helper T'='green', 'Cytotoxic T'="yellow")
   out_path = tempfile()
 
-  spatial_distribution_report(cell_seg_path, pairs, colors,
-    output_path=out_path)
+  expect_warning(spatial_distribution_report(cell_seg_path, pairs, colors,
+                                             output_path=out_path),
+                 'missing values', all=TRUE)
 
   expect_true(file.exists(out_path))
   file.remove(out_path)
