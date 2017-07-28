@@ -94,3 +94,6 @@ sections of the full documentation for details.
 
 For extended examples and more sample data see the 
 [phenoptrExamples](https://perkinelmer.github.io/phenoptrExamples) package.
+
+[![Travis-CI Build Status](https://travis-ci.org/PerkinElmer/phenoptr.svg?branch=master)](https://travis-ci.org/PerkinElmer/phenoptr)
+
