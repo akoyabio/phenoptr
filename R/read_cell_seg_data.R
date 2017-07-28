@@ -158,11 +158,8 @@ remove_common_prefix <- function(x) {
   if (.min == .max) return (x)  # All strings are the same
 
   # Find the first difference by comparing characters
-  # Suppress a common warning
-  old_warn <- options(warn=-1)
   .split <- strsplit(c(.min, .max), split='')
-  .match <- .split[[1]] == .split[[2]]
-  options(old_warn)
+  suppressWarnings(.match <- .split[[1]] == .split[[2]])
   first_diff <- match(FALSE, .match)
 
   substring(x, first_diff)
