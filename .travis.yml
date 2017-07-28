@@ -6,8 +6,14 @@ r: bioc-release
 bioc_packages:
   - EBImage
 
+# Needed to build EBImage from source
 apt_packages:
   - libfftw3-dev
 
+# Needed to use apt_packages
 sudo: true
+
 cache: packages
+
+after_success:
+  - Rscript -e 'covr::codecov()'

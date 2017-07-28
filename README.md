@@ -96,4 +96,4 @@ For extended examples and more sample data see the
 [phenoptrExamples](https://perkinelmer.github.io/phenoptrExamples) package.
 
 [![Travis-CI Build Status](https://travis-ci.org/PerkinElmer/phenoptr.svg?branch=master)](https://travis-ci.org/PerkinElmer/phenoptr)
-
+[![Coverage Status](https://img.shields.io/codecov/c/github/PerkinElmer/phenoptr/master.svg)](https://codecov.io/github/PerkinElmer/phenoptr?branch=master)
