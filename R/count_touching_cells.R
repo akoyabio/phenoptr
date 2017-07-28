@@ -285,7 +285,8 @@ count_touching_cells = function(cell_seg_path, pairs, colors=NULL,
 
     if (write_images)
     {
-      tag = paste0(p1, '_', p2, '_touching.tif')
+      tag = paste0(replace_invalid_path_characters(p1, '_'), '_touch_',
+                   replace_invalid_path_characters(p2, '_'), '.tif')
       composite_out = sub('composite_image.(tif|jpg)', tag, composite_path)
       if (!is.null(output_base))
         composite_out = file.path(output_base, basename(composite_out))
@@ -418,4 +419,14 @@ find_touching_cell_pairs <- function (i1, i2) {
   overlap = overlap[overlap[,1]>0.1 & overlap[,2]>0.1,]
   overlap = unique(overlap)
   overlap
+}
+
+# Replace invalid path characters
+# This replaces Windows invalid characters and space.
+# @param s A string to clean
+# @param repl The replacement character
+replace_invalid_path_characters = function(s, repl) {
+  re = '[<>:"/\\|?* ]'
+  if (grepl(re, repl)) stop('Replacement character contains invalid characters')
+  gsub(re, repl, s)
 }
