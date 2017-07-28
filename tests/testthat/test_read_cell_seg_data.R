@@ -23,6 +23,14 @@ test_that('list_cell_seg_files works', {
   expect_equal(length(files), 4)
 })
 
+test_that('sample_cell_seg_path is correct', {
+  # We don't use this anywhere else in the tests, spot check it here
+  p = sample_cell_seg_path()
+  expect_true(!is.na(p))
+  expect_true(file.exists(p))
+  expect_true(endsWith(p, '_cell_seg_data.txt'))
+})
+
 test_that("Blank file name is an error", {
   expect_error(read_cell_seg_data(''), 'missing')
 })

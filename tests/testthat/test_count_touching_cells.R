@@ -26,7 +26,9 @@ test_that('count_touching_cells works', {
                                     colors=list('CD8+' = 'yellow')),
                'names\\(colors\\)')
 
+  # This one should work
   expect_warning(counts <- count_touching_cells(cell_seg_path, pairs, colors,
+                                                categories='Tumor',
                                                 output_base=output_base),
                  "No image for .* Helper T touching FOO+")
 

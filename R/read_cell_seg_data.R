@@ -63,8 +63,8 @@ read_cell_seg_data <- function(
   pixels_per_micron=getOption('phenoptr.pixels.per.micron'),
   remove_units=TRUE) {
   if (is.na(path)) {
-    path <- file.choose()
-    cat('Loading', path)
+    path <- file.choose() # nocov not going to happen...
+    cat('Loading', path)  # nocov
   }
   if (path=='')
     stop("File name is missing.")
