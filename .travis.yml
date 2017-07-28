@@ -9,5 +9,5 @@ bioc_packages:
 apt_packages:
   - libfftw3-dev
 
-sudo: false
+sudo: true
 cache: packages
