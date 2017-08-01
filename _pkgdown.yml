@@ -1,3 +1,26 @@
+navbar:
+  title: "phenoptr"
+  left:
+    - icon: fa-home fa-lg
+      href: index.html
+    - text: "Articles"
+      menu:
+        - text: "Computing Inter-cellular Distances"
+          href: articles/computing_distances.html
+        - text: "Find and count touching cells"
+          href: articles/find_and_count_touching_cells.html
+        - text: "Reading and Displaying inForm Image Files"
+          href: articles/reading_image_files.html
+        - text: "Selecting cells within a cell segmentation table"
+          href: articles/selecting_cells.html
+    - text: "Reference"
+      href: reference/index.html
+    - text: "News"
+      href: news/index.html
+  right:
+   - icon: fa-github fa-lg
+     href: https://github.com/PerkinElmer/phenoptr
+
 reference:
   - title: "Reading data and images"
     desc: "Read and preprocess inForm data and image files."
