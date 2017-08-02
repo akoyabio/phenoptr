@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Computing Inter-cellular Distances • phenoptr</title>
-<!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 <!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script><script src="../pkgdown.js"></script><!-- mathjax --><script src="https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!--[if lt IE 9]>
@@ -16,7 +16,7 @@
 </head>
 <body>
     <div class="container template-vignette">
-      <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <header><div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
@@ -58,15 +58,20 @@
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
-<li>
-  <a href="../news/index.html">News</a>
-</li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
+<li>
+  <a href="../news/index.html">
+    <span class="fa fa-newspaper-o"></span>
+     
+    news
+  </a>
+</li>
 <li>
   <a href="https://github.com/PerkinElmer/phenoptr">
     <span class="fa fa-github fa-lg"></span>
      
+    github
   </a>
 </li>
       </ul>
@@ -84,7 +89,7 @@
       <h1>Computing Inter-cellular Distances</h1>
                         <h4 class="author">Kent Johnson</h4>
             
-            <h4 class="date">2017-08-01</h4>
+            <h4 class="date">2017-08-02</h4>
           </div>
 
     
@@ -160,6 +165,7 @@ $ Distance to FoxP3+ &lt;dbl&gt; 16.347783, 40.140379, 30.870698, 65.408333,...<
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(csd_with_distance, <span class="kw">aes</span>(<span class="st">`</span><span class="dt">Distance to CD8+</span><span class="st">`</span>, <span class="dt">color=</span>Phenotype)) +
 <span class="st">  </span><span class="kw">geom_density</span>(<span class="dt">size=</span><span class="dv">1</span>) +<span class="st"> </span><span class="kw">theme_minimal</span>()</code></pre></div>
 <p><img src="computing_distances_files/figure-html/unnamed-chunk-7-1.png" width="672"></p>
+<hr>
 </div>
 </div>
 <div id="cells-within-a-radius" class="section level2">
@@ -199,6 +205,7 @@ categories =<span class="st"> </span><span class="kw">c</span>(<span class="st">
 
 <span class="kw"><a href="../reference/count_within_batch.html">count_within_batch</a></span>(base_path, pairs, radii, categories)</code></pre></div>
 <p>See <code>help(count_within_batch)</code> and <code><a href="https://cran.rstudio.com/web/packages/phenoptr/vignettes/selecting_cells.html">vignette('selecting_cells', package='phenoptr')</a></code> for additional details.</p>
+<hr>
 </div>
 </div>
 <div id="visualizing-nearest-neighbors" class="section level2">

@@ -1,4 +1,11 @@
+url: http://perkinelmer.github.io/phenoptr
+
+template:
+  params:
+    bootswatch: cerulean
+
 navbar:
+  type: inverse
   title: "phenoptr"
   left:
     - icon: fa-home fa-lg
@@ -15,10 +22,12 @@ navbar:
           href: articles/selecting_cells.html
     - text: "Reference"
       href: reference/index.html
-    - text: "News"
-      href: news/index.html
   right:
+   - icon: fa-newspaper-o
+     text: "news"
+     href: news/index.html
    - icon: fa-github fa-lg
+     text: github
      href: https://github.com/PerkinElmer/phenoptr
 
 reference:

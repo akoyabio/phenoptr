@@ -36,6 +36,8 @@ useful metadata from the Image Description fields.
 A variety of functions can display image data including `plot.raster`,
 `ggplot2::annotation_raster` and `EBImage::display`. 
 
+----
+
 ## Coordinate systems
 
 A few items to note:
@@ -53,6 +55,8 @@ dimensions and converted to microns when read by `phenoptr::read_cell_seg_data`.
 described above; others transpose the image.
 
 Each of these items easily causes confusion; be careful and verify your work!
+
+----
 
 ## Reading and displaying color images
 
@@ -89,6 +93,7 @@ EBImage::display(img_transposed)
 EBImage::display(EBImage::Image(img_transposed, colormode='Color'))
 ```
 
+----
 
 ## Reading and displaying component data
 
@@ -108,6 +113,8 @@ and returns a named list of image matrices.
 
 Component data may be displayed using `plot.raster` or `EBImage::display`. 
 See the next section for examples of displaying grayscale images.
+
+----
 
 ## Reading and displaying segmentation maps
 
@@ -151,6 +158,8 @@ plot(as.raster(nucleus_snippet, max=max(nucleus_snippet)))
 EBImage::display(t(nucleus/max(nucleus)))
 EBImage::display(t(maps[['Membrane']]))
 ```
+
+----
 
 ## Plotting image data
 

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Reading and Displaying inForm Image Files • phenoptr</title>
-<!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 <!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script><script src="../pkgdown.js"></script><!-- mathjax --><script src="https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!--[if lt IE 9]>
@@ -16,7 +16,7 @@
 </head>
 <body>
     <div class="container template-vignette">
-      <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <header><div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
@@ -58,15 +58,20 @@
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
-<li>
-  <a href="../news/index.html">News</a>
-</li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
+<li>
+  <a href="../news/index.html">
+    <span class="fa fa-newspaper-o"></span>
+     
+    news
+  </a>
+</li>
 <li>
   <a href="https://github.com/PerkinElmer/phenoptr">
     <span class="fa fa-github fa-lg"></span>
      
+    github
   </a>
 </li>
       </ul>
@@ -84,7 +89,7 @@
       <h1>Reading and Displaying inForm Image Files</h1>
                         <h4 class="author">Kent Johnson</h4>
             
-            <h4 class="date">2017-08-01</h4>
+            <h4 class="date">2017-08-02</h4>
           </div>
 
     
@@ -98,6 +103,7 @@ img {
 <p>inForm writes a variety of image files in JPEG and TIFF format. This vignette shows how to read the image files in R.</p>
 <p>The R packages <code>tiff</code> and <code>jpeg</code> provide functions <code>readTIFF</code> and <code>readJPEG</code> which read image data into R matrices. <code>phenoptr</code> expands on these with <code>read_components</code> and <code>read_maps</code> which read multiple images and extract useful metadata from the Image Description fields.</p>
 <p>A variety of functions can display image data including <code>plot.raster</code>, <code><a href="http://www.rdocumentation.org/packages/ggplot2/topics/annotation_raster">ggplot2::annotation_raster</a></code> and <code><a href="http://www.rdocumentation.org/packages/EBImage/topics/display">EBImage::display</a></code>.</p>
+<hr>
 <div id="coordinate-systems" class="section level2">
 <h2 class="hasAnchor">
 <a href="#coordinate-systems" class="anchor"></a>Coordinate systems</h2>
@@ -108,6 +114,7 @@ img {
 <li><p>Image display methods differ in their orientation; some show <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span> as described above; others transpose the image.</p></li>
 </ul>
 <p>Each of these items easily causes confusion; be careful and verify your work!</p>
+<hr>
 </div>
 <div id="reading-and-displaying-color-images" class="section level2">
 <h2 class="hasAnchor">
@@ -127,6 +134,7 @@ img =<span class="st"> </span>jpeg::<span class="kw">readJPEG</span>(path)
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">img_transposed =<span class="st"> </span><span class="kw">aperm</span>(img, <span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">3</span>))
 EBImage::<span class="kw">display</span>(img_transposed)
 EBImage::<span class="kw">display</span>(EBImage::<span class="kw">Image</span>(img_transposed, <span class="dt">colormode=</span><span class="st">'Color'</span>))</code></pre></div>
+<hr>
 </div>
 <div id="reading-and-displaying-component-data" class="section level2">
 <h2 class="hasAnchor">
@@ -134,6 +142,7 @@ EBImage::<span class="kw">display</span>(EBImage::<span class="kw">Image</span>(
 <p>inForm saves component data as multiple 32-bit floating-point images within a single TIFF file. Images smaller than 2K by 2K pixels are saved in “strip” format and may be read by <code><a href="http://www.rdocumentation.org/packages/tiff/topics/readTIFF">tiff::readTIFF()</a></code>. Larger images are saved in “tiled” format which is not supported by <code>readTIFF()</code>. The <a href="https://github.com/aoles/RBioFormats"><code>RBioFormats</code></a> package may be an alternative for reading larger component data files.</p>
 <p><code><a href="http://www.rdocumentation.org/packages/phenoptr/topics/read_components">phenoptr::read_components()</a></code> is a wrapper around <code>readTIFF()</code> which reads the individual component images from a <code>component_data.tif</code> file. It keeps the full-resolution component images, extracts the component names from the image descriptions, and returns a named list of image matrices.</p>
 <p>Component data may be displayed using <code>plot.raster</code> or <code><a href="http://www.rdocumentation.org/packages/EBImage/topics/display">EBImage::display</a></code>. See the next section for examples of displaying grayscale images.</p>
+<hr>
 </div>
 <div id="reading-and-displaying-segmentation-maps" class="section level2">
 <h2 class="hasAnchor">
@@ -159,6 +168,7 @@ maps =<span class="st"> </span>phenoptr::<span class="kw"><a href="../reference/
 <p><img src="reading_image_files_files/figure-html/display_map-1.png" width="672"></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">EBImage::<span class="kw">display</span>(<span class="kw">t</span>(nucleus/<span class="kw">max</span>(nucleus)))
 EBImage::<span class="kw">display</span>(<span class="kw">t</span>(maps[[<span class="st">'Membrane'</span>]]))</code></pre></div>
+<hr>
 </div>
 <div id="plotting-image-data" class="section level2">
 <h2 class="hasAnchor">

@@ -17,6 +17,8 @@ Pathology Research Solutions. For more facts visit the Phenoptics™
 Phenoptics&trade;
 [home place](http://www.perkinelmer.com/cancer-immunology/index.html).
 
+----
+
 ## How to get it
 
 Get phenoptr from GitHub:
@@ -25,6 +27,8 @@ Get phenoptr from GitHub:
 # install.packages("devtools")
 devtools::install_github("PerkinElmer/phenoptr", build_vignettes=TRUE)
 ```
+
+----
 
 ## How to use it
 
@@ -43,7 +47,7 @@ If you'd like to learn how to use the tidyverse, a good place to start is Garret
 
 ### What this can do
 
-#### Read and clean up inForm number tables and pictures
+#### <i class='fa fa-caret-right' /> Read and clean up inForm number tables and pictures
 
 [list_cell_seg_files](https://perkinelmer.github.io/phenoptr/reference/list_cell_seg_files.html)
 finds all inForm cell number tables from one place on your computer.
@@ -55,7 +59,7 @@ reads inForm cell number tables and makes them easier to use in R.
 and [read_maps](https://perkinelmer.github.io/phenoptr/reference/read_maps.html) 
 read inForm pictures.
 
-#### Find and draw position relationships between cells
+#### <i class='fa fa-caret-right' /> Find and draw position relationships between cells
 
 [find_nearest_distance](https://perkinelmer.github.io/phenoptr/reference/find_nearest_distance.html)
 finds how far each cell is to the nearest cell of each kind.
@@ -71,7 +75,7 @@ makes a paper showing nearest friend relationships between cells of two kinds.
 [count_touching_cells](https://perkinelmer.github.io/phenoptr/reference/count_touching_cells.html)
 looks at the form of cells to find, number, and make pictures of touching cells in paired groups.
 
-#### Helpers
+#### <i class='fa fa-caret-right' /> Helpers
 
 [distance_matrix](https://perkinelmer.github.io/phenoptr/reference/distance_matrix.html)
 makes number tables showing how far cells are from each other.
@@ -82,6 +86,8 @@ helps when you just want to use some of the cells.
 
 [select_rows](https://perkinelmer.github.io/phenoptr/reference/select_rows.html)
 picks cells in cell number tables that have the kind and numbers you are interested in.
+
+----
 
 ### Full documentation
 
@@ -94,7 +100,9 @@ For more words showing how to use it and more number tables and pictures
 to try out, go to the 
 [phenoptrExamples](https://perkinelmer.github.io/phenoptrExamples) place.
 
-## What is this?
+----
+
+### What is this?
 
 This place is just for fun. 
 It was made using only the ten hundred most used words (and some names). 

@@ -20,6 +20,8 @@ cell seg table. The mechanism is implemented in `select_rows` and
 usable from any function that supports it, 
 including `count_touching_cells` and `count_within`.
 
+----
+
 ## Selecting phenotypes
 
 This section of the vignette uses the `from` parameter 
@@ -74,6 +76,8 @@ A few things to note about formula expressions:
   names in a cell seg table---must be enclosed in backticks (`) as
   in the example above.
   
+----
+
 ## Selecting pairs of phenotypes
 
 Several functions in `phenoptr` operate on pairs of phenotypes 
