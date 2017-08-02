@@ -95,8 +95,7 @@ sections of the full documentation for details.
 For extended examples and more sample data see the 
 [phenoptrExamples](https://perkinelmer.github.io/phenoptrExamples) package.
 
-See this page written with just the ten hundred most used words
-[;-)](articles/README1000.html).
 
 [![Travis-CI Build Status](https://travis-ci.org/PerkinElmer/phenoptr.svg?branch=master)](https://travis-ci.org/PerkinElmer/phenoptr)
 [![Coverage Status](https://img.shields.io/codecov/c/github/PerkinElmer/phenoptr/master.svg)](https://codecov.io/github/PerkinElmer/phenoptr?branch=master)
+[<i class='fa fa-smile-o' />](articles/README1000.html)
