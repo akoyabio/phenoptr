@@ -45,7 +45,7 @@ available free online at
 
 ### Package summary
 
-#### <i class='fa fa-caret-right' /> Read and preprocess inForm data and image files
+#### <i class='fa fa-caret-right'></i> Read and preprocess inForm data and image files
 
 [list_cell_seg_files](https://perkinelmer.github.io/phenoptr/reference/list_cell_seg_files.html)
 finds all inForm cell segmentation files in a directory.
@@ -59,7 +59,7 @@ reads inForm component data and [read_maps](https://perkinelmer.github.io/phenop
 reads inForm
 segmentation maps.
 
-#### <i class='fa fa-caret-right' /> Compute and visualize spatial relationships between cells
+#### <i class='fa fa-caret-right'></i> Compute and visualize spatial relationships between cells
 
 [find_nearest_distance](https://perkinelmer.github.io/phenoptr/reference/find_nearest_distance.html)
 finds the distance
@@ -80,7 +80,7 @@ uses morphological
 analysis to find, count, and visualize touching cells in paired
 phenotypes.
 
-#### <i class='fa fa-caret-right' /> Helpers
+#### <i class='fa fa-caret-right'></i> Helpers
 
 [distance_matrix](https://perkinelmer.github.io/phenoptr/reference/distance_matrix.html)
 and 
@@ -104,4 +104,4 @@ sections of the full documentation for details.
 For extended examples and more sample data see the 
 [phenoptrExamples](https://perkinelmer.github.io/phenoptrExamples) package.
 
-[<i class='fa fa-smile-o' />](articles/README1000.html)
+[<i class='fa fa-smile-o'></i>](articles/README1000.html)

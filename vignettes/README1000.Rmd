@@ -47,7 +47,7 @@ If you'd like to learn how to use the tidyverse, a good place to start is Garret
 
 ### What this can do
 
-#### <i class='fa fa-caret-right' /> Read and clean up inForm number tables and pictures
+#### <i class='fa fa-caret-right'></i> Read and clean up inForm number tables and pictures
 
 [list_cell_seg_files](https://perkinelmer.github.io/phenoptr/reference/list_cell_seg_files.html)
 finds all inForm cell number tables from one place on your computer.
@@ -59,7 +59,7 @@ reads inForm cell number tables and makes them easier to use in R.
 and [read_maps](https://perkinelmer.github.io/phenoptr/reference/read_maps.html) 
 read inForm pictures.
 
-#### <i class='fa fa-caret-right' /> Find and draw position relationships between cells
+#### <i class='fa fa-caret-right'></i> Find and draw position relationships between cells
 
 [find_nearest_distance](https://perkinelmer.github.io/phenoptr/reference/find_nearest_distance.html)
 finds how far each cell is to the nearest cell of each kind.
@@ -75,7 +75,7 @@ makes a paper showing nearest friend relationships between cells of two kinds.
 [count_touching_cells](https://perkinelmer.github.io/phenoptr/reference/count_touching_cells.html)
 looks at the form of cells to find, number, and make pictures of touching cells in paired groups.
 
-#### <i class='fa fa-caret-right' /> Helpers
+#### <i class='fa fa-caret-right'></i> Helpers
 
 [distance_matrix](https://perkinelmer.github.io/phenoptr/reference/distance_matrix.html)
 makes number tables showing how far cells are from each other.
