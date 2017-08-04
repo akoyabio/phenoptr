@@ -52,7 +52,8 @@ having a 'to' cell within \code{radius} microns.
 \details{
 The \code{category} parameter may be a single category or a list of categories.
 
-See \code{vignette('selecting_cells', package='phenoptr')} for more on
+See the vignette
+\emph{Selecting cells within a cell segmentation table} for more on
 the use of \code{pairs} and \code{phenotype_rules}.
 }
 \examples{

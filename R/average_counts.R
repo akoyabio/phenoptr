@@ -16,7 +16,8 @@ if (getRversion() >= "2.15.1")
 #'
 #' The `category` parameter may be a single category or a list of categories.
 #'
-#' See `vignette('selecting_cells', package='phenoptr')` for more on
+#' See the vignette
+#' _Selecting cells within a cell segmentation table_ for more on
 #' the use of `pairs` and `phenotype_rules`.
 #'
 #' @param base_path Path to a directory containing at least

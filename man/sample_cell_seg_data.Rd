@@ -22,19 +22,17 @@ A dataset containing inForm cell segmentation data for a single field.
 }
 
 This table shows the stains used, the epitopes they were bound to,
-and the colors used to show the stains in the composite and phenotype views.
-
-\tabular{llll}{
-Stain   \tab Epitope \tab Composite \tab Phenotype \cr
------------ \tab ----------- \tab ------------- \tab ------------- \cr
-DAPI    \tab Nucleus \tab Blue    \tab N/A    \cr
-Opal520 \tab PDL1    \tab Red     \tab N/A    \cr
-Opal540 \tab CD8     \tab Yellow  \tab Yellow \cr
-Opal570 \tab FoxP3   \tab Orange  \tab Orange \cr
-Opal620 \tab CD68    \tab Magenta \tab Magenta\cr
-Opal650 \tab PD1     \tab Green   \tab N/A    \cr
-Opal690 \tab CK      \tab Cyan    \tab Cyan
+and the colors used to show the stains in the composite and phenotype views.\preformatted{  Stain    Epitope  Composite  Phenotype
+  -------- -------  ---------  ---------
+  DAPI     Nucleus  Blue       N/A
+  Opal520  PDL1     Red        N/A
+  Opal540  CD8      Yellow     Yellow
+  Opal570  FoxP3    Orange     Orange
+  Opal620  CD68     Magenta    Magenta
+  Opal650  PD1      Green      N/A
+  Opal690  CK       Cyan       Cyan
 }
+
 The sample cell data includes phenotypes \code{CD8+} (cytotoxic T cell),
 \code{CD68+} (macrophage),
 \code{FoxP3+} (regulatory T cell), \code{CK+} (tumor), and \code{other}.

@@ -21,9 +21,9 @@ for each phenotype. Will contain \code{NA} values where there is no other cell
 of the phenotype.
 }
 \description{
-For each phenotype in a single sample,
-find the distance from
-each cell to the nearest other cell in the phenotype.
+For each cell in a single sample,
+find the distances from
+the cell to the nearest neighbor cells in each of the provided phenotypes.
 }
 \examples{
 # Compute distance columns

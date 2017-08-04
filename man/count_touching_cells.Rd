@@ -84,7 +84,8 @@ TIFF files to preserve the fine detail of cell boundaries.
 
 Images are only written when both phenotypes of the pair are represented.
 
-See \code{vignette('selecting_cells', package='phenoptr')} for more on
+See the vignette
+\emph{Selecting cells within a cell segmentation table} for more on
 the use of \code{pairs} and \code{phenotype_rules}.
 }
 \examples{

@@ -29,7 +29,8 @@
 #'
 #' Images are only written when both phenotypes of the pair are represented.
 #'
-#' See `vignette('selecting_cells', package='phenoptr')` for more on
+#' See the vignette
+#' _Selecting cells within a cell segmentation table_ for more on
 #' the use of `pairs` and `phenotype_rules`.
 #'
 #' @param cell_seg_path The path to the cell seg data file. The same directory

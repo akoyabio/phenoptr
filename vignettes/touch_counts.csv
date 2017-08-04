@@ -1,0 +1,3 @@
+slide_id,source,phenotype1,phenotype2,total1,total2,p1_touch_p2,p2_touch_p1,touch_pairs
+Set4_1-6plex,"Set4_1-6plex_[16142,55840]",CK+,CD8+,2257,228,148,95,177
+Set4_1-6plex,"Set4_1-6plex_[16142,55840]",CK+,CD68+,2257,417,250,163,314

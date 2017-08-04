@@ -48,9 +48,9 @@ compute_all_nearest_distance = function(cell_table_path=NULL, out_path=NULL) {
 
 #' Nearest neighbor distances for each cell and phenotype.
 #'
-#' For each phenotype in a single sample,
-#' find the distance from
-#' each cell to the nearest other cell in the phenotype.
+#' For each cell in a single sample,
+#' find the distances from
+#' the cell to the nearest neighbor cells in each of the provided phenotypes.
 #'
 #' @param csd A data frame with `Cell X Position`,
 #'        `Cell Y Position` and `Phenotype` columns,

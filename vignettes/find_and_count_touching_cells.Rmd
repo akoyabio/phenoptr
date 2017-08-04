@@ -26,6 +26,8 @@ showing the touching cells.
 determine which cells are touching. It uses both nuclear and membrane
 segmentation to determine the extent of each cell.
 
+### Count touching cells with existing phenotypes
+
 `count_touching_cells` processes a single field and multiple pairs of 
 phenotypes. The specification of pairs and phenotypes is flexible to 
 accommodate any requirement. The simplest case uses the phenotype names
@@ -37,7 +39,7 @@ For example, this code finds and visualizes touches between
 between `CK+` and `CD68+` cells:
 
 ```{r pairs_only}
-cell_seg_path = '/path/to/cell_seg_data/'
+cell_seg_path = sample_cell_seg_path()
 pairs = list(
   c('CK+', 'CD8+'),
   c('CK+', 'CD68+')
@@ -46,11 +48,22 @@ colors=list('CK+'='cyan', 'CD8+'='yellow', 'CD68+'='magenta')
 count_touching_cells(cell_seg_path, pairs, colors)
 ```
 
-For more flexibility, use the `phenotype_rules` argument. For example,
+<small>
+```{r echo=FALSE, eval=TRUE}
+# Show cached touch counts
+readr::read_csv('touch_counts.csv', col_types=readr::cols())
+```
+</small>
+
+### Count touching cells with new phenotypes
+
+For more flexibility, create new compound phenotypes using
+the `phenotype_rules` argument. For example,
 this code repeats the previous analysis limiting it to tumor cells with PDL1
 above a threshold. Note that `phenotype_rules` only needs to include
 definitions for phenotypes which don't match the names in `pairs`.
-(See `vignette('selecting_cells', package='phenoptr')` for more details on
+(See the vignette 
+_Selecting cells within a cell segmentation table_ for more details on
 selecting pairs.)
 
 ```{r phenotype_rules}
@@ -65,6 +78,8 @@ phenotype_rules = list(
 colors=list('CK+ PLD1+'='cyan', 'CD8+'='yellow', 'CD68+'='magenta')
 count_touching_cells(cell_seg_path, pairs, colors, phenotype_rules)
 ```
+
+### Count touching cells for multiple fields
 
 Using `purrr::map`, you can find touching cells for all cell seg data
 files in a single directory.

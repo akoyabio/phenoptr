@@ -14,7 +14,8 @@ A named list of matrices, one for each component.
 }
 \description{
 Read an inForm \code{component_data.tif} file.
-Keep only the full-resolution component images,
+If the file contains multiple resolutions or other data,
+keep only the full-resolution component images,
 extract the component names from the image descriptions,
 and return a named list of image matrices.
 }

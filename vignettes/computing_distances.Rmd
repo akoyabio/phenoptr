@@ -39,8 +39,9 @@ relationship between cells in a single field.
 ### Computing with `find_nearest_distance`
 
 The `find_nearest_distance` function finds per-cell nearest neighbor distances.
-For each cell and each phenotype in a sample, it finds the nearest neighbor
-of that phenotype. The distances are returned in a `data_frame` with
+For each cell in a sample, it finds the distances to the nearest neighbor
+cells in each of the provided phenotypes. 
+The distances are returned in a `data_frame` with
 one column per phenotype.
 
 For example, the `phenoptr` sample data `sample_cell_seg_data` contains
@@ -79,7 +80,8 @@ csd_with_distance = bind_cols(csd, distances)
 
 Note: Cell positions in a cell seg data file are relative to the 
 top-left corner of the field, 
-so calling `find_nearest_distance` on a merged data file will fail. One 
+so calling `find_nearest_distance` on a merged data file will 
+compute incorrect values. One 
 way to add distance columns to a merged data file is to use `dplyr::group_by`
 to process each field separately. For example, if `merged` contains merged
 cell seg data, add distance columns with this code:
@@ -127,8 +129,8 @@ count_within(csd, from='CD68+', to='CK+', radius=25)
 In this result, `from_count` and `to_count` are the total numbers of 
 eligible cells. They agree with the counts in the first table in this
 vignette. `from_with` is the number of `CD68+` cells having at least 
-one `CK+` cell within 25 &mu;m. `within_mean` is the average number of
-`CK+` cells found within 25 &mu;m of each `CD68+` cell.
+one `CK+` cell within 25 micron. `within_mean` is the average number of
+`CK+` cells found within 25 micron of each `CD68+` cell.
 
 Note there are some subtleties to `count_within`. Most importantly, it
 is not symmetric. In this example, the number of `CK+` cells with a 
@@ -152,7 +154,7 @@ The `pairs` and `category` parameters are lists and may contain
 multiple entries.
 
 For example, the following commands will count `FoxP3+` cells
-with a `CD8+` or `CK+` within 10 or 25 &mu;m, 
+with a `CD8+` or `CK+` within 10 or 25 micron, 
 with separate counts for each `to` phenotype and for
 `Tumor` and `Stroma` tissue categories. Counts will be calculated 
 for all `cell_seg_data.txt` files in `my_directory`.
@@ -168,8 +170,8 @@ categories = c('Stroma', 'Tumor')
 count_within_batch(base_path, pairs, radii, categories)
 ```
 
-See `help(count_within_batch)` and 
-`vignette('selecting_cells', package='phenoptr')`
+See `help(count_within_batch)` and the vignette 
+_Selecting cells within a cell segmentation table_
 for additional details.
 
 ----
@@ -205,6 +207,6 @@ create reports in the same directory as the data files.
 base_path = '/path/to/data/'
 paths = list_cell_seg_files(base_path)
 for (path in paths)
-  spatial_distribution_report(path, phenotypes, colors)
+  spatial_distribution_report(path, pairs, colors)
 ```
 

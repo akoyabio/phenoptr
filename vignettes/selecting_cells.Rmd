@@ -12,28 +12,48 @@ vignette: >
 ---
 
 ```{r setup,echo=FALSE}
-knitr::opts_chunk$set(eval=FALSE)
+#knitr::opts_chunk$set(eval=FALSE)
+library(phenoptr)
 ```
 
 `phenoptr` includes a flexible mechanism for selecting cells (i.e. rows) from a
-cell seg table. The mechanism is implemented in `select_rows` and 
-usable from any function that supports it, 
+cell seg table. The mechanism is implemented in `select_rows`. Row selection
+may be used directly via `select_rows` and ordinary subsetting operations. It is 
+also used indirectly by calling functions that support it, 
 including `count_touching_cells` and `count_within`.
+
+The return value from `select_rows` is a boolean (logical) vector whose 
+length is the number of rows of the given cell seg table. 
+You use this returned
+value to select rows of the table. 
 
 ----
 
 ## Selecting phenotypes
 
-This section of the vignette uses the `from` parameter 
-of `count_within` for examples.
+This section of the vignette uses `sample_cell_seg_data` and 
+`count_within` for examples.
 
 ### Select a single phenotype
 
-The simplest selector is the name of a single phenotype. For example,
-to select all `CD8+` cells as the `from` phenotype, use the parameter
+The simplest selector is just the name of a single phenotype. This example
+selects the rows containing `CK+` cells:
 
 ```{r}
-from='CD8+'
+csd = sample_cell_seg_data
+rows = select_rows(csd, 'CK+')
+sum(rows) # The number of selected rows
+
+# Select just the desired rows by subsetting
+ck = csd[rows, ]
+dim(ck)
+```
+
+This example counts `CD8+` cells with 15 microns of `CK+` cells.
+
+```{r}
+dst = distance_matrix(csd) # Compute this just once and re-use it
+count_within(csd, from='CK+', to='CD8+', radius=15, dst=dst)
 ```
 
 ### Group multiple phenotypes
@@ -41,29 +61,46 @@ from='CD8+'
 Multiple phenotypes may selected together by including each name in a 
 character vector (not a list!).
 For example, to select cells phenotyped as either 
-`PDL1+ CK+` or `PDL1- CK+`,
-use the parameter
+`CD8+` or `FoxP3+`,
+use the selector `c('CD8+', 'FoxP3+')`.
+
+This example selects this combination. Note the call to `select_rows`
+has been combined with the subsetting of `csd`.
 
 ```{r}
-from=c('PDL1+ CK+', 'PDL1- CK+')
+tcells = csd[select_rows(csd, c('CD8+', 'FoxP3+')), ]
+dim(tcells)
+
+count_within(csd, from='CK+', to=c('CD8+', 'FoxP3+'), radius=15, dst=dst)
 ```
+
+This type of grouping is an either / or selection. The `count_within` 
+example above counts the number of T cells (`CD8+` _or_ `FoxP3+`) 
+within 15 microns of a `CK+`
+cell. If you want separate counts for `CD8+` and `FoxP3+`, use
+`count_within_batch`.
 
 ### Flexible selection using expressions
 
 For more flexibility, `select_rows` supports selection using any valid
-expression. Expressions are written using one-sided formulas. 
+R expression. Expressions are written using one-sided formulas. 
 The formulas are evaluated in the context
 of the cell seg table so they may reference any column of the table.
 
 For example, to select cells with PDL1 expression greater than 3, use
-an expression like ``~`Entire Cell PDL1 (Opal 520) Mean`>3``. 
+the expression ``~`Entire Cell PDL1 (Opal 520) Mean`>3``. 
 In this example, the column name is `Entire Cell PDL1 (Opal 520) Mean`.
 
-Expressions and phenotype names may be combined in a list. For example,
-to select `CK+` cells with PDL1>3, use the parameter
+Expressions and phenotype names may be combined in a list. This example
+selects `CK+` cells with PDL1 > 3.
 
 ```{r}
-from=list('CK+', ~`Entire Cell PDL1 (Opal 520) Mean`>3)
+rows = select_rows(csd, list('CK+', ~`Entire Cell PDL1 (Opal 520) Mean`>3))
+ck_pdl1 = csd[rows, ]
+dim(ck_pdl1)
+
+count_within(csd, from=list('CK+', ~`Entire Cell PDL1 (Opal 520) Mean`>3), 
+             to='CD8+', radius=15, dst=dst)
 ```
 
 A few things to note about formula expressions:
@@ -82,7 +119,9 @@ A few things to note about formula expressions:
 
 Several functions in `phenoptr` operate on pairs of phenotypes 
 and have arguments
-`pairs` and `phenotype_rules`. These functions build on `select_rows` to
+`pairs` and `phenotype_rules`. For example, see `count_touching_cells`
+and `spatial_distribution_report`.
+These functions build on `select_rows` to
 allow allow flexible selection of pairs of phenotypes. 
 
 ### Pairs of existing phenotypes

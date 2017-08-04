@@ -101,7 +101,9 @@ inForm saves component data as multiple 32-bit floating-point
 images within a single TIFF file.
 Images smaller than 2K by 2K pixels are saved in "strip" format and may
 be read by `tiff::readTIFF()`. Larger images are saved in "tiled" format
-which is not supported by `readTIFF()`. 
+which is not supported by `readTIFF()`. Single fields from Vectra Polaris,
+Vectra 3 and Mantra are all smaller than 2K by 2K and may be read
+by these functions; larger fields may not read. 
 The [`RBioFormats`](https://github.com/aoles/RBioFormats) package may
 be an alternative for reading larger component data files.
 
@@ -112,7 +114,7 @@ extracts the component names from the image descriptions,
 and returns a named list of image matrices.
 
 Component data may be displayed using `plot.raster` or `EBImage::display`. 
-See the next section for examples of displaying grayscale images.
+See the next section for examples of displaying grayscale images such as these.
 
 ----
 
