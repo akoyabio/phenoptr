@@ -2,24 +2,28 @@
 knitr::opts_chunk$set(eval=FALSE)
 
 ## ----pairs_only----------------------------------------------------------
-#  cell_seg_path = '/path/to/cell_seg_data/'
+#  cell_seg_path = sample_cell_seg_path()
 #  pairs = list(
-#    c('tumor', 'CD8'),
-#    c('tumor', 'CD68')
+#    c('CK+', 'CD8+'),
+#    c('CK+', 'CD68+')
 #  )
-#  colors=list(tumor='cyan', CD8='yellow', CD68='magenta')
+#  colors=list('CK+'='cyan', 'CD8+'='yellow', 'CD68+'='magenta')
 #  count_touching_cells(cell_seg_path, pairs, colors)
+
+## ----echo=FALSE, eval=TRUE-----------------------------------------------
+# Show cached touch counts
+readr::read_csv('touch_counts.csv', col_types=readr::cols())
 
 ## ----phenotype_rules-----------------------------------------------------
 #  pairs = list(
-#    c('tumor PLD1+', 'CD8'),
-#    c('tumor PLD1+', 'CD68')
+#    c('CK+ PLD1+', 'CD8+'),
+#    c('CK+ PLD1+', 'CD68+')
 #  )
 #  
 #  phenotype_rules = list(
-#    'tumor PLD1+'=list('tumor', ~`Entire Cell PDL1 (Opal 620) Mean`>0.5)
+#    'CK+ PLD1+'=list('CK+', ~`Entire Cell PDL1 (Opal 520) Mean`>3)
 #  )
-#  colors=list('tumor PLD1+'='cyan', CD8='yellow', CD68='magenta')
+#  colors=list('CK+ PLD1+'='cyan', 'CD8+'='yellow', 'CD68+'='magenta')
 #  count_touching_cells(cell_seg_path, pairs, colors, phenotype_rules)
 
 ## ----process_directory---------------------------------------------------

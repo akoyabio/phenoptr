@@ -89,7 +89,7 @@
       <h1>Computing Inter-cellular Distances</h1>
                         <h4 class="author">Kent Johnson</h4>
             
-            <h4 class="date">2017-08-02</h4>
+            <h4 class="date">2017-08-04</h4>
           </div>
 
     
@@ -111,7 +111,7 @@ table {
 <h3 class="hasAnchor">
 <a href="#computing-with-find_nearest_distance" class="anchor"></a>Computing with <code>find_nearest_distance</code>
 </h3>
-<p>The <code>find_nearest_distance</code> function finds per-cell nearest neighbor distances. For each cell and each phenotype in a sample, it finds the nearest neighbor of that phenotype. The distances are returned in a <code>data_frame</code> with one column per phenotype.</p>
+<p>The <code>find_nearest_distance</code> function finds per-cell nearest neighbor distances. For each cell in a sample, it finds the distances to the nearest neighbor cells in each of the provided phenotypes. The distances are returned in a <code>data_frame</code> with one column per phenotype.</p>
 <p>For example, the <code>phenoptr</code> sample data <code>sample_cell_seg_data</code> contains 5 unique phenotypes:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidyverse)
 <span class="kw">library</span>(phenoptr)
@@ -141,7 +141,7 @@ $ Distance to FoxP3+ &lt;dbl&gt; 16.347783, 40.140379, 30.870698, 65.408333,...<
 <pre><code>[1] 3130</code></pre>
 <p>To create a combined data frame, use <code><a href="http://dplyr.tidyverse.org/reference/bind.html">dplyr::bind_cols</a></code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">csd_with_distance =<span class="st"> </span><span class="kw">bind_cols</span>(csd, distances)</code></pre></div>
-<p>Note: Cell positions in a cell seg data file are relative to the top-left corner of the field, so calling <code>find_nearest_distance</code> on a merged data file will fail. One way to add distance columns to a merged data file is to use <code><a href="http://dplyr.tidyverse.org/reference/group_by.html">dplyr::group_by</a></code> to process each field separately. For example, if <code>merged</code> contains merged cell seg data, add distance columns with this code:</p>
+<p>Note: Cell positions in a cell seg data file are relative to the top-left corner of the field, so calling <code>find_nearest_distance</code> on a merged data file will compute incorrect values. One way to add distance columns to a merged data file is to use <code><a href="http://dplyr.tidyverse.org/reference/group_by.html">dplyr::group_by</a></code> to process each field separately. For example, if <code>merged</code> contains merged cell seg data, add distance columns with this code:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">merged_with_distance =<span class="st"> </span>merged %&gt;%
 <span class="st">  </span>dplyr::<span class="kw">group_by</span>(<span class="st">`</span><span class="dt">Sample Name</span><span class="st">`</span>) %&gt;%
 <span class="st">  </span>dplyr::<span class="kw">do</span>(dplyr::<span class="kw">bind_cols</span>(., <span class="kw"><a href="../reference/find_nearest_distance.html">find_nearest_distance</a></span>(.)))</code></pre></div>
@@ -181,7 +181,7 @@ $ Distance to FoxP3+ &lt;dbl&gt; 16.347783, 40.140379, 30.870698, 65.408333,...<
   radius from_count to_count from_with within_mean
    &lt;dbl&gt;      &lt;int&gt;    &lt;int&gt;     &lt;int&gt;       &lt;dbl&gt;
 1     25        417     2257       274    3.278177</code></pre>
-<p>In this result, <code>from_count</code> and <code>to_count</code> are the total numbers of eligible cells. They agree with the counts in the first table in this vignette. <code>from_with</code> is the number of <code>CD68+</code> cells having at least one <code>CK+</code> cell within 25 μm. <code>within_mean</code> is the average number of <code>CK+</code> cells found within 25 μm of each <code>CD68+</code> cell.</p>
+<p>In this result, <code>from_count</code> and <code>to_count</code> are the total numbers of eligible cells. They agree with the counts in the first table in this vignette. <code>from_with</code> is the number of <code>CD68+</code> cells having at least one <code>CK+</code> cell within 25 micron. <code>within_mean</code> is the average number of <code>CK+</code> cells found within 25 micron of each <code>CD68+</code> cell.</p>
 <p>Note there are some subtleties to <code>count_within</code>. Most importantly, it is not symmetric. In this example, the number of <code>CK+</code> cells with a <code>CD68+</code> within 25 microns is not the same as the number of <code>CD68+</code> cells with a <code>CK+</code> cell within 25 microns.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/count_within.html">count_within</a></span>(csd, <span class="dt">from=</span><span class="st">'CK+'</span>, <span class="dt">to=</span><span class="st">'CD68+'</span>, <span class="dt">radius=</span><span class="dv">25</span>)</code></pre></div>
 <pre><code># A tibble: 1 x 5
@@ -195,7 +195,7 @@ $ Distance to FoxP3+ &lt;dbl&gt; 16.347783, 40.140379, 30.870698, 65.408333,...<
 <a href="#count-multiple-files-or-phenotypes-using-count_within_batch" class="anchor"></a>Count multiple files or phenotypes using <code>count_within_batch</code>
 </h3>
 <p>You may want to run <code>count_within</code> on an entire directory of cell seg data files, or to count multiple combinations of phenotypes. Both of these are possible using <code>count_within_batch</code>. Instead of a <code>data_frame</code>, you pass it the path to a directory containing multiple cell seg data files. The <code>pairs</code> and <code>category</code> parameters are lists and may contain multiple entries.</p>
-<p>For example, the following commands will count <code>FoxP3+</code> cells with a <code>CD8+</code> or <code>CK+</code> within 10 or 25 μm, with separate counts for each <code>to</code> phenotype and for <code>Tumor</code> and <code>Stroma</code> tissue categories. Counts will be calculated for all <code>cell_seg_data.txt</code> files in <code>my_directory</code>.</p>
+<p>For example, the following commands will count <code>FoxP3+</code> cells with a <code>CD8+</code> or <code>CK+</code> within 10 or 25 micron, with separate counts for each <code>to</code> phenotype and for <code>Tumor</code> and <code>Stroma</code> tissue categories. Counts will be calculated for all <code>cell_seg_data.txt</code> files in <code>my_directory</code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">base_path =<span class="st"> "/path/to/my_directory"</span>
 
 pairs =<span class="st"> </span><span class="kw">list</span>(<span class="kw">c</span>(<span class="st">'FoxP3+'</span>, <span class="st">'CD8+'</span>),
@@ -204,7 +204,7 @@ radii =<span class="st"> </span><span class="kw">c</span>(<span class="dv">10</s
 categories =<span class="st"> </span><span class="kw">c</span>(<span class="st">'Stroma'</span>, <span class="st">'Tumor'</span>)
 
 <span class="kw"><a href="../reference/count_within_batch.html">count_within_batch</a></span>(base_path, pairs, radii, categories)</code></pre></div>
-<p>See <code>help(count_within_batch)</code> and <code><a href="https://cran.rstudio.com/web/packages/phenoptr/vignettes/selecting_cells.html">vignette('selecting_cells', package='phenoptr')</a></code> for additional details.</p>
+<p>See <code>help(count_within_batch)</code> and the vignette <em>Selecting cells within a cell segmentation table</em> for additional details.</p>
 <hr>
 </div>
 </div>
@@ -223,7 +223,7 @@ out_path =<span class="st"> </span><span class="kw">path.expand</span>(<span cla
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">base_path =<span class="st"> '/path/to/data/'</span>
 paths =<span class="st"> </span><span class="kw"><a href="../reference/list_cell_seg_files.html">list_cell_seg_files</a></span>(base_path)
 for (path in paths)
-  <span class="kw"><a href="../reference/spatial_distribution_report.html">spatial_distribution_report</a></span>(path, phenotypes, colors)</code></pre></div>
+  <span class="kw"><a href="../reference/spatial_distribution_report.html">spatial_distribution_report</a></span>(path, pairs, colors)</code></pre></div>
 </div>
 </div>
   </div>

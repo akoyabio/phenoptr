@@ -55,9 +55,7 @@ count_within(csd, from='CK+', to='CD68+', radius=25)
 #  count_within_batch(base_path, pairs, radii, categories)
 
 ## ----eval=FALSE----------------------------------------------------------
-#  cell_seg_path = system.file("extdata", "sample",
-#                         "Set4_1-6plex_[16142,55840]_cell_seg_data.txt",
-#                         package = "phenoptr")
+#  cell_seg_path = sample_cell_seg_path()
 #  
 #  pairs = c("CD68+", "CD8+")
 #  colors = c('magenta', 'yellow')
@@ -70,5 +68,5 @@ count_within(csd, from='CK+', to='CD68+', radius=25)
 #  base_path = '/path/to/data/'
 #  paths = list_cell_seg_files(base_path)
 #  for (path in paths)
-#    spatial_distribution_report(path, phenotypes, colors)
+#    spatial_distribution_report(path, pairs, colors)
 
