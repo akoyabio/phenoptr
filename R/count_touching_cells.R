@@ -35,7 +35,7 @@
 #'
 #' @param cell_seg_path The path to the cell seg data file. The same directory
 #'   must also contain `_memb_seg_map.tif` or `_binary_seg_maps.tif` and, if
-#'   `write_images` is true, a  TIFF or JPEG composite image.
+#'   `write_images` is true, a  TIFF or JPEG composite image from inForm.
 #' @param pairs A list of pairs of phenotypes. Each entry is a two-element
 #'   vector. The result will contain one line for each pair showing the
 #'   number of cells and number of touches.
@@ -172,11 +172,10 @@ count_touching_cells <- function(cell_seg_path, pairs, colors=NULL,
     dir.create(output_base, showWarnings=FALSE, recursive=TRUE)
 
   # Read the data. We don't want to convert to microns here, we need
-  # image coordinates, so don't call `read_cell_seg_table`
+  # image coordinates
   name = basename(cell_seg_path)
   name = sub('_cell_seg_data.txt', '', name)
-  csd = readr::read_tsv(cell_seg_path, na=c('NA', '#N/A'),
-                        col_types=readr::cols())
+  csd = read_cell_seg_data(cell_seg_path, pixels_per_micron=NA)
 
   # Filter out unwanted tissue categories
   if (!is.null(categories))

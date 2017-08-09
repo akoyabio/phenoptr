@@ -68,14 +68,14 @@ selecting pairs.)
 
 ```{r phenotype_rules}
 pairs <- list(
-  c('CK+ PLD1+', 'CD8+'),
-  c('CK+ PLD1+', 'CD68+')
+  c('CK+ PDL1+', 'CD8+'),
+  c('CK+ PDL1+', 'CD68+')
 )
 
 phenotype_rules <- list(
-  'CK+ PLD1+'=list('CK+', ~`Entire Cell PDL1 (Opal 520) Mean`>3)
+  'CK+ PDL1+'=list('CK+', ~`Entire Cell PDL1 (Opal 520) Mean`>3)
 )
-colors <- list('CK+ PLD1+'='cyan', 'CD8+'='yellow', 'CD68+'='magenta')
+colors <- list('CK+ PDL1+'='cyan', 'CD8+'='yellow', 'CD68+'='magenta')
 count_touching_cells(cell_seg_path, pairs, colors, phenotype_rules)
 ```
 

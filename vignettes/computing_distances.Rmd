@@ -148,14 +148,14 @@ Please see `help(count_within)` for details.
 
 You may want to run `count_within` on an entire directory of cell seg data
 files, or to count multiple combinations of phenotypes. Both of
-these are possible using `count_within_batch`. Instead of a `data_frame`,
-you pass it the path to a directory containing multiple cell seg data files.
+these are possible using `count_within_batch`. This function takes 
+the path to a directory that contains multiple cell seg data files.
 The `pairs` and `category` parameters are lists and may contain
 multiple entries.
 
 For example, the following commands will count `FoxP3+` cells
-with a `CD8+` or `CK+` within 10 or 25 micron, 
-with separate counts for each `to` phenotype and for
+with a `CD8+` or `CK+` cell within 10 or 25 microns.
+Separate counts are returned for each `to` phenotype and for
 `Tumor` and `Stroma` tissue categories. Counts will be calculated 
 for all `cell_seg_data.txt` files in `my_directory`.
 
@@ -163,7 +163,7 @@ for all `cell_seg_data.txt` files in `my_directory`.
 base_path <- "/path/to/my_directory"
 
 pairs <- list(c('FoxP3+', 'CD8+'),
-             c('FoxP3+', 'CK+'))
+              c('FoxP3+', 'CK+'))
 radii <- c(10, 25)
 categories <- c('Stroma', 'Tumor')
 
@@ -190,11 +190,11 @@ into your own copy of R. It will create a sample report in your user directory.
 ```{r eval=FALSE}
 cell_seg_path <- sample_cell_seg_path()
 
-pairs <- c("CD68+", "CD8+")
-colors <- c('magenta', 'yellow')
+pairs <- list(c('CD68+', 'CD8+'))
+colors <- c('CD68+'='magenta', 'CD8+'='yellow')
 out_path <- path.expand('~/spatial_distribution_report.html')
 
-spatial_distribution_report(cell_seg_path, pairs, colors, out_path)
+spatial_distribution_report(cell_seg_path, pairs, colors, output_path=out_path)
 
 ```
 

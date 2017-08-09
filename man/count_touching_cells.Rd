@@ -11,7 +11,7 @@ count_touching_cells(cell_seg_path, pairs, colors = NULL,
 \arguments{
 \item{cell_seg_path}{The path to the cell seg data file. The same directory
 must also contain \code{_memb_seg_map.tif} or \code{_binary_seg_maps.tif} and, if
-\code{write_images} is true, a  TIFF or JPEG composite image.}
+\code{write_images} is true, a  TIFF or JPEG composite image from inForm.}
 
 \item{pairs}{A list of pairs of phenotypes. Each entry is a two-element
 vector. The result will contain one line for each pair showing the

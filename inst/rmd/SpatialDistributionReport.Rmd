@@ -86,7 +86,7 @@ Spatial distribution of phenotypes from
 
 #### Selected phenotypes  
 
-```{r results='asis'}
+```{r show_phenotypes, results='asis'}
 for (name in phenotypes)
   cat('-', name, '\n')
 ```
@@ -94,7 +94,7 @@ for (name in phenotypes)
 
 ### First-order statistics
 
-```{r results='asis'}
+```{r first_order_stats, results='asis'}
 cat('Number of cells:', nrow(csd), '\n\n')
 
 counts = csd %>% dplyr::group_by(Phenotype) %>% 
@@ -113,7 +113,7 @@ for (special in phenotype_specials)
 
 #### All cells  
 
-```{r}
+```{r cell_locations}
 # Colorbrewer Dark2 palette
 dark2 = c('#1b9e77','#d95f02','#7570b3','#e7298a',
           '#66a61e','#e6ab02','#a6761d','#666666')
@@ -125,13 +125,13 @@ if (length(unique(csd$Phenotype<=8)))
 p + labs(title='Locations of all cells')
 ```
 
-```{r fig.height=6+2*(length(unique(csd$Phenotype))-1) %/% 3}
+```{r cell_locations_faceted, fig.height=6+2*(length(unique(csd$Phenotype))-1) %/% 3}
 p + facet_wrap(~Phenotype) + guides(color=FALSE)
 ```
 
 ### Nearest neighbors, selected phenotypes
 
-```{r}
+```{r nearest_neighbors}
 pair_counts = NULL
 for (pair in pairs) {
   pheno1 = list(
@@ -171,6 +171,6 @@ for (pair in pairs) {
 
 ### Summary of mutual nearest neighbor pairs
 
-```{r}
+```{r summary}
 knitr::kable(pair_counts)
 ```
