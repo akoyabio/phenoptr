@@ -91,10 +91,8 @@ picks cells in cell number tables that have the kind and numbers you are interes
 
 ### Full documentation
 
-For more words see the 
-[Articles](https://perkinelmer.github.io/phenoptr/articles/index.html) and 
-[Reference](https://perkinelmer.github.io/phenoptr/reference/index.html)
-parts of the  words.
+For more words see the Tutorials and Reference parts of  
+[all the words](https://perkinelmer.github.io/phenoptr).
 
 For more words showing how to use it and more number tables and pictures 
 to try out, go to the 

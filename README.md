@@ -96,7 +96,7 @@ data corresponding to specific phenotypes and expression levels.
 
 ## Full documentation
 
-See the Articles and Reference sections of the 
+See the Tutorials and Reference sections of the 
 [full documentation](https://perkinelmer.github.io/phenoptr) for details.
 
 For extended examples and more sample data see the 

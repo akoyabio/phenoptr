@@ -10,7 +10,7 @@ navbar:
   left:
     - icon: fa-home fa-lg
       href: index.html
-    - text: "Articles"
+    - text: "Tutorials"
       menu:
         - text: "Computing Inter-cellular Distances"
           href: articles/computing_distances.html
