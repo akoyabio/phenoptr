@@ -18,11 +18,11 @@
 #' @family file readers
 #' @examples
 #' \dontrun{
-#' path = "/path/to/my_component_data.tif"
-#' components = read_components(path)
+#' path <- "/path/to/my_component_data.tif"
+#' components <- read_components(path)
 #' }
 #' @md
-read_components = function(path)
+read_components <- function(path)
 {
   stopifnot(file.exists(path), endsWith(path, 'component_data.tif'))
   tif = tiff::readTIFF(path, all=TRUE, info=TRUE, as.is=TRUE)

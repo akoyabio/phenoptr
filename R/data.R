@@ -44,12 +44,12 @@
 
 #' @rdname sample_cell_seg_data
 #' @export
-sample_cell_seg_path = function()
+sample_cell_seg_path <- function()
   system.file("extdata", "sample",
                     "Set4_1-6plex_[16142,55840]_cell_seg_data.txt",
                     package = "phenoptr")
 
 #' @rdname sample_cell_seg_data
 #' @export
-sample_cell_seg_folder = function()
+sample_cell_seg_folder <- function()
   system.file("extdata", "sample", package = "phenoptr")

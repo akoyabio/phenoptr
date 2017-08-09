@@ -41,31 +41,31 @@ if (getRversion() >= "2.15.1")
 #' \dontrun{
 #' # This example creates a report in the current user's
 #' # home or Document directory.
-#' cell_seg_path = sample_cell_seg_path()
+#' cell_seg_path <- sample_cell_seg_path()
 #'
-#' pairs = list(
+#' pairs <- list(
 #'   c("CK+", "CD8+"),
 #'   c("CK+", "CD68+"))
-#' colors = c('CK+'="cyan", "CD68+"="magenta", "CD8+"="yellow")
-#' out_path = path.expand('~/spatial_distribution_report.html')
+#' colors <- c('CK+'="cyan", "CD68+"="magenta", "CD8+"="yellow")
+#' out_path <- path.expand('~/spatial_distribution_report.html')
 #'
 #' spatial_distribution_report(cell_seg_path, pairs, colors,
 #'   output_path=out_path)
 #'
 #' # This example extends the previous example to restrict tumor cells to
 #' # only PDL1+ cells.
-#' pairs = list(
+#' pairs <- list(
 #'   c("CK+ PDL1+", "CD8+"),
 #'   c("CK+ PDL1+", "CD68+"))
-#' colors = c("CK+ PDL1+"="cyan", "CD68+"="magenta", "CD8+"="yellow")
-#' phenotype_rules=list(
+#' colors <- c("CK+ PDL1+"="cyan", "CD68+"="magenta", "CD8+"="yellow")
+#' phenotype_rules <- list(
 #'   "CK+ PDL1+"=list("CK+", ~`Entire Cell PDL1 (Opal 520) Mean`>3))
 #'
 #' spatial_distribution_report(cell_seg_path, pairs, colors, phenotype_rules,
 #'   output_path=out_path)
 #' }
 #' @md
-spatial_distribution_report = function(cell_seg_path, pairs, colors,
+spatial_distribution_report <- function(cell_seg_path, pairs, colors,
                       phenotype_rules=NULL, output_path=NULL,
                       pixels_per_micron=getOption('phenoptr.pixels.per.micron')
                       ) {

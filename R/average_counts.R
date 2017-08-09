@@ -45,27 +45,27 @@ if (getRversion() >= "2.15.1")
 #'    for this data file and tissue category.}
 #'  }
 #' @examples
-#' base_path = sample_cell_seg_folder()
+#' base_path <- sample_cell_seg_folder()
 #'
 #' # Count tumor cells near macrophages, and tumor cells near CD8 separately,
 #' # in tumor and stroma tissue categories separately.
-#' pairs = list(c('CK+', 'CD68+'),
+#' pairs <- list(c('CK+', 'CD68+'),
 #'              c('CK+', 'CD8+'))
-#' radius = c(10, 25)
-#' category = list('Tumor', 'Stroma')
+#' radius <- c(10, 25)
+#' category <- list('Tumor', 'Stroma')
 #' count_within_batch(base_path, pairs, radius, category)
 #'
 #' # Count tumor cells near any T cell in all tissue categories.
 #' # Use `phenotype_rules` to define the T cell phenotype
-#' pairs = c('CK+', 'T cell')
-#' rules = list(
+#' pairs <- c('CK+', 'T cell')
+#' rules <- list(
 #' 'T cell'=c('CD8+', 'FoxP3+'))
 #' count_within_batch(base_path, pairs, radius, phenotype_rules=rules)
 #' @md
 #' @export
 #' @family distance functions
 #' @importFrom magrittr "%>%"
-count_within_batch = function(base_path, pairs, radius, category=NA,
+count_within_batch <- function(base_path, pairs, radius, category=NA,
                               phenotype_rules=NULL, verbose=TRUE) {
   files = list_cell_seg_files(base_path)
   if (length(files) == 0)
@@ -193,7 +193,7 @@ count_within_batch = function(base_path, pairs, radius, category=NA,
 #' @family distance functions
 #' @examples
 #' library(tidyverse)
-#' csd = sample_cell_seg_data
+#' csd <- sample_cell_seg_data
 #'
 #' # Find the number of macrophages with a tumor cell within 10 or 25 microns
 #' count_within(csd, from='CD68+', to='CK+', radius=c(10, 25)) %>%
@@ -205,7 +205,7 @@ count_within_batch = function(base_path, pairs, radius, category=NA,
 #' count_within(csd, from='CK+', to='CD68+', radius=c(10, 25)) %>%
 #'   mutate(not_to=from_count*within_mean, to_mean=not_to/to_count)
 
-count_within = function(csd, from, to, radius, category=NA, dst=NULL) {
+count_within <- function(csd, from, to, radius, category=NA, dst=NULL) {
   # Check for multiple samples, this is probably an error
   if (length(unique(csd$`Sample Name`))>1)
     stop('Data appears to contain multiple samples.')

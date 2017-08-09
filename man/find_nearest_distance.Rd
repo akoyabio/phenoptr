@@ -27,18 +27,18 @@ the cell to the nearest neighbor cells in each of the provided phenotypes.
 }
 \examples{
 # Compute distance columns
-csd = sample_cell_seg_data
-nearest = find_nearest_distance(csd)
+csd <- sample_cell_seg_data
+nearest <- find_nearest_distance(csd)
 dplyr::glimpse(nearest)
 
 # Make a combined data frame including original data and distance columns
-csd = cbind(csd, find_nearest_distance(csd))
+csd <- cbind(csd, find_nearest_distance(csd))
 
 \dontrun{
 # If `merged` is a data frame containing cell seg data from multiple fields,
 # this code will create a new `data_frame` with distance columns computed
 # for each `Sample Name` in the data.
-merged_with_distance = merged \%>\%
+merged_with_distance <- merged \%>\%
   dplyr::group_by(`Sample Name`) \%>\%
   dplyr::do(dplyr::bind_cols(., find_nearest_distance(.)))
 }

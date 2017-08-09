@@ -52,7 +52,7 @@ phenotypes:
 library(tidyverse)
 library(phenoptr)
 
-csd = sample_cell_seg_data
+csd <- sample_cell_seg_data
 csd %>% count(Phenotype)
 ```
 
@@ -60,14 +60,14 @@ The `other` cells are not of
 interest, so first filter them out.
 
 ```{r}
-csd = csd %>% filter(Phenotype!='other')
+csd <- csd %>% filter(Phenotype!='other')
 ```
 
 Calling `find_nearest_distance` on this file returns a `data_frame` with 
 four columns and one row for each cell:
 
 ```{r}
-distances = find_nearest_distance(csd)
+distances <- find_nearest_distance(csd)
 glimpse(distances)
 nrow(csd)
 ```
@@ -75,7 +75,7 @@ nrow(csd)
 To create a combined data frame, use `dplyr::bind_cols`.
 
 ```{r}
-csd_with_distance = bind_cols(csd, distances)
+csd_with_distance <- bind_cols(csd, distances)
 ```
 
 Note: Cell positions in a cell seg data file are relative to the 
@@ -87,7 +87,7 @@ to process each field separately. For example, if `merged` contains merged
 cell seg data, add distance columns with this code:
 
 ```{r eval=FALSE}
-merged_with_distance = merged %>%
+merged_with_distance <- merged %>%
   dplyr::group_by(`Sample Name`) %>%
   dplyr::do(dplyr::bind_cols(., find_nearest_distance(.)))
 ```
@@ -160,12 +160,12 @@ with separate counts for each `to` phenotype and for
 for all `cell_seg_data.txt` files in `my_directory`.
 
 ```{r eval=FALSE}
-base_path = "/path/to/my_directory"
+base_path <- "/path/to/my_directory"
 
-pairs = list(c('FoxP3+', 'CD8+'),
+pairs <- list(c('FoxP3+', 'CD8+'),
              c('FoxP3+', 'CK+'))
-radii = c(10, 25)
-categories = c('Stroma', 'Tumor')
+radii <- c(10, 25)
+categories <- c('Stroma', 'Tumor')
 
 count_within_batch(base_path, pairs, radii, categories)
 ```
@@ -188,11 +188,11 @@ copy and paste this code
 into your own copy of R. It will create a sample report in your user directory.
 
 ```{r eval=FALSE}
-cell_seg_path = sample_cell_seg_path()
+cell_seg_path <- sample_cell_seg_path()
 
-pairs = c("CD68+", "CD8+")
-colors = c('magenta', 'yellow')
-out_path = path.expand('~/spatial_distribution_report.html')
+pairs <- c("CD68+", "CD8+")
+colors <- c('magenta', 'yellow')
+out_path <- path.expand('~/spatial_distribution_report.html')
 
 spatial_distribution_report(cell_seg_path, pairs, colors, out_path)
 
@@ -204,8 +204,8 @@ the files. Then call `spatial_distribution_report` for each file. This will
 create reports in the same directory as the data files.
 
 ```{r eval=FALSE}
-base_path = '/path/to/data/'
-paths = list_cell_seg_files(base_path)
+base_path <- '/path/to/data/'
+paths <- list_cell_seg_files(base_path)
 for (path in paths)
   spatial_distribution_report(path, pairs, colors)
 ```

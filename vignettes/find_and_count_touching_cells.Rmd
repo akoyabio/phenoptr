@@ -39,12 +39,12 @@ For example, this code finds and visualizes touches between
 between `CK+` and `CD68+` cells:
 
 ```{r pairs_only}
-cell_seg_path = sample_cell_seg_path()
-pairs = list(
+cell_seg_path <- sample_cell_seg_path()
+pairs <- list(
   c('CK+', 'CD8+'),
   c('CK+', 'CD68+')
 )
-colors=list('CK+'='cyan', 'CD8+'='yellow', 'CD68+'='magenta')
+colors <- list('CK+'='cyan', 'CD8+'='yellow', 'CD68+'='magenta')
 count_touching_cells(cell_seg_path, pairs, colors)
 ```
 
@@ -67,15 +67,15 @@ _Selecting cells within a cell segmentation table_ for more details on
 selecting pairs.)
 
 ```{r phenotype_rules}
-pairs = list(
+pairs <- list(
   c('CK+ PLD1+', 'CD8+'),
   c('CK+ PLD1+', 'CD68+')
 )
 
-phenotype_rules = list(
+phenotype_rules <- list(
   'CK+ PLD1+'=list('CK+', ~`Entire Cell PDL1 (Opal 520) Mean`>3)
 )
-colors=list('CK+ PLD1+'='cyan', 'CD8+'='yellow', 'CD68+'='magenta')
+colors <- list('CK+ PLD1+'='cyan', 'CD8+'='yellow', 'CD68+'='magenta')
 count_touching_cells(cell_seg_path, pairs, colors, phenotype_rules)
 ```
 
@@ -86,16 +86,16 @@ files in a single directory.
 
 ```{r process_directory}
 # Directory containing data files
-base_path = '/path/to/data'
+base_path <- '/path/to/data'
 
 # A subdirectory for the results
-output_base = file.path(base_path, 'touches')
+output_base <- file.path(base_path, 'touches')
 
 # All cell seg data files in base_path
-files = list_cell_seg_files(base_path)
+files <- list_cell_seg_files(base_path)
 
 # Count and visualize touching cells
-touch_counts = purrr::map_df(files, function(path) {
+touch_counts <- purrr::map_df(files, function(path) {
   cat('Processing', path, '\n')
   count_touching_cells(path, pairs, colors, phenotype_rules,
                        output_base=output_base)
@@ -106,6 +106,6 @@ The result of the above is a `data_frame` which may be written to
 a CSV file:
 
 ```{r write_csv}
-touches_path = file.path(output_base, 'TouchCounts.csv')
+touches_path <- file.path(output_base, 'TouchCounts.csv')
 readr::write_csv(touch_counts, touches_path)
 ```

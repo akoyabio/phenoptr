@@ -57,20 +57,20 @@ See the vignette
 the use of \code{pairs} and \code{phenotype_rules}.
 }
 \examples{
-base_path = sample_cell_seg_folder()
+base_path <- sample_cell_seg_folder()
 
 # Count tumor cells near macrophages, and tumor cells near CD8 separately,
 # in tumor and stroma tissue categories separately.
-pairs = list(c('CK+', 'CD68+'),
+pairs <- list(c('CK+', 'CD68+'),
              c('CK+', 'CD8+'))
-radius = c(10, 25)
-category = list('Tumor', 'Stroma')
+radius <- c(10, 25)
+category <- list('Tumor', 'Stroma')
 count_within_batch(base_path, pairs, radius, category)
 
 # Count tumor cells near any T cell in all tissue categories.
 # Use `phenotype_rules` to define the T cell phenotype
-pairs = c('CK+', 'T cell')
-rules = list(
+pairs <- c('CK+', 'T cell')
+rules <- list(
 'T cell'=c('CD8+', 'FoxP3+'))
 count_within_batch(base_path, pairs, radius, phenotype_rules=rules)
 }

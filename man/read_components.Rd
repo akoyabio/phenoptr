@@ -29,8 +29,8 @@ limitations in the \code{tiff} package.
 }
 \examples{
 \dontrun{
-path = "/path/to/my_component_data.tif"
-components = read_components(path)
+path <- "/path/to/my_component_data.tif"
+components <- read_components(path)
 }
 }
 \seealso{

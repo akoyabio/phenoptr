@@ -80,7 +80,7 @@ for the entire data set.
 }
 \examples{
 library(tidyverse)
-csd = sample_cell_seg_data
+csd <- sample_cell_seg_data
 
 # Find the number of macrophages with a tumor cell within 10 or 25 microns
 count_within(csd, from='CD68+', to='CK+', radius=c(10, 25)) \%>\%

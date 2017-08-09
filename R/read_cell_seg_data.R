@@ -10,7 +10,7 @@
 #' @export
 #' @family file readers
 #' @md
-list_cell_seg_files = function(path, ...) {
+list_cell_seg_files <- function(path, ...) {
   list.files(path, pattern='cell_seg_data.txt', full.names=TRUE, ...)
 }
 
@@ -50,13 +50,13 @@ list_cell_seg_files = function(path, ...) {
 #' @export
 #' @family file readers
 #' @examples
-#' path = sample_cell_seg_path()
-#' csd = read_cell_seg_data(path)
+#' path <- sample_cell_seg_path()
+#' csd <- read_cell_seg_data(path)
 #'
 #' \dontrun{
 #' # Read all cell seg files in a directory and return a single data_frame
-#' paths = list_cell_seg_files(path)
-#' csd = purrr::map_df(paths, read_cell_seg_data)
+#' paths <- list_cell_seg_files(path)
+#' csd <- purrr::map_df(paths, read_cell_seg_data)
 #' }
 read_cell_seg_data <- function(
   path=NA,

@@ -23,7 +23,7 @@ if (getRversion() >= "2.15.1")
 #' @seealso [find_nearest_distance] which performs the distance calculation.
 #' @family distance functions
 #' @md
-compute_all_nearest_distance = function(cell_table_path=NULL, out_path=NULL) {
+compute_all_nearest_distance <- function(cell_table_path=NULL, out_path=NULL) {
   # Get the path to the cell seg table and check it
   if (is.null(cell_table_path))
     cell_table_path = file.choose()
@@ -69,23 +69,23 @@ compute_all_nearest_distance = function(cell_table_path=NULL, out_path=NULL) {
 #' @family distance functions
 #' @examples
 #' # Compute distance columns
-#' csd = sample_cell_seg_data
-#' nearest = find_nearest_distance(csd)
+#' csd <- sample_cell_seg_data
+#' nearest <- find_nearest_distance(csd)
 #' dplyr::glimpse(nearest)
 #'
 #' # Make a combined data frame including original data and distance columns
-#' csd = cbind(csd, find_nearest_distance(csd))
+#' csd <- cbind(csd, find_nearest_distance(csd))
 #'
 #' \dontrun{
 #' # If `merged` is a data frame containing cell seg data from multiple fields,
 #' # this code will create a new `data_frame` with distance columns computed
 #' # for each `Sample Name` in the data.
-#' merged_with_distance = merged %>%
+#' merged_with_distance <- merged %>%
 #'   dplyr::group_by(`Sample Name`) %>%
 #'   dplyr::do(dplyr::bind_cols(., find_nearest_distance(.)))
 #' }
 
-find_nearest_distance = function(csd, phenotypes=NULL) {
+find_nearest_distance <- function(csd, phenotypes=NULL) {
   stopifnot('Phenotype' %in% names(csd))
 
   # Check for multiple samples, this is probably an error
@@ -133,7 +133,7 @@ row_min = function(row) {
 #'         The returned matrix is symmetric.
 #' @family distance functions
 #' @export
-distance_matrix = function(csd) {
+distance_matrix <- function(csd) {
   stopifnot('Cell X Position' %in% names(csd),
             'Cell Y Position' %in% names(csd))
   as.matrix(stats::dist(csd[, c('Cell X Position', 'Cell Y Position')]))
@@ -153,7 +153,7 @@ distance_matrix = function(csd) {
 #' corresponding to \code{col_selection}.
 #' @family distance functions
 #' @export
-subset_distance_matrix = function(csd, dst, row_selection, col_selection) {
+subset_distance_matrix <- function(csd, dst, row_selection, col_selection) {
   # Check for pre-0.1.0.9002 parameter order
   if (is.matrix(csd) && is.data.frame(dst))
     stop(

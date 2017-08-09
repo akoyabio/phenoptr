@@ -16,13 +16,13 @@
 #' @export
 #' @family file readers
 #' @examples
-#' path = system.file("extdata", "sample",
+#' path <- system.file("extdata", "sample",
 #'                    "Set4_1-6plex_[16142,55840]_binary_seg_maps.tif",
 #'                    package = "phenoptr")
-#' maps = read_maps(path)
+#' maps <- read_maps(path)
 #' names(maps)
 #' @md
-read_maps = function(map_path) {
+read_maps <- function(map_path) {
   # Allow a cell seg path to be passed in
   map_path = sub('cell_seg_data.txt', 'binary_seg_maps.tif', map_path)
 

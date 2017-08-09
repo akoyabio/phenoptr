@@ -49,13 +49,13 @@ specfied as a parameter or by setting
 }
 }
 \examples{
-path = sample_cell_seg_path()
-csd = read_cell_seg_data(path)
+path <- sample_cell_seg_path()
+csd <- read_cell_seg_data(path)
 
 \dontrun{
 # Read all cell seg files in a directory and return a single data_frame
-paths = list_cell_seg_files(path)
-csd = purrr::map_df(paths, read_cell_seg_data)
+paths <- list_cell_seg_files(path)
+csd <- purrr::map_df(paths, read_cell_seg_data)
 }
 }
 \seealso{

@@ -76,40 +76,40 @@
 #' \dontrun{
 #' # This example creates an image in a subdirectory of the
 #' # current user's directory.
-#' cell_seg_path = sample_cell_seg_path()
+#' cell_seg_path <- sample_cell_seg_path()
 #'
-#' pairs = list(c("CD68+", "CD8+"))
-#' colors = c("CD68+"='magenta', "CD8+"='yellow')
-#' output_base = path.expand('~/touches')
+#' pairs <- list(c("CD68+", "CD8+"))
+#' colors <- c("CD68+"='magenta', "CD8+"='yellow')
+#' output_base <- path.expand('~/touches')
 #'
 #' count_touching_cells(cell_seg_path, pairs, colors,
 #'   output_base=output_base)
 #'
 #' # This example will count and image all files in the `base_path` directory.
-#' base_path = '/path/to/data'
-#' output_base = file.path(base_path, 'touches')
-#' files = list_cell_seg_files(base_path)
+#' base_path <- '/path/to/data'
+#' output_base <- file.path(base_path, 'touches')
+#' files <- list_cell_seg_files(base_path)
 #'
 #' # The phenotype pairs to locate. This will find CD8 cells touching
 #' # tumor cells, and, separately, CD8 cells touching CD68 cells.
-#' pairs = list(c("CD8+", "CK+"),
+#' pairs <- list(c("CD8+", "CK+"),
 #'              c("CD8+", "CD68+"))
 #'
 #' # Colors for all the phenotypes mentioned in pairs
-#' colors = list(
+#' colors <- list(
 #'   'CD8+' = 'yellow',
 #'   'CK+' = 'cyan',
 #'   'CD68+' = 'magenta'
 #' )
 #'
 #' # Count and visualize touching cells
-#' touch_counts = purrr::map_df(files, function(path) {
+#' touch_counts <- purrr::map_df(files, function(path) {
 #'   cat('Processing', path, '\n')
 #'   count_touching_cells(path, pairs, colors, output_base=output_base)
 #' })
 #'
 #' # Save the result
-#' touches_path = file.path(output_base, 'TouchCounts.csv')
+#' touches_path <- file.path(output_base, 'TouchCounts.csv')
 #' readr::write_csv(touch_counts, touches_path)
 #'
 #' # The phenotype definitions can be more complex. The default is to use
@@ -120,13 +120,13 @@
 #'
 #' # For example, find all touches between lymphocytes and tumor cells
 #' # within the tumor:
-#' pairs = list(c('Tumor', 'Lymphocyte'))
-#' colors = list(Tumor='cyan', Lymphocyte='yellow')
-#' phenotype_rules = list(
+#' pairs <- list(c('Tumor', 'Lymphocyte'))
+#' colors <- list(Tumor='cyan', Lymphocyte='yellow')
+#' phenotype_rules <- list(
 #'   Lymphocyte=c('CD8+', 'FoxP3+')
 #' )
 #'
-#' touch_counts = map_df(files, function(path) {
+#' touch_counts <- map_df(files, function(path) {
 #'   cat('Processing', path, '\n')
 #'   count_touching_cells(path, pairs, colors, phenotype_rules,
 #'                        categories='tumor',
@@ -139,7 +139,7 @@
 #' @export
 #' @family distance functions
 #' @importFrom magrittr %>%
-count_touching_cells = function(cell_seg_path, pairs, colors=NULL,
+count_touching_cells <- function(cell_seg_path, pairs, colors=NULL,
                                 phenotype_rules=NULL, categories=NULL,
                                 write_images=!is.null(colors), output_base=NULL)
 {
