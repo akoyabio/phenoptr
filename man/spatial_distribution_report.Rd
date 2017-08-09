@@ -26,7 +26,9 @@ Item values are selectors for \link{select_rows}.}
 output will be written to the directory containing \code{cell_seg_path}.}
 
 \item{pixels_per_micron}{Conversion factor to microns
-(default 2 pixels/micron).}
+(default 2 pixels/micron, the resolution of 20x MSI fields
+taken on Vectra Polaris and Vectra 3.).
+Set to NA to skip conversion.}
 }
 \description{
 Creates an HTML report visualizing the location

@@ -34,7 +34,9 @@ if (getRversion() >= "2.15.1")
 #' @param output_path Optional, path to the output HTML file. If omitted,
 #' output will be written to the directory containing `cell_seg_path`.
 #' @param pixels_per_micron Conversion factor to microns
-#'        (default 2 pixels/micron).
+#'        (default 2 pixels/micron, the resolution of 20x MSI fields
+#'        taken on Vectra Polaris and Vectra 3.).
+#'        Set to NA to skip conversion.
 #' @export
 #' @family distance functions
 #' @examples

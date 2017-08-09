@@ -12,8 +12,9 @@ read_cell_seg_data(path = NA,
 \item{path}{Path to the file to read, or NA to use a file chooser.}
 
 \item{pixels_per_micron}{Conversion factor to microns
-(default 2 pixels/micron),
-set to NA to skip conversion.}
+(default 2 pixels/micron, the resolution of 20x MSI fields
+taken on Vectra Polaris and Vectra 3.).
+Set to NA to skip conversion.}
 
 \item{remove_units}{If TRUE (default),
 remove the unit name from expression columns.}
