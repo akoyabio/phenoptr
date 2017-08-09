@@ -36,7 +36,7 @@
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Articles
+    Tutorials
      
     <span class="caret"></span>
   </a>
@@ -89,7 +89,7 @@
       <h1>Computing Inter-cellular Distances</h1>
                         <h4 class="author">Kent Johnson</h4>
             
-            <h4 class="date">2017-08-04</h4>
+            <h4 class="date">2017-08-09</h4>
           </div>
 
     
@@ -116,7 +116,7 @@ table {
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidyverse)
 <span class="kw">library</span>(phenoptr)
 
-csd =<span class="st"> </span>sample_cell_seg_data
+csd &lt;-<span class="st"> </span>sample_cell_seg_data
 csd %&gt;%<span class="st"> </span><span class="kw">count</span>(Phenotype)</code></pre></div>
 <pre><code># A tibble: 5 x 2
   Phenotype     n
@@ -127,9 +127,9 @@ csd %&gt;%<span class="st"> </span><span class="kw">count</span>(Phenotype)</cod
 4    FoxP3+   228
 5     other  2942</code></pre>
 <p>The <code>other</code> cells are not of interest, so first filter them out.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">csd =<span class="st"> </span>csd %&gt;%<span class="st"> </span><span class="kw">filter</span>(Phenotype!=<span class="st">'other'</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">csd &lt;-<span class="st"> </span>csd %&gt;%<span class="st"> </span><span class="kw">filter</span>(Phenotype!=<span class="st">'other'</span>)</code></pre></div>
 <p>Calling <code>find_nearest_distance</code> on this file returns a <code>data_frame</code> with four columns and one row for each cell:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">distances =<span class="st"> </span><span class="kw"><a href="../reference/find_nearest_distance.html">find_nearest_distance</a></span>(csd)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">distances &lt;-<span class="st"> </span><span class="kw"><a href="../reference/find_nearest_distance.html">find_nearest_distance</a></span>(csd)
 <span class="kw">glimpse</span>(distances)</code></pre></div>
 <pre><code>Observations: 3,130
 Variables: 4
@@ -140,9 +140,9 @@ $ Distance to FoxP3+ &lt;dbl&gt; 16.347783, 40.140379, 30.870698, 65.408333,...<
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">nrow</span>(csd)</code></pre></div>
 <pre><code>[1] 3130</code></pre>
 <p>To create a combined data frame, use <code><a href="http://dplyr.tidyverse.org/reference/bind.html">dplyr::bind_cols</a></code>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">csd_with_distance =<span class="st"> </span><span class="kw">bind_cols</span>(csd, distances)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">csd_with_distance &lt;-<span class="st"> </span><span class="kw">bind_cols</span>(csd, distances)</code></pre></div>
 <p>Note: Cell positions in a cell seg data file are relative to the top-left corner of the field, so calling <code>find_nearest_distance</code> on a merged data file will compute incorrect values. One way to add distance columns to a merged data file is to use <code><a href="http://dplyr.tidyverse.org/reference/group_by.html">dplyr::group_by</a></code> to process each field separately. For example, if <code>merged</code> contains merged cell seg data, add distance columns with this code:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">merged_with_distance =<span class="st"> </span>merged %&gt;%
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">merged_with_distance &lt;-<span class="st"> </span>merged %&gt;%
 <span class="st">  </span>dplyr::<span class="kw">group_by</span>(<span class="st">`</span><span class="dt">Sample Name</span><span class="st">`</span>) %&gt;%
 <span class="st">  </span>dplyr::<span class="kw">do</span>(dplyr::<span class="kw">bind_cols</span>(., <span class="kw"><a href="../reference/find_nearest_distance.html">find_nearest_distance</a></span>(.)))</code></pre></div>
 </div>
@@ -194,14 +194,14 @@ $ Distance to FoxP3+ &lt;dbl&gt; 16.347783, 40.140379, 30.870698, 65.408333,...<
 <h3 class="hasAnchor">
 <a href="#count-multiple-files-or-phenotypes-using-count_within_batch" class="anchor"></a>Count multiple files or phenotypes using <code>count_within_batch</code>
 </h3>
-<p>You may want to run <code>count_within</code> on an entire directory of cell seg data files, or to count multiple combinations of phenotypes. Both of these are possible using <code>count_within_batch</code>. Instead of a <code>data_frame</code>, you pass it the path to a directory containing multiple cell seg data files. The <code>pairs</code> and <code>category</code> parameters are lists and may contain multiple entries.</p>
-<p>For example, the following commands will count <code>FoxP3+</code> cells with a <code>CD8+</code> or <code>CK+</code> within 10 or 25 micron, with separate counts for each <code>to</code> phenotype and for <code>Tumor</code> and <code>Stroma</code> tissue categories. Counts will be calculated for all <code>cell_seg_data.txt</code> files in <code>my_directory</code>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">base_path =<span class="st"> "/path/to/my_directory"</span>
+<p>You may want to run <code>count_within</code> on an entire directory of cell seg data files, or to count multiple combinations of phenotypes. Both of these are possible using <code>count_within_batch</code>. This function takes the path to a directory that contains multiple cell seg data files. The <code>pairs</code> and <code>category</code> parameters are lists and may contain multiple entries.</p>
+<p>For example, the following commands will count <code>FoxP3+</code> cells with a <code>CD8+</code> or <code>CK+</code> cell within 10 or 25 microns. Separate counts are returned for each <code>to</code> phenotype and for <code>Tumor</code> and <code>Stroma</code> tissue categories. Counts will be calculated for all <code>cell_seg_data.txt</code> files in <code>my_directory</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">base_path &lt;-<span class="st"> "/path/to/my_directory"</span>
 
-pairs =<span class="st"> </span><span class="kw">list</span>(<span class="kw">c</span>(<span class="st">'FoxP3+'</span>, <span class="st">'CD8+'</span>),
-             <span class="kw">c</span>(<span class="st">'FoxP3+'</span>, <span class="st">'CK+'</span>))
-radii =<span class="st"> </span><span class="kw">c</span>(<span class="dv">10</span>, <span class="dv">25</span>)
-categories =<span class="st"> </span><span class="kw">c</span>(<span class="st">'Stroma'</span>, <span class="st">'Tumor'</span>)
+pairs &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="kw">c</span>(<span class="st">'FoxP3+'</span>, <span class="st">'CD8+'</span>),
+              <span class="kw">c</span>(<span class="st">'FoxP3+'</span>, <span class="st">'CK+'</span>))
+radii &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">10</span>, <span class="dv">25</span>)
+categories &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">'Stroma'</span>, <span class="st">'Tumor'</span>)
 
 <span class="kw"><a href="../reference/count_within_batch.html">count_within_batch</a></span>(base_path, pairs, radii, categories)</code></pre></div>
 <p>See <code>help(count_within_batch)</code> and the vignette <em>Selecting cells within a cell segmentation table</em> for additional details.</p>
@@ -212,16 +212,16 @@ categories =<span class="st"> </span><span class="kw">c</span>(<span class="st">
 <h2 class="hasAnchor">
 <a href="#visualizing-nearest-neighbors" class="anchor"></a>Visualizing nearest neighbors</h2>
 <p>The <code>spatial_distribution_report</code> function is a bit different from the other functions mentioned in this vignette. Rather than calculate and return distance metrics, it creates a report which shows visually the nearest neighbor relations between two phenotypes in a single field. Because the result is a stand-alone HTML file, it can’t easily be demonstrated in a vignette. For an example, copy and paste this code into your own copy of R. It will create a sample report in your user directory.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">cell_seg_path =<span class="st"> </span><span class="kw"><a href="../reference/sample_cell_seg_data.html">sample_cell_seg_path</a></span>()
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">cell_seg_path &lt;-<span class="st"> </span><span class="kw"><a href="../reference/sample_cell_seg_data.html">sample_cell_seg_path</a></span>()
 
-pairs =<span class="st"> </span><span class="kw">c</span>(<span class="st">"CD68+"</span>, <span class="st">"CD8+"</span>)
-colors =<span class="st"> </span><span class="kw">c</span>(<span class="st">'magenta'</span>, <span class="st">'yellow'</span>)
-out_path =<span class="st"> </span><span class="kw">path.expand</span>(<span class="st">'~/spatial_distribution_report.html'</span>)
+pairs &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="kw">c</span>(<span class="st">'CD68+'</span>, <span class="st">'CD8+'</span>))
+colors &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">'CD68+'</span>=<span class="st">'magenta'</span>, <span class="st">'CD8+'</span>=<span class="st">'yellow'</span>)
+out_path &lt;-<span class="st"> </span><span class="kw">path.expand</span>(<span class="st">'~/spatial_distribution_report.html'</span>)
 
-<span class="kw"><a href="../reference/spatial_distribution_report.html">spatial_distribution_report</a></span>(cell_seg_path, pairs, colors, out_path)</code></pre></div>
+<span class="kw"><a href="../reference/spatial_distribution_report.html">spatial_distribution_report</a></span>(cell_seg_path, pairs, colors, <span class="dt">output_path=</span>out_path)</code></pre></div>
 <p>To create reports for all cell seg data files in a directory, first define <code>phenotypes</code> and <code>colors</code> as above. Use <code>list_cell_seg_files</code> to find all the files. Then call <code>spatial_distribution_report</code> for each file. This will create reports in the same directory as the data files.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">base_path =<span class="st"> '/path/to/data/'</span>
-paths =<span class="st"> </span><span class="kw"><a href="../reference/list_cell_seg_files.html">list_cell_seg_files</a></span>(base_path)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">base_path &lt;-<span class="st"> '/path/to/data/'</span>
+paths &lt;-<span class="st"> </span><span class="kw"><a href="../reference/list_cell_seg_files.html">list_cell_seg_files</a></span>(base_path)
 for (path in paths)
   <span class="kw"><a href="../reference/spatial_distribution_report.html">spatial_distribution_report</a></span>(path, pairs, colors)</code></pre></div>
 </div>

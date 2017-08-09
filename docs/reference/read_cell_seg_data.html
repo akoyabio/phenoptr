@@ -59,7 +59,7 @@
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Articles
+    Tutorials
      
     <span class="caret"></span>
   </a>
@@ -175,11 +175,18 @@ specfied as a parameter or by setting
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>path</span> <span class='kw'>=</span> <span class='fu'><a href='sample_cell_seg_data.html'>sample_cell_seg_path</a></span>()
-<span class='no'>csd</span> <span class='kw'>=</span> <span class='fu'>read_cell_seg_data</span>(<span class='no'>path</span>)</div><span class='co'># NOT RUN {</span>
-<span class='co'># Read all cell seg files in a directory and return a single data_frame</span>
-<span class='no'>paths</span> <span class='kw'>=</span> <span class='fu'><a href='list_cell_seg_files.html'>list_cell_seg_files</a></span>(<span class='no'>path</span>)
-<span class='no'>csd</span> <span class='kw'>=</span> <span class='kw pkg'>purrr</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/purrr/topics/map'>map_df</a></span>(<span class='no'>paths</span>, <span class='no'>read_cell_seg_data</span>)
+    <pre class="examples"><div class='input'><span class='no'>path</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='sample_cell_seg_data.html'>sample_cell_seg_path</a></span>()
+<span class='no'>csd</span> <span class='kw'>&lt;-</span> <span class='fu'>read_cell_seg_data</span>(<span class='no'>path</span>)
+
+<span class='co'># count all the phenotypes in the data</span>
+<span class='fu'>table</span>(<span class='no'>csd</span>$<span class='no'>Phenotype</span>)</div><div class='output co'>#&gt; 
+#&gt;  CD68+   CD8+    CK+ FoxP3+  other 
+#&gt;    417    228   2257    228   2942 </div><div class='input'>
+</div><span class='co'># NOT RUN {</span>
+<span class='co'># Use purrr::map_df to read all cell seg files in a directory</span>
+<span class='co'># and return a single data_frame.</span>
+<span class='no'>paths</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='list_cell_seg_files.html'>list_cell_seg_files</a></span>(<span class='no'>path</span>)
+<span class='no'>csd</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>purrr</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/purrr/topics/map'>map_df</a></span>(<span class='no'>paths</span>, <span class='no'>read_cell_seg_data</span>)
 <span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

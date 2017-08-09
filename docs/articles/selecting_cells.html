@@ -36,7 +36,7 @@
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Articles
+    Tutorials
      
     <span class="caret"></span>
   </a>
@@ -89,7 +89,7 @@
       <h1>Selecting cells within a cell segmentation table</h1>
                         <h4 class="author">Kent Johnson</h4>
             
-            <h4 class="date">2017-08-04</h4>
+            <h4 class="date">2017-08-09</h4>
           </div>
 
     
@@ -106,16 +106,16 @@
 <h3 class="hasAnchor">
 <a href="#select-a-single-phenotype" class="anchor"></a>Select a single phenotype</h3>
 <p>The simplest selector is just the name of a single phenotype. This example selects the rows containing <code>CK+</code> cells:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">csd =<span class="st"> </span>sample_cell_seg_data
-rows =<span class="st"> </span><span class="kw"><a href="../reference/select_rows.html">select_rows</a></span>(csd, <span class="st">'CK+'</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">csd &lt;-<span class="st"> </span>sample_cell_seg_data
+rows &lt;-<span class="st"> </span><span class="kw"><a href="../reference/select_rows.html">select_rows</a></span>(csd, <span class="st">'CK+'</span>)
 <span class="kw">sum</span>(rows) <span class="co"># The number of selected rows</span></code></pre></div>
 <pre><code>## [1] 2257</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Select just the desired rows by subsetting</span>
-ck =<span class="st"> </span>csd[rows, ]
+ck &lt;-<span class="st"> </span>csd[rows, ]
 <span class="kw">dim</span>(ck)</code></pre></div>
 <pre><code>## [1] 2257  199</code></pre>
 <p>This example counts <code>CD8+</code> cells with 15 microns of <code>CK+</code> cells.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dst =<span class="st"> </span><span class="kw"><a href="../reference/distance_matrix.html">distance_matrix</a></span>(csd) <span class="co"># Compute this just once and re-use it</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dst &lt;-<span class="st"> </span><span class="kw"><a href="../reference/distance_matrix.html">distance_matrix</a></span>(csd) <span class="co"># Compute this just once and re-use it</span>
 <span class="kw"><a href="../reference/count_within.html">count_within</a></span>(csd, <span class="dt">from=</span><span class="st">'CK+'</span>, <span class="dt">to=</span><span class="st">'CD8+'</span>, <span class="dt">radius=</span><span class="dv">15</span>, <span class="dt">dst=</span>dst)</code></pre></div>
 <pre><code>## # A tibble: 1 x 5
 ##   radius from_count to_count from_with within_mean
@@ -127,7 +127,7 @@ ck =<span class="st"> </span>csd[rows, ]
 <a href="#group-multiple-phenotypes" class="anchor"></a>Group multiple phenotypes</h3>
 <p>Multiple phenotypes may selected together by including each name in a character vector (not a list!). For example, to select cells phenotyped as either <code>CD8+</code> or <code>FoxP3+</code>, use the selector <code>c('CD8+', 'FoxP3+')</code>.</p>
 <p>This example selects this combination. Note the call to <code>select_rows</code> has been combined with the subsetting of <code>csd</code>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tcells =<span class="st"> </span>csd[<span class="kw"><a href="../reference/select_rows.html">select_rows</a></span>(csd, <span class="kw">c</span>(<span class="st">'CD8+'</span>, <span class="st">'FoxP3+'</span>)), ]
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tcells &lt;-<span class="st"> </span>csd[<span class="kw"><a href="../reference/select_rows.html">select_rows</a></span>(csd, <span class="kw">c</span>(<span class="st">'CD8+'</span>, <span class="st">'FoxP3+'</span>)), ]
 <span class="kw">dim</span>(tcells)</code></pre></div>
 <pre><code>## [1] 456 199</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/count_within.html">count_within</a></span>(csd, <span class="dt">from=</span><span class="st">'CK+'</span>, <span class="dt">to=</span><span class="kw">c</span>(<span class="st">'CD8+'</span>, <span class="st">'FoxP3+'</span>), <span class="dt">radius=</span><span class="dv">15</span>, <span class="dt">dst=</span>dst)</code></pre></div>
@@ -143,8 +143,8 @@ ck =<span class="st"> </span>csd[rows, ]
 <p>For more flexibility, <code>select_rows</code> supports selection using any valid R expression. Expressions are written using one-sided formulas. The formulas are evaluated in the context of the cell seg table so they may reference any column of the table.</p>
 <p>For example, to select cells with PDL1 expression greater than 3, use the expression <code>~`Entire Cell PDL1 (Opal 520) Mean`&gt;3</code>. In this example, the column name is <code>Entire Cell PDL1 (Opal 520) Mean</code>.</p>
 <p>Expressions and phenotype names may be combined in a list. This example selects <code>CK+</code> cells with PDL1 &gt; 3.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">rows =<span class="st"> </span><span class="kw"><a href="../reference/select_rows.html">select_rows</a></span>(csd, <span class="kw">list</span>(<span class="st">'CK+'</span>, ~<span class="st">`</span><span class="dt">Entire Cell PDL1 (Opal 520) Mean</span><span class="st">`</span>&gt;<span class="dv">3</span>))
-ck_pdl1 =<span class="st"> </span>csd[rows, ]
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">rows &lt;-<span class="st"> </span><span class="kw"><a href="../reference/select_rows.html">select_rows</a></span>(csd, <span class="kw">list</span>(<span class="st">'CK+'</span>, ~<span class="st">`</span><span class="dt">Entire Cell PDL1 (Opal 520) Mean</span><span class="st">`</span>&gt;<span class="dv">3</span>))
+ck_pdl1 &lt;-<span class="st"> </span>csd[rows, ]
 <span class="kw">dim</span>(ck_pdl1)</code></pre></div>
 <pre><code>## [1] 531 199</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/count_within.html">count_within</a></span>(csd, <span class="dt">from=</span><span class="kw">list</span>(<span class="st">'CK+'</span>, ~<span class="st">`</span><span class="dt">Entire Cell PDL1 (Opal 520) Mean</span><span class="st">`</span>&gt;<span class="dv">3</span>), 
@@ -169,11 +169,11 @@ ck_pdl1 =<span class="st"> </span>csd[rows, ]
 <h3 class="hasAnchor">
 <a href="#pairs-of-existing-phenotypes" class="anchor"></a>Pairs of existing phenotypes</h3>
 <p>In the simplest usage, the names in <code>pairs</code> are the names of phenotypes in the cell seg data. In this case, <code>pairs</code> just lists the desired phenotypes. For example, to pair <code>CK+</code> cells with <code>CD8+</code> cells, use the argument</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pairs =<span class="st"> </span><span class="kw">list</span>(<span class="kw">c</span>(<span class="st">'CK+'</span>, <span class="st">'CD8+'</span>))</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pairs &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="kw">c</span>(<span class="st">'CK+'</span>, <span class="st">'CD8+'</span>))</code></pre></div>
 <p>For a single pair, a list is not required so this can be simplified to</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pairs =<span class="st"> </span><span class="kw">c</span>(<span class="st">'CK+'</span>, <span class="st">'CD8+'</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pairs &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">'CK+'</span>, <span class="st">'CD8+'</span>)</code></pre></div>
 <p>For multiple pairs, list each pair separately. For example, to pair <code>CK+</code> cells first with <code>CD8+</code> cells and then with <code>CD68+</code> cells, use the argument</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pairs =<span class="st"> </span><span class="kw">list</span>(<span class="kw">c</span>(<span class="st">'CK+'</span>, <span class="st">'CD8+'</span>),
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pairs &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="kw">c</span>(<span class="st">'CK+'</span>, <span class="st">'CD8+'</span>),
              <span class="kw">c</span>(<span class="st">'CK+'</span>, <span class="st">'CD68+'</span>))</code></pre></div>
 </div>
 <div id="defining-new-phenotypes" class="section level3">
@@ -181,15 +181,15 @@ ck_pdl1 =<span class="st"> </span>csd[rows, ]
 <a href="#defining-new-phenotypes" class="anchor"></a>Defining new phenotypes</h3>
 <p>You may want to define a new phenotype using grouping or expressions as shown in the “Selecting phenotypes” sections above. To do this, use the <code>phenotype_rules</code> argument to associate a <code>select_rows</code> rule with a name; then use the new name in the pairs argument.</p>
 <p>For example, to create a <code>T Cell</code> phenotype which matches <code>CD8+</code> and <code>FoxP3+</code> phenotypes, and pair it with a <code>PDL1+ CK+</code> phenotype which applies a threshold to tumor cells, use these arguments:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pairs =<span class="st"> </span><span class="kw">c</span>(<span class="st">'PDL1+ CK+'</span>, <span class="st">'T Cell'</span>)
-phenotype_rules =<span class="st"> </span><span class="kw">list</span>(
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pairs &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">'PDL1+ CK+'</span>, <span class="st">'T Cell'</span>)
+phenotype_rules &lt;-<span class="st"> </span><span class="kw">list</span>(
   <span class="st">'PDL1+ tumor'</span>=<span class="kw">list</span>(<span class="st">'CK+'</span>, ~<span class="st">`</span><span class="dt">Entire Cell PDL1 (Opal 520) Mean</span><span class="st">`</span>&gt;<span class="dv">3</span>),
   <span class="st">'T Cell'</span>=<span class="kw">c</span>(<span class="st">'CD8+'</span>, <span class="st">'FoxP3+'</span>))</code></pre></div>
 <p><code>phenotype_rules</code> only needs to include phenotypes which are not in the cell seg data. For example, to extend the previous example to include a pairing from <code>PDL1+ CK+</code> to <code>CD68+</code> cells, where <code>CD68+</code> is an existing phenotype, extend the <code>pairs</code> argument without changing <code>phenotype_rules</code>:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pairs =<span class="st"> </span><span class="kw">list</span>(
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pairs &lt;-<span class="st"> </span><span class="kw">list</span>(
   <span class="kw">c</span>(<span class="st">'PDL1+ CK+'</span>, <span class="st">'T Cell'</span>),
   <span class="kw">c</span>(<span class="st">'PDL1+ CK+'</span>, <span class="st">'CD68+'</span>))
-phenotype_rules =<span class="st"> </span><span class="kw">list</span>(
+phenotype_rules &lt;-<span class="st"> </span><span class="kw">list</span>(
   <span class="st">'PDL1+ CK+'</span>=<span class="kw">list</span>(<span class="st">'CK+'</span>, ~<span class="st">`</span><span class="dt">Entire Cell PDL1 (Opal 520) Mean</span><span class="st">`</span>&gt;<span class="dv">3</span>),
   <span class="st">'T Cell'</span>=<span class="kw">c</span>(<span class="st">'CD8+'</span>, <span class="st">'FoxP3+'</span>)
 )</code></pre></div>

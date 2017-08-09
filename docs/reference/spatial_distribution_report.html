@@ -59,7 +59,7 @@
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Articles
+    Tutorials
      
     <span class="caret"></span>
   </a>
@@ -182,24 +182,24 @@ the use of <code>pairs</code> and <code>phenotype_rules</code>.</p>
     <pre class="examples"><span class='co'># NOT RUN {</span>
 <span class='co'># This example creates a report in the current user's</span>
 <span class='co'># home or Document directory.</span>
-<span class='no'>cell_seg_path</span> <span class='kw'>=</span> <span class='fu'><a href='sample_cell_seg_data.html'>sample_cell_seg_path</a></span>()
+<span class='no'>cell_seg_path</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='sample_cell_seg_data.html'>sample_cell_seg_path</a></span>()
 
-<span class='no'>pairs</span> <span class='kw'>=</span> <span class='fu'>list</span>(
+<span class='no'>pairs</span> <span class='kw'>&lt;-</span> <span class='fu'>list</span>(
   <span class='fu'>c</span>(<span class='st'>"CK+"</span>, <span class='st'>"CD8+"</span>),
   <span class='fu'>c</span>(<span class='st'>"CK+"</span>, <span class='st'>"CD68+"</span>))
-<span class='no'>colors</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>'CK+'</span><span class='kw'>=</span><span class='st'>"cyan"</span>, <span class='st'>"CD68+"</span><span class='kw'>=</span><span class='st'>"magenta"</span>, <span class='st'>"CD8+"</span><span class='kw'>=</span><span class='st'>"yellow"</span>)
-<span class='no'>out_path</span> <span class='kw'>=</span> <span class='fu'>path.expand</span>(<span class='st'>'~/spatial_distribution_report.html'</span>)
+<span class='no'>colors</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='st'>'CK+'</span><span class='kw'>=</span><span class='st'>"cyan"</span>, <span class='st'>"CD68+"</span><span class='kw'>=</span><span class='st'>"magenta"</span>, <span class='st'>"CD8+"</span><span class='kw'>=</span><span class='st'>"yellow"</span>)
+<span class='no'>out_path</span> <span class='kw'>&lt;-</span> <span class='fu'>path.expand</span>(<span class='st'>'~/spatial_distribution_report.html'</span>)
 
 <span class='fu'>spatial_distribution_report</span>(<span class='no'>cell_seg_path</span>, <span class='no'>pairs</span>, <span class='no'>colors</span>,
   <span class='kw'>output_path</span><span class='kw'>=</span><span class='no'>out_path</span>)
 
 <span class='co'># This example extends the previous example to restrict tumor cells to</span>
 <span class='co'># only PDL1+ cells.</span>
-<span class='no'>pairs</span> <span class='kw'>=</span> <span class='fu'>list</span>(
+<span class='no'>pairs</span> <span class='kw'>&lt;-</span> <span class='fu'>list</span>(
   <span class='fu'>c</span>(<span class='st'>"CK+ PDL1+"</span>, <span class='st'>"CD8+"</span>),
   <span class='fu'>c</span>(<span class='st'>"CK+ PDL1+"</span>, <span class='st'>"CD68+"</span>))
-<span class='no'>colors</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"CK+ PDL1+"</span><span class='kw'>=</span><span class='st'>"cyan"</span>, <span class='st'>"CD68+"</span><span class='kw'>=</span><span class='st'>"magenta"</span>, <span class='st'>"CD8+"</span><span class='kw'>=</span><span class='st'>"yellow"</span>)
-<span class='no'>phenotype_rules</span><span class='kw'>=</span><span class='fu'>list</span>(
+<span class='no'>colors</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='st'>"CK+ PDL1+"</span><span class='kw'>=</span><span class='st'>"cyan"</span>, <span class='st'>"CD68+"</span><span class='kw'>=</span><span class='st'>"magenta"</span>, <span class='st'>"CD8+"</span><span class='kw'>=</span><span class='st'>"yellow"</span>)
+<span class='no'>phenotype_rules</span> <span class='kw'>&lt;-</span> <span class='fu'>list</span>(
   <span class='st'>"CK+ PDL1+"</span><span class='kw'>=</span><span class='fu'>list</span>(<span class='st'>"CK+"</span>, ~<span class='no'>`Entire Cell PDL1 (Opal 520) Mean`</span><span class='kw'>&gt;</span><span class='fl'>3</span>))
 
 <span class='fu'>spatial_distribution_report</span>(<span class='no'>cell_seg_path</span>, <span class='no'>pairs</span>, <span class='no'>colors</span>, <span class='no'>phenotype_rules</span>,

@@ -59,7 +59,7 @@
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Articles
+    Tutorials
      
     <span class="caret"></span>
   </a>
@@ -130,7 +130,7 @@ writes image files showing the touching cells.</p>
       <th>cell_seg_path</th>
       <td><p>The path to the cell seg data file. The same directory
 must also contain <code>_memb_seg_map.tif</code> or <code>_binary_seg_maps.tif</code> and, if
-<code>write_images</code> is true, a  TIFF or JPEG composite image.</p></td>
+<code>write_images</code> is true, a  TIFF or JPEG composite image from inForm.</p></td>
     </tr>
     <tr>
       <th>pairs</th>
@@ -228,40 +228,40 @@ the use of <code>pairs</code> and <code>phenotype_rules</code>.</p>
     <pre class="examples"><span class='co'># NOT RUN {</span>
 <span class='co'># This example creates an image in a subdirectory of the</span>
 <span class='co'># current user's directory.</span>
-<span class='no'>cell_seg_path</span> <span class='kw'>=</span> <span class='fu'><a href='sample_cell_seg_data.html'>sample_cell_seg_path</a></span>()
+<span class='no'>cell_seg_path</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='sample_cell_seg_data.html'>sample_cell_seg_path</a></span>()
 
-<span class='no'>pairs</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='fu'>c</span>(<span class='st'>"CD68+"</span>, <span class='st'>"CD8+"</span>))
-<span class='no'>colors</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"CD68+"</span><span class='kw'>=</span><span class='st'>'magenta'</span>, <span class='st'>"CD8+"</span><span class='kw'>=</span><span class='st'>'yellow'</span>)
-<span class='no'>output_base</span> <span class='kw'>=</span> <span class='fu'>path.expand</span>(<span class='st'>'~/touches'</span>)
+<span class='no'>pairs</span> <span class='kw'>&lt;-</span> <span class='fu'>list</span>(<span class='fu'>c</span>(<span class='st'>"CD68+"</span>, <span class='st'>"CD8+"</span>))
+<span class='no'>colors</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='st'>"CD68+"</span><span class='kw'>=</span><span class='st'>'magenta'</span>, <span class='st'>"CD8+"</span><span class='kw'>=</span><span class='st'>'yellow'</span>)
+<span class='no'>output_base</span> <span class='kw'>&lt;-</span> <span class='fu'>path.expand</span>(<span class='st'>'~/touches'</span>)
 
 <span class='fu'>count_touching_cells</span>(<span class='no'>cell_seg_path</span>, <span class='no'>pairs</span>, <span class='no'>colors</span>,
   <span class='kw'>output_base</span><span class='kw'>=</span><span class='no'>output_base</span>)
 
 <span class='co'># This example will count and image all files in the `base_path` directory.</span>
-<span class='no'>base_path</span> <span class='kw'>=</span> <span class='st'>'/path/to/data'</span>
-<span class='no'>output_base</span> <span class='kw'>=</span> <span class='fu'>file.path</span>(<span class='no'>base_path</span>, <span class='st'>'touches'</span>)
-<span class='no'>files</span> <span class='kw'>=</span> <span class='fu'><a href='list_cell_seg_files.html'>list_cell_seg_files</a></span>(<span class='no'>base_path</span>)
+<span class='no'>base_path</span> <span class='kw'>&lt;-</span> <span class='st'>'/path/to/data'</span>
+<span class='no'>output_base</span> <span class='kw'>&lt;-</span> <span class='fu'>file.path</span>(<span class='no'>base_path</span>, <span class='st'>'touches'</span>)
+<span class='no'>files</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='list_cell_seg_files.html'>list_cell_seg_files</a></span>(<span class='no'>base_path</span>)
 
 <span class='co'># The phenotype pairs to locate. This will find CD8 cells touching</span>
 <span class='co'># tumor cells, and, separately, CD8 cells touching CD68 cells.</span>
-<span class='no'>pairs</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='fu'>c</span>(<span class='st'>"CD8+"</span>, <span class='st'>"CK+"</span>),
+<span class='no'>pairs</span> <span class='kw'>&lt;-</span> <span class='fu'>list</span>(<span class='fu'>c</span>(<span class='st'>"CD8+"</span>, <span class='st'>"CK+"</span>),
              <span class='fu'>c</span>(<span class='st'>"CD8+"</span>, <span class='st'>"CD68+"</span>))
 
 <span class='co'># Colors for all the phenotypes mentioned in pairs</span>
-<span class='no'>colors</span> <span class='kw'>=</span> <span class='fu'>list</span>(
+<span class='no'>colors</span> <span class='kw'>&lt;-</span> <span class='fu'>list</span>(
   <span class='st'>'CD8+'</span> <span class='kw'>=</span> <span class='st'>'yellow'</span>,
   <span class='st'>'CK+'</span> <span class='kw'>=</span> <span class='st'>'cyan'</span>,
   <span class='st'>'CD68+'</span> <span class='kw'>=</span> <span class='st'>'magenta'</span>
 )
 
 <span class='co'># Count and visualize touching cells</span>
-<span class='no'>touch_counts</span> <span class='kw'>=</span> <span class='kw pkg'>purrr</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/purrr/topics/map'>map_df</a></span>(<span class='no'>files</span>, <span class='kw'>function</span>(<span class='no'>path</span>) {
+<span class='no'>touch_counts</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>purrr</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/purrr/topics/map'>map_df</a></span>(<span class='no'>files</span>, <span class='kw'>function</span>(<span class='no'>path</span>) {
   <span class='fu'>cat</span>(<span class='st'>'Processing'</span>, <span class='no'>path</span>, <span class='st'>'\n'</span>)
   <span class='fu'>count_touching_cells</span>(<span class='no'>path</span>, <span class='no'>pairs</span>, <span class='no'>colors</span>, <span class='kw'>output_base</span><span class='kw'>=</span><span class='no'>output_base</span>)
 })
 
 <span class='co'># Save the result</span>
-<span class='no'>touches_path</span> <span class='kw'>=</span> <span class='fu'>file.path</span>(<span class='no'>output_base</span>, <span class='st'>'TouchCounts.csv'</span>)
+<span class='no'>touches_path</span> <span class='kw'>&lt;-</span> <span class='fu'>file.path</span>(<span class='no'>output_base</span>, <span class='st'>'TouchCounts.csv'</span>)
 <span class='kw pkg'>readr</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/readr/topics/write_delim'>write_csv</a></span>(<span class='no'>touch_counts</span>, <span class='no'>touches_path</span>)
 
 <span class='co'># The phenotype definitions can be more complex. The default is to use</span>
@@ -272,13 +272,13 @@ the use of <code>pairs</code> and <code>phenotype_rules</code>.</p>
 
 <span class='co'># For example, find all touches between lymphocytes and tumor cells</span>
 <span class='co'># within the tumor:</span>
-<span class='no'>pairs</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='fu'>c</span>(<span class='st'>'Tumor'</span>, <span class='st'>'Lymphocyte'</span>))
-<span class='no'>colors</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>Tumor</span><span class='kw'>=</span><span class='st'>'cyan'</span>, <span class='kw'>Lymphocyte</span><span class='kw'>=</span><span class='st'>'yellow'</span>)
-<span class='no'>phenotype_rules</span> <span class='kw'>=</span> <span class='fu'>list</span>(
+<span class='no'>pairs</span> <span class='kw'>&lt;-</span> <span class='fu'>list</span>(<span class='fu'>c</span>(<span class='st'>'Tumor'</span>, <span class='st'>'Lymphocyte'</span>))
+<span class='no'>colors</span> <span class='kw'>&lt;-</span> <span class='fu'>list</span>(<span class='kw'>Tumor</span><span class='kw'>=</span><span class='st'>'cyan'</span>, <span class='kw'>Lymphocyte</span><span class='kw'>=</span><span class='st'>'yellow'</span>)
+<span class='no'>phenotype_rules</span> <span class='kw'>&lt;-</span> <span class='fu'>list</span>(
   <span class='kw'>Lymphocyte</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='st'>'CD8+'</span>, <span class='st'>'FoxP3+'</span>)
 )
 
-<span class='no'>touch_counts</span> <span class='kw'>=</span> <span class='fu'>map_df</span>(<span class='no'>files</span>, <span class='kw'>function</span>(<span class='no'>path</span>) {
+<span class='no'>touch_counts</span> <span class='kw'>&lt;-</span> <span class='fu'>map_df</span>(<span class='no'>files</span>, <span class='kw'>function</span>(<span class='no'>path</span>) {
   <span class='fu'>cat</span>(<span class='st'>'Processing'</span>, <span class='no'>path</span>, <span class='st'>'\n'</span>)
   <span class='fu'>count_touching_cells</span>(<span class='no'>path</span>, <span class='no'>pairs</span>, <span class='no'>colors</span>, <span class='no'>phenotype_rules</span>,
                        <span class='kw'>categories</span><span class='kw'>=</span><span class='st'>'tumor'</span>,

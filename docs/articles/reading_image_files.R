@@ -5,35 +5,35 @@ knitr::opts_chunk$set(fig.width=7, fig.height=5,
 par(mar=rep(0, 4))
 
 ## ----read_composite------------------------------------------------------
-path = system.file("extdata", "sample", 
+path <- system.file("extdata", "sample", 
                    "Set4_1-6plex_[16142,55840]_composite_image.jpg", 
                    package = "phenoptr")
-img = jpeg::readJPEG(path)
+img <- jpeg::readJPEG(path)
 dim(img)
 
 ## ----show_composite------------------------------------------------------
-snippet = as.raster(img[800:1000, 1200:1500,])
+snippet <- as.raster(img[800:1000, 1200:1500,])
 plot(snippet)
 
 ## ----show_composite_ebimage,eval=FALSE-----------------------------------
-#  img_transposed = aperm(img, c(2, 1, 3))
+#  img_transposed <- aperm(img, c(2, 1, 3))
 #  EBImage::display(img_transposed)
 #  EBImage::display(EBImage::Image(img_transposed, colormode='Color'))
 
 ## ----read_map------------------------------------------------------------
-map_path = system.file("extdata", "sample",
+map_path <- system.file("extdata", "sample",
    "Set4_1-6plex_[16142,55840]_binary_seg_maps.tif", package = "phenoptr")
-maps = phenoptr::read_maps(map_path)
+maps <- phenoptr::read_maps(map_path)
 names(maps)
 
 ## ----nucleus-------------------------------------------------------------
-nucleus = maps[['Nucleus']]
+nucleus <- maps[['Nucleus']]
 dim(nucleus)
 range(nucleus)
 range(phenoptr::sample_cell_seg_data$`Cell ID`)
 
 ## ----display_map---------------------------------------------------------
-nucleus_snippet = nucleus[800:1000, 1200:1500]
+nucleus_snippet <- nucleus[800:1000, 1200:1500]
 plot(as.raster(nucleus_snippet, max=max(nucleus_snippet)))
 
 ## ----display_map_ebimage,eval=FALSE--------------------------------------
@@ -42,8 +42,8 @@ plot(as.raster(nucleus_snippet, max=max(nucleus_snippet)))
 
 ## ----plotting------------------------------------------------------------
 library(ggplot2)
-csd = phenoptr::sample_cell_seg_data
-csd = subset(csd, `Cell X Position`>=600 & `Cell X Position`<=750 &
+csd <- phenoptr::sample_cell_seg_data
+csd <- subset(csd, `Cell X Position`>=600 & `Cell X Position`<=750 &
               `Cell Y Position`>=400 & `Cell Y Position`<=500)
 ggplot(data=csd, aes(`Cell X Position`, `Cell Y Position`, color=Phenotype)) +
   scale_x_continuous(limits=c(600, 750)) + 
