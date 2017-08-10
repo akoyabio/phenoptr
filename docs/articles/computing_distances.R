@@ -48,7 +48,7 @@ count_within(csd, from='CK+', to='CD68+', radius=25)
 #  base_path <- "/path/to/my_directory"
 #  
 #  pairs <- list(c('FoxP3+', 'CD8+'),
-#               c('FoxP3+', 'CK+'))
+#                c('FoxP3+', 'CK+'))
 #  radii <- c(10, 25)
 #  categories <- c('Stroma', 'Tumor')
 #  
