@@ -1,5 +1,5 @@
 ---
-title: "Computing Inter-cellular Distances"
+title: "Computing inter-cellular distances"
 author: "Kent Johnson"
 date: "`r Sys.Date()`"
 output:
@@ -7,7 +7,7 @@ output:
     df_print: kable
     toc: true
 vignette: >
-  %\VignetteIndexEntry{Computing Inter-cellular Distances}
+  %\VignetteIndexEntry{Computing inter-cellular distances}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

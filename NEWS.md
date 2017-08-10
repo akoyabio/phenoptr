@@ -18,6 +18,7 @@
    cells having a `to` cell within a given radius.
 - `list_cell_seg_files` lists all cell seg data files in a folder.
 - Added vignettes
+    - "Reading and Exploring inForm Tables"
     - "Reading and Displaying inForm Image Files"
     - "Computing Inter-cellular Distances"
     - "Find and count touching cells"

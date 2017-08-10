@@ -1,5 +1,5 @@
 ---
-title: "Reading and Displaying inForm Image Files"
+title: "Reading and displaying inForm image Files"
 author: "Kent Johnson"
 date: "`r Sys.Date()`"
 output:
@@ -7,7 +7,7 @@ output:
     fig_caption: yes
     toc: true
 vignette: >
-  %\VignetteIndexEntry{Reading and Displaying inForm Image Files}
+  %\VignetteIndexEntry{Reading and displaying inForm image Files}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

@@ -39,11 +39,15 @@ devtools::install_github("PerkinElmer/phenoptr", build_vignettes=TRUE)
 - [tibbles](http://tibble.tidyverse.org/) (also known as `data_frame`)
   are used to hold number tables.
 - [dplyr](http://dplyr.tidyverse.org/), [purrr](http://purrr.tidyverse.org/)
-  and this funny thing ([`%>%`](http://magrittr.tidyverse.org/))
+  and this funny thing ([%>%](http://magrittr.tidyverse.org/))
   are used a lot to help show you how to do things.
 
-If you'd like to learn how to use the tidyverse, a good place to start is Garrett Grolemund and Hadley Wickham's free book 
+If you'd like to learn how to use the tidyverse, a good place to start is 
+Garrett Grolemund and Hadley Wickham's free book 
 [R for data science](http://r4ds.had.co.nz/).
+If you are new to R, the book's
+[first part](http://r4ds.had.co.nz/introduction.html)
+will help you get started.
 
 ### What this can do
 

@@ -33,15 +33,18 @@ devtools::install_github("PerkinElmer/phenoptr", build_vignettes=TRUE)
 - A [tibble](http://tibble.tidyverse.org/) (also known as `data_frame`) 
   is the preferred representation of tabular data.
 - [dplyr](http://dplyr.tidyverse.org/), [purrr](http://purrr.tidyverse.org/) 
-  and the pipe operator ([`%>%`](http://magrittr.tidyverse.org/)) 
+  and the pipe operator ([%>%](http://magrittr.tidyverse.org/)) 
   are used extensively in 
   package code and examples.
 
 
-If you'd like to learn how to use the tidyverse, 
+If you'd like to learn how to use the tidyverse packages, 
 a good place to start is Garrett Grolemund and Hadley Wickham's book,
 available free online at
 [R for data science](http://r4ds.had.co.nz/).
+If you are new to R, the book's
+[Introduction](http://r4ds.had.co.nz/introduction.html)
+will help you get started.
 
 ### Package summary
 

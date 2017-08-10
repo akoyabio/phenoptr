@@ -12,11 +12,13 @@ navbar:
       href: index.html
     - text: "Tutorials"
       menu:
-        - text: "Computing Inter-cellular Distances"
+        - text: "Reading and exploring inForm tables"
+          href: articles/reading_tables.html
+        - text: "Computing inter-cellular distances"
           href: articles/computing_distances.html
         - text: "Find and count touching cells"
           href: articles/find_and_count_touching_cells.html
-        - text: "Reading and Displaying inForm Image Files"
+        - text: "Reading and displaying inForm image Files"
           href: articles/reading_image_files.html
         - text: "Selecting cells within a cell segmentation table"
           href: articles/selecting_cells.html

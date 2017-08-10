@@ -1,0 +1,191 @@
+---
+title: "Reading and exploring inForm tables"
+author: "Kent Johnson"
+date: "`r Sys.Date()`"
+output:
+  rmarkdown::html_vignette:
+    df_print: kable
+    toc: true
+vignette: >
+  %\VignetteIndexEntry{Reading and exploring inForm tables}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+
+```{r setup, echo=FALSE,include=FALSE,message=FALSE}
+suppressPackageStartupMessages(library(tidyverse))
+knitr::opts_chunk$set(fig.width=6, fig.height=4, 
+                      comment=NA, warning=FALSE, message=FALSE)
+theme_set(theme_bw())
+# No figure margins
+par(mar=rep(0, 4))
+```
+
+<style type="text/css">
+img { 
+  border: none;
+}
+table {
+    width: auto !important;
+}
+.fa-external-link {
+    font-size: 10px;
+}
+</style>
+
+## inForm tables
+
+PerkinElmer's inForm<sup>&reg;</sup> software exports a variety of
+tabular data including information about cells and tissue categories.
+Tables are exported as tab-delimited text files with file names
+derived from the name of the source image by adding a suffix. Some
+of the suffixes, and the data contained in the files, are
+
+- `cell_seg_data.txt` - Detailed information about each cell in a field,
+including location, size, expression data for each component and possibly
+the phenotype and the containing tissue category.
+- `cell_seg_data_summary.txt` - Summary information about the cells in a 
+field, including cell counts (stratified by phenotype and tissue category,
+if available) and summary size and expression data.
+- `tissue_seg_data.txt` - Detailed information about each tissue category
+region in the field, including size, centroid and expression data.
+- `tissue_seg_data_summary.txt` - Summary information about tissue category
+regions.
+
+## Cell segmentation data
+
+`phenoptr` is primarily concerned with loading and processing 
+`cell_seg_data.txt` files created by inForm. In the package documentation,
+these files are called _cell seg data files_ and the data within them is referred
+to as _cell seg data_. Most examples use a variable named `csd` to 
+contain cell seg data.
+
+### Reading cell segmentation data files
+
+The `read_cell_seg_data` function reads cell seg data files and does
+useful cleanup on the result including removing empty columns,
+converting pixels to microns and simplifying column names.
+
+```{r read}
+# Load libraries
+library(tidyverse)
+library(phenoptr)
+
+# sample_cell_seg_path gives the path to a sample file included with phenoptr.
+# Change this to be the path to your data.
+path <-  sample_cell_seg_path()
+
+# Read the data file
+csd <- read_cell_seg_data(path)
+
+# Show some nicely shortened names
+# The suffix "(Normalized Counts, Total Weighting)" has been removed.
+grep('Nucleus.*Mean', names(csd), value=TRUE)
+```
+
+The value returned from `read_cell_seg_data` is a `data_frame` (also known
+as a `tibble` 
+[<i class='fa fa-external-link'></i>](http://tibble.tidyverse.org/)
+- the
+[tidyverse](http://tidyverse.org/) version of a `data.frame`) and can be
+inspected as you would any other `data_frame`.
+
+```{r inspect}
+# How many cells did we read?
+nrow(csd)
+
+# How many cells of each phenotype are in each tissue category?
+table(csd$`Tissue Category`, csd$Phenotype)
+```
+
+Notice that column names containing spaces or other special characters,
+such as `Tissue Category` in the example above, generally must be enclosed in
+backticks (`) in code. If you are editing in
+[RStudio](https://www.rstudio.com/products/rstudio/) (highly recommended),
+tab-completion will often include the backticks for you.
+
+### Reading cell segmentation summary files
+
+`read_cell_seg_data` is also useful for reading `cell_seg_data_summary.txt`
+files. The same cleanup done for cell seg files is helpful for summary files.
+
+## Creating new columns
+
+The `dplyr::mutate`
+[<i class='fa fa-external-link'></i>](http://dplyr.tidyverse.org/reference/mutate.html)
+function makes it very easy to add new columns to your
+data. This example adds a column for PDL1 positivity and counts cells
+in each phenotype stratified by positivity.
+
+```{r mutate}
+csd <- csd %>% mutate(pdl1_plus=`Entire Cell PDL1 (Opal 520) Mean`>3)
+table(csd$pdl1_plus, csd$Phenotype)
+```
+
+### The pipe operator `%>%`
+
+These examples make extensive use of the pipe operator (`%>%`) to combine
+operations. If you are not familiar with this operator, you may
+want to read this 
+[introduction](http://magrittr.tidyverse.org/#usage).
+
+## Aggregating data
+
+The functions `dplyr::group_by`
+[<i class='fa fa-external-link'></i>](http://dplyr.tidyverse.org/reference/group_by.html)
+and `dplyr::summarize`
+[<i class='fa fa-external-link'></i>](http://dplyr.tidyverse.org/reference/summarise.html)
+can be used to aggregate
+data within groups. `dplyr::filter`
+[<i class='fa fa-external-link'></i>](http://dplyr.tidyverse.org/reference/filter.html)
+removes unwanted values.
+This example computes the mean PDL1 expression for each
+phenotype, omitting `other` cells.
+
+```{r aggregate}
+csd %>% 
+  filter(Phenotype!='other') %>% 
+  group_by(Phenotype) %>% 
+  summarize(mean_pdl1=mean(`Entire Cell PDL1 (Opal 520) Mean`))
+```
+
+## Plotting data
+
+[ggplot2](http://ggplot2.tidyverse.org/) is a powerful and versatile 
+plotting package well suited to exploratory data visualization. Here are
+two brief examples to whet your appetite.
+
+```{r ggplot2}
+ggplot(csd, aes(Phenotype, `Entire Cell PDL1 (Opal 520) Mean`, color=Phenotype)) +
+  geom_boxplot() + 
+  scale_color_brewer(palette='Set1') + 
+  labs(y='PDL1 Expression', title='PDL1 Expression per Phenotype')
+
+ggplot(csd %>% filter(Phenotype!='other'), 
+       aes(`Entire Cell PDL1 (Opal 520) Mean`, 
+                `Entire Cell PD1 (Opal 650) Mean`,
+                color=Phenotype)) +
+  geom_point(size=1, alpha=0.2) + 
+  facet_wrap(~Phenotype) +
+  scale_x_log10() + scale_y_log10() + scale_color_brewer(palette='Set1') +
+  labs(x='PDL1 Expression', y='PD1 Expression', 
+       title='Comparison of PD1 and PDL1 Expression per Phenotype')
+```
+
+## Further reading and examples
+
+The examples here only scratch
+the surface of what `dplyr`, `ggplot2` and other functions in the `tidyverse`
+can do. If you'd like to learn more about the tidyverse, 
+a good place to start is Garrett Grolemund and Hadley Wickham's book,
+available free online at
+[R for data science](http://r4ds.had.co.nz/). 
+The [Data transformation](http://r4ds.had.co.nz/transform.html) chapter
+introduces the `dplyr` functions used in this tutorial.
+
+The [Tutorials](https://perkinelmer.github.io/phenoptrExamples/index.html)
+included with the `phenoptrExamples` package include examples of
+reading data from multiple fields and
+aggregating across fields. The package includes more extensive 
+sample data which can be used for practice.
