@@ -73,8 +73,9 @@ library(tidyverse)
 library(phenoptr)
 
 # sample_cell_seg_path gives the path to a sample file included with phenoptr.
-# Change this to be the path to your data.
-path <-  sample_cell_seg_path()
+# Change this to be the path to your data. For example you might use
+# path <- 'C:/data/my_experiment/my_image_cell_seg_data.txt'
+path <- sample_cell_seg_path()
 
 # Read the data file
 csd <- read_cell_seg_data(path)
@@ -150,6 +151,10 @@ csd %>%
   summarize(mean_pdl1=mean(`Entire Cell PDL1 (Opal 520) Mean`))
 ```
 
+[This tutorial](https://perkinelmer.github.io/phenoptrExamples/articles/aggregation.html)
+from the `phenoptrExamples` package demonstrates aggregation across multiple
+fields from multiple samples.
+
 ## Plotting data
 
 [ggplot2](http://ggplot2.tidyverse.org/) is a powerful and versatile 
@@ -187,5 +192,5 @@ introduces the `dplyr` functions used in this tutorial.
 The [Tutorials](https://perkinelmer.github.io/phenoptrExamples/index.html)
 included with the `phenoptrExamples` package include examples of
 reading data from multiple fields and
-aggregating across fields. The package includes more extensive 
+aggregating across fields. That package includes more extensive 
 sample data which can be used for practice.
