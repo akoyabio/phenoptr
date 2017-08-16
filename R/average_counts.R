@@ -80,7 +80,12 @@ count_within_batch <- function(base_path, pairs, radius, category=NA,
   all_phenotypes = unique(do.call(c, pairs))
   phenotype_rules = make_phenotype_rules(all_phenotypes, phenotype_rules)
 
-  combos = purrr::cross_n(list(pair=pairs, category=category))
+  # cross_n was renamed to cross and deprecated in purrr 0.2.3
+  # Use the new name if we can
+  if (hasName(asNamespace('purrr'), 'cross'))
+    combos = purrr::cross(list(pair=pairs, category=category))
+  else
+    combos = purrr::cross_n(list(pair=pairs, category=category))
 
   # Loop through all the cell seg data files
   purrr::map_df(files, function(path) {
