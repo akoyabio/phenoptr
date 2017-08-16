@@ -345,15 +345,27 @@ make_cell_image <- function (d, nuclei, membrane) {
   if (nrow(d)==0) return(NULL) # No cells in this data
 
   image = membrane
-  for (i in seq_len(nrow(d)))
-  {
-    cell_id = d$`Cell ID`[i]
+  cell_ids = d$`Cell ID`
 
-    nuc_locations = find_interior_point(nuclei, cell_id)
+  # Find locations of all points
+  nuc_locations = purrr::map(cell_ids, ~find_interior_point(nuclei, .x))
 
-    if (is.null(nuc_locations)) next # Didn't find this cell
+  # Filter out missing cells
+  cell_ids = cell_ids[!is.null(nuc_locations)]
+  nuc_locations = nuc_locations[!is.null(nuc_locations)]
 
-    image = EBImage::floodFill(image, nuc_locations, cell_id)
+  if (packageVersion('EBImage') >= '4.19.8') {
+    # Optimized version only needs one call to floodFill
+    # Locations must be provided as a matrix
+    # Colors must be a list of list
+    image = EBImage::floodFill(image, list(nuc_locations),
+                               list(as.list(cell_ids)))
+  } else {
+    # Older version - one call per fill
+    for (i in seq_len(length(nuc_locations)))
+    {
+      image = EBImage::floodFill(image, nuc_locations[i], cell_ids[i])
+    }
   }
   # Remove the membrane outlines
   image[image==0.5] = 0
@@ -364,12 +376,6 @@ make_cell_image <- function (d, nuclei, membrane) {
 find_interior_point = function(nuclei, cell_id)
 {
   # Locate the nucleus in the overall map and extract it as a patch.
-  # We could mask out the nucleus in the full image and compute the distance
-  # map on that; this is faster. Extracting the patch is fast and the distance
-  # map calculation is O(M*N*log(max(M,N))) so smaller M, N helps a lot.
-  # We do have to mask out the nucleus because it may be touching other nuclei.
-  # Alternatively we could mask out the membrane and compute the full distance
-  # map. The approach taken here seems safer.
 
   # Where is the nucleus?
   nuc_locations = which(nuclei==cell_id, arr.ind=TRUE)
