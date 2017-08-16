@@ -356,8 +356,7 @@ make_cell_image <- function (d, nuclei, membrane) {
 
   if (packageVersion('EBImage') >= '4.19.8') {
     # Optimized version only needs one call to floodFill
-    # Locations must be provided as a matrix
-    # Colors must be a list of list
+    # Locations and Colors must be a list of list
     image = EBImage::floodFill(image, list(nuc_locations),
                                list(as.list(cell_ids)))
   } else {
