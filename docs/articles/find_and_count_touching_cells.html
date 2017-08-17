@@ -92,7 +92,7 @@
       <h1>Find and count touching cells</h1>
                         <h4 class="author">Kent Johnson</h4>
             
-            <h4 class="date">2017-08-10</h4>
+            <h4 class="date">2017-08-17</h4>
           </div>
 
     
@@ -132,7 +132,7 @@ colors &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="s
 )
 
 phenotype_rules &lt;-<span class="st"> </span><span class="kw">list</span>(
-  <span class="st">'CK+ PDL1+'</span>=<span class="kw">list</span>(<span class="st">'CK+'</span>, ~<span class="st">`</span><span class="dt">Entire Cell PDL1 (Opal 520) Mean</span><span class="st">`</span>&gt;<span class="dv">3</span>)
+  <span class="st">'CK+ PDL1+'</span>=<span class="kw">list</span>(<span class="st">'CK+'</span>, <span class="op">~</span><span class="st">`</span><span class="dt">Entire Cell PDL1 (Opal 520) Mean</span><span class="st">`</span><span class="op">&gt;</span><span class="dv">3</span>)
 )
 colors &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="st">'CK+ PDL1+'</span>=<span class="st">'cyan'</span>, <span class="st">'CD8+'</span>=<span class="st">'yellow'</span>, <span class="st">'CD68+'</span>=<span class="st">'magenta'</span>)
 <span class="kw"><a href="../reference/count_touching_cells.html">count_touching_cells</a></span>(cell_seg_path, pairs, colors, phenotype_rules)</code></pre></div>
@@ -151,14 +151,14 @@ output_base &lt;-<span class="st"> </span><span class="kw">file.path</span>(base
 files &lt;-<span class="st"> </span><span class="kw"><a href="../reference/list_cell_seg_files.html">list_cell_seg_files</a></span>(base_path)
 
 <span class="co"># Count and visualize touching cells</span>
-touch_counts &lt;-<span class="st"> </span>purrr::<span class="kw">map_df</span>(files, function(path) {
+touch_counts &lt;-<span class="st"> </span>purrr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/purrr/topics/map">map_df</a></span>(files, <span class="cf">function</span>(path) {
   <span class="kw">cat</span>(<span class="st">'Processing'</span>, path, <span class="st">'</span><span class="ch">\n</span><span class="st">'</span>)
   <span class="kw"><a href="../reference/count_touching_cells.html">count_touching_cells</a></span>(path, pairs, colors, phenotype_rules,
                        <span class="dt">output_base=</span>output_base)
 })</code></pre></div>
 <p>The result of the above is a <code>data_frame</code> which may be written to a CSV file:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">touches_path &lt;-<span class="st"> </span><span class="kw">file.path</span>(output_base, <span class="st">'TouchCounts.csv'</span>)
-readr::<span class="kw">write_csv</span>(touch_counts, touches_path)</code></pre></div>
+readr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/readr/topics/write_delim">write_csv</a></span>(touch_counts, touches_path)</code></pre></div>
 </div>
 </div>
   </div>

@@ -40,6 +40,6 @@
 
 ## New features
 
-- `compute_all_nearest_distance` is a convenience functien which reads a
+- `compute_all_nearest_distance` is a convenience function which reads a
   cell seg table, adds `Distance to <phenotype>` columns, and writes it out
   again.

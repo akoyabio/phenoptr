@@ -92,7 +92,7 @@
       <h1>Reading and exploring inForm tables</h1>
                         <h4 class="author">Kent Johnson</h4>
             
-            <h4 class="date">2017-08-10</h4>
+            <h4 class="date">2017-08-17</h4>
           </div>
 
     
@@ -137,8 +137,9 @@ table {
 <span class="kw">library</span>(phenoptr)
 
 <span class="co"># sample_cell_seg_path gives the path to a sample file included with phenoptr.</span>
-<span class="co"># Change this to be the path to your data.</span>
-path &lt;-<span class="st">  </span><span class="kw"><a href="../reference/sample_cell_seg_data.html">sample_cell_seg_path</a></span>()
+<span class="co"># Change this to be the path to your data. For example you might use</span>
+<span class="co"># path &lt;- 'C:/data/my_experiment/my_image_cell_seg_data.txt'</span>
+path &lt;-<span class="st"> </span><span class="kw"><a href="../reference/sample_cell_seg_data.html">sample_cell_seg_path</a></span>()
 
 <span class="co"># Read the data file</span>
 csd &lt;-<span class="st"> </span><span class="kw"><a href="../reference/read_cell_seg_data.html">read_cell_seg_data</a></span>(path)
@@ -155,7 +156,7 @@ csd &lt;-<span class="st"> </span><span class="kw"><a href="../reference/read_ce
 <span class="kw">nrow</span>(csd)</code></pre></div>
 <pre><code>[1] 6072</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># How many cells of each phenotype are in each tissue category?</span>
-<span class="kw">table</span>(csd$<span class="st">`</span><span class="dt">Tissue Category</span><span class="st">`</span>, csd$Phenotype)</code></pre></div>
+<span class="kw">table</span>(csd<span class="op">$</span><span class="st">`</span><span class="dt">Tissue Category</span><span class="st">`</span>, csd<span class="op">$</span>Phenotype)</code></pre></div>
 <pre><code>        
          CD68+ CD8+  CK+ FoxP3+ other
   Stroma   316  177   65    194  2760
@@ -172,8 +173,8 @@ csd &lt;-<span class="st"> </span><span class="kw"><a href="../reference/read_ce
 <h2 class="hasAnchor">
 <a href="#creating-new-columns" class="anchor"></a>Creating new columns</h2>
 <p>The <code><a href="http://dplyr.tidyverse.org/reference/mutate.html">dplyr::mutate</a></code> <a href="http://dplyr.tidyverse.org/reference/mutate.html"><i class="fa fa-external-link"></i></a> function makes it very easy to add new columns to your data. This example adds a column for PDL1 positivity and counts cells in each phenotype stratified by positivity.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">csd &lt;-<span class="st"> </span>csd %&gt;%<span class="st"> </span><span class="kw">mutate</span>(<span class="dt">pdl1_plus=</span><span class="st">`</span><span class="dt">Entire Cell PDL1 (Opal 520) Mean</span><span class="st">`</span>&gt;<span class="dv">3</span>)
-<span class="kw">table</span>(csd$pdl1_plus, csd$Phenotype)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">csd &lt;-<span class="st"> </span>csd <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>(<span class="dt">pdl1_plus=</span><span class="st">`</span><span class="dt">Entire Cell PDL1 (Opal 520) Mean</span><span class="st">`</span><span class="op">&gt;</span><span class="dv">3</span>)
+<span class="kw">table</span>(csd<span class="op">$</span>pdl1_plus, csd<span class="op">$</span>Phenotype)</code></pre></div>
 <pre><code>       
         CD68+ CD8+  CK+ FoxP3+ other
   FALSE   113  158 1726    131  1761
@@ -189,9 +190,9 @@ csd &lt;-<span class="st"> </span><span class="kw"><a href="../reference/read_ce
 <h2 class="hasAnchor">
 <a href="#aggregating-data" class="anchor"></a>Aggregating data</h2>
 <p>The functions <code><a href="http://dplyr.tidyverse.org/reference/group_by.html">dplyr::group_by</a></code> <a href="http://dplyr.tidyverse.org/reference/group_by.html"><i class="fa fa-external-link"></i></a> and <code><a href="http://dplyr.tidyverse.org/reference/summarise.html">dplyr::summarize</a></code> <a href="http://dplyr.tidyverse.org/reference/summarise.html"><i class="fa fa-external-link"></i></a> can be used to aggregate data within groups. <code><a href="http://dplyr.tidyverse.org/reference/filter.html">dplyr::filter</a></code> <a href="http://dplyr.tidyverse.org/reference/filter.html"><i class="fa fa-external-link"></i></a> removes unwanted values. This example computes the mean PDL1 expression for each phenotype, omitting <code>other</code> cells.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">csd %&gt;%<span class="st"> </span>
-<span class="st">  </span><span class="kw">filter</span>(Phenotype!=<span class="st">'other'</span>) %&gt;%<span class="st"> </span>
-<span class="st">  </span><span class="kw">group_by</span>(Phenotype) %&gt;%<span class="st"> </span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">csd <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">filter</span>(Phenotype<span class="op">!=</span><span class="st">'other'</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">group_by</span>(Phenotype) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">summarize</span>(<span class="dt">mean_pdl1=</span><span class="kw">mean</span>(<span class="st">`</span><span class="dt">Entire Cell PDL1 (Opal 520) Mean</span><span class="st">`</span>))</code></pre></div>
 <pre><code># A tibble: 4 x 2
   Phenotype mean_pdl1
@@ -200,23 +201,24 @@ csd &lt;-<span class="st"> </span><span class="kw"><a href="../reference/read_ce
 2      CD8+  2.532412
 3       CK+  3.003579
 4    FoxP3+  3.479079</code></pre>
+<p><a href="https://perkinelmer.github.io/phenoptrExamples/articles/aggregation.html">This tutorial</a> from the <code>phenoptrExamples</code> package demonstrates aggregation across multiple fields from multiple samples.</p>
 </div>
 <div id="plotting-data" class="section level2">
 <h2 class="hasAnchor">
 <a href="#plotting-data" class="anchor"></a>Plotting data</h2>
 <p><a href="http://ggplot2.tidyverse.org/">ggplot2</a> is a powerful and versatile plotting package well suited to exploratory data visualization. Here are two brief examples to whet your appetite.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(csd, <span class="kw">aes</span>(Phenotype, <span class="st">`</span><span class="dt">Entire Cell PDL1 (Opal 520) Mean</span><span class="st">`</span>, <span class="dt">color=</span>Phenotype)) +
-<span class="st">  </span><span class="kw">geom_boxplot</span>() +<span class="st"> </span>
-<span class="st">  </span><span class="kw">scale_color_brewer</span>(<span class="dt">palette=</span><span class="st">'Set1'</span>) +<span class="st"> </span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(csd, <span class="kw">aes</span>(Phenotype, <span class="st">`</span><span class="dt">Entire Cell PDL1 (Opal 520) Mean</span><span class="st">`</span>, <span class="dt">color=</span>Phenotype)) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_boxplot</span>() <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">scale_color_brewer</span>(<span class="dt">palette=</span><span class="st">'Set1'</span>) <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">labs</span>(<span class="dt">y=</span><span class="st">'PDL1 Expression'</span>, <span class="dt">title=</span><span class="st">'PDL1 Expression per Phenotype'</span>)</code></pre></div>
 <p><img src="reading_tables_files/figure-html/ggplot2-1.png" width="576"></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(csd %&gt;%<span class="st"> </span><span class="kw">filter</span>(Phenotype!=<span class="st">'other'</span>), 
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(csd <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(Phenotype<span class="op">!=</span><span class="st">'other'</span>), 
        <span class="kw">aes</span>(<span class="st">`</span><span class="dt">Entire Cell PDL1 (Opal 520) Mean</span><span class="st">`</span>, 
                 <span class="st">`</span><span class="dt">Entire Cell PD1 (Opal 650) Mean</span><span class="st">`</span>,
-                <span class="dt">color=</span>Phenotype)) +
-<span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">size=</span><span class="dv">1</span>, <span class="dt">alpha=</span><span class="fl">0.2</span>) +<span class="st"> </span>
-<span class="st">  </span><span class="kw">facet_wrap</span>(~Phenotype) +
-<span class="st">  </span><span class="kw">scale_x_log10</span>() +<span class="st"> </span><span class="kw">scale_y_log10</span>() +<span class="st"> </span><span class="kw">scale_color_brewer</span>(<span class="dt">palette=</span><span class="st">'Set1'</span>) +
+                <span class="dt">color=</span>Phenotype)) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">size=</span><span class="dv">1</span>, <span class="dt">alpha=</span><span class="fl">0.2</span>) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span>Phenotype) <span class="op">+</span>
+<span class="st">  </span><span class="kw">scale_x_log10</span>() <span class="op">+</span><span class="st"> </span><span class="kw">scale_y_log10</span>() <span class="op">+</span><span class="st"> </span><span class="kw">scale_color_brewer</span>(<span class="dt">palette=</span><span class="st">'Set1'</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">labs</span>(<span class="dt">x=</span><span class="st">'PDL1 Expression'</span>, <span class="dt">y=</span><span class="st">'PD1 Expression'</span>, 
        <span class="dt">title=</span><span class="st">'Comparison of PD1 and PDL1 Expression per Phenotype'</span>)</code></pre></div>
 <p><img src="reading_tables_files/figure-html/ggplot2-2.png" width="576"></p>
@@ -225,7 +227,7 @@ csd &lt;-<span class="st"> </span><span class="kw"><a href="../reference/read_ce
 <h2 class="hasAnchor">
 <a href="#further-reading-and-examples" class="anchor"></a>Further reading and examples</h2>
 <p>The examples here only scratch the surface of what <code>dplyr</code>, <code>ggplot2</code> and other functions in the <code>tidyverse</code> can do. If you’d like to learn more about the tidyverse, a good place to start is Garrett Grolemund and Hadley Wickham’s book, available free online at <a href="http://r4ds.had.co.nz/">R for data science</a>. The <a href="http://r4ds.had.co.nz/transform.html">Data transformation</a> chapter introduces the <code>dplyr</code> functions used in this tutorial.</p>
-<p>The <a href="https://perkinelmer.github.io/phenoptrExamples/index.html">Tutorials</a> included with the <code>phenoptrExamples</code> package include examples of reading data from multiple fields and aggregating across fields. The package includes more extensive sample data which can be used for practice.</p>
+<p>The <a href="https://perkinelmer.github.io/phenoptrExamples/index.html">Tutorials</a> included with the <code>phenoptrExamples</code> package include examples of reading data from multiple fields and aggregating across fields. That package includes more extensive sample data which can be used for practice.</p>
 </div>
 </div>
   </div>
