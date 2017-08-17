@@ -1,3 +1,7 @@
+# phenoptr 0.1.1.9001
+
+- Faster count_touching_cells when EBImage 4.19.9 is available.
+
 # phenoptr 0.1.1.9000
 
 ## Backwards incompatible changes

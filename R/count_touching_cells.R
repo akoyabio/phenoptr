@@ -354,7 +354,7 @@ make_cell_image <- function (d, nuclei, membrane) {
   cell_ids = cell_ids[!is.null(nuc_locations)]
   nuc_locations = nuc_locations[!is.null(nuc_locations)]
 
-  if (packageVersion('EBImage') >= '4.19.9') {
+  if (utils::packageVersion('EBImage') >= '4.19.9') {
     # Optimized version only needs one call to floodFill
     image = EBImage::floodFill(image, nuc_locations,
                                as.list(cell_ids))
