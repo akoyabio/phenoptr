@@ -49,8 +49,7 @@ at least \emph{one} \code{to} cell within \code{radius} as \code{from_with}.
 Report the \emph{average} number of \code{to} cells per
 \code{from} cell as \code{within_mean}.
 
-There are some subtleties to this calculation. See the example code
-for a demonstration.
+There are some subtleties to this calculation.
 \itemize{
   \item It is not symmetric in \code{from} and \code{to}.
   For example the number of tumor cells with a
@@ -83,14 +82,10 @@ library(tidyverse)
 csd <- sample_cell_seg_data
 
 # Find the number of macrophages with a tumor cell within 10 or 25 microns
-count_within(csd, from='CD68+', to='CK+', radius=c(10, 25)) \%>\%
-  mutate(not_to=from_count*within_mean, to_mean=not_to/to_count)
+count_within(csd, from='CD68+', to='CK+', radius=c(10, 25))
 
 # Find the number of tumor cells with a macrophage within 10 or 25 microns
-# Show that from_count*within_mean is not the same as from_with in the
-# previous computation but from_count*within_mean/to_count is the same.
-count_within(csd, from='CK+', to='CD68+', radius=c(10, 25)) \%>\%
-  mutate(not_to=from_count*within_mean, to_mean=not_to/to_count)
+count_within(csd, from='CK+', to='CD68+', radius=c(10, 25))
 }
 \seealso{
 Other distance functions: \code{\link{compute_all_nearest_distance}},
