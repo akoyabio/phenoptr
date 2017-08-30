@@ -62,9 +62,12 @@ the `phenotype_rules` argument. For example,
 this code repeats the previous analysis limiting it to tumor cells with PDL1
 above a threshold. Note that `phenotype_rules` only needs to include
 definitions for phenotypes which don't match the names in `pairs`.
-(See the vignette 
-_Selecting cells within a cell segmentation table_ for more details on
-selecting pairs.)
+
+<div class="panel panel-default"><div class="panel-body">
+See the vignette 
+[Selecting cells within a cell segmentation table](https://perkinelmer.github.io/phenoptr/articles/selecting_cells.html)
+for more details on
+selecting pairs.</div></div>
 
 ```{r phenotype_rules}
 pairs <- list(
@@ -109,3 +112,9 @@ a CSV file:
 touches_path <- file.path(output_base, 'TouchCounts.csv')
 readr::write_csv(touch_counts, touches_path)
 ```
+
+<div class="panel panel-default"><div class="panel-body">
+The tutorial
+[Aggregating touch counts](https://perkinelmer.github.io/phenoptrExamples/articles/count_touches.html)
+in the `phenoptrExamples` package demonstrates aggregation across multiple
+fields from multiple samples.</div></div>

@@ -92,7 +92,7 @@
       <h1>Reading and exploring inForm tables</h1>
                         <h4 class="author">Kent Johnson</h4>
             
-            <h4 class="date">2017-08-17</h4>
+            <h4 class="date">2017-08-30</h4>
           </div>
 
     
@@ -172,7 +172,7 @@ csd &lt;-<span class="st"> </span><span class="kw"><a href="../reference/read_ce
 <div id="creating-new-columns" class="section level2">
 <h2 class="hasAnchor">
 <a href="#creating-new-columns" class="anchor"></a>Creating new columns</h2>
-<p>The <code><a href="http://dplyr.tidyverse.org/reference/mutate.html">dplyr::mutate</a></code> <a href="http://dplyr.tidyverse.org/reference/mutate.html"><i class="fa fa-external-link"></i></a> function makes it very easy to add new columns to your data. This example adds a column for PDL1 positivity and counts cells in each phenotype stratified by positivity.</p>
+<p>The <code><a href="http://dplyr.tidyverse.org/reference/mutate.html">dplyr::mutate</a></code> function makes it very easy to add new columns to your data. This example adds a column for PDL1 positivity and counts cells in each phenotype stratified by positivity.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">csd &lt;-<span class="st"> </span>csd <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>(<span class="dt">pdl1_plus=</span><span class="st">`</span><span class="dt">Entire Cell PDL1 (Opal 520) Mean</span><span class="st">`</span><span class="op">&gt;</span><span class="dv">3</span>)
 <span class="kw">table</span>(csd<span class="op">$</span>pdl1_plus, csd<span class="op">$</span>Phenotype)</code></pre></div>
 <pre><code>       
@@ -189,7 +189,7 @@ csd &lt;-<span class="st"> </span><span class="kw"><a href="../reference/read_ce
 <div id="aggregating-data" class="section level2">
 <h2 class="hasAnchor">
 <a href="#aggregating-data" class="anchor"></a>Aggregating data</h2>
-<p>The functions <code><a href="http://dplyr.tidyverse.org/reference/group_by.html">dplyr::group_by</a></code> <a href="http://dplyr.tidyverse.org/reference/group_by.html"><i class="fa fa-external-link"></i></a> and <code><a href="http://dplyr.tidyverse.org/reference/summarise.html">dplyr::summarize</a></code> <a href="http://dplyr.tidyverse.org/reference/summarise.html"><i class="fa fa-external-link"></i></a> can be used to aggregate data within groups. <code><a href="http://dplyr.tidyverse.org/reference/filter.html">dplyr::filter</a></code> <a href="http://dplyr.tidyverse.org/reference/filter.html"><i class="fa fa-external-link"></i></a> removes unwanted values. This example computes the mean PDL1 expression for each phenotype, omitting <code>other</code> cells.</p>
+<p>The functions <code><a href="http://dplyr.tidyverse.org/reference/group_by.html">dplyr::group_by</a></code> and <code><a href="http://dplyr.tidyverse.org/reference/summarise.html">dplyr::summarize</a></code> can be used to aggregate data within groups. <code><a href="http://dplyr.tidyverse.org/reference/filter.html">dplyr::filter</a></code> removes unwanted values. This example computes the mean PDL1 expression for each phenotype, omitting <code>other</code> cells.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">csd <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">filter</span>(Phenotype<span class="op">!=</span><span class="st">'other'</span>) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">group_by</span>(Phenotype) <span class="op">%&gt;%</span><span class="st"> </span>
@@ -201,7 +201,11 @@ csd &lt;-<span class="st"> </span><span class="kw"><a href="../reference/read_ce
 2      CD8+  2.532412
 3       CK+  3.003579
 4    FoxP3+  3.479079</code></pre>
-<p><a href="https://perkinelmer.github.io/phenoptrExamples/articles/aggregation.html">This tutorial</a> from the <code>phenoptrExamples</code> package demonstrates aggregation across multiple fields from multiple samples.</p>
+<div class="panel panel-default">
+<div class="panel-body">
+The tutorial <a href="https://perkinelmer.github.io/phenoptrExamples/articles/aggregation.html">Aggregating data from multiple fields</a> in the <code>phenoptrExamples</code> package demonstrates aggregation across multiple fields from multiple samples.
+</div>
+</div>
 </div>
 <div id="plotting-data" class="section level2">
 <h2 class="hasAnchor">
@@ -227,7 +231,11 @@ csd &lt;-<span class="st"> </span><span class="kw"><a href="../reference/read_ce
 <h2 class="hasAnchor">
 <a href="#further-reading-and-examples" class="anchor"></a>Further reading and examples</h2>
 <p>The examples here only scratch the surface of what <code>dplyr</code>, <code>ggplot2</code> and other functions in the <code>tidyverse</code> can do. If you’d like to learn more about the tidyverse, a good place to start is Garrett Grolemund and Hadley Wickham’s book, available free online at <a href="http://r4ds.had.co.nz/">R for data science</a>. The <a href="http://r4ds.had.co.nz/transform.html">Data transformation</a> chapter introduces the <code>dplyr</code> functions used in this tutorial.</p>
-<p>The <a href="https://perkinelmer.github.io/phenoptrExamples/index.html">Tutorials</a> included with the <code>phenoptrExamples</code> package include examples of reading data from multiple fields and aggregating across fields. That package includes more extensive sample data which can be used for practice.</p>
+<div class="panel panel-default">
+<div class="panel-body">
+The <a href="https://perkinelmer.github.io/phenoptrExamples/index.html">Tutorials</a> included with the <code>phenoptrExamples</code> package include examples of reading data from multiple fields and aggregating across fields. That package includes more extensive sample data which can be used for practice.
+</div>
+</div>
 </div>
 </div>
   </div>

@@ -114,7 +114,6 @@ files. The same cleanup done for cell seg files is helpful for summary files.
 ## Creating new columns
 
 The `dplyr::mutate`
-[<i class='fa fa-external-link'></i>](http://dplyr.tidyverse.org/reference/mutate.html)
 function makes it very easy to add new columns to your
 data. This example adds a column for PDL1 positivity and counts cells
 in each phenotype stratified by positivity.
@@ -133,16 +132,9 @@ want to read this
 
 ## Aggregating data
 
-The functions `dplyr::group_by`
-[<i class='fa fa-external-link'></i>](http://dplyr.tidyverse.org/reference/group_by.html)
-and `dplyr::summarize`
-[<i class='fa fa-external-link'></i>](http://dplyr.tidyverse.org/reference/summarise.html)
-can be used to aggregate
-data within groups. `dplyr::filter`
-[<i class='fa fa-external-link'></i>](http://dplyr.tidyverse.org/reference/filter.html)
-removes unwanted values.
-This example computes the mean PDL1 expression for each
-phenotype, omitting `other` cells.
+The functions `dplyr::group_by` and `dplyr::summarize` can be used to aggregate
+data within groups. `dplyr::filter` removes unwanted values. This example
+computes the mean PDL1 expression for each phenotype, omitting `other` cells.
 
 ```{r aggregate}
 csd %>% 
@@ -151,9 +143,12 @@ csd %>%
   summarize(mean_pdl1=mean(`Entire Cell PDL1 (Opal 520) Mean`))
 ```
 
-[This tutorial](https://perkinelmer.github.io/phenoptrExamples/articles/aggregation.html)
-from the `phenoptrExamples` package demonstrates aggregation across multiple
-fields from multiple samples.
+<div class="panel panel-default"><div class="panel-body">
+The tutorial
+[Aggregating data from multiple fields](https://perkinelmer.github.io/phenoptrExamples/articles/aggregation.html)
+in the `phenoptrExamples` package demonstrates aggregation across multiple
+fields from multiple samples.</div></div>
+
 
 ## Plotting data
 
@@ -189,8 +184,9 @@ available free online at
 The [Data transformation](http://r4ds.had.co.nz/transform.html) chapter
 introduces the `dplyr` functions used in this tutorial.
 
+<div class="panel panel-default"><div class="panel-body">
 The [Tutorials](https://perkinelmer.github.io/phenoptrExamples/index.html)
 included with the `phenoptrExamples` package include examples of
 reading data from multiple fields and
 aggregating across fields. That package includes more extensive 
-sample data which can be used for practice.
+sample data which can be used for practice.</div></div>
