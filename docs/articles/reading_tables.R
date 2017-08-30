@@ -12,8 +12,9 @@ library(tidyverse)
 library(phenoptr)
 
 # sample_cell_seg_path gives the path to a sample file included with phenoptr.
-# Change this to be the path to your data.
-path <-  sample_cell_seg_path()
+# Change this to be the path to your data. For example you might use
+# path <- 'C:/data/my_experiment/my_image_cell_seg_data.txt'
+path <- sample_cell_seg_path()
 
 # Read the data file
 csd <- read_cell_seg_data(path)
