@@ -15,16 +15,42 @@ visit the Phenoptics&trade;
 
 ## Installation
 
-Installation is from GitHub:
+`phenoptr` requires the R environment for statistical computing. To install R,
+see the [R home page](https://www.r-project.org/).
+The [RStudio IDE](https://www.rstudio.com/products/rstudio/)
+is highly recommended as well.
+
+Installation of `phenoptr` is from GitHub:
 
 ```
-# install.packages("devtools")
+install.packages("devtools")
 devtools::install_github("PerkinElmer/phenoptr", build_vignettes=TRUE)
 ```
 
 ----
 
-## Usage
+## Getting Started
+
+The Tutorials walk through most of `phenoptr`.
+
+- [Reading and exploring inForm tables](https://perkinelmer.github.io/phenoptr/articles/reading_tables.html)
+demonstrates reading and processing inForm cell segmentation tables. This is a 
+good place to start.
+- [Computing inter-cellular distances](https://perkinelmer.github.io/phenoptr/articles/computing_distances.html)
+introduces most of `phenoptr`'s spatial processing capabilities.
+- [Find and count touching cells](https://perkinelmer.github.io/phenoptr/articles/find_and_count_touching_cells.html)
+covers the remaining spatial processing functions.
+
+<div class="panel panel-default"><div class="panel-body">
+For extended examples and more sample data see the Tutorials in the
+<a href="https://perkinelmer.github.io/phenoptrExamples">phenoptrExamples</a>
+package.</div></div>
+
+### Learning R
+
+R is a powerful and popular environment for data manipulation. 
+Search for [learn R](https://www.google.com/search?q=learn+r) to find many 
+resources for beginners.
 
 `phenoptr` is designed to work in harmony with packages in the 
 [tidyverse](http://tidyverse.org/). 
@@ -37,8 +63,7 @@ devtools::install_github("PerkinElmer/phenoptr", build_vignettes=TRUE)
   are used extensively in 
   package code and examples.
 
-
-If you'd like to learn how to use the tidyverse packages, 
+If you'd like to learn more about the tidyverse packages, 
 a good place to start is Garrett Grolemund and Hadley Wickham's book,
 available free online at
 [R for data science](http://r4ds.had.co.nz/).
@@ -46,63 +71,11 @@ If you are new to R, the book's
 [Introduction](http://r4ds.had.co.nz/introduction.html)
 will help you get started.
 
-### Package summary
-
-#### <i class='fa fa-caret-right'></i> Read and preprocess inForm data and image files
-
-[list_cell_seg_files](https://perkinelmer.github.io/phenoptr/reference/list_cell_seg_files.html)
-finds all inForm cell segmentation files in a directory.
-
-[read_cell_seg_data](https://perkinelmer.github.io/phenoptr/reference/read_cell_seg_data.html)
-reads inForm cell segmentation
-data tables and makes them easier to use in R.
-
-[read_components](https://perkinelmer.github.io/phenoptr/reference/read_components.html) 
-reads inForm component data and [read_maps](https://perkinelmer.github.io/phenoptr/reference/read_maps.html) 
-reads inForm
-segmentation maps.
-
-#### <i class='fa fa-caret-right'></i> Compute and visualize spatial relationships between cells
-
-[find_nearest_distance](https://perkinelmer.github.io/phenoptr/reference/find_nearest_distance.html)
-finds the distance
-from each cell to the nearest cell of each phenotype.
-
-[count_within](https://perkinelmer.github.io/phenoptr/reference/count_within.html)
-and 
-[count_within_batch](https://perkinelmer.github.io/phenoptr/reference/count_within_batch.html) 
-count the number of cells within a
-fixed radius of other cells.
-
-[spatial_distribution_report](https://perkinelmer.github.io/phenoptr/reference/spatial_distribution_report.html) 
-creates a report visualizing nearest neighbor
-relationships between cells of two phenotypes.
-
-[count_touching_cells](https://perkinelmer.github.io/phenoptr/reference/count_touching_cells.html)
-uses morphological
-analysis to find, count, and visualize touching cells in paired
-phenotypes.
-
-#### <i class='fa fa-caret-right'></i> Helpers
-
-[distance_matrix](https://perkinelmer.github.io/phenoptr/reference/distance_matrix.html)
-and 
-[subset_distance_matrix](https://perkinelmer.github.io/phenoptr/reference/subset_distance_matrix.html)
-create and subset cell distance
-matrices from cell segmentation data.
-
-[select_rows](https://perkinelmer.github.io/phenoptr/reference/select_rows.html)
-helps select rows in cell segmentation
-data corresponding to specific phenotypes and expression levels.
-
 ----
 
 ## Full documentation
 
-See the Tutorials and Reference sections of the 
-[full documentation](https://perkinelmer.github.io/phenoptr) for details.
-
-For extended examples and more sample data see the 
-[phenoptrExamples](https://perkinelmer.github.io/phenoptrExamples) package.
+See the [Reference](https://perkinelmer.github.io/phenoptr/reference/index.html)
+section of the documentation for details on individual functions.
 
 [<i class='fa fa-smile-o'></i>](articles/README1000.html)

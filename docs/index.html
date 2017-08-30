@@ -98,14 +98,32 @@
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
-<p>Installation is from GitHub:</p>
-<pre><code><a href="http://www.rdocumentation.org/packages/devtools/topics/install_github"># install.packages("devtools")
-devtools::install_github("PerkinElmer/phenoptr", build_vignettes=TRUE)</a></code></pre>
+<p><code>phenoptr</code> requires the R environment for statistical computing. To install R, see the <a href="https://www.r-project.org/">R home page</a>. The <a href="https://www.rstudio.com/products/rstudio/">RStudio IDE</a> is highly recommended as well.</p>
+<p>Installation of <code>phenoptr</code> is from GitHub:</p>
+<pre><code>install.packages("devtools")
+devtools::install_github("PerkinElmer/phenoptr", build_vignettes=TRUE)</code></pre>
 <hr>
 </div>
-<div id="usage" class="section level2">
+<div id="getting-started" class="section level2">
 <h2 class="hasAnchor">
-<a href="#usage" class="anchor"></a>Usage</h2>
+<a href="#getting-started" class="anchor"></a>Getting Started</h2>
+<p>The Tutorials walk through most of <code>phenoptr</code>.</p>
+<ul>
+<li>
+<a href="https://perkinelmer.github.io/phenoptr/articles/reading_tables.html">Reading and exploring inForm tables</a> demonstrates reading and processing inForm cell segmentation tables. This is a good place to start.</li>
+<li>
+<a href="https://perkinelmer.github.io/phenoptr/articles/computing_distances.html">Computing inter-cellular distances</a> introduces most of <code>phenoptr</code>’s spatial processing capabilities.</li>
+<li>
+<a href="https://perkinelmer.github.io/phenoptr/articles/find_and_count_touching_cells.html">Find and count touching cells</a> covers the remaining spatial processing functions.</li>
+</ul>
+<div class="panel panel-default"><div class="panel-body">
+For extended examples and more sample data see the Tutorials in the
+<a href="https://perkinelmer.github.io/phenoptrExamples">phenoptrExamples</a>
+package.</div></div>
+<div id="learning-r" class="section level3">
+<h3 class="hasAnchor">
+<a href="#learning-r" class="anchor"></a>Learning R</h3>
+<p>R is a powerful and popular environment for data manipulation. Search for <a href="https://www.google.com/search?q=learn+r">learn R</a> to find many resources for beginners.</p>
 <p><code>phenoptr</code> is designed to work in harmony with packages in the <a href="http://tidyverse.org/">tidyverse</a>.</p>
 <ul>
 <li>
@@ -114,39 +132,14 @@ devtools::install_github("PerkinElmer/phenoptr", build_vignettes=TRUE)</a></code
 <li>
 <a href="http://dplyr.tidyverse.org/">dplyr</a>, <a href="http://purrr.tidyverse.org/">purrr</a> and the pipe operator (<a href="http://magrittr.tidyverse.org/">%&gt;%</a>) are used extensively in package code and examples.</li>
 </ul>
-<p>If you’d like to learn how to use the tidyverse packages, a good place to start is Garrett Grolemund and Hadley Wickham’s book, available free online at <a href="http://r4ds.had.co.nz/">R for data science</a>. If you are new to R, the book’s <a href="http://r4ds.had.co.nz/introduction.html">Introduction</a> will help you get started.</p>
-<div id="package-summary" class="section level3">
-<h3 class="hasAnchor">
-<a href="#package-summary" class="anchor"></a>Package summary</h3>
-<div id="read-and-preprocess-inform-data-and-image-files" class="section level4">
-<h4 class="hasAnchor">
-<a href="#read-and-preprocess-inform-data-and-image-files" class="anchor"></a><i class="fa fa-caret-right"></i> Read and preprocess inForm data and image files</h4>
-<p><a href="https://perkinelmer.github.io/phenoptr/reference/list_cell_seg_files.html">list_cell_seg_files</a> finds all inForm cell segmentation files in a directory.</p>
-<p><a href="https://perkinelmer.github.io/phenoptr/reference/read_cell_seg_data.html">read_cell_seg_data</a> reads inForm cell segmentation data tables and makes them easier to use in R.</p>
-<p><a href="https://perkinelmer.github.io/phenoptr/reference/read_components.html">read_components</a> reads inForm component data and <a href="https://perkinelmer.github.io/phenoptr/reference/read_maps.html">read_maps</a> reads inForm segmentation maps.</p>
-</div>
-<div id="compute-and-visualize-spatial-relationships-between-cells" class="section level4">
-<h4 class="hasAnchor">
-<a href="#compute-and-visualize-spatial-relationships-between-cells" class="anchor"></a><i class="fa fa-caret-right"></i> Compute and visualize spatial relationships between cells</h4>
-<p><a href="https://perkinelmer.github.io/phenoptr/reference/find_nearest_distance.html">find_nearest_distance</a> finds the distance from each cell to the nearest cell of each phenotype.</p>
-<p><a href="https://perkinelmer.github.io/phenoptr/reference/count_within.html">count_within</a> and <a href="https://perkinelmer.github.io/phenoptr/reference/count_within_batch.html">count_within_batch</a> count the number of cells within a fixed radius of other cells.</p>
-<p><a href="https://perkinelmer.github.io/phenoptr/reference/spatial_distribution_report.html">spatial_distribution_report</a> creates a report visualizing nearest neighbor relationships between cells of two phenotypes.</p>
-<p><a href="https://perkinelmer.github.io/phenoptr/reference/count_touching_cells.html">count_touching_cells</a> uses morphological analysis to find, count, and visualize touching cells in paired phenotypes.</p>
-</div>
-<div id="helpers" class="section level4">
-<h4 class="hasAnchor">
-<a href="#helpers" class="anchor"></a><i class="fa fa-caret-right"></i> Helpers</h4>
-<p><a href="https://perkinelmer.github.io/phenoptr/reference/distance_matrix.html">distance_matrix</a> and <a href="https://perkinelmer.github.io/phenoptr/reference/subset_distance_matrix.html">subset_distance_matrix</a> create and subset cell distance matrices from cell segmentation data.</p>
-<p><a href="https://perkinelmer.github.io/phenoptr/reference/select_rows.html">select_rows</a> helps select rows in cell segmentation data corresponding to specific phenotypes and expression levels.</p>
+<p>If you’d like to learn more about the tidyverse packages, a good place to start is Garrett Grolemund and Hadley Wickham’s book, available free online at <a href="http://r4ds.had.co.nz/">R for data science</a>. If you are new to R, the book’s <a href="http://r4ds.had.co.nz/introduction.html">Introduction</a> will help you get started.</p>
 <hr>
-</div>
 </div>
 </div>
 <div id="full-documentation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#full-documentation" class="anchor"></a>Full documentation</h2>
-<p>See the Tutorials and Reference sections of the <a href="https://perkinelmer.github.io/phenoptr">full documentation</a> for details.</p>
-<p>For extended examples and more sample data see the <a href="https://perkinelmer.github.io/phenoptrExamples">phenoptrExamples</a> package.</p>
+<p>See the <a href="https://perkinelmer.github.io/phenoptr/reference/index.html">Reference</a> section of the documentation for details on individual functions.</p>
 <p><a href="articles/README1000.html"><i class="fa fa-smile-o"></i></a></p>
 </div>
 </div>
