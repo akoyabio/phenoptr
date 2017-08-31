@@ -82,7 +82,7 @@ count_within_batch <- function(base_path, pairs, radius, category=NA,
 
   # cross_n was renamed to cross and deprecated in purrr 0.2.3
   # Use the new name if we can
-  if (packageVersion('purrr') >= '0.2.3')
+  if (utils::packageVersion('purrr') >= '0.2.3')
     combos = purrr::cross(list(pair=pairs, category=category))
   else
     combos = purrr::cross_n(list(pair=pairs, category=category))
