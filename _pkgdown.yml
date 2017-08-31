@@ -32,6 +32,15 @@ navbar:
      text: github
      href: https://github.com/PerkinElmer/phenoptr
 
+articles:
+  - title: Tutorials
+    contents:
+    - reading_tables
+    - computing_distances
+    - find_and_count_touching_cells
+    - reading_image_files
+    - selecting_cells
+
 reference:
   - title: "Read and preprocess inForm data and image files"
     contents:

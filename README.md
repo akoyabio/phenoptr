@@ -31,7 +31,8 @@ devtools::install_github("PerkinElmer/phenoptr", build_vignettes=TRUE)
 
 ## Getting Started
 
-The Tutorials walk through most of `phenoptr`.
+These [Tutorials](https://perkinelmer.github.io/phenoptr/articles/index.html)
+introduce the most important features of `phenoptr`.
 
 - [Reading and exploring inForm tables](https://perkinelmer.github.io/phenoptr/articles/reading_tables.html)
 demonstrates reading and processing inForm cell segmentation tables. This is a 
@@ -48,7 +49,8 @@ package.</div></div>
 
 ### Learning R
 
-R is a powerful and popular environment for data manipulation. 
+R is a powerful and popular environment for data manipulation and 
+statistical analysis. 
 Search for [learn R](https://www.google.com/search?q=learn+r) to find many 
 resources for beginners.
 
@@ -77,5 +79,3 @@ will help you get started.
 
 See the [Reference](https://perkinelmer.github.io/phenoptr/reference/index.html)
 section of the documentation for details on individual functions.
-
-[<i class='fa fa-smile-o'></i>](articles/README1000.html)
