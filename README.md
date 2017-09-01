@@ -50,9 +50,7 @@ package.</div></div>
 ### Learning R
 
 R is a powerful and popular environment for data manipulation and 
-statistical analysis. 
-Search for [learn R](https://www.google.com/search?q=learn+r) to find many 
-resources for beginners.
+statistical analysis. Many learning resources are available online.
 
 `phenoptr` is designed to work in harmony with packages in the 
 [tidyverse](http://tidyverse.org/). 
