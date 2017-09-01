@@ -43,7 +43,8 @@ introduces most of `phenoptr`'s spatial processing capabilities.
 covers the remaining spatial processing functions.
 
 <div class="panel panel-default"><div class="panel-body">
-For extended examples and more sample data see the Tutorials in the
+For examples showing aggregation across multiple fields and slides see the
+Tutorials in the
 <a href="https://perkinelmer.github.io/phenoptrExamples">phenoptrExamples</a>
 package.</div></div>
 
