@@ -30,7 +30,7 @@ list_cell_seg_files <- function(path, ...) {
 #'       (these are typically unused summary columns)
 #' \item Converts percent columns to numeric fractions
 #' \item Converts pixel distances to microns. The conversion factor may be
-#' specfied as a parameter or by setting
+#' specified as a parameter or by setting
 #' \code{options(phenoptr.pixels.per.micron)}.
 #' \item Optionally removes units from expression names
 #' \item If the file contains multiple sample names,
