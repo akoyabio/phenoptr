@@ -39,6 +39,8 @@ For example, this code finds and visualizes touches between
 between `CK+` and `CD68+` cells:
 
 ```{r pairs_only}
+library(phenoptr)
+
 cell_seg_path <- sample_cell_seg_path()
 pairs <- list(
   c('CK+', 'CD8+'),
@@ -64,7 +66,7 @@ above a threshold. Note that `phenotype_rules` only needs to include
 definitions for phenotypes which don't match the names in `pairs`.
 
 <div class="panel panel-default"><div class="panel-body">
-See the vignette 
+See the tutorial 
 [Selecting cells within a cell segmentation table](https://perkinelmer.github.io/phenoptr/articles/selecting_cells.html)
 for more details on
 selecting pairs.</div></div>

@@ -2,6 +2,8 @@
 knitr::opts_chunk$set(eval=FALSE)
 
 ## ----pairs_only----------------------------------------------------------
+#  library(phenoptr)
+#  
 #  cell_seg_path <- sample_cell_seg_path()
 #  pairs <- list(
 #    c('CK+', 'CD8+'),

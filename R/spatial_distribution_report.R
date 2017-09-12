@@ -19,7 +19,9 @@ if (getRversion() >= "2.15.1")
 #'
 #' The report is saved to the same directory as the input file.
 #'
-#' See `vignette('selecting_cells', package='phenoptr')` for more on
+#' See the tutorial
+#' [Selecting cells within a cell segmentation table](https://perkinelmer.github.io/phenoptr/articles/selecting_cells.html)
+#'for more on
 #' the use of `pairs` and `phenotype_rules`.
 #'
 #' @param cell_seg_path Path to a cell seg data file.
@@ -43,6 +45,7 @@ if (getRversion() >= "2.15.1")
 #' \dontrun{
 #' # This example creates a report in the current user's
 #' # home or Document directory.
+#'
 #' cell_seg_path <- sample_cell_seg_path()
 #'
 #' pairs <- list(
@@ -56,6 +59,9 @@ if (getRversion() >= "2.15.1")
 #'
 #' # This example extends the previous example to restrict tumor cells to
 #' # only PDL1+ cells.
+#' # Note that spatial_distribution_report uses read_cell_seg_table
+#' # so units are removed from the expression column names.
+#'
 #' pairs <- list(
 #'   c("CK+ PDL1+", "CD8+"),
 #'   c("CK+ PDL1+", "CD68+"))

@@ -1,8 +1,9 @@
 ## ----setup,echo=FALSE----------------------------------------------------
 #knitr::opts_chunk$set(eval=FALSE)
-library(phenoptr)
 
 ## ------------------------------------------------------------------------
+library(phenoptr)
+
 csd <- sample_cell_seg_data
 rows <- select_rows(csd, 'CK+')
 sum(rows) # The number of selected rows

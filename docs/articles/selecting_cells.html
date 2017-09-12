@@ -92,7 +92,7 @@
       <h1>Selecting cells within a cell segmentation table</h1>
                         <h4 class="author">Kent Johnson</h4>
             
-            <h4 class="date">2017-08-17</h4>
+            <h4 class="date">2017-09-12</h4>
           </div>
 
     
@@ -104,12 +104,14 @@
 <div id="selecting-phenotypes" class="section level2">
 <h2 class="hasAnchor">
 <a href="#selecting-phenotypes" class="anchor"></a>Selecting phenotypes</h2>
-<p>This section of the vignette uses <code>sample_cell_seg_data</code> and <code>count_within</code> for examples.</p>
+<p>This section of the tutorial uses <code>sample_cell_seg_data</code> and <code>count_within</code> for examples.</p>
 <div id="select-a-single-phenotype" class="section level3">
 <h3 class="hasAnchor">
 <a href="#select-a-single-phenotype" class="anchor"></a>Select a single phenotype</h3>
 <p>The simplest selector is just the name of a single phenotype. This example selects the rows containing <code>CK+</code> cells:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">csd &lt;-<span class="st"> </span>sample_cell_seg_data
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(phenoptr)
+
+csd &lt;-<span class="st"> </span>sample_cell_seg_data
 rows &lt;-<span class="st"> </span><span class="kw"><a href="../reference/select_rows.html">select_rows</a></span>(csd, <span class="st">'CK+'</span>)
 <span class="kw">sum</span>(rows) <span class="co"># The number of selected rows</span></code></pre></div>
 <pre><code>## [1] 2257</code></pre>

@@ -92,7 +92,7 @@
       <h1>Computing inter-cellular distances</h1>
                         <h4 class="author">Kent Johnson</h4>
             
-            <h4 class="date">2017-08-17</h4>
+            <h4 class="date">2017-09-12</h4>
           </div>
 
     
@@ -136,10 +136,10 @@ csd <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">coun
 <span class="kw">glimpse</span>(distances)</code></pre></div>
 <pre><code>Observations: 3,130
 Variables: 4
-$ Distance to CD68+  &lt;dbl&gt; 29.529646, 38.082148, 36.674242, 73.119765,...
-$ Distance to CD8+   &lt;dbl&gt; 18.03469, 64.37585, 67.57403, 91.44397, 37....
-$ Distance to CK+    &lt;dbl&gt; 36.830694, 109.317199, 3.605551, 4.031129, ...
-$ Distance to FoxP3+ &lt;dbl&gt; 16.347783, 40.140379, 30.870698, 65.408333,...</code></pre>
+$ `Distance to CD68+`  &lt;dbl&gt; 29.529646, 38.082148, 36.674242, 73.11976...
+$ `Distance to CD8+`   &lt;dbl&gt; 18.03469, 64.37585, 67.57403, 91.44397, 3...
+$ `Distance to CK+`    &lt;dbl&gt; 36.830694, 109.317199, 3.605551, 4.031129...
+$ `Distance to FoxP3+` &lt;dbl&gt; 16.347783, 40.140379, 30.870698, 65.40833...</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">nrow</span>(csd)</code></pre></div>
 <pre><code>[1] 3130</code></pre>
 <p>To create a combined data frame, use <code><a href="http://dplyr.tidyverse.org/reference/bind.html">dplyr::bind_cols</a></code>.</p>
@@ -184,7 +184,7 @@ $ Distance to FoxP3+ &lt;dbl&gt; 16.347783, 40.140379, 30.870698, 65.408333,...<
   radius from_count to_count from_with within_mean
    &lt;dbl&gt;      &lt;int&gt;    &lt;int&gt;     &lt;int&gt;       &lt;dbl&gt;
 1     25        417     2257       274    3.278177</code></pre>
-<p>In this result, <code>from_count</code> and <code>to_count</code> are the total numbers of eligible cells. They agree with the counts in the first table in this vignette. <code>from_with</code> is the number of <code>CD68+</code> cells having at least one <code>CK+</code> cell within 25 micron. <code>within_mean</code> is the average number of <code>CK+</code> cells found within 25 micron of each <code>CD68+</code> cell.</p>
+<p>In this result, <code>from_count</code> and <code>to_count</code> are the total numbers of eligible cells. They agree with the counts in the first table in this tutorial. <code>from_with</code> is the number of <code>CD68+</code> cells having at least one <code>CK+</code> cell within 25 micron. <code>within_mean</code> is the average number of <code>CK+</code> cells found within 25 micron of each <code>CD68+</code> cell.</p>
 <p>Note there are some subtleties to <code>count_within</code>. Most importantly, it is not symmetric. In this example, the number of <code>CK+</code> cells with a <code>CD68+</code> within 25 microns is not the same as the number of <code>CD68+</code> cells with a <code>CK+</code> cell within 25 microns.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/count_within.html">count_within</a></span>(csd, <span class="dt">from=</span><span class="st">'CK+'</span>, <span class="dt">to=</span><span class="st">'CD68+'</span>, <span class="dt">radius=</span><span class="dv">25</span>)</code></pre></div>
 <pre><code># A tibble: 1 x 5
@@ -207,14 +207,14 @@ radii &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1
 categories &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">'Stroma'</span>, <span class="st">'Tumor'</span>)
 
 <span class="kw"><a href="../reference/count_within_batch.html">count_within_batch</a></span>(base_path, pairs, radii, categories)</code></pre></div>
-<p>See <code>help(count_within_batch)</code> and the vignette <em>Selecting cells within a cell segmentation table</em> for additional details.</p>
+<p>See <code>help(count_within_batch)</code> and the tutorial <a href="https://perkinelmer.github.io/phenoptr/articles/selecting_cells.html">Selecting cells within a cell segmentation table</a> for additional details.</p>
 <hr>
 </div>
 </div>
 <div id="visualizing-nearest-neighbors" class="section level2">
 <h2 class="hasAnchor">
 <a href="#visualizing-nearest-neighbors" class="anchor"></a>Visualizing nearest neighbors</h2>
-<p>The <code>spatial_distribution_report</code> function is a bit different from the other functions mentioned in this vignette. Rather than calculate and return distance metrics, it creates a report which shows visually the nearest neighbor relations between two phenotypes in a single field. Because the result is a stand-alone HTML file, it can’t easily be demonstrated in a vignette. For an example, copy and paste this code into your own copy of R. It will create a sample report in your user directory.</p>
+<p>The <code>spatial_distribution_report</code> function is a bit different from the other functions mentioned in this tutorial Rather than calculate and return distance metrics, it creates a report which shows visually the nearest neighbor relations between two phenotypes in a single field. Because the result is a stand-alone HTML file, it can’t easily be demonstrated in a tutorial For an example, copy and paste this code into your own copy of R. It will create a sample report in your user directory.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">cell_seg_path &lt;-<span class="st"> </span><span class="kw"><a href="../reference/sample_cell_seg_data.html">sample_cell_seg_path</a></span>()
 
 pairs &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="kw">c</span>(<span class="st">'CD68+'</span>, <span class="st">'CD8+'</span>))

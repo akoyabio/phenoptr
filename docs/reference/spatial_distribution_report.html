@@ -169,7 +169,9 @@ Set to NA to skip conversion.</p></td>
 or composite image of the field
 is available, it will be used as a background.</p>
 <p>The report is saved to the same directory as the input file.</p>
-<p>See <code><a href='https://cran.rstudio.com/web/packages/phenoptr/vignettes/selecting_cells.html'>vignette('selecting_cells', package='phenoptr')</a></code> for more on
+<p>See the tutorial
+<a href='https://perkinelmer.github.io/phenoptr/articles/selecting_cells.html'>Selecting cells within a cell segmentation table</a>
+for more on
 the use of <code>pairs</code> and <code>phenotype_rules</code>.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
@@ -187,6 +189,7 @@ the use of <code>pairs</code> and <code>phenotype_rules</code>.</p>
     <pre class="examples"><span class='co'># NOT RUN {</span>
 <span class='co'># This example creates a report in the current user's</span>
 <span class='co'># home or Document directory.</span>
+
 <span class='no'>cell_seg_path</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='sample_cell_seg_data.html'>sample_cell_seg_path</a></span>()
 
 <span class='no'>pairs</span> <span class='kw'>&lt;-</span> <span class='fu'>list</span>(
@@ -200,6 +203,9 @@ the use of <code>pairs</code> and <code>phenotype_rules</code>.</p>
 
 <span class='co'># This example extends the previous example to restrict tumor cells to</span>
 <span class='co'># only PDL1+ cells.</span>
+<span class='co'># Note that spatial_distribution_report uses read_cell_seg_table</span>
+<span class='co'># so units are removed from the expression column names.</span>
+
 <span class='no'>pairs</span> <span class='kw'>&lt;-</span> <span class='fu'>list</span>(
   <span class='fu'>c</span>(<span class='st'>"CK+ PDL1+"</span>, <span class='st'>"CD8+"</span>),
   <span class='fu'>c</span>(<span class='st'>"CK+ PDL1+"</span>, <span class='st'>"CD68+"</span>))

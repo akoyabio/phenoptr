@@ -42,13 +42,16 @@ is available, it will be used as a background.
 
 The report is saved to the same directory as the input file.
 
-See \code{vignette('selecting_cells', package='phenoptr')} for more on
+See the tutorial
+\href{https://perkinelmer.github.io/phenoptr/articles/selecting_cells.html}{Selecting cells within a cell segmentation table}
+for more on
 the use of \code{pairs} and \code{phenotype_rules}.
 }
 \examples{
 \dontrun{
 # This example creates a report in the current user's
 # home or Document directory.
+
 cell_seg_path <- sample_cell_seg_path()
 
 pairs <- list(
@@ -62,6 +65,9 @@ spatial_distribution_report(cell_seg_path, pairs, colors,
 
 # This example extends the previous example to restrict tumor cells to
 # only PDL1+ cells.
+# Note that spatial_distribution_report uses read_cell_seg_table
+# so units are removed from the expression column names.
+
 pairs <- list(
   c("CK+ PDL1+", "CD8+"),
   c("CK+ PDL1+", "CD68+"))

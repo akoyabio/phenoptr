@@ -13,7 +13,6 @@ vignette: >
 
 ```{r setup,echo=FALSE}
 #knitr::opts_chunk$set(eval=FALSE)
-library(phenoptr)
 ```
 
 `phenoptr` includes a flexible mechanism for selecting cells (i.e. rows) from a
@@ -31,7 +30,7 @@ value to select rows of the table.
 
 ## Selecting phenotypes
 
-This section of the vignette uses `sample_cell_seg_data` and 
+This section of the tutorial uses `sample_cell_seg_data` and 
 `count_within` for examples.
 
 ### Select a single phenotype
@@ -40,6 +39,8 @@ The simplest selector is just the name of a single phenotype. This example
 selects the rows containing `CK+` cells:
 
 ```{r}
+library(phenoptr)
+
 csd <- sample_cell_seg_data
 rows <- select_rows(csd, 'CK+')
 sum(rows) # The number of selected rows

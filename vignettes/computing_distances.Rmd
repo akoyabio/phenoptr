@@ -128,7 +128,7 @@ count_within(csd, from='CD68+', to='CK+', radius=25)
 
 In this result, `from_count` and `to_count` are the total numbers of 
 eligible cells. They agree with the counts in the first table in this
-vignette. `from_with` is the number of `CD68+` cells having at least 
+tutorial. `from_with` is the number of `CD68+` cells having at least 
 one `CK+` cell within 25 micron. `within_mean` is the average number of
 `CK+` cells found within 25 micron of each `CD68+` cell.
 
@@ -170,8 +170,8 @@ categories <- c('Stroma', 'Tumor')
 count_within_batch(base_path, pairs, radii, categories)
 ```
 
-See `help(count_within_batch)` and the vignette 
-_Selecting cells within a cell segmentation table_
+See `help(count_within_batch)` and the tutorial
+[Selecting cells within a cell segmentation table](https://perkinelmer.github.io/phenoptr/articles/selecting_cells.html)
 for additional details.
 
 ----
@@ -180,10 +180,10 @@ for additional details.
 
 The `spatial_distribution_report` function is a bit different from the other
 functions
-mentioned in this vignette. Rather than calculate and return distance metrics,
+mentioned in this tutorial Rather than calculate and return distance metrics,
 it creates a report which shows visually the nearest neighbor relations between
 two phenotypes in a single field. Because the result is a stand-alone HTML file,
-it can't easily be demonstrated in a vignette. For an example, 
+it can't easily be demonstrated in a tutorial For an example, 
 copy and paste this code
 into your own copy of R. It will create a sample report in your user directory.
 

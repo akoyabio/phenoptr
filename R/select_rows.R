@@ -2,16 +2,25 @@
 #'
 #' Select rows of a data frame based on phenotypes or other
 #' expressions.
+#'
+#' `select_rows` implements a flexible mechanism for selecting cells (rows)
+#' from a cell segmentation table. Cells may be selected by single or
+#' multiple phenotype, by expression level, or combinations of both.
+#'
+#' See the tutorial
+#' [Selecting cells within a cell segmentation table](https://perkinelmer.github.io/phenoptr/articles/selecting_cells.html)
+#'for extensive documentation and examples.
+#'
 #' @param csd A data frame
 #' @param sel May be a character vector, a one-sided formula or a list
 #'   containing such. A character vector is interpreted as the name(s) of one or
 #'   more phenotypes and selects any matching phenotype. A formula is
-#'   interpreted as an expression on the columns of \code{csd}. Multiple items
+#'   interpreted as an expression on the columns of `csd`. Multiple items
 #'   are joined with AND.
 #' @param phenotype_column Optional, name of the phenotype column to use for
 #'   simple selection
-#' @return A logical vector of length \code{nrow(csd)} which selects rows
-#'   according to sel.
+#' @return A logical vector of length `nrow(csd)` which selects rows
+#'   according to `sel`.
 #' @export
 #' @examples
 #' csd <- sample_cell_seg_data
@@ -25,6 +34,7 @@
 #' selector <- c('CD8+', 'FoxP3+')
 #' tcells <- csd[select_rows(csd, selector),]
 #' table(tcells$Phenotype)
+#' @md
 select_rows <- function(csd, sel, phenotype_column='Phenotype') {
   stopifnot(is.data.frame(csd))
 

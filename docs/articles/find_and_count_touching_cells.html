@@ -92,7 +92,7 @@
       <h1>Find and count touching cells</h1>
                         <h4 class="author">Kent Johnson</h4>
             
-            <h4 class="date">2017-08-30</h4>
+            <h4 class="date">2017-09-12</h4>
           </div>
 
     
@@ -105,7 +105,9 @@
 <a href="#count-touching-cells-with-existing-phenotypes" class="anchor"></a>Count touching cells with existing phenotypes</h3>
 <p><code>count_touching_cells</code> processes a single field and multiple pairs of phenotypes. The specification of pairs and phenotypes is flexible to accommodate any requirement. The simplest case uses the phenotype names from inForm to select cells. For this case, only the <code>pairs</code> argument is needed.</p>
 <p>For example, this code finds and visualizes touches between <code>CK+</code> and <code>CD8+</code> cells, and also between <code>CK+</code> and <code>CD68+</code> cells:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">cell_seg_path &lt;-<span class="st"> </span><span class="kw"><a href="../reference/sample_cell_seg_data.html">sample_cell_seg_path</a></span>()
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(phenoptr)
+
+cell_seg_path &lt;-<span class="st"> </span><span class="kw"><a href="../reference/sample_cell_seg_data.html">sample_cell_seg_path</a></span>()
 pairs &lt;-<span class="st"> </span><span class="kw">list</span>(
   <span class="kw">c</span>(<span class="st">'CK+'</span>, <span class="st">'CD8+'</span>),
   <span class="kw">c</span>(<span class="st">'CK+'</span>, <span class="st">'CD68+'</span>)
@@ -128,7 +130,7 @@ colors &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="s
 <p>For more flexibility, create new compound phenotypes using the <code>phenotype_rules</code> argument. For example, this code repeats the previous analysis limiting it to tumor cells with PDL1 above a threshold. Note that <code>phenotype_rules</code> only needs to include definitions for phenotypes which don’t match the names in <code>pairs</code>.</p>
 <div class="panel panel-default">
 <div class="panel-body">
-See the vignette <a href="https://perkinelmer.github.io/phenoptr/articles/selecting_cells.html">Selecting cells within a cell segmentation table</a> for more details on selecting pairs.
+See the tutorial <a href="https://perkinelmer.github.io/phenoptr/articles/selecting_cells.html">Selecting cells within a cell segmentation table</a> for more details on selecting pairs.
 </div>
 </div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pairs &lt;-<span class="st"> </span><span class="kw">list</span>(

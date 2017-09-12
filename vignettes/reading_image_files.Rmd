@@ -26,7 +26,7 @@ img {
 </style>
 
 inForm writes a variety of image files in JPEG and TIFF format. This
-vignette shows how to read the image files in R.
+tutorial shows how to read the image files in R.
 
 The R packages `tiff` and `jpeg` provide functions `readTIFF` and `readJPEG`
 which read image data into R matrices. `phenoptr` expands on these with

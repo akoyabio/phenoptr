@@ -29,8 +29,9 @@
 #'
 #' Images are only written when both phenotypes of the pair are represented.
 #'
-#' See the vignette
-#' _Selecting cells within a cell segmentation table_ for more on
+#' See the tutorial
+#' [Selecting cells within a cell segmentation table](https://perkinelmer.github.io/phenoptr/articles/selecting_cells.html)
+#' for more on
 #' the use of `pairs` and `phenotype_rules`.
 #'
 #' @param cell_seg_path The path to the cell seg data file. The same directory

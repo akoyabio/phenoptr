@@ -16,8 +16,9 @@ if (getRversion() >= "2.15.1")
 #'
 #' The `category` parameter may be a single category or a list of categories.
 #'
-#' See the vignette
-#' _Selecting cells within a cell segmentation table_ for more on
+#' See the tutorial
+#' [Selecting cells within a cell segmentation table](https://perkinelmer.github.io/phenoptr/articles/selecting_cells.html)
+#'  for more on
 #' the use of `pairs` and `phenotype_rules`.
 #'
 #' @param base_path Path to a directory containing at least

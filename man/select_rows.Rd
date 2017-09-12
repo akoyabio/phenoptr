@@ -20,11 +20,20 @@ simple selection}
 }
 \value{
 A logical vector of length \code{nrow(csd)} which selects rows
-  according to sel.
+according to \code{sel}.
 }
 \description{
 Select rows of a data frame based on phenotypes or other
 expressions.
+}
+\details{
+\code{select_rows} implements a flexible mechanism for selecting cells (rows)
+from a cell segmentation table. Cells may be selected by single or
+multiple phenotype, by expression level, or combinations of both.
+
+See the tutorial
+\href{https://perkinelmer.github.io/phenoptr/articles/selecting_cells.html}{Selecting cells within a cell segmentation table}
+for extensive documentation and examples.
 }
 \examples{
 csd <- sample_cell_seg_data
