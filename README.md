@@ -15,17 +15,21 @@ visit the Phenoptics&trade;
 
 ## Installation
 
-`phenoptr` requires the R environment for statistical computing. To install R,
-see the [R home page](https://www.r-project.org/).
+`phenoptr` requires the [R environment](https://www.r-project.org/) 
+for statistical computing, version 3.3.0 or higher. To install R,
+visit the [R download](https://cloud.r-project.org/) page.
 The [RStudio IDE](https://www.rstudio.com/products/rstudio/)
 is highly recommended as well.
 
-Installation of `phenoptr` is from GitHub:
-
+1. Install R. Download the most recent version from  https://cloud.r-project.org/.
+1. Install RStudio. Download the desktop version from https://www.rstudio.com/products/rstudio/.
+1. Start RStudio.
+1. Install `phenoptr` from GitHub. In the RStudio console, copy and paste or type these commands (press Enter after each line):
 ```
 install.packages("devtools")
 devtools::install_github("PerkinElmer/phenoptr", build_vignettes=TRUE)
 ```
+1. When requested, enter `1` (Yes) to install BiocInstaller.
 
 ----
 
@@ -38,15 +42,19 @@ introduce the most important features of `phenoptr`.
 demonstrates reading and processing inForm cell segmentation tables. This is a 
 good place to start.
 - [Computing inter-cellular distances](https://perkinelmer.github.io/phenoptr/articles/computing_distances.html)
-introduces most of `phenoptr`'s spatial processing capabilities.
+introduces most of `phenoptr`'s spatial processing capabilities---finding
+nearest
+neighbor distances, counting cells within a radius, and visualizing nearest
+neighbors.
 - [Find and count touching cells](https://perkinelmer.github.io/phenoptr/articles/find_and_count_touching_cells.html)
-covers the remaining spatial processing functions.
+shows how to count touching cells of paired phenotypes.
 
 <div class="panel panel-default"><div class="panel-body">
-For examples showing aggregation across multiple fields and slides see the
-Tutorials in the
+For examples showing aggregation across multiple inForm fields and mulitple
+slides, see the Tutorials in the
 <a href="https://perkinelmer.github.io/phenoptrExamples">phenoptrExamples</a>
-package.</div></div>
+package.
+</div></div>
 
 ### Learning R
 

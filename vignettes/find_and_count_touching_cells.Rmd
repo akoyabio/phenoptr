@@ -26,7 +26,7 @@ showing the touching cells.
 determine which cells are touching. It uses both nuclear and membrane
 segmentation to determine the extent of each cell.
 
-### Count touching cells with existing phenotypes
+## Count touching cells with existing phenotypes
 
 `count_touching_cells` processes a single field and multiple pairs of 
 phenotypes. The specification of pairs and phenotypes is flexible to 
@@ -57,7 +57,7 @@ readr::read_csv('touch_counts.csv', col_types=readr::cols())
 ```
 </small>
 
-### Count touching cells with new phenotypes
+## Count touching cells with new phenotypes
 
 For more flexibility, create new compound phenotypes using
 the `phenotype_rules` argument. For example,
@@ -84,7 +84,7 @@ colors <- list('CK+ PDL1+'='cyan', 'CD8+'='yellow', 'CD68+'='magenta')
 count_touching_cells(cell_seg_path, pairs, colors, phenotype_rules)
 ```
 
-### Count touching cells for multiple fields
+## Count touching cells for multiple fields
 
 Using `purrr::map`, you can find touching cells for all cell seg data
 files in a single directory.
