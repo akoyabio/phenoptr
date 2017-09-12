@@ -50,7 +50,7 @@ neighbors.
 shows how to count touching cells of paired phenotypes.
 
 <div class="panel panel-default"><div class="panel-body">
-For examples showing aggregation across multiple inForm fields and mulitple
+For examples showing aggregation across multiple inForm fields and multiple
 slides, see the Tutorials in the
 <a href="https://perkinelmer.github.io/phenoptrExamples">phenoptrExamples</a>
 package.
