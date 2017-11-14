@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Count cells within a radius. — count_within â€¢ phenoptr</title>
+<title>Count cells within a radius for a single field. — count_within â€¢ phenoptr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -112,7 +112,7 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Count cells within a radius.</h1>
+    <h1>Count cells within a radius for a single field.</h1>
     </div>
 
     
@@ -175,8 +175,12 @@ produced by calling <code><a href='distance_matrix.html'>distance_matrix</a></co
 <code>radius</code> microns. Report the number of <code>from</code> cells containing
 at least <em>one</em> <code>to</code> cell within <code>radius</code> as <code>from_with</code>.
 Report the <em>average</em> number of <code>to</code> cells per
-<code>from</code> cell as <code>within_mean</code>.</p>
-<p>There are some subtleties to this calculation.</p><ul>
+<code>from</code> cell as <code>within_mean</code>.
+    <code>count_within</code> counts cells within a single field. It will give an
+error if run on a merged cell seg data file. To count cells in a merged file,
+use <code><a href='http://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></code> and <code><a href='http://dplyr.tidyverse.org/reference/do.html'>do</a></code> to call
+<code>count_within</code> for each sample in the merged file. See the Examples.</p>
+<p>There are some subtleties to the count calculation.</p><ul>
 <li><p>It is not symmetric in <code>from</code> and <code>to</code>.
   For example the number of tumor cells with a
   macrophage within 25 microns is not the same as the number of macrophages
@@ -211,8 +215,13 @@ for the entire data set.
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>library</span>(<span class='no'>tidyverse</span>)
-<span class='no'>csd</span> <span class='kw'>&lt;-</span> <span class='no'>sample_cell_seg_data</span>
+    <pre class="examples"><div class='input'><span class='fu'>library</span>(<span class='no'>tidyverse</span>)</div><div class='output co'>#&gt; <span class='message'>Loading tidyverse: ggplot2</span>
+#&gt; <span class='message'>Loading tidyverse: tibble</span>
+#&gt; <span class='message'>Loading tidyverse: tidyr</span>
+#&gt; <span class='message'>Loading tidyverse: readr</span>
+#&gt; <span class='message'>Loading tidyverse: purrr</span>
+#&gt; <span class='message'>Loading tidyverse: dplyr</span></div><div class='output co'>#&gt; <span class='message'>Conflicts with tidy packages ---------------------------------------------------</span></div><div class='output co'>#&gt; <span class='message'>filter(): dplyr, stats</span>
+#&gt; <span class='message'>lag():    dplyr, stats</span></div><div class='input'><span class='no'>csd</span> <span class='kw'>&lt;-</span> <span class='no'>sample_cell_seg_data</span>
 
 <span class='co'># Find the number of macrophages with a tumor cell within 10 or 25 microns</span>
 <span class='fu'>count_within</span>(<span class='no'>csd</span>, <span class='kw'>from</span><span class='kw'>=</span><span class='st'>'CD68+'</span>, <span class='kw'>to</span><span class='kw'>=</span><span class='st'>'CK+'</span>, <span class='kw'>radius</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='fl'>10</span>, <span class='fl'>25</span>))</div><div class='output co'>#&gt; # A tibble: 2 x 5
@@ -225,7 +234,13 @@ for the entire data set.
 #&gt;   radius from_count to_count from_with within_mean
 #&gt;    &lt;dbl&gt;      &lt;int&gt;    &lt;int&gt;     &lt;int&gt;       &lt;dbl&gt;
 #&gt; 1     10       2257      417       109  0.05316792
-#&gt; 2     25       2257      417       664  0.60567125</div></pre>
+#&gt; 2     25       2257      417       664  0.60567125</div><div class='input'>
+</div><span class='co'># NOT RUN {</span>
+<span class='co'># If 'merged' is a merged cell seg file, this will run count_within for</span>
+<span class='co'># each sample:</span>
+<span class='no'>merged</span> <span class='kw'>%&gt;%</span> <span class='fu'>group_by</span>(<span class='no'>`Sample Name`</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'>do</span>(<span class='fu'>count_within</span>(<span class='no'>.</span>, <span class='kw'>from</span><span class='kw'>=</span><span class='st'>'CK+'</span>, <span class='kw'>to</span><span class='kw'>=</span><span class='st'>'CD68+'</span>, <span class='kw'>radius</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='fl'>10</span>, <span class='fl'>25</span>)))
+<span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

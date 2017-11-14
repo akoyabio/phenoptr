@@ -2,7 +2,7 @@
 % Please edit documentation in R/average_counts.R
 \name{count_within}
 \alias{count_within}
-\title{Count cells within a radius.}
+\title{Count cells within a radius for a single field.}
 \usage{
 count_within(csd, from, to, radius, category = NA, dst = NULL)
 }
@@ -49,7 +49,12 @@ at least \emph{one} \code{to} cell within \code{radius} as \code{from_with}.
 Report the \emph{average} number of \code{to} cells per
 \code{from} cell as \code{within_mean}.
 
-There are some subtleties to this calculation.
+\code{count_within} counts cells within a single field. It will give an
+error if run on a merged cell seg data file. To count cells in a merged file,
+use \code{\link[dplyr]{group_by}} and \code{\link[dplyr]{do}} to call
+\code{count_within} for each sample in the merged file. See the Examples.
+
+There are some subtleties to the count calculation.
 \itemize{
   \item It is not symmetric in \code{from} and \code{to}.
   For example the number of tumor cells with a
@@ -86,6 +91,13 @@ count_within(csd, from='CD68+', to='CK+', radius=c(10, 25))
 
 # Find the number of tumor cells with a macrophage within 10 or 25 microns
 count_within(csd, from='CK+', to='CD68+', radius=c(10, 25))
+
+\dontrun{
+# If 'merged' is a merged cell seg file, this will run count_within for
+# each sample:
+merged \%>\% group_by(`Sample Name`) \%>\%
+  do(count_within(., from='CK+', to='CD68+', radius=c(10, 25)))
+}
 }
 \seealso{
 Other distance functions: \code{\link{compute_all_nearest_distance}},

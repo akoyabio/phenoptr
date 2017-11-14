@@ -130,7 +130,7 @@ count_within_batch <- function(base_path, pairs, radius, category=NA,
   })
 }
 
-#' Count cells within a radius.
+#' Count cells within a radius for a single field.
 #'
 #' Count the number of \code{from} cells having a \code{to} cell within
 #' \code{radius} microns in tissue category \code{category}.
@@ -143,7 +143,12 @@ count_within_batch <- function(base_path, pairs, radius, category=NA,
 #' Report the \emph{average} number of \code{to} cells per
 #' \code{from} cell as \code{within_mean}.
 #'
-#' There are some subtleties to this calculation.
+#' \code{count_within} counts cells within a single field. It will give an
+#' error if run on a merged cell seg data file. To count cells in a merged file,
+#' use \code{\link[dplyr]{group_by}} and \code{\link[dplyr]{do}} to call
+#' \code{count_within} for each sample in the merged file. See the Examples.
+#'
+#' There are some subtleties to the count calculation.
 #' \itemize{
 #'   \item It is not symmetric in \code{from} and \code{to}.
 #'   For example the number of tumor cells with a
@@ -205,6 +210,13 @@ count_within_batch <- function(base_path, pairs, radius, category=NA,
 #'
 #' # Find the number of tumor cells with a macrophage within 10 or 25 microns
 #' count_within(csd, from='CK+', to='CD68+', radius=c(10, 25))
+#'
+#' \dontrun{
+#' # If 'merged' is a merged cell seg file, this will run count_within for
+#' # each sample:
+#' merged %>% group_by(`Sample Name`) %>%
+#'   do(count_within(., from='CK+', to='CD68+', radius=c(10, 25)))
+#' }
 
 count_within <- function(csd, from, to, radius, category=NA, dst=NULL) {
   # Check for multiple samples, this is probably an error
