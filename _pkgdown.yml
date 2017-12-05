@@ -45,7 +45,10 @@ reference:
   - title: "Read and preprocess inForm data and image files"
     contents:
       - list_cell_seg_files
-      - starts_with("read_")
+      - read_cell_seg_data
+      - get_field_info
+      - read_components
+      - read_maps
   - title: "Compute and visualize spatial relationships between cells"
     contents:
       - find_nearest_distance
