@@ -57,7 +57,7 @@ test_that('count_touching_cells works', {
 })
 
 test_that('replace_invalid_path_characters works', {
-  bad = "<>:\"/\\|?* ";
+  bad = "<>:\"/\\|?* "
 
   expect_equal(replace_invalid_path_characters(bad, "_"), "__________")
 

@@ -15,7 +15,7 @@
 devtools::check(manual = TRUE)
 
 # Linting
-devtools::install_github('jimhester/lintr')
+install.packages("lintr")
 lintr::lint_package()
 
 # Good practices
@@ -41,6 +41,7 @@ spelling::spell_check_package(lang='en_US')
 
 # Build documentation site. `build_site` seems to work better than
 # the RStudio menu which calls `build_site_rstudio`.
+# Add any new functions or vignettes to _pkgdown.yml before building!
 devtools::install_github("hadley/pkgdown")
 pkgdown::build_site()
 
