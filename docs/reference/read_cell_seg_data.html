@@ -140,7 +140,8 @@ be done.</p>
       <td><p>Conversion factor to microns
 (default 2 pixels/micron, the resolution of 20x MSI fields
 taken on Vectra Polaris and Vectra 3.).
-Set to NA to skip conversion.</p></td>
+Set to NA to skip conversion. Set to <code>'auto'</code> to read from
+an associated <code>component_data.tif</code> file.</p></td>
     </tr>
     <tr>
       <th>remove_units</th>
@@ -158,12 +159,13 @@ remove the unit name from expression columns.</p></td>
 
     <p><code>read_cell_seg_data</code> reads both single-image tables and merged tables
 and does useful cleanup on the data:</p><ul>
-<li><p>Removes columns that are all NA
-      (these are typically unused summary columns)</p></li>
-<li><p>Converts percent columns to numeric fractions</p></li>
+<li><p>Removes columns that are all NA.
+      These are typically unused summary columns.</p></li>
+<li><p>Converts percent columns to numeric fractions.</p></li>
 <li><p>Converts pixel distances to microns. The conversion factor may be
-specified as a parameter or by setting
-<code>options(phenoptr.pixels.per.micron)</code>.</p></li>
+specified as a parameter, by setting
+<code>options(phenoptr.pixels.per.micron)</code>, or by reading an associated
+<code>component_data.tif</code> file.</p></li>
 <li><p>Optionally removes units from expression names</p></li>
 <li><p>If the file contains multiple sample names,
       a <code>tag</code> column is created
@@ -171,6 +173,10 @@ specified as a parameter or by setting
       This is useful when a
       short name is needed, for example in chart legends.</p></li>
 </ul>
+    <p>If <code>pixels_per_micron='auto'</code>, <code>read_cell_seg_data</code> looks for
+a <code>component_data.tif</code> file in the same directory as <code>path</code>.
+If found, <code>pixels_per_micron</code> is read from the file <strong>and</strong>
+the cell coordinates are offset to the correct spatial location.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
