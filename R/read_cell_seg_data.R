@@ -82,16 +82,6 @@ read_cell_seg_data <- function(
   if (path=='')
     stop("File name is missing.")
 
-  if (pixels_per_micron=='auto') {
-    component_path = sub('_cell_seg_data.txt', '_component_data.tif', path)
-    stopifnot(file.exists(component_path))
-    info = get_field_info(component_path);
-    pixels_per_micron = 1/info$microns_per_pixel
-    location = info$location
-  } else {
-    location = NA
-  }
-
   # Read the data. Supplying col_types prevents output of the imputed types
   df <- readr::read_tsv(path, na=c('NA', '#N/A'), col_types=readr::cols())
 
@@ -118,9 +108,20 @@ read_cell_seg_data <- function(
     (is.na(col[1]) | col[1]=='') && all(is.na(col) | col==''))
   df <- df[!na_columns]
 
-  # Convert distance to microns.
+  # Convert distance to microns if requested.
   # No way to tell in general if this was done already...
   if (!is.na(pixels_per_micron)) {
+    if (pixels_per_micron=='auto') {
+      # Get pixels_per_micron and field location from component_data.tif
+      component_path = sub('_cell_seg_data.txt', '_component_data.tif', path)
+      stopifnot(file.exists(component_path))
+      info = get_field_info(component_path);
+      pixels_per_micron = 1/info$microns_per_pixel
+      location = info$location
+    } else {
+      location = NA
+    }
+
     cols = get_pixel_columns(df)
     for (col in cols) {
       # If col has a lot of NAs it may have been read as chr
