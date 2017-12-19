@@ -16,7 +16,12 @@ test_that("read_components works", {
                      "CD68 (Opal 620)", "PD1 (Opal 650)", "CK (Opal 690)",
                      "DAPI", "Autofluorescence")
   expect_equal(names(images), expected_names)
+
+  # expect_equivalent checks values only (ignores names)
   expect_equivalent(purrr::map(images, dim), rep(list(c(1400, 1868)), 8))
+  expect_equivalent(purrr::map_dbl(images, min), rep(0, 8))
+  expect_equivalent(purrr::map_int(images, ~as.integer(max(.))),
+                    c(97, 30, 15, 6, 55, 41, 35, 31))
 })
 
 test_that('read_maps works', {

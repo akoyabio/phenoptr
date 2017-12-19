@@ -25,7 +25,10 @@
 read_components <- function(path)
 {
   stopifnot(file.exists(path), endsWith(path, 'component_data.tif'))
-  tif = tiff::readTIFF(path, all=TRUE, info=TRUE, as.is=TRUE)
+
+  # The readTIFF documentation for `as.is`` is misleading.
+  # To read actual float values for components, we want `as.is=FALSE`.
+  tif = tiff::readTIFF(path, all=TRUE, info=TRUE)
 
   # Get the image descriptions and figure out which ones are components
   infos = purrr::map_chr(tif, ~attr(., 'description'))
