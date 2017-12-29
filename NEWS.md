@@ -1,6 +1,8 @@
 # phenoptr 0.1.1.9002
 
 - Add `pixels_per_micron="auto"` option to `read_cell_seg_data()`.
+- Supports tiled component files using the PerkinElmer
+  [fork of the tiff package](https://github.com/PerkinElmer/tiff).
 
 # phenoptr 0.1.1.9001
 

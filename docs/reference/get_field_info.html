@@ -150,7 +150,9 @@ in pixels.</p></dd>
 name. The field size and magnification are read from TIFF tags
 in the file.</p>
 <p>Limited to 1x1 fields due to
-limitations in the <code>tiff</code> package.</p>
+limitations in the <code>tiff</code> package. Install the PerkinElmer
+<a href='https://github.com/PerkinElmer/tiff'>fork</a> of the tiff package to
+remove this limitation.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
@@ -165,7 +167,7 @@ limitations in the <code>tiff</code> package.</p>
     <span class='st'>'Set4_1-6plex_[16142,55840]_component_data.tif'</span>,
     <span class='kw'>package</span><span class='kw'>=</span><span class='st'>'phenoptrExamples'</span>)
   <span class='fu'>get_field_info</span>(<span class='no'>path</span>)
-}</div><div class='output co'>#&gt; <span class='message'>Loading required package: phenoptrExamples</span></div><div class='output co'>#&gt; $image_size
+}</div><div class='output co'>#&gt; $image_size
 #&gt; [1] 1868 1400
 #&gt; 
 #&gt; $microns_per_pixel

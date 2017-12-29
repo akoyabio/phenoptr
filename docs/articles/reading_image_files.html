@@ -92,7 +92,7 @@
       <h1>Reading and displaying inForm image Files</h1>
                         <h4 class="author">Kent Johnson</h4>
             
-            <h4 class="date">2017-09-12</h4>
+            <h4 class="date">2017-12-29</h4>
           </div>
 
     
@@ -142,7 +142,7 @@ EBImage<span class="op">::</span><span class="kw"><a href="http://www.rdocumenta
 <div id="reading-and-displaying-component-data" class="section level2">
 <h2 class="hasAnchor">
 <a href="#reading-and-displaying-component-data" class="anchor"></a>Reading and displaying component data</h2>
-<p>inForm saves component data as multiple 32-bit floating-point images within a single TIFF file. Images smaller than 2K by 2K pixels are saved in “strip” format and may be read by <code><a href="http://www.rdocumentation.org/packages/tiff/topics/readTIFF">tiff::readTIFF()</a></code>. Larger images are saved in “tiled” format which is not supported by <code>readTIFF()</code>. Single fields from Vectra Polaris, Vectra 3 and Mantra are all smaller than 2K by 2K and may be read by these functions; larger fields may not read. The <a href="https://github.com/aoles/RBioFormats"><code>RBioFormats</code></a> package may be an alternative for reading larger component data files.</p>
+<p>inForm saves component data as multiple 32-bit floating-point images within a single TIFF file. Images smaller than 2K by 2K pixels are saved in “strip” format and may be read by <code><a href="http://www.rdocumentation.org/packages/tiff/topics/readTIFF">tiff::readTIFF()</a></code>. Larger images are saved in “tiled” format which is not supported by <code>readTIFF()</code>. Single fields from Vectra Polaris, Vectra 3 and Mantra are all smaller than 2K by 2K and may be read by these functions; larger fields may not read. Install the PerkinElmer <a href="https://github.com/PerkinElmer/tiff">fork</a> of the tiff package to support tiled images and remove this limitation.</p>
 <p><code><a href="http://www.rdocumentation.org/packages/phenoptr/topics/read_components">phenoptr::read_components()</a></code> is a wrapper around <code>readTIFF()</code> which reads the individual component images from a <code>component_data.tif</code> file. It keeps the full-resolution component images, extracts the component names from the image descriptions, and returns a named list of image matrices.</p>
 <p>Component data may be displayed using <code>plot.raster</code> or <code><a href="http://www.rdocumentation.org/packages/EBImage/topics/display">EBImage::display</a></code>. See the next section for examples of displaying grayscale images such as these.</p>
 <hr>

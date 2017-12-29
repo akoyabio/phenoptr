@@ -31,7 +31,9 @@ name. The field size and magnification are read from TIFF tags
 in the file.
 
 Limited to 1x1 fields due to
-limitations in the \code{tiff} package.
+limitations in the \code{tiff} package. Install the PerkinElmer
+\href{https://github.com/PerkinElmer/tiff}{fork} of the tiff package to
+remove this limitation.
 }
 \examples{
 if (require('phenoptrExamples')) {

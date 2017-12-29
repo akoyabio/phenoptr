@@ -11,7 +11,9 @@
 #' column corresponding to X.
 #'
 #' Limited to 1x1 fields due to
-#' limitations in the `tiff` package.
+#' limitations in the `tiff` package. Install the PerkinElmer
+#' [fork](https://github.com/PerkinElmer/tiff) of the tiff package to
+#' remove this limitation.
 #' @param path Path to the `component_data.tif` file.
 #' @return A named list of matrices, one for each component.
 #' @export
@@ -25,7 +27,7 @@
 read_components <- function(path)
 {
   stopifnot(file.exists(path), endsWith(path, 'component_data.tif'))
-  tif = tiff::readTIFF(path, all=TRUE, info=TRUE, as.is=TRUE)
+  tif = tiff::readTIFF(path, all=TRUE, info=TRUE)
 
   # Get the image descriptions and figure out which ones are components
   infos = purrr::map_chr(tif, ~attr(., 'description'))
@@ -47,7 +49,9 @@ read_components <- function(path)
 #' in the file.
 #'
 #' Limited to 1x1 fields due to
-#' limitations in the `tiff` package.
+#' limitations in the `tiff` package. Install the PerkinElmer
+#' [fork](https://github.com/PerkinElmer/tiff) of the tiff package to
+#' remove this limitation.
 #' @param path Path to the `component_data.tif` file.
 #' @return A named list with values
 #'   \describe{
@@ -80,10 +84,15 @@ get_field_info = function(path) {
   if (any(is.na(position)))
     stop("Field position not found in file name.")
 
-  tif = tiff::readTIFF(path, all=FALSE, info=TRUE, as.is=TRUE)
-  info = attributes(tif)
+  # Use readTIFFDirectory if available, it is faster and works with tiled images
+  if ('readTIFFDirectory' %in% ls(getNamespace('tiff')))
+    info = tiff::readTIFFDirectory(path, all=FALSE)
+  else {
+    tif = tiff::readTIFF(path, all=FALSE, info=TRUE)
+    info = attributes(tif)
+  }
 
-  required_attributes = c('dim', 'x.resolution', 'resolution.unit')
+  required_attributes = c('width', 'length', 'x.resolution', 'resolution.unit')
   missing_attributes = setdiff(required_attributes, names(info))
   if (length(missing_attributes) > 0) {
     missing = paste(missing_attributes, collapse=', ')
@@ -94,7 +103,7 @@ get_field_info = function(path) {
     stop(paste('Unsupported resolution unit:', info$resolution.unit))
 
   result = list()
-  result$image_size = as.numeric(info$dim[2:1]) # TIFF size is rows, columns
+  result$image_size = c(info$width, info$length)
   result$microns_per_pixel = as.numeric(10000/info$x.resolution)
   result$field_size = result$image_size * result$microns_per_pixel
   result$location = position - result$field_size/2

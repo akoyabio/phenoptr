@@ -103,9 +103,9 @@ Images smaller than 2K by 2K pixels are saved in "strip" format and may
 be read by `tiff::readTIFF()`. Larger images are saved in "tiled" format
 which is not supported by `readTIFF()`. Single fields from Vectra Polaris,
 Vectra 3 and Mantra are all smaller than 2K by 2K and may be read
-by these functions; larger fields may not read. 
-The [`RBioFormats`](https://github.com/aoles/RBioFormats) package may
-be an alternative for reading larger component data files.
+by these functions; larger fields may not read.  Install the PerkinElmer
+[fork](https://github.com/PerkinElmer/tiff) of the tiff package to
+support tiled images and remove this limitation.
 
 `phenoptr::read_components()` is a wrapper around `readTIFF()` which reads
 the individual component images from a `component_data.tif` file. 
