@@ -25,7 +25,9 @@ i.e. (0, 0) at the top left and the row corresponding to Y and
 column corresponding to X.
 
 Limited to 1x1 fields due to
-limitations in the \code{tiff} package.
+limitations in the \code{tiff} package. Install the PerkinElmer
+\href{https://github.com/PerkinElmer/tiff}{fork} of the tiff package to
+remove this limitation.
 }
 \examples{
 \dontrun{
@@ -34,6 +36,7 @@ components <- read_components(path)
 }
 }
 \seealso{
-Other file readers: \code{\link{list_cell_seg_files}},
+Other file readers: \code{\link{get_field_info}},
+  \code{\link{list_cell_seg_files}},
   \code{\link{read_cell_seg_data}}, \code{\link{read_maps}}
 }

@@ -116,6 +116,27 @@ test_that('Setting pixels_per_micron works', {
   expect_equal(as.numeric(d[1, 'Cell X Position']), 268/4)
 })
 
+test_that('auto pixels_per_micron works', {
+  skip_if_not_installed('phenoptrExamples')
+  path = system.file('extdata', 'samples',
+                     'Set4_1-6plex_[16142,55840]_cell_seg_data.txt',
+                     package='phenoptrExamples')
+  d = read_cell_seg_data(path, pixels_per_micron='auto')
+
+  # Check for X, Y in known range
+  component_path = sub('_cell_seg_data.txt', '_component_data.tif', path)
+  info = get_field_info(component_path)
+  min_x = info$location[1]
+  max_x = info$location[1] + info$image_size[1]*info$microns_per_pixel
+  expect_equal(sum(d$`Cell X Position`>=min_x), nrow(d))
+  expect_equal(sum(d$`Cell X Position`<=max_x), nrow(d))
+
+  min_y = info$location[2]
+  max_y = info$location[2] + info$image_size[2]*info$microns_per_pixel
+  expect_equal(sum(d$`Cell Y Position`>=min_y), nrow(d))
+  expect_equal(sum(d$`Cell Y Position`<=max_y), nrow(d))
+})
+
 test_that('remove_units=FALSE works', {
   d = read_cell_seg_data(path, remove_units=FALSE)
   # Check size

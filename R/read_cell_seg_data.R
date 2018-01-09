@@ -26,12 +26,13 @@ list_cell_seg_files <- function(path, ...) {
 #' \code{read_cell_seg_data} reads both single-image tables and merged tables
 #' and does useful cleanup on the data:
 #' \itemize{
-#' \item Removes columns that are all NA
-#'       (these are typically unused summary columns)
-#' \item Converts percent columns to numeric fractions
+#' \item Removes columns that are all NA.
+#'       These are typically unused summary columns.
+#' \item Converts percent columns to numeric fractions.
 #' \item Converts pixel distances to microns. The conversion factor may be
-#' specified as a parameter or by setting
-#' \code{options(phenoptr.pixels.per.micron)}.
+#' specified as a parameter, by setting
+#' \code{options(phenoptr.pixels.per.micron)}, or by reading an associated
+#' \code{component_data.tif} file.
 #' \item Optionally removes units from expression names
 #' \item If the file contains multiple sample names,
 #'       a \code{tag} column is created
@@ -39,11 +40,18 @@ list_cell_seg_files <- function(path, ...) {
 #'       This is useful when a
 #'       short name is needed, for example in chart legends.
 #' }
+#'
+#' If \code{pixels_per_micron='auto'}, \code{read_cell_seg_data} looks for
+#' a \code{component_data.tif} file in the same directory as \code{path}.
+#' If found, \code{pixels_per_micron} is read from the file \strong{and}
+#' the cell coordinates are offset to the correct spatial location.
+#'
 #' @param path Path to the file to read, or NA to use a file chooser.
 #' @param pixels_per_micron Conversion factor to microns
 #'        (default 2 pixels/micron, the resolution of 20x MSI fields
 #'        taken on Vectra Polaris and Vectra 3.).
-#'        Set to NA to skip conversion.
+#'        Set to NA to skip conversion. Set to \code{'auto'} to read from
+#'        an associated \code{component_data.tif} file.
 #' @param remove_units If TRUE (default),
 #'        remove the unit name from expression columns.
 #' @return A \code{\link[tibble]{data_frame}}
@@ -100,9 +108,20 @@ read_cell_seg_data <- function(
     (is.na(col[1]) | col[1]=='') && all(is.na(col) | col==''))
   df <- df[!na_columns]
 
-  # Convert distance to microns.
+  # Convert distance to microns if requested.
   # No way to tell in general if this was done already...
   if (!is.na(pixels_per_micron)) {
+    if (pixels_per_micron=='auto') {
+      # Get pixels_per_micron and field location from component_data.tif
+      component_path = sub('_cell_seg_data.txt', '_component_data.tif', path)
+      stopifnot(file.exists(component_path))
+      info = get_field_info(component_path);
+      pixels_per_micron = 1/info$microns_per_pixel
+      location = info$location
+    } else {
+      location = NA
+    }
+
     cols = get_pixel_columns(df)
     for (col in cols) {
       # If col has a lot of NAs it may have been read as chr
@@ -110,6 +129,12 @@ read_cell_seg_data <- function(
         df[[col]] = as.numeric(df[[col]])
       df[[col]] = df[[col]] / pixels_per_micron
       names(df)[col] = sub('pixels', 'microns', names(df)[col])
+    }
+
+    # Position columns only get an offset, if available
+    if (!anyNA(location)) {
+      df$`Cell X Position` = df$`Cell X Position` + location[1]
+      df$`Cell Y Position` = df$`Cell Y Position` + location[2]
     }
 
     cols = get_area_columns(df)

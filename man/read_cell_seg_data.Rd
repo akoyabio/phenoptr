@@ -14,7 +14,8 @@ read_cell_seg_data(path = NA,
 \item{pixels_per_micron}{Conversion factor to microns
 (default 2 pixels/micron, the resolution of 20x MSI fields
 taken on Vectra Polaris and Vectra 3.).
-Set to NA to skip conversion.}
+Set to NA to skip conversion. Set to \code{'auto'} to read from
+an associated \code{component_data.tif} file.}
 
 \item{remove_units}{If TRUE (default),
 remove the unit name from expression columns.}
@@ -35,12 +36,13 @@ be done.
 \code{read_cell_seg_data} reads both single-image tables and merged tables
 and does useful cleanup on the data:
 \itemize{
-\item Removes columns that are all NA
-      (these are typically unused summary columns)
-\item Converts percent columns to numeric fractions
+\item Removes columns that are all NA.
+      These are typically unused summary columns.
+\item Converts percent columns to numeric fractions.
 \item Converts pixel distances to microns. The conversion factor may be
-specified as a parameter or by setting
-\code{options(phenoptr.pixels.per.micron)}.
+specified as a parameter, by setting
+\code{options(phenoptr.pixels.per.micron)}, or by reading an associated
+\code{component_data.tif} file.
 \item Optionally removes units from expression names
 \item If the file contains multiple sample names,
       a \code{tag} column is created
@@ -48,6 +50,11 @@ specified as a parameter or by setting
       This is useful when a
       short name is needed, for example in chart legends.
 }
+
+If \code{pixels_per_micron='auto'}, \code{read_cell_seg_data} looks for
+a \code{component_data.tif} file in the same directory as \code{path}.
+If found, \code{pixels_per_micron} is read from the file \strong{and}
+the cell coordinates are offset to the correct spatial location.
 }
 \examples{
 path <- sample_cell_seg_path()
@@ -64,6 +71,7 @@ csd <- purrr::map_df(paths, read_cell_seg_data)
 }
 }
 \seealso{
-Other file readers: \code{\link{list_cell_seg_files}},
+Other file readers: \code{\link{get_field_info}},
+  \code{\link{list_cell_seg_files}},
   \code{\link{read_components}}, \code{\link{read_maps}}
 }
