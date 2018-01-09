@@ -37,7 +37,7 @@ covr::report(covr::package_coverage())
 # Run coverage for the entire package, including examples and vignettes
 covr::report(covr::package_coverage(type='all'))
 
-spelling::spell_check_package(lang='en_US')
+spelling::spell_check_package()
 
 # Build documentation site. `build_site` seems to work better than
 # the RStudio menu which calls `build_site_rstudio`.

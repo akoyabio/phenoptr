@@ -1,4 +1,4 @@
-linters: with_defaults(absolute_path_linter,
+linters: with_defaults(absolute_paths_linter,
   assignment_linter=NULL,
   infix_spaces_linter=NULL,
   single_quotes_linter=NULL,
