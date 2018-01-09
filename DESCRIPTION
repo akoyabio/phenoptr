@@ -32,10 +32,10 @@ Suggests: testthat,
     covr,
     phenoptrExamples
 VignetteBuilder: knitr
-URL: https://github.com/PerkinElmer/phenoptr
+URL: https://perkinelmer.github.io/phenoptr/
 BugReports: https://github.com/PerkinElmer/phenoptr/issues
-Maintainer: Kent Johnson <kent.johnson@perkinelmer.com>
+Maintainer: Kent S Johnson <kent.johnson@perkinelmer.com>
 Authors@R: c(
-    person("Kent", "Johnson", role = c("aut", "cre"),
+    person("Kent S", "Johnson", role = c("aut", "cre"),
            email = "kent.johnson@perkinelmer.com"),
     person("PerkinElmer, Inc.", role="cph"))

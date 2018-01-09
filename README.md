@@ -86,3 +86,8 @@ will help you get started.
 
 See the [Reference](https://perkinelmer.github.io/phenoptr/reference/index.html)
 section of the documentation for details on individual functions.
+
+To cite package `phenoptr` in publications use:
+
+&nbsp;&nbsp;Kent S Johnson (2018). phenoptr: inForm Helper Functions. R package version 0.1.1.9002.  
+&nbsp;&nbsp;https://perkinelmer.github.io/phenoptr/

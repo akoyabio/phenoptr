@@ -29,13 +29,13 @@ which take one, or set \code{options(phenoptr.pixels.per.micron=<new value>)}.
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://github.com/PerkinElmer/phenoptr}
+  \item \url{https://perkinelmer.github.io/phenoptr/}
   \item Report bugs at \url{https://github.com/PerkinElmer/phenoptr/issues}
 }
 
 }
 \author{
-\strong{Maintainer}: Kent Johnson \email{kent.johnson@perkinelmer.com}
+\strong{Maintainer}: Kent S Johnson \email{kent.johnson@perkinelmer.com}
 
 Other contributors:
 \itemize{
