@@ -21,7 +21,8 @@ Imports:
     stringr,
     tibble,
     tidyverse,
-    tiff
+    tiff,
+    xml2
 Depends: R (>= 3.3.0)
 License: Zlib | file LICENSE
 Copyright: PerkinElmer
