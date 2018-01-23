@@ -5,7 +5,6 @@
 # Adding a new function requires several touches:
 # - The code for the function
 # - Add to _pkgdowr.yml
-# - Add to README.md
 
 # Updating Version:
 # - Change DESCRIPTION

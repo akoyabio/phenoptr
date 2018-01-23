@@ -1,3 +1,7 @@
+# Suppress CMD CHECK notes for things that look like global vars
+if (getRversion() >= "2.15.1")
+  utils::globalVariables(c("counts", "mids"))
+
 #' Estimate cell density in bands from a tissue boundary.
 #'
 #' Given a cell seg table and an image containing masks for two tissue
@@ -32,7 +36,6 @@
 #'    `density` \tab The density of cells of the phenotype in the band.\cr
 #'  }
 #' @examples
-#' \dontrun{
 #' # Compute density for the sample data
 #' values <- density_bands(sample_cell_seg_path(),
 #'   list("CD8+", "CD68+", "FoxP3+"),
@@ -44,7 +47,6 @@
 #'   geom_line(size=2) +
 #'   labs(x='Distance from tumor boundary (microns)',
 #'        y='Estimated cell density (cells per sq mm)')
-#' }
 #' @family distance functions
 #' @export
 #' @md
@@ -118,7 +120,7 @@ density_bands = function(cell_seg_path, phenotypes, positive, negative,
   cut_points = seq(min_cut, max_cut, width)
 
   # Compute areas by counting pixels in the distance matrix
-  area = hist(distance$v, breaks=cut_points, plot=FALSE)
+  area = graphics::hist(distance$v, breaks=cut_points, plot=FALSE)
 
   # Normalize by pixel size ^ 2
   areas = as_data_frame(area[c('mids', 'counts')]) %>%
@@ -127,9 +129,11 @@ density_bands = function(cell_seg_path, phenotypes, positive, negative,
 
   # Count cells for each phenotype separately
   cell_counts = csd %>% group_by(Phenotype) %>%
-    summarize(count = list(hist(distance, breaks=cut_points, plot=FALSE))) %>%
-    mutate(count = map(count, ~as_data_frame(.x[c('mids', 'counts')]))) %>%
-    unnest %>%
+    summarize(count =
+            list(graphics::hist(distance, breaks=cut_points, plot=FALSE))) %>%
+    mutate(count = purrr::map(count,
+                              ~as_data_frame(.x[c('mids', 'counts')]))) %>%
+    tidyr::unnest() %>%
     rename(count=counts, phenotype=Phenotype)
 
   result = cell_counts %>% inner_join(areas, by='mids') %>%

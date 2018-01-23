@@ -1,3 +1,7 @@
+# Suppress CMD CHECK notes for things that look like global vars
+if (getRversion() >= "2.15.1")
+  utils::globalVariables(c("points"))
+
 #' Estimate cell density at distance from a tissue boundary.
 #'
 #' Given a cell seg table and an image containing masks for two tissue
@@ -68,16 +72,17 @@
 #' Spatial Point Patterns: Methodology and Applications with R.
 #' Chapman and Hall/CRC Press, 2015. Sections 6.6.3-6.6.4.
 #' @examples
-#' \dontrun{
 #' # Compute density for the sample data
 #' values <- density_at_distance(sample_cell_seg_path(),
 #'   list("CD8+", "CD68+", "FoxP3+"),
 #'   positive="Stroma", negative="Tumor")
 #'
+#' # Combine all the densities into a single data.frame
+#' all_rho <- purrr::map_dfr(values$rhohat, ~., .id='phenotype')
+#' all_rho <- as.data.frame(all_rho)
+#'
 #' # Plot the densities in a single plot
 #' library(ggplot2)
-#' all_rho = purrr::map_dfr(values$rhohat, ~., .id='phenotype') %>%
-#'   as_data_frame
 #' ggplot(all_rho, aes(X, rho*1000000, color=phenotype)) +
 #'   geom_line(size=2) +
 #'   labs(x='Distance from tumor boundary (microns)',
@@ -90,7 +95,6 @@
 #'     sub='Positive (blue) distances are away from tumor')
 #'   plot(values$points[values$points$marks==name, drop=TRUE],
 #'     add=TRUE, use.marks=FALSE, cex=0.5, col=rgb(0,0,0,0.5))
-#' }
 #' }
 #' @family distance functions
 #' @export
@@ -200,7 +204,7 @@ density_at_distance = function(cell_seg_path, phenotypes, positive, negative,
   list(points=pp, rhohat=all_rho, distance=distance, mask=valid_mask)
 }
 
-#' Plot a distance map using a diverging color scale with white (grey) at 0
+#' Plot a distance map using a diverging color scale with white at 0
 #'
 #' @param im A pixel image of class \code{\link[spatstat]{im}}.
 #' @param title Title for the plot.
@@ -218,7 +222,7 @@ plot_diverging = function(im, title, show_boundary=FALSE, ...) {
   if (show_boundary) colors[(color_levels+1)/2] = 'gray90'
   max_absolute_value=max(abs(im)) # what is the maximum absolute value of im?
   color_sequence=seq(-max_absolute_value,max_absolute_value,length.out=color_levels+1)
-  plot(im, main=title, col=colors, breaks=color_sequence, ...)
+  graphics::plot(im, main=title, col=colors, breaks=color_sequence, ...)
 }
 
 #' Parse the description tag of the tissue map image read from an
@@ -237,5 +241,5 @@ parse_tissue_description = function(img) {
     entry %>% xml2::xml_find_first('Name') %>% xml2::xml_text()
   })
 
-  setNames(1:length(layers)-1, layers)
+  purrr::set_names(1:length(layers)-1, layers)
 }

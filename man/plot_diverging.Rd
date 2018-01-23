@@ -2,7 +2,7 @@
 % Please edit documentation in R/density_at_distance.R
 \name{plot_diverging}
 \alias{plot_diverging}
-\title{Plot a distance map using a diverging color scale with white (grey) at 0}
+\title{Plot a distance map using a diverging color scale with white at 0}
 \usage{
 plot_diverging(im, title, show_boundary = FALSE, ...)
 }
@@ -16,5 +16,5 @@ plot_diverging(im, title, show_boundary = FALSE, ...)
 \item{...}{Additional arguments passed to \code{\link[spatstat]{plot.im}}}
 }
 \description{
-Plot a distance map using a diverging color scale with white (grey) at 0
+Plot a distance map using a diverging color scale with white at 0
 }

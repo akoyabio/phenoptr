@@ -21,6 +21,7 @@ Imports:
     spatstat,
     stringr,
     tibble,
+    tidyr,
     tidyverse,
     tiff,
     xml2

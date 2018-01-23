@@ -89,16 +89,17 @@ you must enable a parallel backend, for example using
 }
 
 \examples{
-\dontrun{
 # Compute density for the sample data
 values <- density_at_distance(sample_cell_seg_path(),
   list("CD8+", "CD68+", "FoxP3+"),
   positive="Stroma", negative="Tumor")
 
+# Combine all the densities into a single data.frame
+all_rho <- purrr::map_dfr(values$rhohat, ~., .id='phenotype')
+all_rho <- as.data.frame(all_rho)
+
 # Plot the densities in a single plot
 library(ggplot2)
-all_rho = purrr::map_dfr(values$rhohat, ~., .id='phenotype') \%>\%
-  as_data_frame
 ggplot(all_rho, aes(X, rho*1000000, color=phenotype)) +
   geom_line(size=2) +
   labs(x='Distance from tumor boundary (microns)',
@@ -111,7 +112,6 @@ for (name in names(values$rhohat)) {
     sub='Positive (blue) distances are away from tumor')
   plot(values$points[values$points$marks==name, drop=TRUE],
     add=TRUE, use.marks=FALSE, cex=0.5, col=rgb(0,0,0,0.5))
-}
 }
 }
 \references{

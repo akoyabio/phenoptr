@@ -50,7 +50,6 @@ making it straightforward to aggregate across images from a
 single sample.
 }
 \examples{
-\dontrun{
 # Compute density for the sample data
 values <- density_bands(sample_cell_seg_path(),
   list("CD8+", "CD68+", "FoxP3+"),
@@ -62,7 +61,6 @@ ggplot(values, aes(midpoint, density*1000000, color=phenotype)) +
   geom_line(size=2) +
   labs(x='Distance from tumor boundary (microns)',
        y='Estimated cell density (cells per sq mm)')
-}
 }
 \seealso{
 Other distance functions: \code{\link{compute_all_nearest_distance}},
