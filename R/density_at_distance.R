@@ -9,17 +9,12 @@
 #' is used as the covariate and density is estimated separately for each
 #' phenotype.
 #'
-#' The `rho_hat` element of the returned list is a
-#' \code{\link[tibble]{data_frame}} containing the results of the density
-#' estimation for each phenotype. It has six columns:
-#'   \tabular{ll}{
-#'    `phenotype` \tab The phenotype name.\cr
-#'    `distance` \tab Distance from tissue boundary (positive or negative),
-#'    i.e. the covariate for density estimation.\cr
-#'    `rho` \tab The density estimate from \code{\link[spatstat]{rhohat}},
-#'      in cells per square micron.\cr
-#'    `var`, `hi`, `lo` \tab The variance and high and low estimates of `rho`.
-#' }
+#' The `rhohat` element of the returned list is a
+#' `list` containing the results of the density
+#' estimation for each phenotype. Each list value is a `rhohat` object,
+#' see \code{\link[spatstat]{methods.rhohat}}. Density estimates are
+#' in cells per square micron; multiply by 1,000,000 for cells per square
+#' millimeter.
 #'
 #' @section Edge correction:
 #'
@@ -32,7 +27,19 @@
 #' to cells which are closer to the tissue boundary in the image than they are
 #' to the edge of the image or any other tissue class.
 #'
-#' @param cell_seg_path Path to cell segmentation data.
+#' For both `mask==TRUE` and `mask==FALSE`, the results tend to be unreliable
+#' near the distance extremes because the tissue area at that distance
+#' will be relatively small so random variation in cell counts is magnified.
+#'
+#' @section Parallel computation:
+#'
+#' `density_at_distance` supports parallel computation using the
+#' \code{\link[foreach]{foreach-package}}. When this is enabled, the densities
+#' for each phenotype will be computed in parallel. To use this feature,
+#' you must enable a parallel backend, for example using
+#' \code{\link[doParallel]{registerDoParallel}}.
+#'
+#' @param cell_seg_path Path to a cell segmentation data file.
 #' @param phenotypes Optional named list of phenotypes to process.
 #'   \code{names(phenotypes)} are the names of the resulting phenotypes.
 #'   The values are in any format accepted by \code{\link{select_rows}}.
@@ -45,19 +52,21 @@
 #' to exclude cells which are closer to the edge of the image than to the
 #' tissue boundary.
 #' @param pixels_per_micron Conversion factor to microns.
-#' @param smoother,method,... Additional arguments passed to
-#' \code{\link[spatstat]{rhohat}}.
-#' @return Returns a `list` containing two or three items:
+#' @param ... Additional arguments passed to \code{\link[spatstat]{rhohat}}.
+#' Default parameters are `method="ratio", smoother="kernel", bw="nrd"`.
+#' @return Returns a `list` containing four items:
 #'   \tabular{ll}{
-#'    `rho_hat` \tab The density estimate (see Details).\cr
-#'    `distance` \tab The distance map, a pixel image of class
-#'      \code{\link[spatstat]{im}}.\cr
-#'    `mask` \tab If `mask` is `TRUE`,
-#'    a matrix showing the locations used.\cr
+#'    `points` \tab The points used, marked with their phenotype,
+#'    a \code{\link[spatstat]{ppp.object}}.\cr
+#'    `rhohat` \tab The density estimates (see Details).\cr
+#'    `distance` \tab The distance map, a pixel image
+#'      (\code{\link[spatstat]{im.object}}).\cr
+#'    `mask` \tab A mask matrix showing the locations which are closer to
+#'    the tissue boundary than to the border or other regions.\cr
 #'  }
 #' @references A. Baddeley, E. Rubak and R.Turner.
 #' Spatial Point Patterns: Methodology and Applications with R.
-#' Chapman and Hall/CRC Press, 2015. Section 6.6.3.
+#' Chapman and Hall/CRC Press, 2015. Sections 6.6.3-6.6.4.
 #' @examples
 #' \dontrun{
 #' # Compute density for the sample data
@@ -65,23 +74,32 @@
 #'   list("CD8+", "CD68+", "FoxP3+"),
 #'   positive="Stroma", negative="Tumor")
 #'
-#' # Plot the densities
+#' # Plot the densities in a single plot
 #' library(ggplot2)
-#' ggplot(values[['rho_hat']], aes(distance, rho, color=phenotype)) +
-#'   geom_line()
+#' all_rho = purrr::map_dfr(values$rhohat, ~., .id='phenotype') %>%
+#'   as_data_frame
+#' ggplot(all_rho, aes(X, rho*1000000, color=phenotype)) +
+#'   geom_line(size=2) +
+#'   labs(x='Distance from tumor boundary (microns)',
+#'        y='Estimated cell density (cells per sq mm)')
 #'
-#' # Show the distance map with the mask superimposed and CD8+ cells drawn
-#' plot_diverging(values$distance, title='Distance')
-#' plot(values$mask, add=TRUE, col=c('black', 'transparent'))
-#' cells = subset(sample_cell_seg_data, Phenotype=='CD8+')
-#' points(cells$`Cell X Position`, cells$`Cell Y Position`)
+#' # Show the distance map with cells superimposed
+#' for (name in names(values$rhohat)) {
+#'   plot_diverging(values$distance, show_boundary=TRUE,
+#'     title=paste('Distance from tumor for', name, 'cells'),
+#'     sub='Positive (blue) distances are away from tumor')
+#'   plot(values$points[values$points$marks==name, drop=TRUE],
+#'     add=TRUE, use.marks=FALSE, cex=0.5, col=rgb(0,0,0,0.5))
 #' }
+#' }
+#' @family distance functions
 #' @export
 #' @md
 #' @importFrom magrittr "%>%"
+#' @importFrom foreach "%dopar%"
 density_at_distance = function(cell_seg_path, phenotypes, positive, negative,
-   mask=TRUE, pixels_per_micron=getOption('phenoptr.pixels.per.micron'),
-   smoother='local', method='reweight', ...)
+   mask=FALSE, pixels_per_micron=getOption('phenoptr.pixels.per.micron'),
+   ...)
 {
   map_path = sub('_cell_seg_data.txt', '_binary_seg_maps.tif', cell_seg_path)
   stopifnot(file.exists(cell_seg_path), file.exists(map_path))
@@ -104,13 +122,13 @@ density_at_distance = function(cell_seg_path, phenotypes, positive, negative,
     if (all(purrr::map_lgl(phenotypes, ~is.character(.) && length(.)==1)))
       phenotypes = purrr::set_names(phenotypes)
     stopifnot(!is.null(names(phenotypes)))
-
-    # Mutate csd to have the desired phenotypes
-    csd = purrr::map(names(phenotypes),
-        ~(csd[select_rows(csd, phenotypes[[.x]]),] %>%
-          dplyr::mutate(Phenotype=.x))) %>%
-      dplyr::bind_rows()
   }
+
+  # Mutate csd to have the desired phenotypes
+  csd = purrr::map(names(phenotypes),
+      ~(csd[select_rows(csd, phenotypes[[.x]]),] %>%
+        dplyr::mutate(Phenotype=.x))) %>%
+    dplyr::bind_rows()
 
   # Read the mask and create separate masks for positive and negative regions
   maps = read_maps(map_path)
@@ -135,21 +153,23 @@ density_at_distance = function(cell_seg_path, phenotypes, positive, negative,
   # Positive distance is into the positive mask == away from negative
   distance = dist_from_neg - dist_from_pos
 
+  # Make the mask
+  # We want a distance map from anything that is not positive or negative
+  boundary_mask = (!pos_mask) & (!neg_mask)
+
+  # Put a 1-pixel border around boundary_mask so we get distance from the edge
+  boundary_mask[c(1, nrow(boundary_mask)),]= TRUE
+  boundary_mask[,c(1, ncol(boundary_mask))]= TRUE
+
+  boundary_win =
+    spatstat::owin(mask=boundary_mask, xrange=xrange, yrange=yrange)
+  dist_from_boundary = spatstat::distmap(boundary_win)
+
+  valid_mask =
+    dist_from_pos<dist_from_boundary & dist_from_neg<dist_from_boundary
+
   if (mask) {
-    # We want a distance map from anything that is not positive or negative
-    boundary_mask = (!pos_mask) & (!neg_mask)
-
-    # Put a 1-pixel border around boundary_mask so we get distance from the edge
-    boundary_mask[c(1, nrow(boundary_mask)),]= TRUE
-    boundary_mask[,c(1, ncol(boundary_mask))]= TRUE
-
-    boundary_win =
-      spatstat::owin(mask=boundary_mask, xrange=xrange, yrange=yrange)
-    dist_from_boundary = spatstat::distmap(boundary_win)
-
     # Valid region is anything closer to positive or negative than to boundary
-    valid_mask =
-      dist_from_pos<dist_from_boundary & dist_from_neg<dist_from_boundary
     valid_win = spatstat::owin(mask=as.matrix(valid_mask),
                                xrange=xrange, yrange=yrange)
   } else {
@@ -159,36 +179,46 @@ density_at_distance = function(cell_seg_path, phenotypes, positive, negative,
   pp = spatstat::ppp(csd$`Cell X Position`, csd$`Cell Y Position`,
                     window=valid_win, marks=factor(csd$Phenotype))
 
+  # Marshal args for rhohat
+  params = list(...)
+  params$covariate = distance
+
+  # Add defaults
+  if (!'method' %in% names(params)) params$method = 'ratio'
+  if (!'smoother' %in% names(params)) params$smoother = 'kernel'
+  if (!'bw' %in% names(params)) params$bw = 'nrd'
+
   # Distance estimation for each phenotype separately
-  all_rho = purrr::map_dfr(split(pp), function(points)
-    spatstat::rhohat(points, covariate=distance,
-                    smoother=smoother, method=method, ...),
-    .id='phenotype')
+  split_pp = split(pp)
+  all_rho = foreach::foreach(points=split_pp, .packages='spatstat') %dopar% {
+    local_params = params
+    local_params$object = points
+    do.call(spatstat::rhohat, local_params)
+   }
+  names(all_rho) = names(split_pp)
 
-  all_rho = tibble::as_tibble(all_rho)
-
-  value = list(rho_hat=all_rho, distance=distance)
-  if (mask)
-    value[['mask']] = valid_mask
-  value
+  list(points=pp, rhohat=all_rho, distance=distance, mask=valid_mask)
 }
 
 #' Plot a distance map using a diverging color scale with white (grey) at 0
 #'
 #' @param im A pixel image of class \code{\link[spatstat]{im}}.
 #' @param title Title for the plot.
+#' @param show_boundary Should the boundary be highlighted?
+#' @param ... Additional arguments passed to \code{\link[spatstat]{plot.im}}
 #' @md
 #' @export
-plot_diverging = function(im, title) {
+plot_diverging = function(im, title, show_boundary=FALSE, ...) {
   if (missing(title))
     title <- deparse(substitute(im))
 
   # create color ramp from blue to red
-  col5 <- grDevices::colorRampPalette(c('blue', 'gray96', 'red'))
+  color_levels=101 # the number of colors to use
+  colors = grDevices::colorRampPalette(c('blue', 'gray96', 'red'))(n=color_levels)
+  if (show_boundary) colors[(color_levels+1)/2] = 'gray90'
   max_absolute_value=max(abs(im)) # what is the maximum absolute value of im?
-  color_levels=100 # the number of colors to use
   color_sequence=seq(-max_absolute_value,max_absolute_value,length.out=color_levels+1)
-  plot(im, main=title, col=col5(n=color_levels), breaks=color_sequence)
+  plot(im, main=title, col=colors, breaks=color_sequence, ...)
 }
 
 #' Parse the description tag of the tissue map image read from an

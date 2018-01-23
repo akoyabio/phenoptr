@@ -5,11 +5,11 @@
 \title{Estimate cell density at distance from a tissue boundary.}
 \usage{
 density_at_distance(cell_seg_path, phenotypes, positive, negative,
-  mask = TRUE, pixels_per_micron = getOption("phenoptr.pixels.per.micron"),
-  smoother = "local", method = "reweight", ...)
+  mask = FALSE, pixels_per_micron = getOption("phenoptr.pixels.per.micron"),
+  ...)
 }
 \arguments{
-\item{cell_seg_path}{Path to cell segmentation data.}
+\item{cell_seg_path}{Path to a cell segmentation data file.}
 
 \item{phenotypes}{Optional named list of phenotypes to process.
 \code{names(phenotypes)} are the names of the resulting phenotypes.
@@ -28,17 +28,19 @@ tissue boundary.}
 
 \item{pixels_per_micron}{Conversion factor to microns.}
 
-\item{smoother, method, ...}{Additional arguments passed to
-\code{\link[spatstat]{rhohat}}.}
+\item{...}{Additional arguments passed to \code{\link[spatstat]{rhohat}}.
+Default parameters are \code{method="ratio", smoother="kernel", bw="nrd"}.}
 }
 \value{
-Returns a \code{list} containing two or three items:
+Returns a \code{list} containing four items:
 \tabular{ll}{
-\code{rho_hat} \tab The density estimate (see Details).\cr
-\code{distance} \tab The distance map, a pixel image of class
-\code{\link[spatstat]{im}}.\cr
-\code{mask} \tab If \code{mask} is \code{TRUE},
-a matrix showing the locations used.\cr
+\code{points} \tab The points used, marked with their phenotype,
+a \code{\link[spatstat]{ppp.object}}.\cr
+\code{rhohat} \tab The density estimates (see Details).\cr
+\code{distance} \tab The distance map, a pixel image
+(\code{\link[spatstat]{im.object}}).\cr
+\code{mask} \tab A mask matrix showing the locations which are closer to
+the tissue boundary than to the border or other regions.\cr
 }
 }
 \description{
@@ -52,17 +54,12 @@ The signed distance from the boundary between the two tissue classes
 is used as the covariate and density is estimated separately for each
 phenotype.
 
-The \code{rho_hat} element of the returned list is a
-\code{\link[tibble]{data_frame}} containing the results of the density
-estimation for each phenotype. It has six columns:
-\tabular{ll}{
-\code{phenotype} \tab The phenotype name.\cr
-\code{distance} \tab Distance from tissue boundary (positive or negative),
-i.e. the covariate for density estimation.\cr
-\code{rho} \tab The density estimate from \code{\link[spatstat]{rhohat}},
-in cells per square micron.\cr
-\code{var}, \code{hi}, \code{lo} \tab The variance and high and low estimates of \code{rho}.
-}
+The \code{rhohat} element of the returned list is a
+\code{list} containing the results of the density
+estimation for each phenotype. Each list value is a \code{rhohat} object,
+see \code{\link[spatstat]{methods.rhohat}}. Density estimates are
+in cells per square micron; multiply by 1,000,000 for cells per square
+millimeter.
 }
 \section{Edge correction}{
 
@@ -75,6 +72,20 @@ be near a tissue boundary which is not part of the image.
 The \code{mask} parameter, if set to \code{TRUE}, restricts the density estimation
 to cells which are closer to the tissue boundary in the image than they are
 to the edge of the image or any other tissue class.
+
+For both \code{mask==TRUE} and \code{mask==FALSE}, the results tend to be unreliable
+near the distance extremes because the tissue area at that distance
+will be relatively small so random variation in cell counts is magnified.
+}
+
+\section{Parallel computation}{
+
+
+\code{density_at_distance} supports parallel computation using the
+\code{\link[foreach]{foreach-package}}. When this is enabled, the densities
+for each phenotype will be computed in parallel. To use this feature,
+you must enable a parallel backend, for example using
+\code{\link[doParallel]{registerDoParallel}}.
 }
 
 \examples{
@@ -84,18 +95,37 @@ values <- density_at_distance(sample_cell_seg_path(),
   list("CD8+", "CD68+", "FoxP3+"),
   positive="Stroma", negative="Tumor")
 
-# Plot the densities
+# Plot the densities in a single plot
 library(ggplot2)
-ggplot(values[['rho_hat']], aes(distance, rho, color=phenotype)) +
-  geom_line()
+all_rho = purrr::map_dfr(values$rhohat, ~., .id='phenotype') \%>\%
+  as_data_frame
+ggplot(all_rho, aes(X, rho*1000000, color=phenotype)) +
+  geom_line(size=2) +
+  labs(x='Distance from tumor boundary (microns)',
+       y='Estimated cell density (cells per sq mm)')
 
-# Show the distance map with the mask superimposed and CK+ cells drawn
-plot_diverging(values$distance, title='Distance')
-plot(as.raster(values$mask), add=TRUE, col=c('black', 'transparent'))
+# Show the distance map with cells superimposed
+for (name in names(values$rhohat)) {
+  plot_diverging(values$distance, show_boundary=TRUE,
+    title=paste('Distance from tumor for', name, 'cells'),
+    sub='Positive (blue) distances are away from tumor')
+  plot(values$points[values$points$marks==name, drop=TRUE],
+    add=TRUE, use.marks=FALSE, cex=0.5, col=rgb(0,0,0,0.5))
+}
 }
 }
 \references{
 A. Baddeley, E. Rubak and R.Turner.
 Spatial Point Patterns: Methodology and Applications with R.
-Chapman and Hall/CRC Press, 2015. Section 6.6.3.
+Chapman and Hall/CRC Press, 2015. Sections 6.6.3-6.6.4.
+}
+\seealso{
+Other distance functions: \code{\link{compute_all_nearest_distance}},
+  \code{\link{count_touching_cells}},
+  \code{\link{count_within_batch}},
+  \code{\link{count_within}}, \code{\link{density_bands}},
+  \code{\link{distance_matrix}},
+  \code{\link{find_nearest_distance}},
+  \code{\link{spatial_distribution_report}},
+  \code{\link{subset_distance_matrix}}
 }

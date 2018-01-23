@@ -9,6 +9,7 @@ biocViews:
 Imports:
     dplyr (>= 0.7.0),
     EBImage,
+    foreach,
     ggplot2,
     jpeg,
     knitr,
@@ -31,6 +32,7 @@ LazyData: true
 RoxygenNote: 6.0.1
 Suggests: testthat,
     covr,
+    doParallel,
     phenoptrExamples
 VignetteBuilder: knitr
 URL: https://perkinelmer.github.io/phenoptr/

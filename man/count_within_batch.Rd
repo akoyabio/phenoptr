@@ -79,6 +79,8 @@ count_within_batch(base_path, pairs, radius, phenotype_rules=rules)
 Other distance functions: \code{\link{compute_all_nearest_distance}},
   \code{\link{count_touching_cells}},
   \code{\link{count_within}},
+  \code{\link{density_at_distance}},
+  \code{\link{density_bands}},
   \code{\link{distance_matrix}},
   \code{\link{find_nearest_distance}},
   \code{\link{spatial_distribution_report}},
