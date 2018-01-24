@@ -161,7 +161,13 @@ e.g. "tumor".</p></td>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Returns a <code>data_frame</code> with five columns:</p><table><tr><td>
+    <p>Returns a <code>list</code> with three items:</p><table><tr><td>
+<code>densities</code> </td>
+<td> A <code>data_frame</code> with five columns:</td>
+</tr><tr><td>
+</td>
+<td>
+<table><tr><td>
 <code>phenotype</code> </td>
 <td> The supplied phenotypes.</td>
 </tr><tr><td>
@@ -177,6 +183,15 @@ within the band.</td>
 </tr><tr><td>
 <code>density</code> </td>
 <td> The density of cells of the phenotype in the band.</td>
+</tr></table></td>
+</tr><tr><td>
+<code>cells</code> </td>
+<td> Cell seg data with phenotypes updated per the <code>phenotypes</code>
+parameter and an additional <code>distance</code> column.</td>
+</tr><tr><td>
+<code>distance</code> </td>
+<td> The distance map, a pixel image
+(<code><a href='http://www.rdocumentation.org/packages/spatstat/topics/im.object'>im.object</a></code>).</td>
 </tr></table>
 
     
@@ -209,7 +224,7 @@ single sample.</p>
 
 <span class='co'># Plot the densities in a single plot</span>
 <span class='fu'>library</span>(<span class='no'>ggplot2</span>)
-<span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/ggplot'>ggplot</a></span>(<span class='no'>values</span>, <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/aes'>aes</a></span>(<span class='no'>midpoint</span>, <span class='no'>density</span>*<span class='fl'>1000000</span>, <span class='kw'>color</span><span class='kw'>=</span><span class='no'>phenotype</span>)) +
+<span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/ggplot'>ggplot</a></span>(<span class='no'>values</span>$<span class='no'>densities</span>, <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/aes'>aes</a></span>(<span class='no'>midpoint</span>, <span class='no'>density</span>*<span class='fl'>1000000</span>, <span class='kw'>color</span><span class='kw'>=</span><span class='no'>phenotype</span>)) +
   <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/geom_path'>geom_line</a></span>(<span class='kw'>size</span><span class='kw'>=</span><span class='fl'>2</span>) +
   <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/labs'>labs</a></span>(<span class='kw'>x</span><span class='kw'>=</span><span class='st'>'Distance from tumor boundary (microns)'</span>,
        <span class='kw'>y</span><span class='kw'>=</span><span class='st'>'Estimated cell density (cells per sq mm)'</span>)</div><div class='img'><img src='density_bands-1.png' alt='' width='700' height='432.632880098887' /></div></pre>

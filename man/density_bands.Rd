@@ -26,7 +26,10 @@ e.g. "tumor".}
 \item{pixels_per_micron}{Conversion factor to microns.}
 }
 \value{
-Returns a \code{data_frame} with five columns:
+Returns a \code{list} with three items:
+\tabular{ll}{
+\code{densities} \tab A \code{data_frame} with five columns:\cr
+\tab
 \tabular{ll}{
 \code{phenotype} \tab The supplied phenotypes.\cr
 \code{midpoint} \tab The midpoint of the distance band.\cr
@@ -34,6 +37,11 @@ Returns a \code{data_frame} with five columns:
 within the band.\cr
 \code{area} \tab The area of the band, in square microns.\cr
 \code{density} \tab The density of cells of the phenotype in the band.\cr
+}\cr
+\code{cells} \tab Cell seg data with phenotypes updated per the \code{phenotypes}
+parameter and an additional \code{distance} column.\cr
+\code{distance} \tab The distance map, a pixel image
+(\code{\link[spatstat]{im.object}}).\cr
 }
 }
 \description{
@@ -57,7 +65,7 @@ values <- density_bands(sample_cell_seg_path(),
 
 # Plot the densities in a single plot
 library(ggplot2)
-ggplot(values, aes(midpoint, density*1000000, color=phenotype)) +
+ggplot(values$densities, aes(midpoint, density*1000000, color=phenotype)) +
   geom_line(size=2) +
   labs(x='Distance from tumor boundary (microns)',
        y='Estimated cell density (cells per sq mm)')

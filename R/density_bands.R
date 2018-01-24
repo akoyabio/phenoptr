@@ -26,14 +26,22 @@ if (getRversion() >= "2.15.1")
 #' e.g. "tumor".
 #' @param width Width of the bands, in microns
 #' @param pixels_per_micron Conversion factor to microns.
-#' @return Returns a `data_frame` with five columns:
-#'   \tabular{ll}{
-#'    `phenotype` \tab The supplied phenotypes.\cr
-#'    `midpoint` \tab The midpoint of the distance band.\cr
-#'    `count` \tab The number of cells of the phenotype found
-#'    within the band.\cr
-#'    `area` \tab The area of the band, in square microns.\cr
-#'    `density` \tab The density of cells of the phenotype in the band.\cr
+#' @return Returns a `list` with three items:
+#' \tabular{ll}{
+#'   `densities` \tab A `data_frame` with five columns:\cr
+#'    \tab
+#'     \tabular{ll}{
+#'      `phenotype` \tab The supplied phenotypes.\cr
+#'      `midpoint` \tab The midpoint of the distance band.\cr
+#'      `count` \tab The number of cells of the phenotype found
+#'      within the band.\cr
+#'      `area` \tab The area of the band, in square microns.\cr
+#'      `density` \tab The density of cells of the phenotype in the band.\cr
+#'    }\cr
+#'  `cells` \tab Cell seg data with phenotypes updated per the `phenotypes`
+#'  parameter and an additional `distance` column.\cr
+#'  `distance` \tab The distance map, a pixel image
+#'      (\code{\link[spatstat]{im.object}}).\cr
 #'  }
 #' @examples
 #' # Compute density for the sample data
@@ -43,7 +51,7 @@ if (getRversion() >= "2.15.1")
 #'
 #' # Plot the densities in a single plot
 #' library(ggplot2)
-#' ggplot(values, aes(midpoint, density*1000000, color=phenotype)) +
+#' ggplot(values$densities, aes(midpoint, density*1000000, color=phenotype)) +
 #'   geom_line(size=2) +
 #'   labs(x='Distance from tumor boundary (microns)',
 #'        y='Estimated cell density (cells per sq mm)')
@@ -136,9 +144,9 @@ density_bands = function(cell_seg_path, phenotypes, positive, negative,
     tidyr::unnest() %>%
     rename(count=counts, phenotype=Phenotype)
 
-  result = cell_counts %>% inner_join(areas, by='mids') %>%
+  densities = cell_counts %>% inner_join(areas, by='mids') %>%
     mutate(density=count/area) %>%
     rename(midpoint=mids)
 
-  result
+  list(densities=densities, cells=csd, distance=distance)
 }
