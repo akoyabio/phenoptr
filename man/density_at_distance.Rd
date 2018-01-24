@@ -94,9 +94,11 @@ values <- density_at_distance(sample_cell_seg_path(),
   list("CD8+", "CD68+", "FoxP3+"),
   positive="Stroma", negative="Tumor")
 
-# Combine all the densities into a single data.frame
-all_rho <- purrr::map_dfr(values$rhohat, ~., .id='phenotype')
-all_rho <- as.data.frame(all_rho)
+# Combine all the densities into a single data_frame
+# and filter out the extremes
+library(tidyverse)
+all_rho <- purrr::map_dfr(values$rhohat, ~., .id='phenotype') \%>\%
+  as_data_frame \%>\% filter(X>=-50, X<=100)
 
 # Plot the densities in a single plot
 library(ggplot2)
@@ -105,14 +107,12 @@ ggplot(all_rho, aes(X, rho*1000000, color=phenotype)) +
   labs(x='Distance from tumor boundary (microns)',
        y='Estimated cell density (cells per sq mm)')
 
-# Show the distance map with cells superimposed
-for (name in names(values$rhohat)) {
-  plot_diverging(values$distance, show_boundary=TRUE,
-    title=paste('Distance from tumor for', name, 'cells'),
-    sub='Positive (blue) distances are away from tumor')
-  plot(values$points[values$points$marks==name, drop=TRUE],
-    add=TRUE, use.marks=FALSE, cex=0.5, col=rgb(0,0,0,0.5))
-}
+# Show the distance map with CD68+ cells superimposed
+plot_diverging(values$distance, show_boundary=TRUE,
+  title=paste('Distance from tumor for CD68+cells'),
+  sub='Positive (blue) distances are away from tumor')
+plot(values$points[values$points$marks=='CD68+', drop=TRUE],
+  add=TRUE, use.marks=FALSE, cex=0.5, col=rgb(0,0,0,0.5))
 }
 \references{
 A. Baddeley, E. Rubak and R.Turner.

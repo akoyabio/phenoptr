@@ -1,3 +1,8 @@
+# phenoptr 0.1.1.9003
+
+- Add `density_at_distance` and `density_bands` to estimate cell density
+  at a distance from a boundary.
+  
 # phenoptr 0.1.1.9002
 
 - Add `pixels_per_micron="auto"` option to `read_cell_seg_data()`.

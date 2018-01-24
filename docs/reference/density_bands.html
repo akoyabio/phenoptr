@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Create a distance matrix from cell seg data. — distance_matrix â€¢ phenoptr</title>
+<title>Estimate cell density in bands from a tissue boundary. — density_bands â€¢ phenoptr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -112,32 +112,81 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Create a distance matrix from cell seg data.</h1>
+    <h1>Estimate cell density in bands from a tissue boundary.</h1>
     </div>
 
     
-    <p>Create a distance matrix from cell seg data.</p>
+    <p>Given a cell seg table and an image containing masks for two tissue
+classes, estimate the density of cells of each
+phenotype in bands from the boundary between the two
+tissue classes.</p>
     
 
-    <pre class="usage"><span class='fu'>distance_matrix</span>(<span class='no'>csd</span>)</pre>
+    <pre class="usage"><span class='fu'>density_bands</span>(<span class='no'>cell_seg_path</span>, <span class='no'>phenotypes</span>, <span class='no'>positive</span>, <span class='no'>negative</span>, <span class='kw'>width</span> <span class='kw'>=</span> <span class='fl'>25</span>,
+  <span class='kw'>pixels_per_micron</span> <span class='kw'>=</span> <span class='fu'>getOption</span>(<span class='st'>"phenoptr.pixels.per.micron"</span>))</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>csd</th>
-      <td><p>A data frame with <code>Cell X Position</code>
-and <code>Cell Y Position</code> columns, such as the result of
-<code><a href='read_cell_seg_data.html'>read_cell_seg_data</a></code>.</p></td>
+      <th>cell_seg_path</th>
+      <td><p>Path to a cell segmentation data file.</p></td>
+    </tr>
+    <tr>
+      <th>phenotypes</th>
+      <td><p>Optional named list of phenotypes to process.
+<code>names(phenotypes)</code> are the names of the resulting phenotypes.
+The values are in any format accepted by <code><a href='select_rows.html'>select_rows</a></code>.
+If omitted, will use all phenotypes in the cell seg data.</p></td>
+    </tr>
+    <tr>
+      <th>positive</th>
+      <td><p>Name of the tissue category used as positive distance,
+e.g. "stroma".</p></td>
+    </tr>
+    <tr>
+      <th>negative</th>
+      <td><p>Name of the tissue category used as negative distance,
+e.g. "tumor".</p></td>
+    </tr>
+    <tr>
+      <th>width</th>
+      <td><p>Width of the bands, in microns</p></td>
+    </tr>
+    <tr>
+      <th>pixels_per_micron</th>
+      <td><p>Conversion factor to microns.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A square matrix with both dimensions equal to <code>nrow(d)</code>.
-        The value at <code>[i, j]</code> will be the distance from the cell
-        at row <code>i</code> of <code>csd</code> to the cell at row <code>j</code>.
-        The returned matrix is symmetric.</p>
+    <p>Returns a <code>data_frame</code> with five columns:</p><table><tr><td>
+<code>phenotype</code> </td>
+<td> The supplied phenotypes.</td>
+</tr><tr><td>
+<code>midpoint</code> </td>
+<td> The midpoint of the distance band.</td>
+</tr><tr><td>
+<code>count</code> </td>
+<td> The number of cells of the phenotype found
+within the band.</td>
+</tr><tr><td>
+<code>area</code> </td>
+<td> The area of the band, in square microns.</td>
+</tr><tr><td>
+<code>density</code> </td>
+<td> The density of cells of the phenotype in the band.</td>
+</tr></table>
+
+    
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>The density estimate is computed by counting the number of cells
+within each distance band, and dividing by the area of the band.
+The returned value includes the cell count and area of each band,
+making it straightforward to aggregate across images from a
+single sample.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
@@ -146,12 +195,24 @@ and <code>Cell Y Position</code> columns, such as the result of
   <code><a href='count_within_batch.html'>count_within_batch</a></code>,
   <code><a href='count_within.html'>count_within</a></code>,
   <code><a href='density_at_distance.html'>density_at_distance</a></code>,
-  <code><a href='density_bands.html'>density_bands</a></code>,
+  <code><a href='distance_matrix.html'>distance_matrix</a></code>,
   <code><a href='find_nearest_distance.html'>find_nearest_distance</a></code>,
   <code><a href='spatial_distribution_report.html'>spatial_distribution_report</a></code>,
   <code><a href='subset_distance_matrix.html'>subset_distance_matrix</a></code></p>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='co'># Compute density for the sample data</span>
+<span class='no'>values</span> <span class='kw'>&lt;-</span> <span class='fu'>density_bands</span>(<span class='fu'><a href='sample_cell_seg_data.html'>sample_cell_seg_path</a></span>(),
+  <span class='fu'>list</span>(<span class='st'>"CD8+"</span>, <span class='st'>"CD68+"</span>, <span class='st'>"FoxP3+"</span>),
+  <span class='kw'>positive</span><span class='kw'>=</span><span class='st'>"Stroma"</span>, <span class='kw'>negative</span><span class='kw'>=</span><span class='st'>"Tumor"</span>)
+
+<span class='co'># Plot the densities in a single plot</span>
+<span class='fu'>library</span>(<span class='no'>ggplot2</span>)
+<span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/ggplot'>ggplot</a></span>(<span class='no'>values</span>, <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/aes'>aes</a></span>(<span class='no'>midpoint</span>, <span class='no'>density</span>*<span class='fl'>1000000</span>, <span class='kw'>color</span><span class='kw'>=</span><span class='no'>phenotype</span>)) +
+  <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/geom_path'>geom_line</a></span>(<span class='kw'>size</span><span class='kw'>=</span><span class='fl'>2</span>) +
+  <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/labs'>labs</a></span>(<span class='kw'>x</span><span class='kw'>=</span><span class='st'>'Distance from tumor boundary (microns)'</span>,
+       <span class='kw'>y</span><span class='kw'>=</span><span class='st'>'Estimated cell density (cells per sq mm)'</span>)</div><div class='img'><img src='density_bands-1.png' alt='' width='700' height='432.632880098887' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -160,8 +221,12 @@ and <code>Cell Y Position</code> columns, such as the result of
       
       <li><a href="#value">Value</a></li>
 
+      <li><a href="#details">Details</a></li>
+
       <li><a href="#see-also">See also</a></li>
-          </ul>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

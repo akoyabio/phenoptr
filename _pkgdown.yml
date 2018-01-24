@@ -49,17 +49,20 @@ reference:
       - get_field_info
       - read_components
       - read_maps
+      - parse_tissue_description
   - title: "Compute and visualize spatial relationships between cells"
     contents:
       - find_nearest_distance
       - compute_all_nearest_distance
       - starts_with("count_within")
       - count_touching_cells
+      - starts_with("density")
       - spatial_distribution_report
   - title: "Helpers"
     contents:
       - select_rows
       - distance_matrix
+      - plot_diverging
       - subset_distance_matrix
   - title: "Sample data"
     contents:

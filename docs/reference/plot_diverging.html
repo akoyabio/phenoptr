@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Create a distance matrix from cell seg data. — distance_matrix â€¢ phenoptr</title>
+<title>Plot a distance map using a diverging color scale with white at 0 — plot_diverging â€¢ phenoptr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -112,44 +112,35 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Create a distance matrix from cell seg data.</h1>
+    <h1>Plot a distance map using a diverging color scale with white at 0</h1>
     </div>
 
     
-    <p>Create a distance matrix from cell seg data.</p>
+    <p>Plot a distance map using a diverging color scale with white at 0</p>
     
 
-    <pre class="usage"><span class='fu'>distance_matrix</span>(<span class='no'>csd</span>)</pre>
+    <pre class="usage"><span class='fu'>plot_diverging</span>(<span class='no'>im</span>, <span class='no'>title</span>, <span class='kw'>show_boundary</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>csd</th>
-      <td><p>A data frame with <code>Cell X Position</code>
-and <code>Cell Y Position</code> columns, such as the result of
-<code><a href='read_cell_seg_data.html'>read_cell_seg_data</a></code>.</p></td>
+      <th>im</th>
+      <td><p>A pixel image of class <code><a href='http://www.rdocumentation.org/packages/spatstat/topics/im'>im</a></code>.</p></td>
+    </tr>
+    <tr>
+      <th>title</th>
+      <td><p>Title for the plot.</p></td>
+    </tr>
+    <tr>
+      <th>show_boundary</th>
+      <td><p>Should the boundary be highlighted?</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>Additional arguments passed to <code><a href='http://www.rdocumentation.org/packages/spatstat/topics/plot.im'>plot.im</a></code></p></td>
     </tr>
     </table>
-    
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p>A square matrix with both dimensions equal to <code>nrow(d)</code>.
-        The value at <code>[i, j]</code> will be the distance from the cell
-        at row <code>i</code> of <code>csd</code> to the cell at row <code>j</code>.
-        The returned matrix is symmetric.</p>
-    
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <p>Other distance functions: <code><a href='compute_all_nearest_distance.html'>compute_all_nearest_distance</a></code>,
-  <code><a href='count_touching_cells.html'>count_touching_cells</a></code>,
-  <code><a href='count_within_batch.html'>count_within_batch</a></code>,
-  <code><a href='count_within.html'>count_within</a></code>,
-  <code><a href='density_at_distance.html'>density_at_distance</a></code>,
-  <code><a href='density_bands.html'>density_bands</a></code>,
-  <code><a href='find_nearest_distance.html'>find_nearest_distance</a></code>,
-  <code><a href='spatial_distribution_report.html'>spatial_distribution_report</a></code>,
-  <code><a href='subset_distance_matrix.html'>subset_distance_matrix</a></code></p>
     
 
   </div>
@@ -157,11 +148,7 @@ and <code>Cell Y Position</code> columns, such as the result of
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#value">Value</a></li>
-
-      <li><a href="#see-also">See also</a></li>
-          </ul>
+                </ul>
 
   </div>
 </div>

@@ -92,7 +92,7 @@
       <h1>Reading and displaying inForm image Files</h1>
                         <h4 class="author">Kent Johnson</h4>
             
-            <h4 class="date">2017-12-29</h4>
+            <h4 class="date">2018-01-23</h4>
           </div>
 
     
@@ -113,7 +113,7 @@ img {
 <p>A few items to note:</p>
 <ul>
 <li><p>Images have the origin (0, 0) at the top left. This is consistent with the <code>Cell X Position</code> and <code>Cell Y Position</code> columns of an inForm cell seg table. The <em>row</em> (first) dimension of an array corresponds to the <span class="math inline">\(y\)</span> axis and <code>Cell Y Position</code> column. The <em>column</em> (second) array dimension corresponds to the <span class="math inline">\(x\)</span> axis and the <code>Cell X Position</code> column.</p></li>
-<li><p>Image dimensions are in pixels. Cell seg tables are written with pixel dimensions and converted to microns when read by <code><a href="http://www.rdocumentation.org/packages/phenoptr/topics/read_cell_seg_data">phenoptr::read_cell_seg_data</a></code>.</p></li>
+<li><p>Image dimensions are in pixels. Cell seg tables are written with pixel dimensions and converted to microns when read by <code><a href="http://perkinelmer.github.io/phenoptr/reference/read_cell_seg_data.html">phenoptr::read_cell_seg_data</a></code>.</p></li>
 <li><p>Image display methods differ in their orientation; some show <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span> as described above; others transpose the image.</p></li>
 </ul>
 <p>Each of these items easily causes confusion; be careful and verify your work!</p>
@@ -143,7 +143,7 @@ EBImage<span class="op">::</span><span class="kw"><a href="http://www.rdocumenta
 <h2 class="hasAnchor">
 <a href="#reading-and-displaying-component-data" class="anchor"></a>Reading and displaying component data</h2>
 <p>inForm saves component data as multiple 32-bit floating-point images within a single TIFF file. Images smaller than 2K by 2K pixels are saved in “strip” format and may be read by <code><a href="http://www.rdocumentation.org/packages/tiff/topics/readTIFF">tiff::readTIFF()</a></code>. Larger images are saved in “tiled” format which is not supported by <code>readTIFF()</code>. Single fields from Vectra Polaris, Vectra 3 and Mantra are all smaller than 2K by 2K and may be read by these functions; larger fields may not read. Install the PerkinElmer <a href="https://github.com/PerkinElmer/tiff">fork</a> of the tiff package to support tiled images and remove this limitation.</p>
-<p><code><a href="http://www.rdocumentation.org/packages/phenoptr/topics/read_components">phenoptr::read_components()</a></code> is a wrapper around <code>readTIFF()</code> which reads the individual component images from a <code>component_data.tif</code> file. It keeps the full-resolution component images, extracts the component names from the image descriptions, and returns a named list of image matrices.</p>
+<p><code><a href="http://perkinelmer.github.io/phenoptr/reference/read_components.html">phenoptr::read_components()</a></code> is a wrapper around <code>readTIFF()</code> which reads the individual component images from a <code>component_data.tif</code> file. It keeps the full-resolution component images, extracts the component names from the image descriptions, and returns a named list of image matrices.</p>
 <p>Component data may be displayed using <code>plot.raster</code> or <code><a href="http://www.rdocumentation.org/packages/EBImage/topics/display">EBImage::display</a></code>. See the next section for examples of displaying grayscale images such as these.</p>
 <hr>
 </div>
@@ -151,10 +151,10 @@ EBImage<span class="op">::</span><span class="kw"><a href="http://www.rdocumenta
 <h2 class="hasAnchor">
 <a href="#reading-and-displaying-segmentation-maps" class="anchor"></a>Reading and displaying segmentation maps</h2>
 <p>inForm saves segmentation maps (nuclear segmentation, etc.) as multiple 16-bit grayscale images within a single TIFF file. Most segmentation images are <em>label</em> images, where each object is represented by a region whose value is the object number. The membrane map is a binary image where the presence of membrane is indicated with a “1” value.</p>
-<p><code><a href="http://www.rdocumentation.org/packages/phenoptr/topics/read_maps">phenoptr::read_maps()</a></code> is a wrapper around <code>readTIFF()</code> which reads map files. It returns a named list of integer-valued matrices. The list names reflect the content of the individual images, e.g. Nucleus, Cytoplasm, etc.</p>
+<p><code><a href="http://perkinelmer.github.io/phenoptr/reference/read_maps.html">phenoptr::read_maps()</a></code> is a wrapper around <code>readTIFF()</code> which reads map files. It returns a named list of integer-valued matrices. The list names reflect the content of the individual images, e.g. Nucleus, Cytoplasm, etc.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">map_path &lt;-<span class="st"> </span><span class="kw">system.file</span>(<span class="st">"extdata"</span>, <span class="st">"sample"</span>,
    <span class="st">"Set4_1-6plex_[16142,55840]_binary_seg_maps.tif"</span>, <span class="dt">package =</span> <span class="st">"phenoptr"</span>)
-maps &lt;-<span class="st"> </span>phenoptr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/phenoptr/topics/read_maps">read_maps</a></span>(map_path)
+maps &lt;-<span class="st"> </span>phenoptr<span class="op">::</span><span class="kw"><a href="http://perkinelmer.github.io/phenoptr/reference/read_maps.html">read_maps</a></span>(map_path)
 <span class="kw">names</span>(maps)</code></pre></div>
 <pre><code>[1] "Nucleus"   "Cytoplasm" "Membrane"  "Tissue"   </code></pre>
 <p>The Nucleus label image contains values for background (0) and each Cell ID.</p>
@@ -213,7 +213,7 @@ csd &lt;-<span class="st"> </span><span class="kw">subset</span>(csd, <span clas
 
 
       <footer><div class="copyright">
-  <p>Developed by Kent Johnson.</p>
+  <p>Developed by Kent S Johnson.</p>
 </div>
 
 <div class="pkgdown">
