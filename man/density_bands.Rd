@@ -36,7 +36,8 @@ Returns a \code{list} with three items:
 \code{count} \tab The number of cells of the phenotype found
 within the band.\cr
 \code{area} \tab The area of the band, in square microns.\cr
-\code{density} \tab The density of cells of the phenotype in the band.\cr
+\code{density} \tab The density of cells of the phenotype in the band,
+in cells per square micron.\cr
 }\cr
 \code{cells} \tab Cell seg data with phenotypes updated per the \code{phenotypes}
 parameter and an additional \code{distance} column.\cr
@@ -46,16 +47,27 @@ parameter and an additional \code{distance} column.\cr
 }
 \description{
 Given a cell seg table and an image containing masks for two tissue
-classes, estimate the density of cells of each
+classes, estimate the density of cells of each specified
 phenotype in bands from the boundary between the two
 tissue classes.
 }
 \details{
-The density estimate is computed by counting the number of cells
-within each distance band, and dividing by the area of the band.
-The returned value includes the cell count and area of each band,
-making it straightforward to aggregate across images from a
-single sample.
+\code{density_bands} uses a counting approach similar to a histogram.
+First the image is divided into bands based on distance from the
+specified boundary. Next, the number of cells of each phenotype
+within each distance band is counted and the area of each band
+is estimated. The density estimates are the ratios of the cell
+counts to the area estimates.
+
+Density estimates are
+in cells per square micron; multiply by 1,000,000 for cells per square
+millimeter.
+
+The returned value includes the cell counts and area of each band,
+making it straightforward to aggregate across multiple fields from a
+single sample. The aggregate density is computed by summing the
+cell counts and areas across all fields from a sample, then dividing
+to compute density.
 }
 \examples{
 # Compute density for the sample data
@@ -71,13 +83,5 @@ ggplot(values$densities, aes(midpoint, density*1000000, color=phenotype)) +
        y='Estimated cell density (cells per sq mm)')
 }
 \seealso{
-Other distance functions: \code{\link{compute_all_nearest_distance}},
-  \code{\link{count_touching_cells}},
-  \code{\link{count_within_batch}},
-  \code{\link{count_within}},
-  \code{\link{density_at_distance}},
-  \code{\link{distance_matrix}},
-  \code{\link{find_nearest_distance}},
-  \code{\link{spatial_distribution_report}},
-  \code{\link{subset_distance_matrix}}
+Other density estimation: \code{\link{density_at_distance}}
 }

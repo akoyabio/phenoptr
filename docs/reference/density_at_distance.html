@@ -188,14 +188,18 @@ the tissue boundary than to the border or other regions.</td>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>The density estimate is computed by <code><a href='http://www.rdocumentation.org/packages/spatstat/topics/rhohat'>rhohat</a></code>.
+    <p>The cell density estimate is computed by <code><a href='http://www.rdocumentation.org/packages/spatstat/topics/rhohat'>rhohat</a></code>.
 The signed distance from the boundary between the two tissue classes
 is used as the covariate and density is estimated separately for each
-phenotype.</p>
+phenotype. <code>rhohat</code> uses kernel density estimation to
+estimate the dependence of cell count on distance and the dependence
+of area on distance. The ratio of these two estimates is the estimate
+of density vs distance.</p>
 <p>The <code>rhohat</code> element of the returned list is a
-<code>list</code> containing the results of the density
+<code>list</code> containing the results of the cell density
 estimation for each phenotype. Each list value is a <code>rhohat</code> object,
-see <code><a href='http://www.rdocumentation.org/packages/spatstat/topics/methods.rhohat'>methods.rhohat</a></code>. Density estimates are
+see <code><a href='http://www.rdocumentation.org/packages/spatstat/topics/methods.rhohat'>methods.rhohat</a></code>.</p>
+<p>Density estimates are
 in cells per square micron; multiply by 1,000,000 for cells per square
 millimeter.</p>
     
@@ -230,21 +234,21 @@ Chapman and Hall/CRC Press, 2015. Sections 6.6.3-6.6.4.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p>Other distance functions: <code><a href='compute_all_nearest_distance.html'>compute_all_nearest_distance</a></code>,
-  <code><a href='count_touching_cells.html'>count_touching_cells</a></code>,
-  <code><a href='count_within_batch.html'>count_within_batch</a></code>,
-  <code><a href='count_within.html'>count_within</a></code>, <code><a href='density_bands.html'>density_bands</a></code>,
-  <code><a href='distance_matrix.html'>distance_matrix</a></code>,
-  <code><a href='find_nearest_distance.html'>find_nearest_distance</a></code>,
-  <code><a href='spatial_distribution_report.html'>spatial_distribution_report</a></code>,
-  <code><a href='subset_distance_matrix.html'>subset_distance_matrix</a></code></p>
+    <p>Other density estimation: <code><a href='density_bands.html'>density_bands</a></code></p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Compute density for the sample data</span>
 <span class='no'>values</span> <span class='kw'>&lt;-</span> <span class='fu'>density_at_distance</span>(<span class='fu'><a href='sample_cell_seg_data.html'>sample_cell_seg_path</a></span>(),
   <span class='fu'>list</span>(<span class='st'>"CD8+"</span>, <span class='st'>"CD68+"</span>, <span class='st'>"FoxP3+"</span>),
-  <span class='kw'>positive</span><span class='kw'>=</span><span class='st'>"Stroma"</span>, <span class='kw'>negative</span><span class='kw'>=</span><span class='st'>"Tumor"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: executing %dopar% sequentially: no parallel backend registered</span></div><div class='input'>
+  <span class='kw'>positive</span><span class='kw'>=</span><span class='st'>"Stroma"</span>, <span class='kw'>negative</span><span class='kw'>=</span><span class='st'>"Tumor"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: executing %dopar% sequentially: no parallel backend registered</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: spatstat.data</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: nlme</span></div><div class='output co'>#&gt; <span class='message'></span>
+#&gt; <span class='message'>Attaching package: ‘nlme’</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:dplyr’:</span>
+#&gt; <span class='message'></span>
+#&gt; <span class='message'>    collapse</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:phenoptr’:</span>
+#&gt; <span class='message'></span>
+#&gt; <span class='message'>    collapse</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: rpart</span></div><div class='output co'>#&gt; <span class='message'></span>
+#&gt; <span class='message'>spatstat 1.54-0       (nickname: ‘Vacuous Mission Statement’) </span>
+#&gt; <span class='message'>For an introduction to spatstat, type ‘beginner’ </span></div><div class='input'>
 <span class='co'># Combine all the densities into a single data_frame</span>
 <span class='co'># and filter out the extremes</span>
 <span class='fu'>library</span>(<span class='no'>tidyverse</span>)

@@ -56,8 +56,11 @@ reference:
       - compute_all_nearest_distance
       - starts_with("count_within")
       - count_touching_cells
-      - starts_with("density")
       - spatial_distribution_report
+  - title: "Estimate cell density"
+    contents:
+      - density_bands
+      - density_at_distance
   - title: "Helpers"
     contents:
       - select_rows

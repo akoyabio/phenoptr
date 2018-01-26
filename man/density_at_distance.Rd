@@ -49,15 +49,20 @@ classes, estimate the dependence of the density of cells of each
 phenotype on the distance from the boundary between the two tissue classes.
 }
 \details{
-The density estimate is computed by \code{\link[spatstat]{rhohat}}.
+The cell density estimate is computed by \code{\link[spatstat]{rhohat}}.
 The signed distance from the boundary between the two tissue classes
 is used as the covariate and density is estimated separately for each
-phenotype.
+phenotype. \code{rhohat} uses kernel density estimation to
+estimate the dependence of cell count on distance and the dependence
+of area on distance. The ratio of these two estimates is the estimate
+of density vs distance.
 
 The \code{rhohat} element of the returned list is a
-\code{list} containing the results of the density
+\code{list} containing the results of the cell density
 estimation for each phenotype. Each list value is a \code{rhohat} object,
-see \code{\link[spatstat]{methods.rhohat}}. Density estimates are
+see \code{\link[spatstat]{methods.rhohat}}.
+
+Density estimates are
 in cells per square micron; multiply by 1,000,000 for cells per square
 millimeter.
 }
@@ -120,12 +125,5 @@ Spatial Point Patterns: Methodology and Applications with R.
 Chapman and Hall/CRC Press, 2015. Sections 6.6.3-6.6.4.
 }
 \seealso{
-Other distance functions: \code{\link{compute_all_nearest_distance}},
-  \code{\link{count_touching_cells}},
-  \code{\link{count_within_batch}},
-  \code{\link{count_within}}, \code{\link{density_bands}},
-  \code{\link{distance_matrix}},
-  \code{\link{find_nearest_distance}},
-  \code{\link{spatial_distribution_report}},
-  \code{\link{subset_distance_matrix}}
+Other density estimation: \code{\link{density_bands}}
 }

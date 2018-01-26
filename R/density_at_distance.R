@@ -8,15 +8,20 @@ if (getRversion() >= "2.15.1")
 #' classes, estimate the dependence of the density of cells of each
 #' phenotype on the distance from the boundary between the two tissue classes.
 #'
-#' The density estimate is computed by \code{\link[spatstat]{rhohat}}.
+#' The cell density estimate is computed by \code{\link[spatstat]{rhohat}}.
 #' The signed distance from the boundary between the two tissue classes
 #' is used as the covariate and density is estimated separately for each
-#' phenotype.
+#' phenotype. `rhohat` uses kernel density estimation to
+#' estimate the dependence of cell count on distance and the dependence
+#' of area on distance. The ratio of these two estimates is the estimate
+#' of density vs distance.
 #'
 #' The `rhohat` element of the returned list is a
-#' `list` containing the results of the density
+#' `list` containing the results of the cell density
 #' estimation for each phenotype. Each list value is a `rhohat` object,
-#' see \code{\link[spatstat]{methods.rhohat}}. Density estimates are
+#' see \code{\link[spatstat]{methods.rhohat}}.
+#'
+#' Density estimates are
 #' in cells per square micron; multiply by 1,000,000 for cells per square
 #' millimeter.
 #'
@@ -96,7 +101,7 @@ if (getRversion() >= "2.15.1")
 #'   sub='Positive (blue) distances are away from tumor')
 #' plot(values$points[values$points$marks=='CD68+', drop=TRUE],
 #'   add=TRUE, use.marks=FALSE, cex=0.5, col=rgb(0,0,0,0.5))
-#' @family distance functions
+#' @family density estimation
 #' @export
 #' @md
 #' @importFrom magrittr "%>%"

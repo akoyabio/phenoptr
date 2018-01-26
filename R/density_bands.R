@@ -5,15 +5,26 @@ if (getRversion() >= "2.15.1")
 #' Estimate cell density in bands from a tissue boundary.
 #'
 #' Given a cell seg table and an image containing masks for two tissue
-#' classes, estimate the density of cells of each
+#' classes, estimate the density of cells of each specified
 #' phenotype in bands from the boundary between the two
 #' tissue classes.
 #'
-#' The density estimate is computed by counting the number of cells
-#' within each distance band, and dividing by the area of the band.
-#' The returned value includes the cell count and area of each band,
-#' making it straightforward to aggregate across images from a
-#' single sample.
+#' `density_bands` uses a counting approach similar to a histogram.
+#' First the image is divided into bands based on distance from the
+#' specified boundary. Next, the number of cells of each phenotype
+#' within each distance band is counted and the area of each band
+#' is estimated. The density estimates are the ratios of the cell
+#' counts to the area estimates.
+#'
+#' Density estimates are
+#' in cells per square micron; multiply by 1,000,000 for cells per square
+#' millimeter.
+#'
+#' The returned value includes the cell counts and area of each band,
+#' making it straightforward to aggregate across multiple fields from a
+#' single sample. The aggregate density is computed by summing the
+#' cell counts and areas across all fields from a sample, then dividing
+#' to compute density.
 #'
 #' @param cell_seg_path Path to a cell segmentation data file.
 #' @param phenotypes Optional named list of phenotypes to process.
@@ -36,7 +47,8 @@ if (getRversion() >= "2.15.1")
 #'      `count` \tab The number of cells of the phenotype found
 #'      within the band.\cr
 #'      `area` \tab The area of the band, in square microns.\cr
-#'      `density` \tab The density of cells of the phenotype in the band.\cr
+#'      `density` \tab The density of cells of the phenotype in the band,
+#'      in cells per square micron.\cr
 #'    }\cr
 #'  `cells` \tab Cell seg data with phenotypes updated per the `phenotypes`
 #'  parameter and an additional `distance` column.\cr
@@ -55,7 +67,7 @@ if (getRversion() >= "2.15.1")
 #'   geom_line(size=2) +
 #'   labs(x='Distance from tumor boundary (microns)',
 #'        y='Estimated cell density (cells per sq mm)')
-#' @family distance functions
+#' @family density estimation
 #' @export
 #' @md
 #' @importFrom magrittr "%>%"

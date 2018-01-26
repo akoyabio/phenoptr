@@ -117,7 +117,7 @@
 
     
     <p>Given a cell seg table and an image containing masks for two tissue
-classes, estimate the density of cells of each
+classes, estimate the density of cells of each specified
 phenotype in bands from the boundary between the two
 tissue classes.</p>
     
@@ -182,7 +182,8 @@ within the band.</td>
 <td> The area of the band, in square microns.</td>
 </tr><tr><td>
 <code>density</code> </td>
-<td> The density of cells of the phenotype in the band.</td>
+<td> The density of cells of the phenotype in the band,
+in cells per square micron.</td>
 </tr></table></td>
 </tr><tr><td>
 <code>cells</code> </td>
@@ -197,23 +198,24 @@ parameter and an additional <code>distance</code> column.</td>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>The density estimate is computed by counting the number of cells
-within each distance band, and dividing by the area of the band.
-The returned value includes the cell count and area of each band,
-making it straightforward to aggregate across images from a
-single sample.</p>
+    <p><code>density_bands</code> uses a counting approach similar to a histogram.
+First the image is divided into bands based on distance from the
+specified boundary. Next, the number of cells of each phenotype
+within each distance band is counted and the area of each band
+is estimated. The density estimates are the ratios of the cell
+counts to the area estimates.</p>
+<p>Density estimates are
+in cells per square micron; multiply by 1,000,000 for cells per square
+millimeter.</p>
+<p>The returned value includes the cell counts and area of each band,
+making it straightforward to aggregate across multiple fields from a
+single sample. The aggregate density is computed by summing the
+cell counts and areas across all fields from a sample, then dividing
+to compute density.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p>Other distance functions: <code><a href='compute_all_nearest_distance.html'>compute_all_nearest_distance</a></code>,
-  <code><a href='count_touching_cells.html'>count_touching_cells</a></code>,
-  <code><a href='count_within_batch.html'>count_within_batch</a></code>,
-  <code><a href='count_within.html'>count_within</a></code>,
-  <code><a href='density_at_distance.html'>density_at_distance</a></code>,
-  <code><a href='distance_matrix.html'>distance_matrix</a></code>,
-  <code><a href='find_nearest_distance.html'>find_nearest_distance</a></code>,
-  <code><a href='spatial_distribution_report.html'>spatial_distribution_report</a></code>,
-  <code><a href='subset_distance_matrix.html'>subset_distance_matrix</a></code></p>
+    <p>Other density estimation: <code><a href='density_at_distance.html'>density_at_distance</a></code></p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
