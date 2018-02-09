@@ -163,11 +163,18 @@ e.g. "tumor".</p></td>
 
     <p>Returns a <code>list</code> with three items:</p><table><tr><td>
 <code>densities</code> </td>
-<td> A <code>data_frame</code> with five columns:</td>
+<td> A <code>data_frame</code> with five columns (see below).</td>
 </tr><tr><td>
-</td>
-<td>
-<table><tr><td>
+<code>cells</code> </td>
+<td> Cell seg data with phenotypes updated per the <code>phenotypes</code>
+parameter and an additional <code>distance</code> column.</td>
+</tr><tr><td>
+<code>distance</code> </td>
+<td> The distance map, a pixel image
+(<code><a href='http://www.rdocumentation.org/packages/spatstat/topics/im.object'>im.object</a></code>).</td>
+</tr></table>
+
+<p>The <code>densities</code> item contains five columns:</p><table><tr><td>
 <code>phenotype</code> </td>
 <td> The supplied phenotypes.</td>
 </tr><tr><td>
@@ -184,15 +191,6 @@ within the band.</td>
 <code>density</code> </td>
 <td> The density of cells of the phenotype in the band,
 in cells per square micron.</td>
-</tr></table></td>
-</tr><tr><td>
-<code>cells</code> </td>
-<td> Cell seg data with phenotypes updated per the <code>phenotypes</code>
-parameter and an additional <code>distance</code> column.</td>
-</tr><tr><td>
-<code>distance</code> </td>
-<td> The distance map, a pixel image
-(<code><a href='http://www.rdocumentation.org/packages/spatstat/topics/im.object'>im.object</a></code>).</td>
 </tr></table>
 
     

@@ -39,22 +39,23 @@ if (getRversion() >= "2.15.1")
 #' @param pixels_per_micron Conversion factor to microns.
 #' @return Returns a `list` with three items:
 #' \tabular{ll}{
-#'   `densities` \tab A `data_frame` with five columns:\cr
-#'    \tab
-#'     \tabular{ll}{
-#'      `phenotype` \tab The supplied phenotypes.\cr
-#'      `midpoint` \tab The midpoint of the distance band.\cr
-#'      `count` \tab The number of cells of the phenotype found
-#'      within the band.\cr
-#'      `area` \tab The area of the band, in square microns.\cr
-#'      `density` \tab The density of cells of the phenotype in the band,
-#'      in cells per square micron.\cr
-#'    }\cr
+#'   `densities` \tab A `data_frame` with five columns (see below).\cr
 #'  `cells` \tab Cell seg data with phenotypes updated per the `phenotypes`
 #'  parameter and an additional `distance` column.\cr
 #'  `distance` \tab The distance map, a pixel image
 #'      (\code{\link[spatstat]{im.object}}).\cr
 #'  }
+#'
+#' The `densities` item contains five columns:
+#' \tabular{ll}{
+#'   `phenotype` \tab The supplied phenotypes.\cr
+#'   `midpoint` \tab The midpoint of the distance band.\cr
+#'   `count` \tab The number of cells of the phenotype found
+#'      within the band.\cr
+#'   `area` \tab The area of the band, in square microns.\cr
+#'   `density` \tab The density of cells of the phenotype in the band,
+#'      in cells per square micron.\cr
+#'    }
 #' @examples
 #' # Compute density for the sample data
 #' values <- density_bands(sample_cell_seg_path(),

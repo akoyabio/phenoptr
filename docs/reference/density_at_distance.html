@@ -241,14 +241,8 @@ Chapman and Hall/CRC Press, 2015. Sections 6.6.3-6.6.4.</p>
     <pre class="examples"><div class='input'><span class='co'># Compute density for the sample data</span>
 <span class='no'>values</span> <span class='kw'>&lt;-</span> <span class='fu'>density_at_distance</span>(<span class='fu'><a href='sample_cell_seg_data.html'>sample_cell_seg_path</a></span>(),
   <span class='fu'>list</span>(<span class='st'>"CD8+"</span>, <span class='st'>"CD68+"</span>, <span class='st'>"FoxP3+"</span>),
-  <span class='kw'>positive</span><span class='kw'>=</span><span class='st'>"Stroma"</span>, <span class='kw'>negative</span><span class='kw'>=</span><span class='st'>"Tumor"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: executing %dopar% sequentially: no parallel backend registered</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: spatstat.data</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: nlme</span></div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>Attaching package: ‘nlme’</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:dplyr’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    collapse</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:phenoptr’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    collapse</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: rpart</span></div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>spatstat 1.54-0       (nickname: ‘Vacuous Mission Statement’) </span>
-#&gt; <span class='message'>For an introduction to spatstat, type ‘beginner’ </span></div><div class='input'>
+  <span class='kw'>positive</span><span class='kw'>=</span><span class='st'>"Stroma"</span>, <span class='kw'>negative</span><span class='kw'>=</span><span class='st'>"Tumor"</span>)
+
 <span class='co'># Combine all the densities into a single data_frame</span>
 <span class='co'># and filter out the extremes</span>
 <span class='fu'>library</span>(<span class='no'>tidyverse</span>)
