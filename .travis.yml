@@ -3,6 +3,9 @@
 language: r
 env: _R_CHECK_FORCE_SUGGESTS_=FALSE
 
+r_packages:
+  - devtools
+
 r: bioc-release
 bioc_packages:
   - EBImage
