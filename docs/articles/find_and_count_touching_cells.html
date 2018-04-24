@@ -92,7 +92,7 @@
       <h1>Find and count touching cells</h1>
                         <h4 class="author">Kent Johnson</h4>
             
-            <h4 class="date">2018-01-23</h4>
+            <h4 class="date">2018-04-23</h4>
           </div>
 
     
@@ -116,10 +116,11 @@ colors &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="s
 <span class="kw"><a href="../reference/count_touching_cells.html">count_touching_cells</a></span>(cell_seg_path, pairs, colors)</code></pre></div>
 <p><small></small></p>
 <pre><code>## # A tibble: 2 x 9
-##   slide_id     source     phenot~ phenot~ tota~ tota~ p1_to~ p2_to~ touch~
-##   &lt;chr&gt;        &lt;chr&gt;      &lt;chr&gt;   &lt;chr&gt;   &lt;int&gt; &lt;int&gt;  &lt;int&gt;  &lt;int&gt;  &lt;int&gt;
-## 1 Set4_1-6plex Set4_1-6p~ CK+     CD8+     2257   228    148     95    177
-## 2 Set4_1-6plex Set4_1-6p~ CK+     CD68+    2257   417    250    163    314</code></pre>
+##   slide_id   source        phenotype1 phenotype2 total1 total2 p1_touch_p2
+##   &lt;chr&gt;      &lt;chr&gt;         &lt;chr&gt;      &lt;chr&gt;       &lt;int&gt;  &lt;int&gt;       &lt;int&gt;
+## 1 Set4_1-6p~ Set4_1-6plex~ CK+        CD8+         2257    228         148
+## 2 Set4_1-6p~ Set4_1-6plex~ CK+        CD68+        2257    417         250
+## # ... with 2 more variables: p2_touch_p1 &lt;int&gt;, touch_pairs &lt;int&gt;</code></pre>
 <p></p>
 </div>
 <div id="count-touching-cells-with-new-phenotypes" class="section level2">

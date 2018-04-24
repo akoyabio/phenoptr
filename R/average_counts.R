@@ -34,7 +34,7 @@ if (getRversion() >= "2.15.1")
 #' @param verbose If TRUE, display progress.
 #' @return A `data_frame` containing these columns:
 #'   \describe{
-#'    \item{\code{slide_id}}{Slide ID from the data files.}
+#'    \item{\code{slide_id}}{Slide ID from the data files, if available.}
 #'    \item{\code{source}}{Base file name of the source file with
 #'    `_cell_seg_data.txt` stripped off for brevity.}
 #'    \item{\code{category}}{Tissue category, if provided as a parameter,
@@ -96,7 +96,9 @@ count_within_batch <- function(base_path, pairs, radius, category=NA,
     # Read one file
     csd = read_cell_seg_data(path)
 
-    slide = as.character(csd[1, 'Slide ID'])
+    if ('Slide ID' %in% names(csd))
+      slide = as.character(csd[1, 'Slide ID'])
+    else slide = NA
 
     # Subset to what we care about, for faster distance calculation
     if (!anyNA(category))
@@ -106,15 +108,16 @@ count_within_batch <- function(base_path, pairs, radius, category=NA,
     dst = distance_matrix(csd)
 
     # Compute counts for each from, to, and category in combos
-      purrr::map_df(combos, function(row) {
+    row_count = purrr::map_df(combos, function(row) {
       # Call count_within for each item in combos
       # count_within handles multiple radii
       from = row$pair[1]
       from_sel = phenotype_rules[[from]]
       to = row$pair[2]
       to_sel = phenotype_rules[[to]]
-      count_within(csd=csd, from=from_sel, to=to_sel, category=row$category,
-                    radius=radius, dst=dst) %>%
+      count_within(csd=csd, from=from_sel, to=to_sel,
+                               category=row$category,
+                               radius=radius, dst=dst) %>%
         # Add columns for from, to, category
         tibble::add_column(
           category = ifelse(is.na(row$category), 'all', row$category),
@@ -123,10 +126,11 @@ count_within_batch <- function(base_path, pairs, radius, category=NA,
           .before=1)
       }) %>%
       # Add columns for slide and source
-      tibble::add_column(slide_id=slide,
-                    source=name,
-                    .before=1)
+      tibble::add_column(source=name, .before=1)
 
+      if (!is.na(slide))
+        row_count = row_count %>% tibble::add_column(slide_id=slide, .before=1)
+      row_count
   })
 }
 

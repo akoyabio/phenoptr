@@ -166,7 +166,7 @@ Item values are selectors for <a href='select_rows.html'>select_rows</a>.</p></t
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A <code>data_frame</code> containing these columns:</p><dl class='dl-horizontal'>
-<dt><code>slide_id</code></dt><dd><p>Slide ID from the data files.</p></dd>
+<dt><code>slide_id</code></dt><dd><p>Slide ID from the data files, if available.</p></dd>
 <dt><code>source</code></dt><dd><p>Base file name of the source file with
 <code>_cell_seg_data.txt</code> stripped off for brevity.</p></dd>
 <dt><code>category</code></dt><dd><p>Tissue category, if provided as a parameter,
@@ -208,26 +208,28 @@ the use of <code>pairs</code> and <code>phenotype_rules</code>.</p>
 <span class='no'>radius</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='fl'>10</span>, <span class='fl'>25</span>)
 <span class='no'>category</span> <span class='kw'>&lt;-</span> <span class='fu'>list</span>(<span class='st'>'Tumor'</span>, <span class='st'>'Stroma'</span>)
 <span class='fu'>count_within_batch</span>(<span class='no'>base_path</span>, <span class='no'>pairs</span>, <span class='no'>radius</span>, <span class='no'>category</span>)</div><div class='output co'>#&gt; Processing Set4_1-6plex_[16142,55840] </div><div class='output co'>#&gt; # A tibble: 8 x 10
-#&gt;   slide_id     source     categ~ from  to    radius from_c~ to_c~ from~ within~
-#&gt;   &lt;chr&gt;        &lt;chr&gt;      &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt;  &lt;dbl&gt;   &lt;int&gt; &lt;int&gt; &lt;int&gt;   &lt;dbl&gt;
-#&gt; 1 Set4_1-6plex Set4_1-6p~ Tumor  CK+   CD68+   10.0    2192   101    79  0.0397
-#&gt; 2 Set4_1-6plex Set4_1-6p~ Tumor  CK+   CD68+   25.0    2192   101   397  0.308 
-#&gt; 3 Set4_1-6plex Set4_1-6p~ Tumor  CK+   CD8+    10.0    2192    51    63  0.0342
-#&gt; 4 Set4_1-6plex Set4_1-6p~ Tumor  CK+   CD8+    25.0    2192    51   320  0.203 
-#&gt; 5 Set4_1-6plex Set4_1-6p~ Stroma CK+   CD68+   10.0      65   316     6  0.0923
-#&gt; 6 Set4_1-6plex Set4_1-6p~ Stroma CK+   CD68+   25.0      65   316    34  0.785 
-#&gt; 7 Set4_1-6plex Set4_1-6p~ Stroma CK+   CD8+    10.0      65   177     4  0.0769
-#&gt; 8 Set4_1-6plex Set4_1-6p~ Stroma CK+   CD8+    25.0      65   177    22  0.600 </div><div class='input'>
+#&gt;   slide_id  source    category from  to    radius from_count to_count from_with
+#&gt;   &lt;chr&gt;     &lt;chr&gt;     &lt;chr&gt;    &lt;chr&gt; &lt;chr&gt;  &lt;dbl&gt;      &lt;int&gt;    &lt;int&gt;     &lt;int&gt;
+#&gt; 1 Set4_1-6~ Set4_1-6~ Tumor    CK+   CD68+    10.       2192      101        79
+#&gt; 2 Set4_1-6~ Set4_1-6~ Tumor    CK+   CD68+    25.       2192      101       397
+#&gt; 3 Set4_1-6~ Set4_1-6~ Tumor    CK+   CD8+     10.       2192       51        63
+#&gt; 4 Set4_1-6~ Set4_1-6~ Tumor    CK+   CD8+     25.       2192       51       320
+#&gt; 5 Set4_1-6~ Set4_1-6~ Stroma   CK+   CD68+    10.         65      316         6
+#&gt; 6 Set4_1-6~ Set4_1-6~ Stroma   CK+   CD68+    25.         65      316        34
+#&gt; 7 Set4_1-6~ Set4_1-6~ Stroma   CK+   CD8+     10.         65      177         4
+#&gt; 8 Set4_1-6~ Set4_1-6~ Stroma   CK+   CD8+     25.         65      177        22
+#&gt; # ... with 1 more variable: within_mean &lt;dbl&gt;</div><div class='input'>
 <span class='co'># Count tumor cells near any T cell in all tissue categories.</span>
 <span class='co'># Use `phenotype_rules` to define the T cell phenotype</span>
 <span class='no'>pairs</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='st'>'CK+'</span>, <span class='st'>'T cell'</span>)
 <span class='no'>rules</span> <span class='kw'>&lt;-</span> <span class='fu'>list</span>(
 <span class='st'>'T cell'</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='st'>'CD8+'</span>, <span class='st'>'FoxP3+'</span>))
 <span class='fu'>count_within_batch</span>(<span class='no'>base_path</span>, <span class='no'>pairs</span>, <span class='no'>radius</span>, <span class='kw'>phenotype_rules</span><span class='kw'>=</span><span class='no'>rules</span>)</div><div class='output co'>#&gt; Processing Set4_1-6plex_[16142,55840] </div><div class='output co'>#&gt; # A tibble: 2 x 10
-#&gt;   slide_id     source     categ~ from  to     radius from_~ to_c~ from~ within~
-#&gt;   &lt;chr&gt;        &lt;chr&gt;      &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt;   &lt;dbl&gt;  &lt;int&gt; &lt;int&gt; &lt;int&gt;   &lt;dbl&gt;
-#&gt; 1 Set4_1-6plex Set4_1-6p~ all    CK+   T cell   10.0   2257   456   150  0.0762
-#&gt; 2 Set4_1-6plex Set4_1-6p~ all    CK+   T cell   25.0   2257   456   824  0.693 </div></pre>
+#&gt;   slide_id  source    category from  to    radius from_count to_count from_with
+#&gt;   &lt;chr&gt;     &lt;chr&gt;     &lt;chr&gt;    &lt;chr&gt; &lt;chr&gt;  &lt;dbl&gt;      &lt;int&gt;    &lt;int&gt;     &lt;int&gt;
+#&gt; 1 Set4_1-6~ Set4_1-6~ all      CK+   T ce~    10.       2257      456       150
+#&gt; 2 Set4_1-6~ Set4_1-6~ all      CK+   T ce~    25.       2257      456       824
+#&gt; # ... with 1 more variable: within_mean &lt;dbl&gt;</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

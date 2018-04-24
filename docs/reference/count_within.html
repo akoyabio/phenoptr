@@ -222,14 +222,14 @@ for the entire data set.
 <span class='fu'>count_within</span>(<span class='no'>csd</span>, <span class='kw'>from</span><span class='kw'>=</span><span class='st'>'CD68+'</span>, <span class='kw'>to</span><span class='kw'>=</span><span class='st'>'CK+'</span>, <span class='kw'>radius</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='fl'>10</span>, <span class='fl'>25</span>))</div><div class='output co'>#&gt; # A tibble: 2 x 5
 #&gt;   radius from_count to_count from_with within_mean
 #&gt;    &lt;dbl&gt;      &lt;int&gt;    &lt;int&gt;     &lt;int&gt;       &lt;dbl&gt;
-#&gt; 1   10.0        417     2257        89       0.288
-#&gt; 2   25.0        417     2257       274       3.28 </div><div class='input'>
+#&gt; 1    10.        417     2257        89       0.288
+#&gt; 2    25.        417     2257       274       3.28 </div><div class='input'>
 <span class='co'># Find the number of tumor cells with a macrophage within 10 or 25 microns</span>
 <span class='fu'>count_within</span>(<span class='no'>csd</span>, <span class='kw'>from</span><span class='kw'>=</span><span class='st'>'CK+'</span>, <span class='kw'>to</span><span class='kw'>=</span><span class='st'>'CD68+'</span>, <span class='kw'>radius</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='fl'>10</span>, <span class='fl'>25</span>))</div><div class='output co'>#&gt; # A tibble: 2 x 5
 #&gt;   radius from_count to_count from_with within_mean
 #&gt;    &lt;dbl&gt;      &lt;int&gt;    &lt;int&gt;     &lt;int&gt;       &lt;dbl&gt;
-#&gt; 1   10.0       2257      417       109      0.0532
-#&gt; 2   25.0       2257      417       664      0.606 </div><div class='input'>
+#&gt; 1    10.       2257      417       109      0.0532
+#&gt; 2    25.       2257      417       664      0.606 </div><div class='input'>
 </div><span class='co'># NOT RUN {</span>
 <span class='co'># If 'merged' is a merged cell seg file, this will run count_within for</span>
 <span class='co'># each sample:</span>

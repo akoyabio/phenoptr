@@ -1,3 +1,8 @@
+# phenoptr 0.1.1.9004
+
+- Fix `count_within_batch` to work with cell seg files which don't 
+  have `Slide ID` fields.
+  
 # phenoptr 0.1.1.9003
 
 - Add `density_at_distance` and `density_bands` to estimate cell density

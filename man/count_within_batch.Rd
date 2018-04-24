@@ -29,7 +29,7 @@ Item values are selectors for \link{select_rows}.}
 \value{
 A \code{data_frame} containing these columns:
 \describe{
-\item{\code{slide_id}}{Slide ID from the data files.}
+\item{\code{slide_id}}{Slide ID from the data files, if available.}
 \item{\code{source}}{Base file name of the source file with
 \code{_cell_seg_data.txt} stripped off for brevity.}
 \item{\code{category}}{Tissue category, if provided as a parameter,
