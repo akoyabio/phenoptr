@@ -115,7 +115,7 @@ read_cell_seg_data <- function(
       # Get pixels_per_micron and field location from component_data.tif
       component_path = sub('_cell_seg_data.txt', '_component_data.tif', path)
       stopifnot(file.exists(component_path))
-      info = get_field_info(component_path);
+      info = get_field_info(component_path)
       pixels_per_micron = 1/info$microns_per_pixel
       location = info$location
     } else {

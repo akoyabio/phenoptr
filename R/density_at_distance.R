@@ -223,10 +223,12 @@ plot_diverging = function(im, title, show_boundary=FALSE, ...) {
 
   # create color ramp from blue to red
   color_levels=101 # the number of colors to use
-  colors = grDevices::colorRampPalette(c('blue', 'gray96', 'red'))(n=color_levels)
+  colors =
+    grDevices::colorRampPalette(c('blue', 'gray96', 'red'))(n=color_levels)
   if (show_boundary) colors[(color_levels+1)/2] = 'gray90'
   max_absolute_value=max(abs(im)) # what is the maximum absolute value of im?
-  color_sequence=seq(-max_absolute_value,max_absolute_value,length.out=color_levels+1)
+  color_sequence =
+    seq(-max_absolute_value,max_absolute_value,length.out=color_levels+1)
   graphics::plot(im, main=title, col=colors, breaks=color_sequence, ...)
 }
 
@@ -246,5 +248,5 @@ parse_tissue_description = function(img) {
     entry %>% xml2::xml_find_first('Name') %>% xml2::xml_text()
   })
 
-  purrr::set_names(1:length(layers)-1, layers)
+  purrr::set_names(seq_along(layers)-1, layers)
 }

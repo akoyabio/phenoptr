@@ -7,7 +7,7 @@
 # - Add to _pkgdowr.yml
 
 # Updating Version:
-# - Change DESCRIPTION
+# - Update version and date in DESCRIPTION
 # - Add to NEWS.md
 # - Update citation in README.md
 
@@ -24,7 +24,7 @@ lintr::lint_package()
 
 # Good practices
 # This takes a while to run and requires working R CMD CHECK
-devtools::install_github('mangothecat/goodpractice')
+install.packages('goodpractice')
 checks = goodpractice::all_checks()
 checks_to_omit = c("lintr_assignment_linter")
 checks = setdiff(checks, checks_to_omit)

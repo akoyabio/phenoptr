@@ -1,4 +1,5 @@
 # phenoptr 0.1.1.9004
+**2018-04-24**
 
 - Fix `count_within_batch` to work with cell seg files which don't 
   have `Slide ID` fields.
