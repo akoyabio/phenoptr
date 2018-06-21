@@ -77,11 +77,16 @@ if (getRversion() >= "2.15.1")
 density_bands = function(cell_seg_path, phenotypes, positive, negative,
    width=25, pixels_per_micron=getOption('phenoptr.pixels.per.micron'))
 {
+  if (!file.exists(cell_seg_path))
+    stop(paste('File not found:', cell_seg_path))
+
   map_path = sub('_cell_seg_data.txt', '_binary_seg_maps.tif', cell_seg_path)
-  stopifnot(file.exists(cell_seg_path), file.exists(map_path))
+  if (!file.exists(map_path))
+    stop(paste('File not found:', map_path))
 
   csd = read_cell_seg_data(cell_seg_path, pixels_per_micron)
-  stopifnot('Phenotype' %in% names(csd))
+  if (!'Phenotype' %in% names(csd))
+    stop('Cell seg data does not contain a Phenotype column.')
 
   # Check for multiple samples, this is probably an error
   if (length(unique(csd$`Sample Name`))>1)
@@ -97,7 +102,8 @@ density_bands = function(cell_seg_path, phenotypes, positive, negative,
     # Otherwise it is an error, user must supply names for compound phenotypes
     if (all(purrr::map_lgl(phenotypes, ~is.character(.) && length(.)==1)))
       phenotypes = purrr::set_names(phenotypes)
-    stopifnot(!is.null(names(phenotypes)))
+    if (is.null(names(phenotypes)))
+      stop('phenotypes parameter must be a named list.')
   }
 
   # Mutate csd to have the desired phenotypes
@@ -107,7 +113,8 @@ density_bands = function(cell_seg_path, phenotypes, positive, negative,
 
   # Read the mask and create separate masks for positive and negative regions
   maps = read_maps(map_path)
-  stopifnot('Tissue' %in% names(maps))
+  if (!'Tissue' %in% names(maps))
+    stop('No tissue segmentation in segmentation map file.')
   tissue = maps[['Tissue']]
   layers = parse_tissue_description(tissue)
   stopifnot(positive %in% names(layers), negative %in% names(layers))

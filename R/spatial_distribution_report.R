@@ -77,8 +77,9 @@ spatial_distribution_report <- function(cell_seg_path, pairs, colors,
                       phenotype_rules=NULL, output_path=NULL,
                       pixels_per_micron=getOption('phenoptr.pixels.per.micron')
                       ) {
-  stopifnot(grepl('_cell_seg_data.txt', cell_seg_path))
-  stopifnot(file.exists(cell_seg_path))
+  stopifnot(endsWith(cell_seg_path, '_cell_seg_data.txt'))
+  if (!file.exists(cell_seg_path))
+    stop(paste('File not found:', cell_seg_path))
 
   # Make phenotype_rules for any not already specified
   phenotypes = unique(do.call(c, pairs))

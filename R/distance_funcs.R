@@ -86,7 +86,8 @@ compute_all_nearest_distance <- function(cell_table_path=NULL, out_path=NULL) {
 #' }
 
 find_nearest_distance <- function(csd, phenotypes=NULL) {
-  stopifnot('Phenotype' %in% names(csd))
+  if (!'Phenotype' %in% names(csd))
+    stop('Cell seg data does not contain a Phenotype column.')
 
   # Check for multiple samples, this is probably an error
   if (length(unique(csd$`Sample Name`))>1)
