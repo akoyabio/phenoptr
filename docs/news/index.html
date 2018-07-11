@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>All news • phenoptr</title>
+<title>Changelog • phenoptr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -18,13 +18,19 @@
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
+<meta property="og:title" content="Changelog" />
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -47,8 +53,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">phenoptr</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">phenoptr</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.1.1.9005</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -102,6 +112,7 @@
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -109,16 +120,23 @@
       
       </header>
 
-      <div class="row">
-
-  <div class="col-md-9">
+<div class="row">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Change log <small>All releases</small></h1>
+      <h1>Changelog <small></small></h1>
+      
     </div>
 
-    <div class="contents">
+    <div id="phenoptr-0-1-1-9005" class="section level1">
+<h1 class="page-header">
+<a href="#phenoptr-0-1-1-9005" class="anchor"></a>phenoptr 0.1.1.9005</h1>
+<p><strong>2018-07-11</strong></p>
+<ul>
+<li>Fix <code>count_touching_cells</code> to work with two-pixel-wide membrane map. #8</li>
+</ul>
+</div>
     <div id="phenoptr-0-1-1-9004" class="section level1">
-<h1 class="hasAnchor">
+<h1 class="page-header">
 <a href="#phenoptr-0-1-1-9004" class="anchor"></a>phenoptr 0.1.1.9004</h1>
 <p><strong>2018-04-24</strong></p>
 <ul>
@@ -126,14 +144,14 @@
 </ul>
 </div>
     <div id="phenoptr-0-1-1-9003" class="section level1">
-<h1 class="hasAnchor">
+<h1 class="page-header">
 <a href="#phenoptr-0-1-1-9003" class="anchor"></a>phenoptr 0.1.1.9003</h1>
 <ul>
 <li>Add <code>density_at_distance</code> and <code>density_bands</code> to estimate cell density at a distance from a boundary.</li>
 </ul>
 </div>
     <div id="phenoptr-0-1-1-9002" class="section level1">
-<h1 class="hasAnchor">
+<h1 class="page-header">
 <a href="#phenoptr-0-1-1-9002" class="anchor"></a>phenoptr 0.1.1.9002</h1>
 <ul>
 <li>Add <code>pixels_per_micron="auto"</code> option to <code><a href="../reference/read_cell_seg_data.html">read_cell_seg_data()</a></code>.</li>
@@ -141,14 +159,14 @@
 </ul>
 </div>
     <div id="phenoptr-0-1-1-9001" class="section level1">
-<h1 class="hasAnchor">
+<h1 class="page-header">
 <a href="#phenoptr-0-1-1-9001" class="anchor"></a>phenoptr 0.1.1.9001</h1>
 <ul>
 <li>Faster count_touching_cells when EBImage 4.19.9 is available.</li>
 </ul>
 </div>
     <div id="phenoptr-0-1-1-9000" class="section level1">
-<h1 class="hasAnchor">
+<h1 class="page-header">
 <a href="#phenoptr-0-1-1-9000" class="anchor"></a>phenoptr 0.1.1.9000</h1>
 <div id="backwards-incompatible-changes" class="section level2">
 <h2 class="hasAnchor">
@@ -203,7 +221,7 @@
 </div>
 </div>
     <div id="phenoptr-0-1-0-9001" class="section level1">
-<h1 class="hasAnchor">
+<h1 class="page-header">
 <a href="#phenoptr-0-1-0-9001" class="anchor"></a>phenoptr 0.1.0.9001</h1>
 <div id="new-features-1" class="section level2">
 <h2 class="hasAnchor">
@@ -214,13 +232,13 @@
 </ul>
 </div>
 </div>
-    </div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#phenoptr-0-1-1-9005">0.1.1.9005</a></li>
         <li><a href="#phenoptr-0-1-1-9004">0.1.1.9004</a></li>
         <li><a href="#phenoptr-0-1-1-9003">0.1.1.9003</a></li>
         <li><a href="#phenoptr-0-1-1-9002">0.1.1.9002</a></li>
@@ -239,11 +257,14 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+

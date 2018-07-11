@@ -1,3 +1,8 @@
+# phenoptr 0.1.1.9005
+**2018-07-11**
+
+- Fix `count_touching_cells` to work with two-pixel-wide membrane map. #8
+  
 # phenoptr 0.1.1.9004
 **2018-04-24**
 

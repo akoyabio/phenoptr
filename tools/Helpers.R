@@ -10,6 +10,7 @@
 # - Update version and date in DESCRIPTION
 # - Add to NEWS.md
 # - Update citation in README.md
+# - pkgdown::build_home(); pkgdown::build_news()
 
 # The tip about including biocViews: in DESCRIPTION is from
 # https://stackoverflow.com/questions/14343817/cran-package-depends-on-bioconductor-package-installing-error
