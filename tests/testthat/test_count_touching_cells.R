@@ -21,10 +21,10 @@ test_that('count_touching_cells works', {
 
   # Error checking
   expect_error(count_touching_cells(cell_seg_path, pairs, write_images=TRUE),
-               'required')
+               'requires colors')
   expect_error(count_touching_cells(cell_seg_path, pairs,
                                     colors=list('CD8+' = 'yellow')),
-               'names\\(colors\\)')
+               'requires colors')
 
   # This one should work
   expect_warning(counts <- count_touching_cells(cell_seg_path, pairs, colors,

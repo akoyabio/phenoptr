@@ -56,7 +56,7 @@
 #' @return Returns a `data_frame` with one row for each pair in
 #' `pairs`, containing these columns:
 #'   \describe{
-#'    \item{\code{slide_id}}{Slide ID from the data file.}
+#'    \item{\code{slide_id}}{Slide ID from the data file, if available.}
 #'    \item{\code{source}}{Base file name of the source file with
 #'    `_cell_seg_data.txt` stripped off for brevity.}
 #'    \item{\code{phenotype1}}{The name of the first phenotype in
@@ -155,8 +155,9 @@ count_touching_cells <- function(cell_seg_path, pairs, colors=NULL,
   # Check the requirements for writing images, if requested
   if (write_images) {
     if (is.null(colors))
-      stop('Colors are required when write_images is TRUE.')
-    stopifnot(all(phenotypes %in% names(colors)))
+      stop('count_touching_cells requires colors when write_images is TRUE.')
+    if (!all(phenotypes %in% names(colors)))
+      stop('count_touching_cells requires colors for all phenotypes.')
 
     # Look for composite as TIFF or JPEG
     composite_path =
@@ -165,7 +166,7 @@ count_touching_cells <- function(cell_seg_path, pairs, colors=NULL,
       composite_path = sub('tif', 'jpg', composite_path)
 
     if (!file.exists(composite_path))
-      stop('write_images requires a TIFF or JPEG composite image.')
+      stop('count_touching_cells requires a matching TIFF or JPEG composite image when write_images is TRUE.')
   }
 
   # Make the output directory
@@ -181,11 +182,13 @@ count_touching_cells <- function(cell_seg_path, pairs, colors=NULL,
   # Filter out unwanted tissue categories
   if (!is.null(categories))
   {
-    stopifnot('Tissue Category' %in% names(csd))
+    if (!'Tissue Category' %in% names(csd))
+      stop('Cell seg data does not include "Tissue Category" column.')
     csd = csd %>% dplyr::filter(`Tissue Category` %in% categories)
   }
 
-  slide = as.character(csd[1, 'Slide ID'])
+  slide = ifelse('Slide ID' %in% names(csd),
+                 as.character(csd[1, 'Slide ID']), NA)
 
   # Read the membrane and nuclear masks.
   # Convert the membrane to single values.
@@ -195,6 +198,7 @@ count_touching_cells <- function(cell_seg_path, pairs, colors=NULL,
   {
     # Old-style membrane mask
     membrane = EBImage::readImage(mask_path)
+    membrane_width = 1 # Old-style membrane mask is always one pixel thick
     membrane[membrane>0] = 0.5
 
     # Don't use readImage to read nuclear mask, it converts to 0-1 scale!
@@ -205,8 +209,16 @@ count_touching_cells <- function(cell_seg_path, pairs, colors=NULL,
   else
   {
     mask_path = sub('cell_seg_data.txt', 'binary_seg_maps.tif', cell_seg_path)
+    if (!file.exists(mask_path))
+      stop('count_touching_cells requires a segmentation map file.')
+
     masks = read_maps(mask_path)
     membrane = masks[['Membrane']]
+
+    # New-style membrane masks may be two pixels thick. If so, it will be
+    # a label image with max > 1. Otherwise it will be a simple 0/1 mask image.
+    membrane_width = ifelse(max(membrane) > 1, 2, 1)
+
     nuclei = masks[['Nucleus']]
     rm(masks)
     membrane[membrane>0] = 0.5
@@ -214,6 +226,13 @@ count_touching_cells <- function(cell_seg_path, pairs, colors=NULL,
     nuclei = t(nuclei)
   }
   stopifnot(exists('membrane'), exists('nuclei'))
+
+  # inForm cell seg doesn't always draw the membrane to the edge of the image.
+  # That is a disaster for flood fill. Draw a border around the membrane
+  # to prevent this.
+  membrane[1,] = membrane[, 1] =
+    membrane[dim(membrane)[1],] =
+    membrane[,dim(membrane)[2]] = 0.5
 
   # Make images for the cells in each phenotype by filling in the membrane mask
   # at each cell, then removing the membrane.
@@ -264,7 +283,9 @@ count_touching_cells <- function(cell_seg_path, pairs, colors=NULL,
       next
     }
 
-    touch_pairs = find_touching_cell_pairs(i1, i2)
+    # We need a bigger dilation kernel if the membrane is two pixels wide
+    extra_size = ifelse(membrane_width==1, 0, 2)
+    touch_pairs = find_touching_cell_pairs(i1, i2, extra_size)
 
     # Need individual IDs for imaging and counting
     touching_ids = list(unique(touch_pairs[,1]), unique(touch_pairs[,2]))
@@ -339,9 +360,7 @@ count_touching_cells <- function(cell_seg_path, pairs, colors=NULL,
 # Given a data frame of cells and membrane and nuclear masks, make an image with
 # a region for each cell. Returns NULL if d is empty
 make_cell_image <- function (d, nuclei, membrane) {
-  stopifnot('Cell X Position' %in% names(d),
-            'Cell Y Position' %in% names(d),
-            'Cell ID' %in% names(d))
+  stopifnot('Cell ID' %in% names(d))
 
   if (nrow(d)==0) return(NULL) # No cells in this data
 
@@ -367,7 +386,7 @@ make_cell_image <- function (d, nuclei, membrane) {
     }
   }
   # Remove the membrane outlines
-  image[image==0.5] = 0
+  image[membrane==0.5] = 0
   image
 }
 
@@ -392,8 +411,9 @@ find_interior_point = function(nuclei, cell_id)
   # Extract the actual patch
   n = nuclei[row_range, col_range]
 
-  # Clear out extra stuff and compute a distance map on the patch
-  n[n!=cell_id] = 0
+  # Clear out extra stuff and a border and compute a distance map on the patch.
+  # Clearing the border prevents finding a max on the edge of the full image.
+  n[1,] = n[, 1] = n[dim(n)[1],] = n[,dim(n)[2]] = n[n!=cell_id] = 0
   dm = EBImage::distmap(n)
 
   # Where is the interior-most point? We are happy to take the first one.
@@ -412,12 +432,12 @@ find_interior_point = function(nuclei, cell_id)
 # Given two cell images (from make_cell_image), find the IDs of the cells in
 # each image that touch each other. Returns a matrix with two columns,
 # the cell numbers in i1 and i2
-find_touching_cell_pairs <- function (i1, i2) {
+find_touching_cell_pairs <- function (i1, i2, extra_size) {
   # Dilate i1 and look for intersections with i2
   # Order doesn't matter here, we are looking for kissing pairs.
-  kern3 = EBImage::makeBrush(3, shape='diamond')
-  i1_big = EBImage::dilate(i1, kern3)
-  i2_big = EBImage::dilate(i2, kern3)
+  kernel = EBImage::makeBrush(3, shape='diamond')
+  i1_big = EBImage::dilate(i1, EBImage::makeBrush(3, shape='diamond'))
+  i2_big = EBImage::dilate(i2, EBImage::makeBrush(3+extra_size, shape='diamond'))
 
   # Find p1s touching p2s as pairs.
   overlap = cbind(as.numeric(i1_big), as.numeric(i2_big))

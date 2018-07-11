@@ -39,7 +39,7 @@ directory as the cell table.}
 Returns a \code{data_frame} with one row for each pair in
 \code{pairs}, containing these columns:
 \describe{
-\item{\code{slide_id}}{Slide ID from the data file.}
+\item{\code{slide_id}}{Slide ID from the data file, if available.}
 \item{\code{source}}{Base file name of the source file with
 \code{_cell_seg_data.txt} stripped off for brevity.}
 \item{\code{phenotype1}}{The name of the first phenotype in
