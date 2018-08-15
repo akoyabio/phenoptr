@@ -88,3 +88,4 @@ Other distance functions: \code{\link{compute_all_nearest_distance}},
   \code{\link{find_nearest_distance}},
   \code{\link{subset_distance_matrix}}
 }
+\concept{distance functions}

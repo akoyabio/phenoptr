@@ -5,8 +5,8 @@
 \title{Estimate cell density at distance from a tissue boundary.}
 \usage{
 density_at_distance(cell_seg_path, phenotypes, positive, negative,
-  mask = FALSE, pixels_per_micron = getOption("phenoptr.pixels.per.micron"),
-  ...)
+  mask = FALSE,
+  pixels_per_micron = getOption("phenoptr.pixels.per.micron"), ...)
 }
 \arguments{
 \item{cell_seg_path}{Path to a cell segmentation data file.}
@@ -127,3 +127,4 @@ Chapman and Hall/CRC Press, 2015. Sections 6.6.3-6.6.4.
 \seealso{
 Other density estimation: \code{\link{density_bands}}
 }
+\concept{density estimation}

@@ -12,7 +12,7 @@ tables and images created by PerkinElmer's inForm software.
 \details{
 phenoptr is part of the PerkinElmer Phenoptics family of
 Quantitative Pathology Research Solutions. For more information visit the
-Phenoptics \href{http://www.perkinelmer.com/cancer-immunology/index.html}{homepage}.
+Phenoptics \href{http://www.perkinelmer.com/cancer-immunology/index.html}{home page}.
 }
 \section{Package options}{
 

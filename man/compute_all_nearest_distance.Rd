@@ -34,3 +34,4 @@ Other distance functions: \code{\link{count_touching_cells}},
   \code{\link{spatial_distribution_report}},
   \code{\link{subset_distance_matrix}}
 }
+\concept{distance functions}

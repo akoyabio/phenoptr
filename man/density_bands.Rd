@@ -86,3 +86,4 @@ ggplot(values$densities, aes(midpoint, density*1000000, color=phenotype)) +
 \seealso{
 Other density estimation: \code{\link{density_at_distance}}
 }
+\concept{density estimation}

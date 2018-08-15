@@ -55,3 +55,4 @@ Other distance functions: \code{\link{compute_all_nearest_distance}},
   \code{\link{spatial_distribution_report}},
   \code{\link{subset_distance_matrix}}
 }
+\concept{distance functions}
