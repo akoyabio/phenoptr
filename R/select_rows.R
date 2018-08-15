@@ -50,8 +50,8 @@ select_rows <- function(csd, sel) {
 
   # Evaluate a single selector
   select_one = function(s) {
-    if (is.na(s)) {
-      # NULL just means selert all
+    if (length(s)==1 && is.na(s)) {
+      # NA means select all
       rep(TRUE, nrow(csd))
     } else if (is.character(s)) {
       # Selector is one or more phenotype names,
