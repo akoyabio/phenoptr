@@ -4,6 +4,8 @@
 - `select_rows` recognizes the column format of phenotype-per-marker data.
 - `select_rows` treats a `NA` selector as "select all". This is helpful
   in lists of selectors.
+- `read_cell_seg_data` attempts to skip microns conversion if it was already 
+  done.
 
 # phenoptr 0.1.1.9005
 **2018-07-11**

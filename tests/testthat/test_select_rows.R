@@ -9,8 +9,8 @@ test_data = data_frame(
   E3 = c(1, 2, 1, 2, 1)
 )
 
-test_that('NULL selects all', {
-  expect_equal(select_rows(test_data, NULL), c(T, T, T, T, T))
+test_that('NA selects all', {
+  expect_equal(select_rows(test_data, NA), c(T, T, T, T, T))
 })
 
 test_that("Select phenotype works", {
@@ -18,11 +18,6 @@ test_that("Select phenotype works", {
   expect_equal(select_rows(test_data, 'cd8'), c(F, F, F, T, T))
 })
 
-test_that("Alternate name works", {
-  td = test_data %>% rename(pheno=Phenotype)
-  expect_equal(select_rows(td, 'tumor', 'pheno'), c(T, T, T, F, F))
-  expect_equal(select_rows(td, 'cd8', 'pheno'), c(F, F, F, T, T))
-})
 
 test_that('Single expression works', {
   expect_equal(select_rows(test_data, ~(Expr==1)), c(T, F, T, F, F))
@@ -142,3 +137,4 @@ test_that("make_phenotype_rules works", {
     tumor= c('tumor PDL1+', 'tumor PDL1-'))
   expect_equal(make_phenotype_rules(phenotypes, rules), rules)
 })
+

@@ -110,7 +110,10 @@ read_cell_seg_data <- function(
 
   # Convert distance to microns if requested.
   # No way to tell in general if this was done already...
-  if (!is.na(pixels_per_micron)) {
+  # Try looking for 'micron' in column names
+  if (any(stringr::str_detect(names(df), 'micron')) && !is.na(pixels_per_micron)) {
+    message('Data is already in microns, no conversion performed')
+  } else if (!is.na(pixels_per_micron)) {
     if (pixels_per_micron=='auto') {
       # Get pixels_per_micron and field location from component_data.tif
       component_path = sub('_cell_seg_data.txt', '_component_data.tif', path)
