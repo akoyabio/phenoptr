@@ -12,13 +12,13 @@
 #'for extensive documentation and examples.
 #'
 #' @param csd A data frame
-#' @param sel May be a character vector, a one-sided formula or a list
-#'   containing such. A character vector is interpreted as the name(s) of one or
+#' @param sel May be a character vector, a one-sided formula, a list
+#'   containing such or `NULL`. A character vector is interpreted as
+#'   the name(s) of one or
 #'   more phenotypes and selects any matching phenotype. A formula is
-#'   interpreted as an expression on the columns of `csd`. Multiple items
-#'   are joined with AND.
-#' @param phenotype_column Optional, name of the phenotype column to use for
-#'   simple selection
+#'   interpreted as an expression on the columns of `csd`.
+#'   Multiple list items are joined with AND. `NA` is interpreted
+#'   as "select all". It is convienent for lists of selection criteria.
 #' @return A logical vector of length `nrow(csd)` which selects rows
 #'   according to `sel`.
 #' @export
@@ -35,16 +35,36 @@
 #' tcells <- csd[select_rows(csd, selector),]
 #' table(tcells$Phenotype)
 #' @md
-select_rows <- function(csd, sel, phenotype_column='Phenotype') {
+select_rows <- function(csd, sel) {
   stopifnot(is.data.frame(csd))
+
+  # Evaluate a single phenotype in a per-marker file
+  evaluate_per_marker = function(s) {
+    if (!stringr::str_detect(s, '[+-]$'))
+      stop(paste0(s, ' is not a valid per-marker phenotype name.'))
+    column_name = paste('Phenotype', stringr::str_remove(s, '[+-]$'))
+    if (!column_name %in% names(csd))
+      stop(paste0("No '", column_name, "' column in data."))
+    csd[[column_name]] == s
+  }
 
   # Evaluate a single selector
   select_one = function(s) {
-    if (is.character(s)) {
+    if (is.na(s)) {
+      # NULL just means selert all
+      rep(TRUE, nrow(csd))
+    } else if (is.character(s)) {
       # Selector is one or more phenotype names,
       # look for match with phenotype column
-      stopifnot(phenotype_column %in% names(csd))
-      csd[[phenotype_column]] %in% s
+      # Any match qualifies
+      if ('Phenotype' %in% names(csd)) {
+        csd[['Phenotype']] %in% s
+      }
+      else {
+        # Phenotype per-marker has multiple columns
+        col_selections = purrr::map(s, evaluate_per_marker)
+        purrr::reduce(col_selections, `|`)
+      }
     } else {
       # Selector is a function, evaluate it on csd
       lazyeval::f_eval(s, csd)

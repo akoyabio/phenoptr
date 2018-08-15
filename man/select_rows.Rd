@@ -4,19 +4,18 @@
 \alias{select_rows}
 \title{Flexibly select rows of a data frame.}
 \usage{
-select_rows(csd, sel, phenotype_column = "Phenotype")
+select_rows(csd, sel)
 }
 \arguments{
 \item{csd}{A data frame}
 
-\item{sel}{May be a character vector, a one-sided formula or a list
-containing such. A character vector is interpreted as the name(s) of one or
+\item{sel}{May be a character vector, a one-sided formula, a list
+containing such or \code{NULL}. A character vector is interpreted as
+the name(s) of one or
 more phenotypes and selects any matching phenotype. A formula is
-interpreted as an expression on the columns of \code{csd}. Multiple items
-are joined with AND.}
-
-\item{phenotype_column}{Optional, name of the phenotype column to use for
-simple selection}
+interpreted as an expression on the columns of \code{csd}.
+Multiple list items are joined with AND. \code{NA} is interpreted
+as "select all". It is convienent for lists of selection criteria.}
 }
 \value{
 A logical vector of length \code{nrow(csd)} which selects rows

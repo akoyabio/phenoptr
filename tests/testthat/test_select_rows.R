@@ -9,6 +9,10 @@ test_data = data_frame(
   E3 = c(1, 2, 1, 2, 1)
 )
 
+test_that('NULL selects all', {
+  expect_equal(select_rows(test_data, NULL), c(T, T, T, T, T))
+})
+
 test_that("Select phenotype works", {
   expect_equal(select_rows(test_data, 'tumor'), c(T, T, T, F, F))
   expect_equal(select_rows(test_data, 'cd8'), c(F, F, F, T, T))
