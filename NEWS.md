@@ -1,5 +1,5 @@
 # phenoptr 0.1.1.9006
-**2018-xx-xx**
+**2018-08-17**
 
 - `select_rows` recognizes the column format of phenotype-per-marker data.
 - `select_rows` treats a `NA` selector as "select all". This is helpful
