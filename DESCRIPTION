@@ -17,6 +17,7 @@ Imports:
     magrittr,
     purrr,
     readr,
+    rlang,
     rmarkdown,
     spatstat,
     stringr,

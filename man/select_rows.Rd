@@ -47,3 +47,7 @@ selector <- c('CD8+', 'FoxP3+')
 tcells <- csd[select_rows(csd, selector),]
 table(tcells$Phenotype)
 }
+\seealso{
+\link{parse_phenotypes} for a convenient way to create selectors
+for most common phenotypes.
+}

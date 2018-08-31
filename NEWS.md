@@ -6,6 +6,8 @@
   in lists of selectors.
 - `read_cell_seg_data` attempts to skip microns conversion if it was already 
   done.
+- New `parse_phenotypes` function simplifies creation of selectors for 
+  `select_rows`.
 
 # phenoptr 0.1.1.9005
 **2018-07-11**

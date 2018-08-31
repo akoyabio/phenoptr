@@ -1,3 +1,84 @@
+#' Parse a vector of phenotype names
+#'
+#' This helper function takes a user-friendly list of single and
+#' multiple phenotype names and converts it to a named list of phenotype
+#' selectors for use with [phenoptr::select_rows]. By using `parse_phenotypes`
+#' a user does not have to know the (somewhat inscrutable)
+#' details of `select_rows`.
+#'
+#' @param ... Phenotypes to be decoded, or a list of same, optionally with names.
+#' @return A named list of phenotype selectors for use with
+#'   [phenoptr::select_rows].
+#' @section Details:
+#' Each phenotype must be either a single phenotype name (e.g. CD3+ or CD8-)
+#' or two or more names separated by a slash (/) or comma (,).
+#'
+#' Phenotypes containing slashes are interpreted as requiring *all* of the
+#' individual phenotypes. For example, "CD3+/CD8-" is a CD3+ cell which is
+#' also CD8-.
+#'
+#' Phenotypes containing commas are interpreted as requiring *any* of the
+#' individual phenotypes. For example, "CD68+,CD163+" is a cell which is
+#' either CD68+ or CD163+ or both.
+#'
+#' Additionally,
+#' a phenotype name without a + or - and containing
+#' either "Total" or "All" will be
+#' interpreted as meaning "All cells".
+#' @importFrom magrittr %>%
+#' @export
+#' @examples
+#' # Create selectors for
+#' # - All CD3+ cells
+#' # - CD3+/CD8+ double-positive cells
+#' # - CD3+/CD8- single-positive cells
+#' # - All cells regardless of phenotype
+#' # - Macrophages, defined as either CD68+ OR CD163+
+#' parse_phenotypes("CD3+", "CD3+/CD8+", "CD3+/CD8-",
+#'                  "Total Cells", Macrophage="CD68+,CD163+")
+#' @md
+parse_phenotypes = function(...) {
+  phenos = list(...)
+
+  # Allow passing a single list
+  if (length(phenos)==1 && is.list(phenos[[1]]))
+    phenos = phenos[[1]]
+
+  # If no names were given, phenos will have names(pheno) == NULL
+  # If any names were given, missing names will be ''
+  # One way or another, get a named list.
+  if (is.null(names(phenos))) names(phenos)=phenos else {
+    no_names = names(phenos) == ''
+    names(phenos)[no_names] = phenos[no_names]
+  }
+
+  # This does the basic decoding
+  purrr::map(phenos, function(pheno) {
+    if (rlang::is_formula(pheno))
+      stop("parse_phenotypes does not support formula definitions.")
+
+    # Multiple AND phenotypes become a list
+    if (stringr::str_detect(pheno, '/')) {
+      # Can't have comma and slash
+      if (stringr::str_detect(pheno, ','))
+        stop(paste("Phenotype selectors may not contain both '/' and '.':", pheno))
+      as.list(stringr::str_split(pheno, '/')[[1]])
+    }
+
+    # Multiple OR phenotypes become a character vector
+    else if (stringr::str_detect(pheno, ',')) stringr::str_split(pheno, ',')[[1]]
+
+    # Ends with +- and no '/' or ',' is a single phenotype
+    else if (stringr::str_detect(pheno, '[+-]$')) pheno
+
+    # Contains Total or All returns NA which signals "Select All"
+    else if (stringr::str_detect(pheno, stringr::regex('Total|All', ignore_case=TRUE)))
+      NA
+    else stop(paste("Unrecognized phenotype selector:", pheno))
+  }) %>%
+    rlang::set_names(names(phenos))
+}
+
 #' Flexibly select rows of a data frame.
 #'
 #' Select rows of a data frame based on phenotypes or other
@@ -35,6 +116,8 @@
 #' tcells <- csd[select_rows(csd, selector),]
 #' table(tcells$Phenotype)
 #' @md
+#' @seealso [parse_phenotypes] for a convenient way to create selectors
+#' for most common phenotypes.
 select_rows <- function(csd, sel) {
   stopifnot(is.data.frame(csd))
 

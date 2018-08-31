@@ -63,6 +63,7 @@ reference:
       - density_at_distance
   - title: "Helpers"
     contents:
+      - parse_phenotypes
       - select_rows
       - distance_matrix
       - plot_diverging
