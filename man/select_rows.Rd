@@ -10,7 +10,7 @@ select_rows(csd, sel)
 \item{csd}{A data frame}
 
 \item{sel}{May be a character vector, a one-sided formula, a list
-containing such or \code{NULL}. A character vector is interpreted as
+containing such or \code{NA}. A character vector is interpreted as
 the name(s) of one or
 more phenotypes and selects any matching phenotype. A formula is
 interpreted as an expression on the columns of \code{csd}.

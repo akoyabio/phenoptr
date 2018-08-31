@@ -13,7 +13,7 @@
 #'
 #' @param csd A data frame
 #' @param sel May be a character vector, a one-sided formula, a list
-#'   containing such or `NULL`. A character vector is interpreted as
+#'   containing such or `NA`. A character vector is interpreted as
 #'   the name(s) of one or
 #'   more phenotypes and selects any matching phenotype. A formula is
 #'   interpreted as an expression on the columns of `csd`.
