@@ -164,15 +164,9 @@ count_within_batch <- function(base_path, pairs, radius, category=NA,
 #'   \item Surprisingly, \code{from_count*within_mean} is symmetric in
 #'   \code{from} and \code{to}. The double-counting works out.
 #' }
+#'
 #' To aggregate \code{within_mean} across multiple samples (e.g. by Slide ID)
-#' use code such as
-#' \preformatted{
-#' results \%>\% group_by(`Slide ID`, from, to, radius) \%>\%
-#'   summarize(from_count=sum(from_count),
-#'             within=sum(from_count*within_mean),
-#'             avg=within/from_count) \%>\%
-#'   ungroup %>% select(-within)
-#' }
+#' see the examples below.
 #'
 #' If \code{category} is specified, all reported values are for cells within
 #' the given tissue category. If \code{category} is NA, values are reported
@@ -217,9 +211,18 @@ count_within_batch <- function(base_path, pairs, radius, category=NA,
 #'
 #' \dontrun{
 #' # If 'merged' is a merged cell seg file, this will run count_within for
-#' # each sample:
-#' merged %>% group_by(`Sample Name`) %>%
+#' # each field:
+#' distances = merged %>% group_by(`Slide ID`, `Sample Name`) %>%
 #'   do(count_within(., from='CK+', to='CD68+', radius=c(10, 25)))
+#'
+#' # This will aggregate the fields by Slide ID:
+#' distances %>% group_by(`Slide ID`, radius) %>%
+#'   summarize(within=sum(from_count*within_mean),
+#'             from_count=sum(from_count),
+#'             to_count=sum(to_count),
+#'             from_with=sum(from_with),
+#'             within_mean=within/from_count) %>%
+#'   select(-within)
 #' }
 
 count_within <- function(csd, from, to, radius, category=NA, dst=NULL) {
