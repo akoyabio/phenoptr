@@ -44,6 +44,15 @@ parse_phenotypes = function(...) {
   if (length(phenos)==1 && is.list(phenos[[1]]))
     phenos = phenos[[1]]
 
+  # Check for non-character parameters
+  non_char = !purrr::map_lgl(phenos, is.character)
+  if (any(non_char))
+    stop('parse_phenotypes only works with text descriptions, not ',
+         phenos[non_char])
+
+  # Strip leading/trailing spaces preserving any names
+  phenos = purrr::map(phenos, stringr::str_trim)
+
   # If no names were given, phenos will have names(pheno) == NULL
   # If any names were given, missing names will be ''
   # One way or another, get a named list.
@@ -62,11 +71,11 @@ parse_phenotypes = function(...) {
       # Can't have comma and slash
       if (stringr::str_detect(pheno, ','))
         stop(paste("Phenotype selectors may not contain both '/' and '.':", pheno))
-      as.list(stringr::str_split(pheno, '/')[[1]])
+      as.list(split_and_trim(pheno, '/'))
     }
 
     # Multiple OR phenotypes become a character vector
-    else if (stringr::str_detect(pheno, ',')) stringr::str_split(pheno, ',')[[1]]
+    else if (stringr::str_detect(pheno, ',')) split_and_trim(pheno, ',')
 
     # Ends with +- and no '/' or ',' is a single phenotype
     else if (stringr::str_detect(pheno, '[+-]$')) pheno
@@ -77,6 +86,15 @@ parse_phenotypes = function(...) {
     else stop(paste("Unrecognized phenotype selector:", pheno))
   }) %>%
     rlang::set_names(names(phenos))
+}
+
+#' Split a single string and trim whitespace from the results
+#' @param str A single string.
+#' @param pattern Pattern to split on.
+#' @return A character vector of split components.
+split_and_trim = function(str, pattern) {
+  stopifnot(is.character(str), length(str)==1)
+  stringr::str_trim(stringr::str_split(str, pattern)[[1]])
 }
 
 #' Flexibly select rows of a data frame.
