@@ -201,8 +201,11 @@ count_touching_cells <- function(cell_seg_path, pairs, colors=NULL,
     membrane_width = 1 # Old-style membrane mask is always one pixel thick
     membrane[membrane>0] = 0.5
 
-    # Don't use readImage to read nuclear mask, it converts to 0-1 scale!
     nuc_path = sub('cell_seg_data.txt', 'nuc_seg_map.tif', cell_seg_path)
+    if (!file.exists(nuc_path))
+      stop('nuc_seg_map file not found.')
+
+    # Don't use readImage to read nuclear mask, it converts to 0-1 scale!
     nuclei = tiff::readTIFF(nuc_path, as.is=TRUE)
     nuclei = t(nuclei)
   }
@@ -213,6 +216,9 @@ count_touching_cells <- function(cell_seg_path, pairs, colors=NULL,
       stop('count_touching_cells requires a segmentation map file.')
 
     masks = read_maps(mask_path)
+    if (!all(c('Membrane', 'Nucleus') %in% names(masks)))
+      stop('binary_seg_maps file must contain nuclear and membrane segmentation.')
+
     membrane = masks[['Membrane']]
 
     # New-style membrane masks may be two pixels thick. If so, it will be
