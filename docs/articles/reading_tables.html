@@ -29,7 +29,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">phenoptr</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.1.1.9006</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.1.1.9007</span>
       </span>
     </div>
 
@@ -142,9 +142,7 @@ table {
 <h3 class="hasAnchor">
 <a href="#reading-cell-segmentation-data-files" class="anchor"></a>Reading cell segmentation data files</h3>
 <p>The <code>read_cell_seg_data</code> function reads cell seg data files and does useful cleanup on the result including removing empty columns, converting pixels to microns and simplifying column names.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Load libraries</span>
-<span class="kw">library</span>(tidyverse)
-<span class="kw">library</span>(phenoptr)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(phenoptr)
 
 <span class="co"># sample_cell_seg_path gives the path to a sample file included with phenoptr.</span>
 <span class="co"># Change this to be the path to your data. For example you might use</span>
@@ -183,6 +181,7 @@ csd &lt;-<span class="st"> </span><span class="kw"><a href="../reference/read_ce
 <h2 class="hasAnchor">
 <a href="#creating-new-columns" class="anchor"></a>Creating new columns</h2>
 <p>The <code><a href="http://dplyr.tidyverse.org/reference/mutate.html">dplyr::mutate</a></code> function makes it very easy to add new columns to your data. This example adds a column for PDL1 positivity and counts cells in each phenotype stratified by positivity.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidyverse)</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">csd &lt;-<span class="st"> </span>csd <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>(<span class="dt">pdl1_plus=</span><span class="st">`</span><span class="dt">Entire Cell PDL1 (Opal 520) Mean</span><span class="st">`</span><span class="op">&gt;</span><span class="dv">3</span>)
 <span class="kw">table</span>(csd<span class="op">$</span>pdl1_plus, csd<span class="op">$</span>Phenotype)</code></pre></div>
 <pre><code>       
@@ -221,7 +220,8 @@ The tutorial <a href="https://perkinelmer.github.io/phenoptrExamples/articles/ag
 <h2 class="hasAnchor">
 <a href="#plotting-data" class="anchor"></a>Plotting data</h2>
 <p><a href="http://ggplot2.tidyverse.org/">ggplot2</a> is a powerful and versatile plotting package well suited to exploratory data visualization. Here are two brief examples to whet your appetite.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(csd, <span class="kw">aes</span>(Phenotype, <span class="st">`</span><span class="dt">Entire Cell PDL1 (Opal 520) Mean</span><span class="st">`</span>, <span class="dt">color=</span>Phenotype)) <span class="op">+</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggplot2)
+<span class="kw">ggplot</span>(csd, <span class="kw">aes</span>(Phenotype, <span class="st">`</span><span class="dt">Entire Cell PDL1 (Opal 520) Mean</span><span class="st">`</span>, <span class="dt">color=</span>Phenotype)) <span class="op">+</span>
 <span class="st">  </span><span class="kw">geom_boxplot</span>() <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">scale_color_brewer</span>(<span class="dt">palette=</span><span class="st">'Set1'</span>) <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">labs</span>(<span class="dt">y=</span><span class="st">'PDL1 Expression'</span>, <span class="dt">title=</span><span class="st">'PDL1 Expression per Phenotype'</span>)</code></pre></div>

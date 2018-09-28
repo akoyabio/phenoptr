@@ -29,7 +29,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">phenoptr</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.1.1.9006</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.1.1.9007</span>
       </span>
     </div>
 
@@ -126,8 +126,8 @@ table {
 </h3>
 <p>The <code>find_nearest_distance</code> function finds per-cell nearest neighbor distances. For each cell in a sample, it finds the distances to the nearest neighbor cells in each of the provided phenotypes. The distances are returned in a <code>data_frame</code> with one column per phenotype.</p>
 <p>For example, the <code>phenoptr</code> sample data <code>sample_cell_seg_data</code> contains 5 unique phenotypes:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidyverse)
-<span class="kw">library</span>(phenoptr)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidyverse)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(phenoptr)
 
 csd &lt;-<span class="st"> </span>sample_cell_seg_data
 csd <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">count</span>(Phenotype)</code></pre></div>
@@ -156,15 +156,15 @@ $ `Distance to FoxP3+` &lt;dbl&gt; 16.347783, 40.140379, 30.870698, 65.40833...<
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">csd_with_distance &lt;-<span class="st"> </span><span class="kw">bind_cols</span>(csd, distances)</code></pre></div>
 <p>Note: Cell positions in a cell seg data file are relative to the top-left corner of the field, so calling <code>find_nearest_distance</code> on a merged data file will compute incorrect values. One way to add distance columns to a merged data file is to use <code><a href="http://dplyr.tidyverse.org/reference/group_by.html">dplyr::group_by</a></code> to process each field separately. For example, if <code>merged</code> contains merged cell seg data, add distance columns with this code:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">merged_with_distance &lt;-<span class="st"> </span>merged <span class="op">%&gt;%</span>
-<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span>(<span class="st">`</span><span class="dt">Sample Name</span><span class="st">`</span>) <span class="op">%&gt;%</span>
-<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/do.html">do</a></span>(dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/bind.html">bind_cols</a></span>(., <span class="kw"><a href="../reference/find_nearest_distance.html">find_nearest_distance</a></span>(.)))</code></pre></div>
+<span class="st">  </span><span class="kw">group_by</span>(<span class="st">`</span><span class="dt">Sample Name</span><span class="st">`</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">do</span>(<span class="kw">bind_cols</span>(., <span class="kw"><a href="../reference/find_nearest_distance.html">find_nearest_distance</a></span>(.)))</code></pre></div>
 </div>
 <div id="analyzing-nearest-neighbor-distances" class="section level3">
 <h3 class="hasAnchor">
 <a href="#analyzing-nearest-neighbor-distances" class="anchor"></a>Analyzing nearest neighbor distances</h3>
 <p>Once the nearest neighbors have been computed per cell, standard aggregation, analysis and plotting commands can be used to examine the results. For example, find the mean nearest neighbor distances by phenotype:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">csd_with_distance <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">group_by</span>(Phenotype) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">select</span>(<span class="kw">starts_with</span>(<span class="st">'Distance to'</span>)) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">select</span>(Phenotype, <span class="kw">starts_with</span>(<span class="st">'Distance to'</span>)) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">summarize_all</span>(<span class="op">~</span><span class="kw">round</span>(<span class="kw">mean</span>(.), <span class="dv">1</span>))</code></pre></div>
 <pre><code># A tibble: 4 x 5
   Phenotype `Distance to CD~ `Distance to CD~ `Distance to CK~

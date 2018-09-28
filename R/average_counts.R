@@ -200,7 +200,7 @@ count_within_batch <- function(base_path, pairs, radius, category=NA,
 #' @export
 #' @family distance functions
 #' @examples
-#' library(tidyverse)
+#' library(dplyr)
 #' csd <- sample_cell_seg_data
 #'
 #' # Find the number of macrophages with a tumor cell within 10 or 25 microns

@@ -14,7 +14,8 @@ vignette: >
 
 
 ```{r setup, echo=FALSE,include=FALSE,message=FALSE}
-suppressPackageStartupMessages(library(tidyverse))
+library(dplyr)
+library(ggplot2)
 knitr::opts_chunk$set(fig.width=6, fig.height=4, 
                       comment=NA, warning=FALSE, message=FALSE)
 theme_set(theme_bw())
@@ -68,8 +69,6 @@ useful cleanup on the result including removing empty columns,
 converting pixels to microns and simplifying column names.
 
 ```{r read}
-# Load libraries
-library(tidyverse)
 library(phenoptr)
 
 # sample_cell_seg_path gives the path to a sample file included with phenoptr.
@@ -118,6 +117,9 @@ function makes it very easy to add new columns to your
 data. This example adds a column for PDL1 positivity and counts cells
 in each phenotype stratified by positivity.
 
+```{r eval=FALSE}
+library(tidyverse)
+```
 ```{r mutate}
 csd <- csd %>% mutate(pdl1_plus=`Entire Cell PDL1 (Opal 520) Mean`>3)
 table(csd$pdl1_plus, csd$Phenotype)
@@ -157,6 +159,7 @@ plotting package well suited to exploratory data visualization. Here are
 two brief examples to whet your appetite.
 
 ```{r ggplot2}
+library(ggplot2)
 ggplot(csd, aes(Phenotype, `Entire Cell PDL1 (Opal 520) Mean`, color=Phenotype)) +
   geom_boxplot() + 
   scale_color_brewer(palette='Set1') + 

@@ -1,3 +1,9 @@
+# phenoptr 0.1.1.9007
+**2018-09-28**
+
+- Remove import dependency on tidyverse. Examples and vignettes use dplyr, 
+  ggplot2 and magrittr instead. #6
+
 # phenoptr 0.1.1.9006
 **2018-09-28**
 

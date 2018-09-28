@@ -14,7 +14,8 @@ vignette: >
 
 
 ```{r setup, echo=FALSE,include=FALSE,message=FALSE}
-suppressPackageStartupMessages(library(tidyverse))
+library(dplyr)
+library(ggplot2)
 knitr::opts_chunk$set(fig.width=7, fig.height=5, 
                       comment=NA, warning=FALSE, message=FALSE)
 theme_set(theme_bw())
@@ -48,8 +49,10 @@ For example, the `phenoptr` sample data `sample_cell_seg_data` contains
 `r length(unique(phenoptr::sample_cell_seg_data$Phenotype))` unique
 phenotypes:
 
-```{r}
+```{r eval=FALSE}
 library(tidyverse)
+```
+```{r}
 library(phenoptr)
 
 csd <- sample_cell_seg_data
@@ -88,8 +91,8 @@ cell seg data, add distance columns with this code:
 
 ```{r eval=FALSE}
 merged_with_distance <- merged %>%
-  dplyr::group_by(`Sample Name`) %>%
-  dplyr::do(dplyr::bind_cols(., find_nearest_distance(.)))
+  group_by(`Sample Name`) %>%
+  do(bind_cols(., find_nearest_distance(.)))
 ```
 
 ### Analyzing nearest neighbor distances
@@ -100,7 +103,7 @@ find the mean nearest neighbor distances by phenotype:
  
 ```{r}
 csd_with_distance %>% group_by(Phenotype) %>% 
-  select(starts_with('Distance to')) %>% 
+  select(Phenotype, starts_with('Distance to')) %>% 
   summarize_all(~round(mean(.), 1))
 ```
 

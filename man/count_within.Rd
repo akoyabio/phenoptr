@@ -77,7 +77,7 @@ for the entire data set.
 \code{radius} may be a vector with multiple values.
 }
 \examples{
-library(tidyverse)
+library(dplyr)
 csd <- sample_cell_seg_data
 
 # Find the number of macrophages with a tumor cell within 10 or 25 microns

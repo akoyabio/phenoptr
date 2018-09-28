@@ -63,7 +63,7 @@ phenotype on the distance from the boundary between the two tissue classes." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">phenoptr</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.1.1.9006</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.1.1.9007</span>
       </span>
     </div>
 
@@ -267,9 +267,9 @@ Chapman and Hall/CRC Press, 2015. Sections 6.6.3-6.6.4.</p>
 #&gt; <span class='message'>For an introduction to spatstat, type 'beginner' </span></div><div class='input'>
 <span class='co'># Combine all the densities into a single data_frame</span>
 <span class='co'># and filter out the extremes</span>
-<span class='fu'>library</span>(<span class='no'>tidyverse</span>)
+<span class='fu'>library</span>(<span class='no'>dplyr</span>)
 <span class='no'>all_rho</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>purrr</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/purrr/topics/map'>map_dfr</a></span>(<span class='no'>values</span>$<span class='no'>rhohat</span>, ~<span class='no'>.</span>, <span class='kw'>.id</span><span class='kw'>=</span><span class='st'>'phenotype'</span>) <span class='kw'>%&gt;%</span>
-  <span class='no'>as_data_frame</span> <span class='kw'>%&gt;%</span> <span class='fu'>filter</span>(<span class='no'>X</span><span class='kw'>&gt;=</span>-<span class='fl'>50</span>, <span class='no'>X</span><span class='kw'>&lt;=</span><span class='fl'>100</span>)
+  <span class='no'>as_data_frame</span> <span class='kw'>%&gt;%</span> <span class='fu'><a href='http://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='no'>X</span><span class='kw'>&gt;=</span>-<span class='fl'>50</span>, <span class='no'>X</span><span class='kw'>&lt;=</span><span class='fl'>100</span>)
 
 <span class='co'># Plot the densities in a single plot</span>
 <span class='fu'>library</span>(<span class='no'>ggplot2</span>)
