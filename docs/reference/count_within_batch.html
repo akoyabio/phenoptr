@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Count cells within a radius for multiple tissue categories, phenotypes
-and fields. — count_within_batch â€¢ phenoptr</title>
+and fields. â€” count_within_batch â€¢ phenoptr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -19,13 +19,31 @@ and fields. — count_within_batch â€¢ phenoptr</title>
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
+
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
+<meta property="og:title" content="Count cells within a radius for multiple tissue categories, phenotypes
+and fields. â€” count_within_batch" />
+
+<meta property="og:description" content="This is a batch version of count_within. Given the path to a directory
+containing cell seg data files, for each given tissue category,
+pair of
+'from' phenotype and 'to' phenotype, and radius, it counts the number of
+'from' cells
+having a 'to' cell within radius microns." />
+<meta name="twitter:card" content="summary" />
+
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -48,8 +66,12 @@ and fields. — count_within_batch â€¢ phenoptr</title>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">phenoptr</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">phenoptr</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.1.1.9006</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -103,6 +125,7 @@ and fields. — count_within_batch â€¢ phenoptr</title>
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -110,13 +133,16 @@ and fields. — count_within_batch â€¢ phenoptr</title>
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Count cells within a radius for multiple tissue categories, phenotypes
 and fields.</h1>
+    
+    <div class="hidden name"><code>count_within_batch.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p>This is a batch version of <a href='count_within.html'>count_within</a>. Given the path to a directory
 containing cell seg data files, for each given tissue category,
@@ -125,11 +151,12 @@ pair of
 'from' cells
 having a 'to' cell within <code>radius</code> microns.</p>
     
+    </div>
 
     <pre class="usage"><span class='fu'>count_within_batch</span>(<span class='no'>base_path</span>, <span class='no'>pairs</span>, <span class='no'>radius</span>, <span class='kw'>category</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
   <span class='kw'>phenotype_rules</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -189,13 +216,13 @@ the use of <code>pairs</code> and <code>phenotype_rules</code>.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p>Other distance functions: <code><a href='compute_all_nearest_distance.html'>compute_all_nearest_distance</a></code>,
+    <div class='dont-index'><p>Other distance functions: <code><a href='compute_all_nearest_distance.html'>compute_all_nearest_distance</a></code>,
   <code><a href='count_touching_cells.html'>count_touching_cells</a></code>,
   <code><a href='count_within.html'>count_within</a></code>,
   <code><a href='distance_matrix.html'>distance_matrix</a></code>,
   <code><a href='find_nearest_distance.html'>find_nearest_distance</a></code>,
   <code><a href='spatial_distribution_report.html'>spatial_distribution_report</a></code>,
-  <code><a href='subset_distance_matrix.html'>subset_distance_matrix</a></code></p>
+  <code><a href='subset_distance_matrix.html'>subset_distance_matrix</a></code></p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -208,16 +235,16 @@ the use of <code>pairs</code> and <code>phenotype_rules</code>.</p>
 <span class='no'>radius</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='fl'>10</span>, <span class='fl'>25</span>)
 <span class='no'>category</span> <span class='kw'>&lt;-</span> <span class='fu'>list</span>(<span class='st'>'Tumor'</span>, <span class='st'>'Stroma'</span>)
 <span class='fu'>count_within_batch</span>(<span class='no'>base_path</span>, <span class='no'>pairs</span>, <span class='no'>radius</span>, <span class='no'>category</span>)</div><div class='output co'>#&gt; Processing Set4_1-6plex_[16142,55840] </div><div class='output co'>#&gt; # A tibble: 8 x 10
-#&gt;   slide_id  source    category from  to    radius from_count to_count from_with
-#&gt;   &lt;chr&gt;     &lt;chr&gt;     &lt;chr&gt;    &lt;chr&gt; &lt;chr&gt;  &lt;dbl&gt;      &lt;int&gt;    &lt;int&gt;     &lt;int&gt;
-#&gt; 1 Set4_1-6~ Set4_1-6~ Tumor    CK+   CD68+    10.       2192      101        79
-#&gt; 2 Set4_1-6~ Set4_1-6~ Tumor    CK+   CD68+    25.       2192      101       397
-#&gt; 3 Set4_1-6~ Set4_1-6~ Tumor    CK+   CD8+     10.       2192       51        63
-#&gt; 4 Set4_1-6~ Set4_1-6~ Tumor    CK+   CD8+     25.       2192       51       320
-#&gt; 5 Set4_1-6~ Set4_1-6~ Stroma   CK+   CD68+    10.         65      316         6
-#&gt; 6 Set4_1-6~ Set4_1-6~ Stroma   CK+   CD68+    25.         65      316        34
-#&gt; 7 Set4_1-6~ Set4_1-6~ Stroma   CK+   CD8+     10.         65      177         4
-#&gt; 8 Set4_1-6~ Set4_1-6~ Stroma   CK+   CD8+     25.         65      177        22
+#&gt;   slide_id source category from  to    radius from_count to_count from_with
+#&gt;   &lt;chr&gt;    &lt;chr&gt;  &lt;chr&gt;    &lt;chr&gt; &lt;chr&gt;  &lt;dbl&gt;      &lt;int&gt;    &lt;int&gt;     &lt;int&gt;
+#&gt; 1 Set4_1-~ Set4_~ Tumor    CK+   CD68+     10       2192      101        79
+#&gt; 2 Set4_1-~ Set4_~ Tumor    CK+   CD68+     25       2192      101       397
+#&gt; 3 Set4_1-~ Set4_~ Tumor    CK+   CD8+      10       2192       51        63
+#&gt; 4 Set4_1-~ Set4_~ Tumor    CK+   CD8+      25       2192       51       320
+#&gt; 5 Set4_1-~ Set4_~ Stroma   CK+   CD68+     10         65      316         6
+#&gt; 6 Set4_1-~ Set4_~ Stroma   CK+   CD68+     25         65      316        34
+#&gt; 7 Set4_1-~ Set4_~ Stroma   CK+   CD8+      10         65      177         4
+#&gt; 8 Set4_1-~ Set4_~ Stroma   CK+   CD8+      25         65      177        22
 #&gt; # ... with 1 more variable: within_mean &lt;dbl&gt;</div><div class='input'>
 <span class='co'># Count tumor cells near any T cell in all tissue categories.</span>
 <span class='co'># Use `phenotype_rules` to define the T cell phenotype</span>
@@ -225,10 +252,10 @@ the use of <code>pairs</code> and <code>phenotype_rules</code>.</p>
 <span class='no'>rules</span> <span class='kw'>&lt;-</span> <span class='fu'>list</span>(
 <span class='st'>'T cell'</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='st'>'CD8+'</span>, <span class='st'>'FoxP3+'</span>))
 <span class='fu'>count_within_batch</span>(<span class='no'>base_path</span>, <span class='no'>pairs</span>, <span class='no'>radius</span>, <span class='kw'>phenotype_rules</span><span class='kw'>=</span><span class='no'>rules</span>)</div><div class='output co'>#&gt; Processing Set4_1-6plex_[16142,55840] </div><div class='output co'>#&gt; # A tibble: 2 x 10
-#&gt;   slide_id  source    category from  to    radius from_count to_count from_with
-#&gt;   &lt;chr&gt;     &lt;chr&gt;     &lt;chr&gt;    &lt;chr&gt; &lt;chr&gt;  &lt;dbl&gt;      &lt;int&gt;    &lt;int&gt;     &lt;int&gt;
-#&gt; 1 Set4_1-6~ Set4_1-6~ all      CK+   T ce~    10.       2257      456       150
-#&gt; 2 Set4_1-6~ Set4_1-6~ all      CK+   T ce~    25.       2257      456       824
+#&gt;   slide_id source category from  to    radius from_count to_count from_with
+#&gt;   &lt;chr&gt;    &lt;chr&gt;  &lt;chr&gt;    &lt;chr&gt; &lt;chr&gt;  &lt;dbl&gt;      &lt;int&gt;    &lt;int&gt;     &lt;int&gt;
+#&gt; 1 Set4_1-~ Set4_~ all      CK+   T ce~     10       2257      456       150
+#&gt; 2 Set4_1-~ Set4_~ all      CK+   T ce~     25       2257      456       824
 #&gt; # ... with 1 more variable: within_mean &lt;dbl&gt;</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -254,11 +281,14 @@ the use of <code>pairs</code> and <code>phenotype_rules</code>.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+

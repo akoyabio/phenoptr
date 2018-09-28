@@ -8,14 +8,17 @@
 <title>Selecting cells within a cell segmentation table • phenoptr</title>
 <!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
-<!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script><script src="../pkgdown.js"></script><!-- mathjax --><script src="https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!--[if lt IE 9]>
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
+<script src="../pkgdown.js"></script><meta property="og:title" content="Selecting cells within a cell segmentation table">
+<meta property="og:description" content="">
+<meta name="twitter:card" content="summary">
+<!-- mathjax --><script src="https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
 </head>
 <body>
-    <div class="container template-vignette">
+    <div class="container template-article">
       <header><div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
@@ -24,8 +27,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">phenoptr</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">phenoptr</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.1.1.9006</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
@@ -87,28 +94,36 @@
 
       
       </header><div class="row">
-  <div class="col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1>Selecting cells within a cell segmentation table</h1>
                         <h4 class="author">Kent Johnson</h4>
             
-            <h4 class="date">2018-04-23</h4>
-          </div>
+            <h4 class="date">2018-09-28</h4>
+      
+      
+      <div class="hidden name"><code>selecting_cells.Rmd</code></div>
+
+    </div>
 
     
     
-<div class="contents">
 <p><code>phenoptr</code> includes a flexible mechanism for selecting cells (i.e. rows) from a cell seg table. The mechanism is implemented in <code>select_rows</code>. Row selection may be used directly via <code>select_rows</code> and ordinary subsetting operations. It is also used indirectly by calling functions that support it, including <code>count_touching_cells</code> and <code>count_within</code>.</p>
 <p>The return value from <code>select_rows</code> is a boolean (logical) vector whose length is the number of rows of the given cell seg table. You use this returned value to select rows of the table.</p>
+<div class="panel panel-default">
+<div class="panel-body">
+<p>The mechanism <code>select_rows</code> uses to specify phenotypes is very flexible. This flexibility comes at a cost in complexity. Most common phenotype combinations can also be specified using <code>parse_phenotypes</code>.</p>
+</div>
+</div>
 <hr>
 <div id="selecting-phenotypes" class="section level2">
 <h2 class="hasAnchor">
 <a href="#selecting-phenotypes" class="anchor"></a>Selecting phenotypes</h2>
-<p>This section of the tutorial uses <code>sample_cell_seg_data</code> and <code>count_within</code> for examples.</p>
+<p>This tutorial uses <code>sample_cell_seg_data</code> and <code>count_within</code> to give examples of the phenotype specifications used by <code>select_rows</code>.</p>
 <div id="select-a-single-phenotype" class="section level3">
 <h3 class="hasAnchor">
 <a href="#select-a-single-phenotype" class="anchor"></a>Select a single phenotype</h3>
-<p>The simplest selector is just the name of a single phenotype. This example selects the rows containing <code>CK+</code> cells:</p>
+<p>The simplest selector is just the name of a single phenotype. This example selects the rows containing <code>CK+</code> cells. The same syntax works with <code>parse_phenotypes</code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(phenoptr)
 
 csd &lt;-<span class="st"> </span>sample_cell_seg_data
@@ -125,12 +140,18 @@ ck &lt;-<span class="st"> </span>csd[rows, ]
 <pre><code>## # A tibble: 1 x 5
 ##   radius from_count to_count from_with within_mean
 ##    &lt;dbl&gt;      &lt;int&gt;    &lt;int&gt;     &lt;int&gt;       &lt;dbl&gt;
-## 1    15.       2257      228       193       0.115</code></pre>
+## 1     15       2257      228       193       0.115</code></pre>
+</div>
+<div id="select-multiple-positivity" class="section level3">
+<h3 class="hasAnchor">
+<a href="#select-multiple-positivity" class="anchor"></a>Select multiple positivity</h3>
+<p>Double positive (or more) cells can be selected by including multiple names in a list. Selectors in a list are combined with AND.</p>
 </div>
 <div id="group-multiple-phenotypes" class="section level3">
 <h3 class="hasAnchor">
 <a href="#group-multiple-phenotypes" class="anchor"></a>Group multiple phenotypes</h3>
-<p>Multiple phenotypes may selected together by including each name in a character vector (not a list!). For example, to select cells phenotyped as either <code>CD8+</code> or <code>FoxP3+</code>, use the selector <code>c('CD8+', 'FoxP3+')</code>.</p>
+<p>Multiple phenotypes may selected together by including each name in a character vector (not a list!). Names in a vector are combined with OR.</p>
+<p>For example, to select cells phenotyped as either <code>CD8+</code> or <code>FoxP3+</code>, use the selector <code>c('CD8+', 'FoxP3+')</code>.</p>
 <p>This example selects this combination. Note the call to <code>select_rows</code> has been combined with the subsetting of <code>csd</code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tcells &lt;-<span class="st"> </span>csd[<span class="kw"><a href="../reference/select_rows.html">select_rows</a></span>(csd, <span class="kw">c</span>(<span class="st">'CD8+'</span>, <span class="st">'FoxP3+'</span>)), ]
 <span class="kw">dim</span>(tcells)</code></pre></div>
@@ -139,7 +160,7 @@ ck &lt;-<span class="st"> </span>csd[rows, ]
 <pre><code>## # A tibble: 1 x 5
 ##   radius from_count to_count from_with within_mean
 ##    &lt;dbl&gt;      &lt;int&gt;    &lt;int&gt;     &lt;int&gt;       &lt;dbl&gt;
-## 1    15.       2257      456       354       0.206</code></pre>
+## 1     15       2257      456       354       0.206</code></pre>
 <p>This type of grouping is an either / or selection. The <code>count_within</code> example above counts the number of T cells (<code>CD8+</code> <em>or</em> <code>FoxP3+</code>) within 15 microns of a <code>CK+</code> cell. If you want separate counts for <code>CD8+</code> and <code>FoxP3+</code>, use <code>count_within_batch</code>.</p>
 </div>
 <div id="flexible-selection-using-expressions" class="section level3">
@@ -157,7 +178,7 @@ ck_pdl1 &lt;-<span class="st"> </span>csd[rows, ]
 <pre><code>## # A tibble: 1 x 5
 ##   radius from_count to_count from_with within_mean
 ##    &lt;dbl&gt;      &lt;int&gt;    &lt;int&gt;     &lt;int&gt;       &lt;dbl&gt;
-## 1    15.        531      228        86       0.228</code></pre>
+## 1     15        531      228        86       0.228</code></pre>
 <p>A few things to note about formula expressions:</p>
 <ul>
 <li>Expressions are evaluated in the context of the cell seg table. Names used in the expression must match column names in the table. If the table was read using <code><a href="../reference/read_cell_seg_data.html">read_cell_seg_data(path, remove_units=TRUE)</a></code> (the default), the table names will be abbreviated compared to the names in the file.</li>
@@ -200,7 +221,6 @@ phenotype_rules &lt;-<span class="st"> </span><span class="kw">list</span>(
 )</code></pre></div>
 </div>
 </div>
-</div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -222,11 +242,13 @@ phenotype_rules &lt;-<span class="st"> </span><span class="kw">list</span>(
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>
 </div>
+
+  
 
   </body>
 </html>

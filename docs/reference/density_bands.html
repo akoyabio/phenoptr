@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Estimate cell density in bands from a tissue boundary. � density_bands • phenoptr</title>
+<title>Estimate cell density in bands from a tissue boundary. — density_bands • phenoptr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -18,13 +18,28 @@
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
+
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
+<meta property="og:title" content="Estimate cell density in bands from a tissue boundary. — density_bands" />
+
+<meta property="og:description" content="Given a cell seg table and an image containing masks for two tissue
+classes, estimate the density of cells of each specified
+phenotype in bands from the boundary between the two
+tissue classes." />
+<meta name="twitter:card" content="summary" />
+
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -47,8 +62,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">phenoptr</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">phenoptr</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.1.1.9006</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -102,6 +121,7 @@
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -109,23 +129,27 @@
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Estimate cell density in bands from a tissue boundary.</h1>
+    
+    <div class="hidden name"><code>density_bands.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p>Given a cell seg table and an image containing masks for two tissue
 classes, estimate the density of cells of each specified
 phenotype in bands from the boundary between the two
 tissue classes.</p>
     
+    </div>
 
     <pre class="usage"><span class='fu'>density_bands</span>(<span class='no'>cell_seg_path</span>, <span class='no'>phenotypes</span>, <span class='no'>positive</span>, <span class='no'>negative</span>, <span class='kw'>width</span> <span class='kw'>=</span> <span class='fl'>25</span>,
   <span class='kw'>pixels_per_micron</span> <span class='kw'>=</span> <span class='fu'>getOption</span>(<span class='st'>"phenoptr.pixels.per.micron"</span>))</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -161,37 +185,27 @@ e.g. "tumor".</p></td>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Returns a <code>list</code> with three items:</p><table><tr><td>
-<code>densities</code> </td>
-<td> A <code>data_frame</code> with five columns (see below).</td>
-</tr><tr><td>
-<code>cells</code> </td>
-<td> Cell seg data with phenotypes updated per the <code>phenotypes</code>
-parameter and an additional <code>distance</code> column.</td>
-</tr><tr><td>
-<code>distance</code> </td>
-<td> The distance map, a pixel image
-(<code><a href='http://www.rdocumentation.org/packages/spatstat/topics/im.object'>im.object</a></code>).</td>
-</tr></table>
+    <p>Returns a <code>list</code> with three items:</p><table class='table'>
+<tr><td><code>densities</code></td><td>A <code>data_frame</code> with five columns (see below).</td></tr>
+<tr><td><code>cells</code></td><td>Cell seg data with phenotypes updated per the <code>phenotypes</code>
+parameter and an additional <code>distance</code> column.</td></tr>
+<tr><td><code>distance</code></td><td>The distance map, a pixel image
+(<code><a href='http://www.rdocumentation.org/packages/spatstat/topics/im.object'>im.object</a></code>).</td></tr>
+<tr><td></td><td><code>densities</code></td></tr>
+</table>
 
-<p>The <code>densities</code> item contains five columns:</p><table><tr><td>
-<code>phenotype</code> </td>
-<td> The supplied phenotypes.</td>
-</tr><tr><td>
-<code>midpoint</code> </td>
-<td> The midpoint of the distance band.</td>
-</tr><tr><td>
-<code>count</code> </td>
-<td> The number of cells of the phenotype found
-within the band.</td>
-</tr><tr><td>
-<code>area</code> </td>
-<td> The area of the band, in square microns.</td>
-</tr><tr><td>
-<code>density</code> </td>
-<td> The density of cells of the phenotype in the band,
-in cells per square micron.</td>
-</tr></table>
+
+<p>The <code>densities</code> item contains five columns:</p><table class='table'>
+<tr><td><code>phenotype</code></td><td>The supplied phenotypes.</td></tr>
+<tr><td><code>midpoint</code></td><td>The midpoint of the distance band.</td></tr>
+<tr><td><code>count</code></td><td>The number of cells of the phenotype found
+within the band.</td></tr>
+<tr><td><code>area</code></td><td>The area of the band, in square microns.</td></tr>
+<tr><td><code>density</code></td><td>The density of cells of the phenotype in the band,
+in cells per square micron.</td></tr>
+<tr><td></td><td><code>phenotype</code></td></tr>
+</table>
+
 
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
@@ -213,7 +227,7 @@ to compute density.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p>Other density estimation: <code><a href='density_at_distance.html'>density_at_distance</a></code></p>
+    <div class='dont-index'><p>Other density estimation: <code><a href='density_at_distance.html'>density_at_distance</a></code></p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -227,7 +241,7 @@ to compute density.</p>
 <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/ggplot'>ggplot</a></span>(<span class='no'>values</span>$<span class='no'>densities</span>, <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/aes'>aes</a></span>(<span class='no'>midpoint</span>, <span class='no'>density</span>*<span class='fl'>1000000</span>, <span class='kw'>color</span><span class='kw'>=</span><span class='no'>phenotype</span>)) +
   <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/geom_path'>geom_line</a></span>(<span class='kw'>size</span><span class='kw'>=</span><span class='fl'>2</span>) +
   <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/labs'>labs</a></span>(<span class='kw'>x</span><span class='kw'>=</span><span class='st'>'Distance from tumor boundary (microns)'</span>,
-       <span class='kw'>y</span><span class='kw'>=</span><span class='st'>'Estimated cell density (cells per sq mm)'</span>)</div><div class='img'><img src='density_bands-1.png' alt='' width='700' height='432.632880098887' /></div></pre>
+       <span class='kw'>y</span><span class='kw'>=</span><span class='st'>'Estimated cell density (cells per sq mm)'</span>)</div><div class='img'><img src='density_bands-1.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -252,11 +266,14 @@ to compute density.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+

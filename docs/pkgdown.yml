@@ -1,10 +1,13 @@
-urls:
-  reference: http://perkinelmer.github.io/phenoptr/reference
-  article: http://perkinelmer.github.io/phenoptr/articles
+pandoc: 1.19.2.1
+pkgdown: 1.1.0
+pkgdown_sha: ~
 articles:
   computing_distances: computing_distances.html
   find_and_count_touching_cells: find_and_count_touching_cells.html
   reading_image_files: reading_image_files.html
   reading_tables: reading_tables.html
   selecting_cells: selecting_cells.html
+urls:
+  reference: http://perkinelmer.github.io/phenoptr/reference
+  article: http://perkinelmer.github.io/phenoptr/articles
 

@@ -26,17 +26,25 @@ length is the number of rows of the given cell seg table.
 You use this returned
 value to select rows of the table. 
 
+<div class="panel panel-default"><div class="panel-body">
+The mechanism `select_rows` uses to specify phenotypes is very flexible. This
+flexibility comes at a cost in complexity. Most common phenotype combinations
+can also be specified using `parse_phenotypes`. 
+</div></div>
+
 ----
 
 ## Selecting phenotypes
 
-This section of the tutorial uses `sample_cell_seg_data` and 
-`count_within` for examples.
+This tutorial uses `sample_cell_seg_data` and 
+`count_within` to give examples of the phenotype specifications used by 
+`select_rows`.
 
 ### Select a single phenotype
 
 The simplest selector is just the name of a single phenotype. This example
-selects the rows containing `CK+` cells:
+selects the rows containing `CK+` cells. The same syntax works with 
+`parse_phenotypes`.
 
 ```{r}
 library(phenoptr)
@@ -57,10 +65,16 @@ dst <- distance_matrix(csd) # Compute this just once and re-use it
 count_within(csd, from='CK+', to='CD8+', radius=15, dst=dst)
 ```
 
+### Select multiple positivity
+
+Double positive (or more) cells can be selected by including multiple
+names in a list. Selectors in a list are combined with AND.
+
 ### Group multiple phenotypes
 
 Multiple phenotypes may selected together by including each name in a 
-character vector (not a list!).
+character vector (not a list!). Names in a vector are combined with OR.
+
 For example, to select cells phenotyped as either 
 `CD8+` or `FoxP3+`,
 use the selector `c('CD8+', 'FoxP3+')`.
