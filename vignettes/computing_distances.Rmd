@@ -174,7 +174,7 @@ count_within_batch(base_path, pairs, radii, categories)
 ```
 
 See `help(count_within_batch)` and the tutorial
-[Selecting cells within a cell segmentation table](https://perkinelmer.github.io/phenoptr/articles/selecting_cells.html)
+[Selecting cells within a cell segmentation table](https://akoyabio.github.io/phenoptr/articles/selecting_cells.html)
 for additional details.
 
 ----

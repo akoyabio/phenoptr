@@ -1,12 +1,12 @@
 # phenoptr - Helpers for working with inForm data
 
-[![Travis-CI Build Status](https://travis-ci.org/PerkinElmer/phenoptr.svg?branch=master)](https://travis-ci.org/PerkinElmer/phenoptr)
-[![Coverage Status](https://img.shields.io/codecov/c/github/PerkinElmer/phenoptr/master.svg)](https://codecov.io/github/PerkinElmer/phenoptr?branch=master)
+[![Travis-CI Build Status](https://travis-ci.org/akoyabio/phenoptr.svg?branch=master)](https://travis-ci.org/akoyabio/phenoptr)
+[![Coverage Status](https://img.shields.io/codecov/c/github/akoyabio/phenoptr/master.svg)](https://codecov.io/github/akoyabio/phenoptr?branch=master)
 
 `phenoptr` contains functions that make it easier to read and analyze data tables
-and images created by PerkinElmer's inForm<sup>&reg;</sup> software.
+and images created by Akoya Biosciences' inForm<sup>&reg;</sup> software.
 
-`phenoptr` is part of the PerkinElmer Phenoptics&trade; family of
+`phenoptr` is part of the Akoya Biosciences Phenoptics&trade; family of
 Quantitative Pathology Research Solutions. For more information
 visit the Phenoptics&trade;
 [home page](http://www.perkinelmer.com/cancer-immunology/index.html).
@@ -27,7 +27,7 @@ is highly recommended as well.
 1. Install `phenoptr` from GitHub. In the RStudio console, copy and paste or type these commands (press Enter after each line):
 ```
 install.packages("devtools")
-devtools::install_github("PerkinElmer/phenoptr", build_vignettes=TRUE)
+devtools::install_github("akoyabio/phenoptr", build_vignettes=TRUE)
 ```
 1. When requested, enter `1` (Yes) to install BiocInstaller.
 
@@ -35,24 +35,24 @@ devtools::install_github("PerkinElmer/phenoptr", build_vignettes=TRUE)
 
 ## Getting Started
 
-These [Tutorials](https://perkinelmer.github.io/phenoptr/articles/index.html)
+These [Tutorials](https://akoyabio.github.io/phenoptr/articles/index.html)
 introduce the most important features of `phenoptr`.
 
-- [Reading and exploring inForm tables](https://perkinelmer.github.io/phenoptr/articles/reading_tables.html)
+- [Reading and exploring inForm tables](https://akoyabio.github.io/phenoptr/articles/reading_tables.html)
 demonstrates reading and processing inForm cell segmentation tables. This is a 
 good place to start.
-- [Computing inter-cellular distances](https://perkinelmer.github.io/phenoptr/articles/computing_distances.html)
+- [Computing inter-cellular distances](https://akoyabio.github.io/phenoptr/articles/computing_distances.html)
 introduces most of `phenoptr`'s spatial processing capabilities---finding
 nearest
 neighbor distances, counting cells within a radius, and visualizing nearest
 neighbors.
-- [Find and count touching cells](https://perkinelmer.github.io/phenoptr/articles/find_and_count_touching_cells.html)
+- [Find and count touching cells](https://akoyabio.github.io/phenoptr/articles/find_and_count_touching_cells.html)
 shows how to count touching cells of paired phenotypes.
 
 <div class="panel panel-default"><div class="panel-body">
 For examples showing aggregation across multiple inForm fields and multiple
 slides, see the Tutorials in the
-<a href="https://perkinelmer.github.io/phenoptrExamples">phenoptrExamples</a>
+<a href="https://akoyabio.github.io/phenoptrExamples">phenoptrExamples</a>
 package.
 </div></div>
 
@@ -84,10 +84,10 @@ will help you get started.
 
 ## Full documentation
 
-See the [Reference](https://perkinelmer.github.io/phenoptr/reference/index.html)
+See the [Reference](https://akoyabio.github.io/phenoptr/reference/index.html)
 section of the documentation for details on individual functions.
 
 To cite package `phenoptr` in publications use:
 
 &nbsp;&nbsp;Kent S Johnson (2018). phenoptr: inForm Helper Functions. R package version 0.1.1.9007.  
-&nbsp;&nbsp;https://perkinelmer.github.io/phenoptr/
+&nbsp;&nbsp;https://akoyabio.github.io/phenoptr/

@@ -20,7 +20,7 @@ if (getRversion() >= "2.15.1")
 #' The report is saved to the same directory as the input file.
 #'
 #' See the tutorial
-#' [Selecting cells within a cell segmentation table](https://perkinelmer.github.io/phenoptr/articles/selecting_cells.html)
+#' [Selecting cells within a cell segmentation table](https://akoyabio.github.io/phenoptr/articles/selecting_cells.html)
 #'for more on
 #' the use of `pairs` and `phenotype_rules`.
 #'

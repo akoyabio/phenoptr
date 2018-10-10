@@ -38,13 +38,13 @@
 <li>
   <a href="../index.html">
     <span class="fa fa-home fa-lg"></span>
-     
+
   </a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
     Tutorials
-     
+
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
@@ -73,14 +73,14 @@
 <li>
   <a href="../news/index.html">
     <span class="fa fa-newspaper-o"></span>
-     
+
     news
   </a>
 </li>
 <li>
-  <a href="https://github.com/PerkinElmer/phenoptr">
+  <a href="https://github.com/akoyabio/phenoptr">
     <span class="fa fa-github fa-lg"></span>
-     
+
     github
   </a>
 </li>
@@ -92,24 +92,24 @@
 </div>
 <!--/.navbar -->
 
-      
+
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1>Reading and displaying inForm image Files</h1>
                         <h4 class="author">Kent Johnson</h4>
-            
-            <h4 class="date">2018-09-28</h4>
-      
-      
+
+            <h4 class="date">2018-10-10</h4>
+
+
       <div class="hidden name"><code>reading_image_files.Rmd</code></div>
 
     </div>
 
-    
-    
+
+
 <style type="text/css">
-img { 
+img {
   border: none;
 }
 </style>
@@ -133,8 +133,8 @@ img {
 <h2 class="hasAnchor">
 <a href="#reading-and-displaying-color-images" class="anchor"></a>Reading and displaying color images</h2>
 <p>Color (RGB) images output from inForm, such as the composite image and segmentation images, can be read directly using <code><a href="http://www.rdocumentation.org/packages/tiff/topics/readTIFF">tiff::readTIFF()</a></code> or <code><a href="http://www.rdocumentation.org/packages/jpeg/topics/readJPEG">jpeg::readJPEG()</a></code>. For example,</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">path &lt;-<span class="st"> </span><span class="kw">system.file</span>(<span class="st">"extdata"</span>, <span class="st">"sample"</span>, 
-                   <span class="st">"Set4_1-6plex_[16142,55840]_composite_image.jpg"</span>, 
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">path &lt;-<span class="st"> </span><span class="kw">system.file</span>(<span class="st">"extdata"</span>, <span class="st">"sample"</span>,
+                   <span class="st">"Set4_1-6plex_[16142,55840]_composite_image.jpg"</span>,
                    <span class="dt">package =</span> <span class="st">"phenoptr"</span>)
 img &lt;-<span class="st"> </span>jpeg<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/jpeg/topics/readJPEG">readJPEG</a></span>(path)
 <span class="kw">dim</span>(img)</code></pre></div>
@@ -164,7 +164,7 @@ EBImage<span class="op">::</span><span class="kw"><a href="http://www.rdocumenta
 <p><code><a href="../reference/read_maps.html">phenoptr::read_maps()</a></code> is a wrapper around <code>readTIFF()</code> which reads map files. It returns a named list of integer-valued matrices. The list names reflect the content of the individual images, e.g. Nucleus, Cytoplasm, etc.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">map_path &lt;-<span class="st"> </span><span class="kw">system.file</span>(<span class="st">"extdata"</span>, <span class="st">"sample"</span>,
    <span class="st">"Set4_1-6plex_[16142,55840]_binary_seg_maps.tif"</span>, <span class="dt">package =</span> <span class="st">"phenoptr"</span>)
-maps &lt;-<span class="st"> </span>phenoptr<span class="op">::</span><span class="kw"><a href="http://perkinelmer.github.io/phenoptr/reference/read_maps.html">read_maps</a></span>(map_path)
+maps &lt;-<span class="st"> </span>phenoptr<span class="op">::</span><span class="kw"><a href="http://akoyabio.github.io/phenoptr/reference/read_maps.html">read_maps</a></span>(map_path)
 <span class="kw">names</span>(maps)</code></pre></div>
 <pre><code>[1] "Nucleus"   "Cytoplasm" "Membrane"  "Tissue"   </code></pre>
 <p>The Nucleus label image contains values for background (0) and each Cell ID.</p>
@@ -198,7 +198,7 @@ csd &lt;-<span class="st"> </span><span class="kw">subset</span>(csd, <span clas
 <span class="st">  </span><span class="kw">annotation_raster</span>(snippet, <span class="dv">600</span>, <span class="dv">750</span>, <span class="op">-</span><span class="dv">400</span>, <span class="op">-</span><span class="dv">500</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">size=</span><span class="dv">2</span>) <span class="op">+</span><span class="st"> </span><span class="kw">coord_equal</span>() <span class="op">+</span>
 <span class="st">  </span><span class="kw">scale_color_manual</span>(<span class="dt">values=</span><span class="kw">c</span>(<span class="st">"CK+"</span>=<span class="st">"cyan"</span>, <span class="st">"CD8+"</span>=<span class="st">"yellow"</span>,
-                              <span class="st">"other"</span>=<span class="st">"blue"</span>, <span class="st">"CD68+"</span>=<span class="st">"magenta"</span>, 
+                              <span class="st">"other"</span>=<span class="st">"blue"</span>, <span class="st">"CD68+"</span>=<span class="st">"magenta"</span>,
                               <span class="st">"FoxP3+"</span>=<span class="st">"orange"</span>))</code></pre></div>
 <p><img src="reading_image_files_files/figure-html/plotting-1.png" width="672"></p>
 </div>
@@ -232,7 +232,7 @@ csd &lt;-<span class="st"> </span><span class="kw">subset</span>(csd, <span clas
       </footer>
 </div>
 
-  
+
 
   </body>
 </html>

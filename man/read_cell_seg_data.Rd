@@ -25,7 +25,7 @@ A \code{\link[tibble]{data_frame}}
         containing the cleaned-up data set.
 }
 \description{
-\code{read_cell_seg_data} makes it easier to use data from PerkinElmer's
+\code{read_cell_seg_data} makes it easier to use data from Akoya Biosciences'
 inForm program. It reads data files written by inForm 2.0 and later and does
 useful cleanup on the result. Data files written by inForm 2.0 can be read
 easily using \code{\link[utils]{read.delim}} or

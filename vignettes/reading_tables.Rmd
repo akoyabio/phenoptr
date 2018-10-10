@@ -37,7 +37,7 @@ table {
 
 ## inForm tables
 
-PerkinElmer's inForm<sup>&reg;</sup> software exports a variety of
+Akoya Biosciences' inForm<sup>&reg;</sup> software exports a variety of
 tabular data including information about cells and tissue categories.
 Tables are exported as tab-delimited text files with file names
 derived from the name of the source image by adding a suffix. Some
@@ -147,7 +147,7 @@ csd %>%
 
 <div class="panel panel-default"><div class="panel-body">
 The tutorial
-[Aggregating data from multiple fields](https://perkinelmer.github.io/phenoptrExamples/articles/aggregation.html)
+[Aggregating data from multiple fields](https://akoyabio.github.io/phenoptrExamples/articles/aggregation.html)
 in the `phenoptrExamples` package demonstrates aggregation across multiple
 fields from multiple samples.</div></div>
 
@@ -188,7 +188,7 @@ The [Data transformation](http://r4ds.had.co.nz/transform.html) chapter
 introduces the `dplyr` functions used in this tutorial.
 
 <div class="panel panel-default"><div class="panel-body">
-The [Tutorials](https://perkinelmer.github.io/phenoptrExamples/index.html)
+The [Tutorials](https://akoyabio.github.io/phenoptrExamples/index.html)
 included with the `phenoptrExamples` package include examples of
 reading data from multiple fields and
 aggregating across fields. That package includes more extensive 

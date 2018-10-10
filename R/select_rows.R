@@ -107,7 +107,7 @@ split_and_trim = function(str, pattern) {
 #' multiple phenotype, by expression level, or combinations of both.
 #'
 #' See the tutorial
-#' [Selecting cells within a cell segmentation table](https://perkinelmer.github.io/phenoptr/articles/selecting_cells.html)
+#' [Selecting cells within a cell segmentation table](https://akoyabio.github.io/phenoptr/articles/selecting_cells.html)
 #'for extensive documentation and examples.
 #'
 #' @param csd A data frame

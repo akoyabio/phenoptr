@@ -85,7 +85,7 @@ TIFF files to preserve the fine detail of cell boundaries.
 Images are only written when both phenotypes of the pair are represented.
 
 See the tutorial
-\href{https://perkinelmer.github.io/phenoptr/articles/selecting_cells.html}{Selecting cells within a cell segmentation table}
+\href{https://akoyabio.github.io/phenoptr/articles/selecting_cells.html}{Selecting cells within a cell segmentation table}
 for more on
 the use of \code{pairs} and \code{phenotype_rules}.
 }

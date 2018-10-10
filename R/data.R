@@ -37,7 +37,7 @@
 #' `list.files(sample_cell_seg_folder())`.
 #'
 #' For more sample data from this and related samples, see the
-#' [phenoptrExamples](https://perkinelmer.github.io/phenoptrExamples) package.
+#' [phenoptrExamples](https://akoyabio.github.io/phenoptrExamples) package.
 #' @format A data frame with 6072 rows and 199 variables
 #' @examples
 #' dim(sample_cell_seg_data)

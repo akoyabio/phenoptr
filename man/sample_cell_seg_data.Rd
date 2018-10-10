@@ -46,7 +46,7 @@ To see all the files included for this field, use
 \code{list.files(sample_cell_seg_folder())}.
 
 For more sample data from this and related samples, see the
-\href{https://perkinelmer.github.io/phenoptrExamples}{phenoptrExamples} package.
+\href{https://akoyabio.github.io/phenoptrExamples}{phenoptrExamples} package.
 }
 \examples{
 dim(sample_cell_seg_data)

@@ -1,9 +1,9 @@
 #' Helpers for working with inForm data
 #'
 #' phenoptr contains functions that make it easier to read and analyze data
-#' tables and images created by PerkinElmer's inForm software.
+#' tables and images created by Akoya Biosciences' inForm software.
 #'
-#' phenoptr is part of the PerkinElmer Phenoptics family of
+#' phenoptr is part of the Akoya Biosciences Phenoptics family of
 #' Quantitative Pathology Research Solutions. For more information visit the
 #' Phenoptics [home
 #' page](http://www.perkinelmer.com/cancer-immunology/index.html).

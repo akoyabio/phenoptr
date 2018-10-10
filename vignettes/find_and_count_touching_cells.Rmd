@@ -67,7 +67,7 @@ definitions for phenotypes which don't match the names in `pairs`.
 
 <div class="panel panel-default"><div class="panel-body">
 See the tutorial 
-[Selecting cells within a cell segmentation table](https://perkinelmer.github.io/phenoptr/articles/selecting_cells.html)
+[Selecting cells within a cell segmentation table](https://akoyabio.github.io/phenoptr/articles/selecting_cells.html)
 for more details on
 selecting pairs.</div></div>
 
@@ -117,6 +117,6 @@ readr::write_csv(touch_counts, touches_path)
 
 <div class="panel panel-default"><div class="panel-body">
 The tutorial
-[Aggregating touch counts](https://perkinelmer.github.io/phenoptrExamples/articles/count_touches.html)
+[Aggregating touch counts](https://akoyabio.github.io/phenoptrExamples/articles/count_touches.html)
 in the `phenoptrExamples` package demonstrates aggregation across multiple
 fields from multiple samples.</div></div>

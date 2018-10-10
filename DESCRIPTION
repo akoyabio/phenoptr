@@ -27,7 +27,7 @@ Imports:
     xml2
 Depends: R (>= 3.3.0)
 License: Zlib | file LICENSE
-Copyright: PerkinElmer
+Copyright: Akoya Biosciences
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.1.0
@@ -36,10 +36,10 @@ Suggests: testthat,
     doParallel,
     phenoptrExamples
 VignetteBuilder: knitr
-URL: https://perkinelmer.github.io/phenoptr/
-BugReports: https://github.com/PerkinElmer/phenoptr/issues
-Maintainer: Kent S Johnson <kent.johnson@perkinelmer.com>
+URL: https://akoyabio.github.io/phenoptr/
+BugReports: https://github.com/akoyabio/phenoptr/issues
+Maintainer: Kent S Johnson <kjohnson@akoyabio.com>
 Authors@R: c(
     person("Kent S", "Johnson", role = c("aut", "cre"),
-           email = "kent.johnson@perkinelmer.com"),
-    person("PerkinElmer, Inc.", role="cph"))
+           email = "kjohnson@akoyabio.com"),
+    person("Akoya Biosciences", role="cph"))

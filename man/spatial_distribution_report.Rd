@@ -43,7 +43,7 @@ is available, it will be used as a background.
 The report is saved to the same directory as the input file.
 
 See the tutorial
-\href{https://perkinelmer.github.io/phenoptr/articles/selecting_cells.html}{Selecting cells within a cell segmentation table}
+\href{https://akoyabio.github.io/phenoptr/articles/selecting_cells.html}{Selecting cells within a cell segmentation table}
 for more on
 the use of \code{pairs} and \code{phenotype_rules}.
 }

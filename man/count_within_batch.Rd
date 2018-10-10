@@ -53,7 +53,7 @@ having a 'to' cell within \code{radius} microns.
 The \code{category} parameter may be a single category or a list of categories.
 
 See the tutorial
-\href{https://perkinelmer.github.io/phenoptr/articles/selecting_cells.html}{Selecting cells within a cell segmentation table}
+\href{https://akoyabio.github.io/phenoptr/articles/selecting_cells.html}{Selecting cells within a cell segmentation table}
 for more on
 the use of \code{pairs} and \code{phenotype_rules}.
 }

@@ -7,10 +7,10 @@
 \title{Helpers for working with inForm data}
 \description{
 phenoptr contains functions that make it easier to read and analyze data
-tables and images created by PerkinElmer's inForm software.
+tables and images created by Akoya Biosciences' inForm software.
 }
 \details{
-phenoptr is part of the PerkinElmer Phenoptics family of
+phenoptr is part of the Akoya Biosciences Phenoptics family of
 Quantitative Pathology Research Solutions. For more information visit the
 Phenoptics \href{http://www.perkinelmer.com/cancer-immunology/index.html}{home page}.
 }
@@ -29,17 +29,17 @@ which take one, or set \code{options(phenoptr.pixels.per.micron=<new value>)}.
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://perkinelmer.github.io/phenoptr/}
-  \item Report bugs at \url{https://github.com/PerkinElmer/phenoptr/issues}
+  \item \url{https://akoyabio.github.io/phenoptr/}
+  \item Report bugs at \url{https://github.com/akoyabio/phenoptr/issues}
 }
 
 }
 \author{
-\strong{Maintainer}: Kent S Johnson \email{kent.johnson@perkinelmer.com}
+\strong{Maintainer}: Kent S Johnson \email{kjohnson@akoyabio.com}
 
 Other contributors:
 \itemize{
-  \item PerkinElmer, Inc. [copyright holder]
+  \item Akoya Biosciences [copyright holder]
 }
 
 }

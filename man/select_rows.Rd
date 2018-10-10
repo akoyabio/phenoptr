@@ -31,7 +31,7 @@ from a cell segmentation table. Cells may be selected by single or
 multiple phenotype, by expression level, or combinations of both.
 
 See the tutorial
-\href{https://perkinelmer.github.io/phenoptr/articles/selecting_cells.html}{Selecting cells within a cell segmentation table}
+\href{https://akoyabio.github.io/phenoptr/articles/selecting_cells.html}{Selecting cells within a cell segmentation table}
 for extensive documentation and examples.
 }
 \examples{

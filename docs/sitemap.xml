@@ -1,87 +1,87 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>http://perkinelmer.github.io/phenoptr/index.html</loc>
+    <loc>http://akoyabio.github.io/phenoptr/index.html</loc>
   </url>
   <url>
-    <loc>http://perkinelmer.github.io/phenoptr/reference/compute_all_nearest_distance.html</loc>
+    <loc>http://akoyabio.github.io/phenoptr/reference/compute_all_nearest_distance.html</loc>
   </url>
   <url>
-    <loc>http://perkinelmer.github.io/phenoptr/reference/count_touching_cells.html</loc>
+    <loc>http://akoyabio.github.io/phenoptr/reference/count_touching_cells.html</loc>
   </url>
   <url>
-    <loc>http://perkinelmer.github.io/phenoptr/reference/count_within.html</loc>
+    <loc>http://akoyabio.github.io/phenoptr/reference/count_within.html</loc>
   </url>
   <url>
-    <loc>http://perkinelmer.github.io/phenoptr/reference/count_within_batch.html</loc>
+    <loc>http://akoyabio.github.io/phenoptr/reference/count_within_batch.html</loc>
   </url>
   <url>
-    <loc>http://perkinelmer.github.io/phenoptr/reference/density_at_distance.html</loc>
+    <loc>http://akoyabio.github.io/phenoptr/reference/density_at_distance.html</loc>
   </url>
   <url>
-    <loc>http://perkinelmer.github.io/phenoptr/reference/density_bands.html</loc>
+    <loc>http://akoyabio.github.io/phenoptr/reference/density_bands.html</loc>
   </url>
   <url>
-    <loc>http://perkinelmer.github.io/phenoptr/reference/distance_matrix.html</loc>
+    <loc>http://akoyabio.github.io/phenoptr/reference/distance_matrix.html</loc>
   </url>
   <url>
-    <loc>http://perkinelmer.github.io/phenoptr/reference/find_nearest_distance.html</loc>
+    <loc>http://akoyabio.github.io/phenoptr/reference/find_nearest_distance.html</loc>
   </url>
   <url>
-    <loc>http://perkinelmer.github.io/phenoptr/reference/get_field_info.html</loc>
+    <loc>http://akoyabio.github.io/phenoptr/reference/get_field_info.html</loc>
   </url>
   <url>
-    <loc>http://perkinelmer.github.io/phenoptr/reference/list_cell_seg_files.html</loc>
+    <loc>http://akoyabio.github.io/phenoptr/reference/list_cell_seg_files.html</loc>
   </url>
   <url>
-    <loc>http://perkinelmer.github.io/phenoptr/reference/parse_phenotypes.html</loc>
+    <loc>http://akoyabio.github.io/phenoptr/reference/parse_phenotypes.html</loc>
   </url>
   <url>
-    <loc>http://perkinelmer.github.io/phenoptr/reference/parse_tissue_description.html</loc>
+    <loc>http://akoyabio.github.io/phenoptr/reference/parse_tissue_description.html</loc>
   </url>
   <url>
-    <loc>http://perkinelmer.github.io/phenoptr/reference/phenoptr-package.html</loc>
+    <loc>http://akoyabio.github.io/phenoptr/reference/phenoptr-package.html</loc>
   </url>
   <url>
-    <loc>http://perkinelmer.github.io/phenoptr/reference/plot_diverging.html</loc>
+    <loc>http://akoyabio.github.io/phenoptr/reference/plot_diverging.html</loc>
   </url>
   <url>
-    <loc>http://perkinelmer.github.io/phenoptr/reference/read_cell_seg_data.html</loc>
+    <loc>http://akoyabio.github.io/phenoptr/reference/read_cell_seg_data.html</loc>
   </url>
   <url>
-    <loc>http://perkinelmer.github.io/phenoptr/reference/read_components.html</loc>
+    <loc>http://akoyabio.github.io/phenoptr/reference/read_components.html</loc>
   </url>
   <url>
-    <loc>http://perkinelmer.github.io/phenoptr/reference/read_maps.html</loc>
+    <loc>http://akoyabio.github.io/phenoptr/reference/read_maps.html</loc>
   </url>
   <url>
-    <loc>http://perkinelmer.github.io/phenoptr/reference/sample_cell_seg_data.html</loc>
+    <loc>http://akoyabio.github.io/phenoptr/reference/sample_cell_seg_data.html</loc>
   </url>
   <url>
-    <loc>http://perkinelmer.github.io/phenoptr/reference/select_rows.html</loc>
+    <loc>http://akoyabio.github.io/phenoptr/reference/select_rows.html</loc>
   </url>
   <url>
-    <loc>http://perkinelmer.github.io/phenoptr/reference/spatial_distribution_report.html</loc>
+    <loc>http://akoyabio.github.io/phenoptr/reference/spatial_distribution_report.html</loc>
   </url>
   <url>
-    <loc>http://perkinelmer.github.io/phenoptr/reference/split_and_trim.html</loc>
+    <loc>http://akoyabio.github.io/phenoptr/reference/split_and_trim.html</loc>
   </url>
   <url>
-    <loc>http://perkinelmer.github.io/phenoptr/reference/subset_distance_matrix.html</loc>
+    <loc>http://akoyabio.github.io/phenoptr/reference/subset_distance_matrix.html</loc>
   </url>
   <url>
-    <loc>http://perkinelmer.github.io/phenoptr/articles/computing_distances.html</loc>
+    <loc>http://akoyabio.github.io/phenoptr/articles/computing_distances.html</loc>
   </url>
   <url>
-    <loc>http://perkinelmer.github.io/phenoptr/articles/find_and_count_touching_cells.html</loc>
+    <loc>http://akoyabio.github.io/phenoptr/articles/find_and_count_touching_cells.html</loc>
   </url>
   <url>
-    <loc>http://perkinelmer.github.io/phenoptr/articles/reading_image_files.html</loc>
+    <loc>http://akoyabio.github.io/phenoptr/articles/reading_image_files.html</loc>
   </url>
   <url>
-    <loc>http://perkinelmer.github.io/phenoptr/articles/reading_tables.html</loc>
+    <loc>http://akoyabio.github.io/phenoptr/articles/reading_tables.html</loc>
   </url>
   <url>
-    <loc>http://perkinelmer.github.io/phenoptr/articles/selecting_cells.html</loc>
+    <loc>http://akoyabio.github.io/phenoptr/articles/selecting_cells.html</loc>
   </url>
 </urlset>
