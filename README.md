@@ -1,4 +1,6 @@
-# phenoptr - Helpers for working with inForm data
+# phenoptr <img src="man/figures/Akoya.png" align="right" height="50px" />
+
+## Helpers for working with inForm data
 
 [![Travis-CI Build Status](https://travis-ci.org/akoyabio/phenoptr.svg?branch=master)](https://travis-ci.org/akoyabio/phenoptr)
 [![Coverage Status](https://img.shields.io/codecov/c/github/akoyabio/phenoptr/master.svg)](https://codecov.io/github/akoyabio/phenoptr?branch=master)
