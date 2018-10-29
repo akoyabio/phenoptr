@@ -1,3 +1,8 @@
+# phenoptr 0.1.2
+**2018-10-29**
+
+- Update link to Phenoptics home page.
+
 # phenoptr 0.1.1.9007
 **2018-09-28**
 

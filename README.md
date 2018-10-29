@@ -11,7 +11,7 @@ and images created by Akoya Biosciences' inForm<sup>&reg;</sup> software.
 `phenoptr` is part of the Akoya Biosciences Phenoptics&trade; family of
 Quantitative Pathology Research Solutions. For more information
 visit the Phenoptics&trade;
-[home page](http://www.perkinelmer.com/cancer-immunology/index.html).
+[home page](http://www.perkinelmer.com/category/quantitative-pathology-research).
 
 ----
 
@@ -91,5 +91,5 @@ section of the documentation for details on individual functions.
 
 To cite package `phenoptr` in publications use:
 
-&nbsp;&nbsp;Kent S Johnson (2018). phenoptr: inForm Helper Functions. R package version 0.1.1.9007.  
+&nbsp;&nbsp;Kent S Johnson (2018). phenoptr: inForm Helper Functions. R package version 0.1.2.  
 &nbsp;&nbsp;https://akoyabio.github.io/phenoptr/
