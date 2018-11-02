@@ -85,6 +85,16 @@ read_cell_seg_data <- function(
   # Read the data. Supplying col_types prevents output of the imputed types
   df <- readr::read_tsv(path, na=c('NA', '#N/A'), col_types=readr::cols())
 
+  # If any of these fields has missing values, the file may be damaged.
+  no_na_cols = c("Path", "Sample Name", "Tissue Category", "Phenotype",
+                 "Cell ID", "Cell X Position", "Cell Y Position", "Slide ID")
+
+  bad_na_cols =
+    purrr::keep(no_na_cols, ~(.x %in% names(df) && any(is.na(df[[.x]]))))
+  if (length(bad_na_cols) > 0)
+    warning('Some expected columns have missing data:\n',
+            paste(bad_na_cols, collapse=', '), '\n',
+            path, ' may be damaged.')
   sample_name = 'Sample Name'
 
   # If there are multiple sample names, make 'tag' be an abbreviated

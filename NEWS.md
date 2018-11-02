@@ -1,3 +1,8 @@
+# phenoptr 0.1.2.9000
+
+- Add a simple data quality check to `read_cell_seg_data`
+  [#9](https://github.com/PerkinElmer/phenoptr/issues/9)
+  
 # phenoptr 0.1.2
 **2018-10-29**
 
