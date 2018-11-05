@@ -227,7 +227,7 @@ count_within_batch <- function(base_path, pairs, radius, category=NA,
 
 count_within <- function(csd, from, to, radius, category=NA, dst=NULL) {
   # Check for multiple samples, this is probably an error
-  if (length(unique(csd$`Sample Name`))>1)
+  if ('Sample Name' %in% names(csd) && length(unique(csd$`Sample Name`))>1)
     stop('Data appears to contain multiple samples.')
 
   stopifnot(length(radius) > 0, all(radius>0))
