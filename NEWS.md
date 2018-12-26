@@ -3,6 +3,8 @@
 - Add a simple data quality check to `read_cell_seg_data`
   [#9](https://github.com/PerkinElmer/phenoptr/issues/9)
 - `count_within` won't complain if the data doesn't have a `Sample Name` column.
+- More accurate image location from component file if PerkinElmer tiff library
+  is available.
   
 # phenoptr 0.1.2
 **2018-10-29**

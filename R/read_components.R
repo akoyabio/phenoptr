@@ -79,20 +79,22 @@ read_components <- function(path)
 #' }
 #' @md
 get_field_info = function(path) {
-  # We have to get the location from the file name; tiff::readTIFF()
-  # doesn't read the location tags :-(
-  name = basename(path)
-  position_pattern = "_\\[([\\d\\.]+),([\\d\\.]+)\\][^\\[]*$"
-  position = as.numeric(stringr::str_match(name, position_pattern)[,2:3])
-  if (any(is.na(position)))
-    stop("Field position not found in file name.")
-
-  # Use readTIFFDirectory if available, it is faster and works with tiled images
-  if ('readTIFFDirectory' %in% ls(getNamespace('tiff')))
+  # Use readTIFFDirectory if available, it is faster, more complete
+  # and works with tiled images
+  if ('readTIFFDirectory' %in% ls(getNamespace('tiff'))) {
     info = tiff::readTIFFDirectory(path, all=FALSE)
-  else {
+    center = NA # Don't need this
+   } else {
     tif = tiff::readTIFF(path, all=FALSE, info=TRUE)
     info = attributes(tif)
+
+    # We have to get the location from the file name; tiff::readTIFF()
+    # doesn't read the location tags :-(
+    name = basename(path)
+    center_pattern = "_\\[([\\d\\.]+),([\\d\\.]+)\\][^\\[]*$"
+    center = as.numeric(stringr::str_match(name, center_pattern)[,2:3])
+    if (any(is.na(center)))
+      stop("Field location not found in file name.")
   }
 
   required_attributes = c('width', 'length', 'x.resolution', 'resolution.unit')
@@ -109,6 +111,12 @@ get_field_info = function(path) {
   result$image_size = c(info$width, info$length)
   result$microns_per_pixel = as.numeric(10000/info$x.resolution)
   result$field_size = result$image_size * result$microns_per_pixel
-  result$location = position - result$field_size/2
+  if (is.na(center)) {
+    # Location directly from TIFF info
+    result$location = c(info$x.position, info$y.position) * 10000
+  } else {
+    # Location from file name and resolution
+    result$location = center - result$field_size/2
+  }
   result
 }
