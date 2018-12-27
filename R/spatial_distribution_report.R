@@ -241,7 +241,8 @@ add_scales_and_background = function(p, background, xlim, ylim) {
   p = p + geom_segment(aes(x=xlim[2]-50-200, xend=xlim[2]-50,
                            y=ylim[2]-100, yend=ylim[2]-100),
                        color='black', size=1)
-  p = p + geom_text(aes(x=xlim[2]-50-200/2, y=ylim[2]-90, label=paste(200, '~mu*m')),
+  p = p + geom_text(aes(x=xlim[2]-50-200/2, y=ylim[2]-90,
+                        label=paste(200, '~mu*m')),
                     size=3, hjust=0.5, vjust=1, color='black', parse=TRUE)
   p
 }

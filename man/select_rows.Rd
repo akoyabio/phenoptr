@@ -15,7 +15,7 @@ the name(s) of one or
 more phenotypes and selects any matching phenotype. A formula is
 interpreted as an expression on the columns of \code{csd}.
 Multiple list items are joined with AND. \code{NA} is interpreted
-as "select all". It is convienent for lists of selection criteria.}
+as "select all". It is convenient for lists of selection criteria.}
 }
 \value{
 A logical vector of length \code{nrow(csd)} which selects rows

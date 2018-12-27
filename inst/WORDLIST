@@ -1,8 +1,13 @@
+Akoya
 Baddeley
+BiocInstaller
+Biosciences
 centroid
 CRC
 cytotoxic
 df
+dplyr
+EBImage
 epitopes
 ggplot
 grayscale
@@ -12,6 +17,7 @@ inForm
 kable
 knitr
 macrophage
+magrittr
 MSI
 PDL
 PerkinElmer
@@ -22,12 +28,15 @@ phenotyped
 phenotypes
 positivity
 ProcessRegionImage
+purrr
+readr
 rmarkdown
 RStudio
 Rubak
 seg
 sel
 stroma
+tibble
 tidyverse
 tif
 TissueClassMap
@@ -39,3 +48,4 @@ VignetteEngine
 VignetteIndexEntry
 Wickham
 Wickham's
+zlib

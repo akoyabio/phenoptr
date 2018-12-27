@@ -17,7 +17,8 @@ test_that('parse_phenotypes works with unnamed args', {
 
 test_that('parse_phenotypes works with named args', {
   # Unnamed args get self-named
-  sels = parse_phenotypes("CD3+", "CD3+/CD8-", All="Total Cells", Macrophage="CD68+,CD163+")
+  sels = parse_phenotypes("CD3+", "CD3+/CD8-",
+                          All="Total Cells", Macrophage="CD68+,CD163+")
   expect_equal(names(sels), c("CD3+", "CD3+/CD8-", 'All', 'Macrophage'))
   check_results(sels)
 })

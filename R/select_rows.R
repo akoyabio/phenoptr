@@ -117,7 +117,7 @@ split_and_trim = function(str, pattern) {
 #'   more phenotypes and selects any matching phenotype. A formula is
 #'   interpreted as an expression on the columns of `csd`.
 #'   Multiple list items are joined with AND. `NA` is interpreted
-#'   as "select all". It is convienent for lists of selection criteria.
+#'   as "select all". It is convenient for lists of selection criteria.
 #' @return A logical vector of length `nrow(csd)` which selects rows
 #'   according to `sel`.
 #' @export

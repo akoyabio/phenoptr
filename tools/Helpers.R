@@ -4,7 +4,7 @@
 # Notes:
 # Adding a new function requires several touches:
 # - The code for the function
-# - Add to _pkgdowr.yml
+# - Add to _pkgdown.yml
 
 # Updating Version:
 # - Update version and date in DESCRIPTION
