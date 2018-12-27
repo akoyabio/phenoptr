@@ -1,5 +1,9 @@
 # phenoptr 0.1.2.9000
 
+- `spatial_distribution_report` works correctly with cell seg data in microns.
+  To do so, it requires a component data file for the 
+  target field. Image dimensions are taken from that file.
+- `count_touching_cells` works correctly when cell seg data is in microns.
 - Add a simple data quality check to `read_cell_seg_data`
   [#9](https://github.com/PerkinElmer/phenoptr/issues/9)
 - `count_within` won't complain if the data doesn't have a `Sample Name` column.

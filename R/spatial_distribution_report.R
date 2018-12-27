@@ -13,7 +13,8 @@ if (getRversion() >= "2.15.1")
 #' and nearest-neighbor relations for cells of pairs of phenotypes
 #' in a single field.
 #'
-#' A cell seg data file for the field is required. If a tissue segmentation
+#' A cell seg data file and component data file for the field are required.
+#' If a tissue segmentation
 #' or composite image of the field
 #' is available, it will be used as a background.
 #'
@@ -35,10 +36,6 @@ if (getRversion() >= "2.15.1")
 #'   Item values are selectors for [select_rows].
 #' @param output_path Optional, path to the output HTML file. If omitted,
 #' output will be written to the directory containing `cell_seg_path`.
-#' @param pixels_per_micron Conversion factor to microns
-#'        (default 2 pixels/micron, the resolution of 20x MSI fields
-#'        taken on Vectra Polaris and Vectra 3.).
-#'        Set to NA to skip conversion.
 #' @export
 #' @family distance functions
 #' @examples
@@ -74,8 +71,7 @@ if (getRversion() >= "2.15.1")
 #' }
 #' @md
 spatial_distribution_report <- function(cell_seg_path, pairs, colors,
-                      phenotype_rules=NULL, output_path=NULL,
-                      pixels_per_micron=getOption('phenoptr.pixels.per.micron')
+                      phenotype_rules=NULL, output_path=NULL
                       ) {
   stopifnot(endsWith(cell_seg_path, '_cell_seg_data.txt'))
   if (!file.exists(cell_seg_path))
@@ -200,7 +196,9 @@ nn_plot_impl <- function (nn_dist, pheno_data1, pheno_data2, title,
 #' @import ggplot2
 nn_plot_base = function(title, background, xlim, ylim) {
   # Fake d.f needed to get background to draw...
-  p = ggplot(data=data.frame(x=0, y=0), aes(x=x, y=y))
+  if (length(xlim)==1) xlim = c(0, xlim)
+  if (length(ylim)==1) ylim = c(0, ylim)
+  p = ggplot(data=data.frame(x=xlim, y=ylim), aes(x=x, y=y))
   p = p + labs(x='Cell X Position', y='Cell Y Position', title=title)
   add_scales_and_background(p, background, xlim, ylim)
 }
@@ -222,9 +220,11 @@ add_dist_data = function(p, nn_dist, lineColor) {
 # Add scales, scale line and background image to a ggplot object
 #' @import ggplot2
 add_scales_and_background = function(p, background, xlim, ylim) {
+  if (length(xlim)==1) xlim = c(0, xlim)
+  if (length(ylim)==1) ylim = c(0, ylim)
   # Add scales at the image limits. Reverse the y scale to match the image
-  p = p + scale_x_continuous(limits=c(0, xlim)) +
-    scale_y_reverse(limits=c(ylim, 0))
+  p = p + scale_x_continuous(limits=xlim) +
+    scale_y_reverse(limits=rev(ylim))
 
   # Force square aspect ratio
   p = p + coord_fixed()
@@ -232,14 +232,16 @@ add_scales_and_background = function(p, background, xlim, ylim) {
   # Add background image if we have one
   if (length(background) > 1)
   {
-    p = p + annotation_raster(background, xmin=0, xmax=xlim, ymin=0, ymax=-ylim)
+    p = p + annotation_raster(background,
+                              xmin=xlim[1], xmax=xlim[2],
+                              ymin=-ylim[1], ymax=-ylim[2])
   }
 
   # Add a 200-micron line segment for scale reference
-  p = p + geom_segment(aes(x=xlim-50-200, xend=xlim-50,
-                           y=ylim-100, yend=ylim-100),
+  p = p + geom_segment(aes(x=xlim[2]-50-200, xend=xlim[2]-50,
+                           y=ylim[2]-100, yend=ylim[2]-100),
                        color='black', size=1)
-  p = p + geom_text(aes(x=xlim-50-200/2, y=ylim-90, label=paste(200, '~mu*m')),
+  p = p + geom_text(aes(x=xlim[2]-50-200/2, y=ylim[2]-90, label=paste(200, '~mu*m')),
                     size=3, hjust=0.5, vjust=1, color='black', parse=TRUE)
   p
 }

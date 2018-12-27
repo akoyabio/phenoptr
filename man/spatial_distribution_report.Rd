@@ -5,8 +5,7 @@
 \title{Create a spatial distribution report.}
 \usage{
 spatial_distribution_report(cell_seg_path, pairs, colors,
-  phenotype_rules = NULL, output_path = NULL,
-  pixels_per_micron = getOption("phenoptr.pixels.per.micron"))
+  phenotype_rules = NULL, output_path = NULL)
 }
 \arguments{
 \item{cell_seg_path}{Path to a cell seg data file.}
@@ -24,11 +23,6 @@ Item values are selectors for \link{select_rows}.}
 
 \item{output_path}{Optional, path to the output HTML file. If omitted,
 output will be written to the directory containing \code{cell_seg_path}.}
-
-\item{pixels_per_micron}{Conversion factor to microns
-(default 2 pixels/micron, the resolution of 20x MSI fields
-taken on Vectra Polaris and Vectra 3.).
-Set to NA to skip conversion.}
 }
 \description{
 Creates an HTML report visualizing the location
@@ -36,7 +30,8 @@ and nearest-neighbor relations for cells of pairs of phenotypes
 in a single field.
 }
 \details{
-A cell seg data file for the field is required. If a tissue segmentation
+A cell seg data file and component data file for the field are required.
+If a tissue segmentation
 or composite image of the field
 is available, it will be used as a background.
 

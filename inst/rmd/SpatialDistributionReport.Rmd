@@ -34,11 +34,24 @@ code, pre {
 knitr::opts_chunk$set(echo=FALSE,fig.width=11, fig.height=8, 
                       comment=NA, warning=FALSE, message=FALSE)
 
-csd = read_cell_seg_data(cell_seg_path)
+csd = read_cell_seg_data(cell_seg_path, pixels_per_micron='auto')
+
+# Get field metadata from the component data file
+component_path = sub('_cell_seg_data.txt', '_component_data.tif', cell_seg_path)
+if(!file.exists(component_path))
+  stop('Spatial distribution report requires a matching component data file.')
+field_info = get_field_info(component_path)
+
 phenotype_specials = setdiff(phenotypes, unique(csd$Phenotype))
 
-window = spatstat::owin(xrange=c(0, max(csd$`Cell X Position`)),
-                        yrange=c(0, max(csd$`Cell Y Position`)))
+# Window for spatial processing
+window = spatstat::owin(
+  xrange=c(field_info$location[1], field_info$location[1]+field_info$field_size[1]),
+  yrange=c(field_info$location[2], field_info$location[2]+field_info$field_size[2]))
+
+# Limits for charts
+xlim=c(field_info$location[1], field_info$location[1]+field_info$field_size[1])
+ylim=c(field_info$location[2], field_info$location[2]+field_info$field_size[2])
 
 # Segmented image for background
 if (grepl('cell_seg_data.txt', cell_seg_path))
@@ -66,13 +79,6 @@ if (exists('tissue_seg_path') && file.exists(tissue_seg_path))
   # Tone it down a bit by bringing it closer to neutral gray
   background = (background - 0.75) / 8 + 0.75 
   background = as.raster(background)
-  xlim = dim(background)[2] / pixels_per_micron
-  ylim = dim(background)[1] / pixels_per_micron
-} else {
-  # If no background image guess at dimensions
-  background = NA
-  xlim = max(csd$`Cell X Position`)
-  ylim = max(csd$`Cell Y Position`)
 }
 
 # Remove def'n of tissue_seg_path so we will recompute next time for new image
@@ -103,7 +109,7 @@ for (special in phenotype_specials)
   counts = dplyr::add_row(counts, Phenotype=special, 
                  Count=sum(select_rows(csd, phenotype_rules[[special]])))
 
-  counts %>% dplyr::mutate(Proportion=scales::percent(round(Count/nrow(csd), 2))) %>% 
+counts %>% dplyr::mutate(Proportion=scales::percent(round(Count/nrow(csd), 2))) %>% 
   knitr::kable(caption='Cell count and fraction of total per phenotype',
                table.attr='style="width: 30%"')
 
