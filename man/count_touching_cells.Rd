@@ -64,8 +64,14 @@ It reports the number of touching cells found and, optionally,
 writes image files showing the touching cells.
 }
 \details{
+This function requires a cell seg data file and a matching
+segmentation map file. If \code{write_images} is true,
+a composite image is required.
+If the cell seg data uses micron units, a composite data file is also
+required.
+
 Cells are considered to touch if they have any amount of common membrane
-as determined by the inForm membrane segmentation. Cells with meet only
+as determined by the inForm membrane segmentation. Cells which meet only
 at a corner, like black squares on a checkerboard, are not counted as
 touching.
 

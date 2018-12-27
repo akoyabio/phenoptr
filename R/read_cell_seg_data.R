@@ -121,13 +121,14 @@ read_cell_seg_data <- function(
   # Convert distance to microns if requested.
   # No way to tell in general if this was done already...
   # Try looking for 'micron' in column names
-  if (any(stringr::str_detect(names(df), 'micron')) && !is.na(pixels_per_micron)) {
+  if (unit_is_microns(df) && !is.na(pixels_per_micron)) {
     message('Data is already in microns, no conversion performed')
   } else if (!is.na(pixels_per_micron)) {
     if (pixels_per_micron=='auto') {
       # Get pixels_per_micron and field location from component_data.tif
       component_path = sub('_cell_seg_data.txt', '_component_data.tif', path)
-      stopifnot(file.exists(component_path))
+      if(!file.exists(component_path))
+        stop('To convert cell seg data to microns, a matching component data file is required.')
       info = get_field_info(component_path)
       pixels_per_micron = 1/info$microns_per_pixel
       location = info$location
@@ -144,7 +145,7 @@ read_cell_seg_data <- function(
       names(df)[col] = sub('pixels', 'microns', names(df)[col])
     }
 
-    # Position columns only get an offset, if available
+    # Position columns get an offset, if available
     if (!anyNA(location)) {
       df$`Cell X Position` = df$`Cell X Position` + location[1]
       df$`Cell Y Position` = df$`Cell Y Position` + location[2]
@@ -175,6 +176,29 @@ read_cell_seg_data <- function(
   }
 
   dplyr::as_data_frame(df)
+}
+
+# Convert cell locations back to pixels if possible
+force_pixel_locations = function(csd, cell_seg_path) {
+  if (unit_is_microns(csd)) {
+    # The cell seg file's native unit is microns. Get image info
+    # from the component data file and convert back to pixels
+    component_path = sub('_cell_seg_data.txt', '_component_data.tif', cell_seg_path)
+    if(!file.exists(component_path))
+      stop('For cell seg data in microns, a matching component data file is required.')
+    info = get_field_info(component_path)
+    pixels_per_micron = 1/info$microns_per_pixel
+    location = info$location
+    csd %>% dplyr::mutate(
+      `Cell X Position` = (`Cell X Position`-location[1])*pixels_per_micron,
+      `Cell Y Position` = (`Cell Y Position`-location[2])*pixels_per_micron)
+  } else {
+    csd
+  }
+}
+
+unit_is_microns = function(df) {
+  any(stringr::str_detect(names(df), 'micron'))
 }
 
 get_pixel_columns = function(df) {

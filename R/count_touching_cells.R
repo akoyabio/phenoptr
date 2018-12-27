@@ -9,8 +9,14 @@
 #' It reports the number of touching cells found and, optionally,
 #' writes image files showing the touching cells.
 #'
+#' This function requires a cell seg data file and a matching
+#' segmentation map file. If `write_images` is true,
+#' a composite image is required.
+#' If the cell seg data uses micron units, a composite data file is also
+#' required.
+#'
 #' Cells are considered to touch if they have any amount of common membrane
-#' as determined by the inForm membrane segmentation. Cells with meet only
+#' as determined by the inForm membrane segmentation. Cells which meet only
 #' at a corner, like black squares on a checkerboard, are not counted as
 #' touching.
 #'
@@ -178,6 +184,7 @@ count_touching_cells <- function(cell_seg_path, pairs, colors=NULL,
   name = basename(cell_seg_path)
   name = sub('_cell_seg_data.txt', '', name)
   csd = read_cell_seg_data(cell_seg_path, pixels_per_micron=NA)
+  csd = force_pixel_locations(csd, cell_seg_path)
 
   # Filter out unwanted tissue categories
   if (!is.null(categories))
