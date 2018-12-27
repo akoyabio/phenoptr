@@ -6,14 +6,13 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Reading and exploring inForm tables • phenoptr</title>
-<link rel="shortcut icon" type="image/x-icon" href="../favicon.ico">
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.1/clipboard.min.js" integrity="sha256-hIvIxeqhGZF+VVeM55k0mJvWpQ6gTkWk3Emc+NmowYA=" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
+<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous">
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script><meta property="og:title" content="Reading and exploring inForm tables">
 <meta property="og:description" content="">
 <meta name="twitter:card" content="summary">
-<!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!--[if lt IE 9]>
+<!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
@@ -31,7 +30,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">phenoptr</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.3</span>
       </span>
     </div>
 
@@ -101,7 +100,7 @@
       <h1>Reading and exploring inForm tables</h1>
                         <h4 class="author">Kent Johnson</h4>
             
-            <h4 class="date">2018-10-29</h4>
+            <h4 class="date">2018-12-27</h4>
       
       
       <div class="hidden name"><code>reading_tables.Rmd</code></div>
@@ -144,7 +143,7 @@ table {
 <h3 class="hasAnchor">
 <a href="#reading-cell-segmentation-data-files" class="anchor"></a>Reading cell segmentation data files</h3>
 <p>The <code>read_cell_seg_data</code> function reads cell seg data files and does useful cleanup on the result including removing empty columns, converting pixels to microns and simplifying column names.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(phenoptr)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(phenoptr)
 
 <span class="co"># sample_cell_seg_path gives the path to a sample file included with phenoptr.</span>
 <span class="co"># Change this to be the path to your data. For example you might use</span>
@@ -156,17 +155,17 @@ csd &lt;-<span class="st"> </span><span class="kw"><a href="../reference/read_ce
 
 <span class="co"># Show some nicely shortened names</span>
 <span class="co"># The suffix "(Normalized Counts, Total Weighting)" has been removed.</span>
-<span class="kw">grep</span>(<span class="st">'Nucleus.*Mean'</span>, <span class="kw">names</span>(csd), <span class="dt">value=</span><span class="ot">TRUE</span>)</code></pre></div>
+<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/grep">grep</a></span>(<span class="st">'Nucleus.*Mean'</span>, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/names">names</a></span>(csd), <span class="dt">value=</span><span class="ot">TRUE</span>)</code></pre></div>
 <pre><code>[1] "Nucleus PDL1 (Opal 520) Mean"  "Nucleus CD8 (Opal 540) Mean"  
 [3] "Nucleus FoxP3 (Opal 570) Mean" "Nucleus CD68 (Opal 620) Mean" 
 [5] "Nucleus PD1 (Opal 650) Mean"   "Nucleus CK (Opal 690) Mean"   
 [7] "Nucleus DAPI Mean"             "Nucleus Autofluorescence Mean"</code></pre>
 <p>The value returned from <code>read_cell_seg_data</code> is a <code>data_frame</code> (also known as a <code>tibble</code> <a href="http://tibble.tidyverse.org/"><i class="fa fa-external-link"></i></a> - the <a href="http://tidyverse.org/">tidyverse</a> version of a <code>data.frame</code>) and can be inspected as you would any other <code>data_frame</code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># How many cells did we read?</span>
-<span class="kw">nrow</span>(csd)</code></pre></div>
+<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/nrow">nrow</a></span>(csd)</code></pre></div>
 <pre><code>[1] 6072</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># How many cells of each phenotype are in each tissue category?</span>
-<span class="kw">table</span>(csd<span class="op">$</span><span class="st">`</span><span class="dt">Tissue Category</span><span class="st">`</span>, csd<span class="op">$</span>Phenotype)</code></pre></div>
+<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/table">table</a></span>(csd<span class="op">$</span><span class="st">`</span><span class="dt">Tissue Category</span><span class="st">`</span>, csd<span class="op">$</span>Phenotype)</code></pre></div>
 <pre><code>        
          CD68+ CD8+  CK+ FoxP3+ other
   Stroma   316  177   65    194  2760
@@ -183,9 +182,9 @@ csd &lt;-<span class="st"> </span><span class="kw"><a href="../reference/read_ce
 <h2 class="hasAnchor">
 <a href="#creating-new-columns" class="anchor"></a>Creating new columns</h2>
 <p>The <code><a href="http://dplyr.tidyverse.org/reference/mutate.html">dplyr::mutate</a></code> function makes it very easy to add new columns to your data. This example adds a column for PDL1 positivity and counts cells in each phenotype stratified by positivity.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidyverse)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(tidyverse)</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">csd &lt;-<span class="st"> </span>csd <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>(<span class="dt">pdl1_plus=</span><span class="st">`</span><span class="dt">Entire Cell PDL1 (Opal 520) Mean</span><span class="st">`</span><span class="op">&gt;</span><span class="dv">3</span>)
-<span class="kw">table</span>(csd<span class="op">$</span>pdl1_plus, csd<span class="op">$</span>Phenotype)</code></pre></div>
+<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/table">table</a></span>(csd<span class="op">$</span>pdl1_plus, csd<span class="op">$</span>Phenotype)</code></pre></div>
 <pre><code>       
         CD68+ CD8+  CK+ FoxP3+ other
   FALSE   113  158 1726    131  1761
@@ -202,9 +201,9 @@ csd &lt;-<span class="st"> </span><span class="kw"><a href="../reference/read_ce
 <a href="#aggregating-data" class="anchor"></a>Aggregating data</h2>
 <p>The functions <code><a href="http://dplyr.tidyverse.org/reference/group_by.html">dplyr::group_by</a></code> and <code><a href="http://dplyr.tidyverse.org/reference/summarise.html">dplyr::summarize</a></code> can be used to aggregate data within groups. <code><a href="http://dplyr.tidyverse.org/reference/filter.html">dplyr::filter</a></code> removes unwanted values. This example computes the mean PDL1 expression for each phenotype, omitting <code>other</code> cells.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">csd <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">filter</span>(Phenotype<span class="op">!=</span><span class="st">'other'</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/filter">filter</a></span>(Phenotype<span class="op">!=</span><span class="st">'other'</span>) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">group_by</span>(Phenotype) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">summarize</span>(<span class="dt">mean_pdl1=</span><span class="kw">mean</span>(<span class="st">`</span><span class="dt">Entire Cell PDL1 (Opal 520) Mean</span><span class="st">`</span>))</code></pre></div>
+<span class="st">  </span><span class="kw">summarize</span>(<span class="dt">mean_pdl1=</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/mean">mean</a></span>(<span class="st">`</span><span class="dt">Entire Cell PDL1 (Opal 520) Mean</span><span class="st">`</span>))</code></pre></div>
 <pre><code># A tibble: 4 x 2
   Phenotype mean_pdl1
   &lt;chr&gt;         &lt;dbl&gt;
@@ -222,13 +221,13 @@ The tutorial <a href="https://akoyabio.github.io/phenoptrExamples/articles/aggre
 <h2 class="hasAnchor">
 <a href="#plotting-data" class="anchor"></a>Plotting data</h2>
 <p><a href="http://ggplot2.tidyverse.org/">ggplot2</a> is a powerful and versatile plotting package well suited to exploratory data visualization. Here are two brief examples to whet your appetite.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggplot2)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(ggplot2)
 <span class="kw">ggplot</span>(csd, <span class="kw">aes</span>(Phenotype, <span class="st">`</span><span class="dt">Entire Cell PDL1 (Opal 520) Mean</span><span class="st">`</span>, <span class="dt">color=</span>Phenotype)) <span class="op">+</span>
 <span class="st">  </span><span class="kw">geom_boxplot</span>() <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">scale_color_brewer</span>(<span class="dt">palette=</span><span class="st">'Set1'</span>) <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">labs</span>(<span class="dt">y=</span><span class="st">'PDL1 Expression'</span>, <span class="dt">title=</span><span class="st">'PDL1 Expression per Phenotype'</span>)</code></pre></div>
 <p><img src="reading_tables_files/figure-html/ggplot2-1.png" width="576"></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(csd <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(Phenotype<span class="op">!=</span><span class="st">'other'</span>), 
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(csd <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/filter">filter</a></span>(Phenotype<span class="op">!=</span><span class="st">'other'</span>), 
        <span class="kw">aes</span>(<span class="st">`</span><span class="dt">Entire Cell PDL1 (Opal 520) Mean</span><span class="st">`</span>, 
                 <span class="st">`</span><span class="dt">Entire Cell PD1 (Opal 650) Mean</span><span class="st">`</span>,
                 <span class="dt">color=</span>Phenotype)) <span class="op">+</span>
@@ -274,9 +273,8 @@ The <a href="https://akoyabio.github.io/phenoptrExamples/index.html">Tutorials</
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.2.0.</p>
 </div>
-
       </footer>
 </div>
 
