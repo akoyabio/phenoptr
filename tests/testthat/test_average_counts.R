@@ -1,4 +1,5 @@
 # Tests for average count functions
+context('counts')
 library(testthat)
 library(dplyr)
 

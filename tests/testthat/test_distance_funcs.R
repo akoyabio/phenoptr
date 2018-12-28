@@ -1,5 +1,6 @@
 # Tests for distance functions
 # Mostly smoke tests to make sure the code runs...
+context('distance_functions')
 library(testthat)
 
 path = file.path('test_data',

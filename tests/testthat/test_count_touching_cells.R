@@ -1,3 +1,4 @@
+context('count_touching_cells')
 library(testthat)
 
 test_that('count_touching_cells works', {

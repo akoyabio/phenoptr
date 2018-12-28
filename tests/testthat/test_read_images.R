@@ -1,4 +1,5 @@
 # Tests for read_components and read_maps
+context('read_images')
 library(testthat)
 
 test_that("read_components works", {

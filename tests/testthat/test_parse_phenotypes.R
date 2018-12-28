@@ -1,3 +1,4 @@
+context('parse_phenotypes')
 library(testthat)
 
 check_results = function(sels) {

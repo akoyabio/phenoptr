@@ -1,4 +1,5 @@
 # Tests for select_rows
+context('select_rows')
 library(dplyr)
 library(testthat)
 

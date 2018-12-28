@@ -1,4 +1,5 @@
 # Create a spatial distribution report
+context('spatial_distribution_report')
 library(testthat)
 
 test_that('spatial_distribution_report runs', {
