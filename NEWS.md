@@ -1,3 +1,10 @@
+# phenoptr 0.1.3.9000
+
+Bug fixes
+
+- Change `sq microns` and `sq mm` to `square microns` and `square mm` to match
+  inForm output.
+  
 # phenoptr 0.1.3
 **2018-12-27**
 

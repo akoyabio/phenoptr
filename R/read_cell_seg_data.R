@@ -87,7 +87,7 @@ read_cell_seg_data <- function(
 
   # If any of these fields has missing values, the file may be damaged.
   no_na_cols = c("Path", "Sample Name", "Tissue Category", "Phenotype",
-                 "Cell ID", "Cell X Position", "Cell Y Position", "Slide ID")
+                 "Cell ID", "Slide ID")
 
   bad_na_cols =
     purrr::keep(no_na_cols, ~(.x %in% names(df) && any(is.na(df[[.x]]))))
@@ -156,7 +156,7 @@ read_cell_seg_data <- function(
       if (!is.numeric(df[[col]]))
         df[[col]] = as.numeric(df[[col]])
       df[[col]] = df[[col]] / (pixels_per_micron^2)
-      names(df)[col] = sub('pixels', 'sq microns', names(df)[col])
+      names(df)[col] = sub('pixels', 'square microns', names(df)[col])
     }
 
     cols = get_density_columns(df)
@@ -164,7 +164,7 @@ read_cell_seg_data <- function(
       if (!is.numeric(df[[col]]))
         df[[col]] = as.numeric(df[[col]])
       df[[col]] = df[[col]] * (pixels_per_micron^2)
-      names(df)[col] = sub('megapixel', 'sq mm', names(df)[col])
+      names(df)[col] = sub('megapixel', 'square mm', names(df)[col])
     }
   }
 

@@ -1,4 +1,6 @@
 # Tests for read_cell_seg_data
+context('read_cell_seg_data')
+
 library(testthat)
 
 path = file.path('test_data',
@@ -43,15 +45,15 @@ test_that("read_cell_seg_data works", {
   # Check column names
   expect_contains(names(d),
                   c('Sample Name', 'Cell Y Position',
-                    'Nucleus Area (sq microns)',
+                    'Nucleus Area (square microns)',
                     'Nucleus DAPI Mean', 'Phenotype'))
   expect_does_not_contain(names(d),
         c('Tissue Category Area (pixels)', # Empty column
-          'Tissue Category Area (sq microns)',
+          'Tissue Category Area (square microns)',
           'Nucleus DAPI Mean (Normalized Counts, Total Weighting)', # shortened
           'Nucleus Area (pixels)', # Converted
           "Cell Density (per megapixel)", # Not in regular cell table
-          "Cell Density (per sq mm)"
+          "Cell Density (per square mm)"
           ))
 
   # Check values
@@ -65,10 +67,10 @@ test_that("read_cell_seg_data works", {
                   c('Sample Name',
                   'Phenotype',
                   'Tissue Category',
-                  'Tissue Category Area (sq microns)',
-                  'Nucleus Area (sq microns)',
+                  'Tissue Category Area (square microns)',
+                  'Nucleus Area (square microns)',
                   'Nucleus DAPI Mean',
-                  "Cell Density (per sq mm)"
+                  "Cell Density (per square mm)"
                   ))
   expect_does_not_contain(names(d),
         c('Cell Y Position',
@@ -79,8 +81,8 @@ test_that("read_cell_seg_data works", {
           ))
 
   expect_equal(as.character(d[1, 'Cell ID']), 'all')
-  expect_equal(as.numeric(d[1, 'Tissue Category Area (sq microns)']), 89904/4)
-  expect_equal(as.numeric(d[1, 'Cell Density (per sq mm)']), 2770*4)
+  expect_equal(as.numeric(d[1, 'Tissue Category Area (square microns)']), 89904/4)
+  expect_equal(as.numeric(d[1, 'Cell Density (per square mm)']), 2770*4)
   expect_equal(as.numeric(d[1, 'Nucleus Area (percent)']), 0.5961)
 })
 
@@ -93,7 +95,7 @@ test_that('Skipping pixels_per_micron works', {
   expect_contains(names(d), 'Nucleus Area (pixels)')
   expect_does_not_contain(names(d),
         c('Tissue Category Area (pixels)', # Empty column
-          'Nucleus Area (sq microns)' # Not converted
+          'Nucleus Area (square microns)' # Not converted
           ))
 
   # Check values
@@ -106,7 +108,7 @@ test_that('Setting pixels_per_micron works', {
   expect_equal(dim(d), c(270, 40))
 
   # Check column names
-  expect_contains(names(d), 'Nucleus Area (sq microns)')
+  expect_contains(names(d), 'Nucleus Area (square microns)')
   expect_does_not_contain(names(d),
         c('Tissue Category Area (pixels)', # Empty column
           'Nucleus Area (pixels)' # Converted
@@ -143,7 +145,7 @@ test_that('remove_units=FALSE works', {
   expect_equal(dim(d), c(270, 40))
 
     # Check column names
-  expect_contains(names(d), c('Nucleus Area (sq microns)',
+  expect_contains(names(d), c('Nucleus Area (square microns)',
                   'Nucleus DAPI Mean (Normalized Counts, Total Weighting)'))
   expect_does_not_contain(names(d),
         c('Nucleus DAPI Mean' # Not shortened
