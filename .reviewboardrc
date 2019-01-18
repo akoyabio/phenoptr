@@ -1,0 +1,2 @@
+REVIEWBOARD_URL = 'http://ma-qpdevsvr.perkinelmer.net/reviewboard/'
+REPOSITORY = 'phenoptr'

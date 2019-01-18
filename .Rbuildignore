@@ -2,9 +2,13 @@
 ^\.Rproj\.user$
 
 ^docs$
+^git-hooks$
 ^tools$
+
 TODO
 .lintr
+.reviewboardrc
+
 ^NEWS\.md$
 ^_pkgdown\.yml$
 ^\.travis\.yml$
