@@ -259,3 +259,28 @@ unique_phenotypes = function(csd) {
     stop('Cell seg table does not have a phenotype column.')
   phenos
 }
+
+#' Mutate a cell seg table to have a Phenotype column with the desired phenotypes.
+#'
+#' Note: Cells that satisfy multiple phenotype definitions will appear
+#' multiple times in the result.
+#'
+#' @param csd A cell seg table.
+#' @param phenotypes A named vector or list of phenotype rules. If NULL, use
+#' `unique_phenotypes(csd)`.
+#' @return A new cell seg table
+make_phenotype_column = function(csd, phenotypes=NULL) {
+  if (is.null(phenotypes)) {
+    # If phenotypes==NULL and there is already a Phenotype column,
+    # this function is a no-op. Just return the input.
+    if ('Phenotype' %in% names(csd))
+      return(csd)
+
+    phenotypes = unique_phenotypes(csd) %>% purrr::set_names()
+  }
+
+  purrr::map(names(phenotypes),
+                   ~(csd[select_rows(csd, phenotypes[[.x]]),] %>%
+                       dplyr::mutate(Phenotype=.x))) %>%
+    dplyr::bind_rows()
+}

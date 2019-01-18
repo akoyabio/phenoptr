@@ -138,10 +138,7 @@ density_at_distance = function(cell_seg_path, phenotypes, positive, negative,
   }
 
   # Mutate csd to have the desired phenotypes
-  csd = purrr::map(names(phenotypes),
-      ~(csd[select_rows(csd, phenotypes[[.x]]),] %>%
-        dplyr::mutate(Phenotype=.x))) %>%
-    dplyr::bind_rows()
+  csd = make_phenotype_column(csd, phenotypes)
 
   # Read the mask and create separate masks for positive and negative regions
   maps = read_maps(map_path)
