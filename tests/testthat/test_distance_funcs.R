@@ -96,7 +96,7 @@ test_that('compute_all_nearest_distance works', {
 
   # Repeat with a consolidated file
   merge_path = file.path('test_data',
-                         'consolidated/Consolidated_data.txt')
+                         'consolidated/FIHC4_consolidated_merge_cell_seg_data.txt')
   out_path = tempfile()
   compute_all_nearest_distance(merge_path, out_path)
   expect_true(file.exists(out_path))
@@ -104,8 +104,6 @@ test_that('compute_all_nearest_distance works', {
   expect_equal(nrow(all_d), 66+68+270+215)
 
   # The result for the sample data should be the same
-  csd = read_cell_seg_data(path)
-  nearby = find_nearest_distance(csd)
   all_d_2 = all_d %>%
     dplyr::filter(`Sample Name`=="FIHC4__0929309_HP_IM3_2.im3") %>%
     dplyr::arrange(`Cell ID`) %>%
