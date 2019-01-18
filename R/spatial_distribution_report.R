@@ -106,7 +106,7 @@ phenotype_as_ppp = function(data, pheno, window)
 {
   # Keep just the rows corresponding to the desired expression and phenotypes
   # for our data and columns containing fields of interest
-  fixedColumns = c('Cell ID', 'Cell X Position', 'Cell Y Position', 'Phenotype')
+  fixedColumns = c('Cell ID', 'Cell X Position', 'Cell Y Position')
   data = data[select_rows(data, pheno$select),fixedColumns]
 
   data = stats::na.omit(data)

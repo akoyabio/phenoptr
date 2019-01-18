@@ -42,8 +42,6 @@ if(!file.exists(component_path))
   stop('Spatial distribution report requires a matching component data file.')
 field_info = get_field_info(component_path)
 
-phenotype_specials = setdiff(phenotypes, unique(csd$Phenotype))
-
 # Window for spatial processing
 window = spatstat::owin(
   xrange=c(field_info$location[1], field_info$location[1]+field_info$field_size[1]),
@@ -79,6 +77,8 @@ if (exists('tissue_seg_path') && file.exists(tissue_seg_path))
   # Tone it down a bit by bringing it closer to neutral gray
   background = (background - 0.75) / 8 + 0.75 
   background = as.raster(background)
+} else {
+  background = NULL
 }
 
 # Remove def'n of tissue_seg_path so we will recompute next time for new image
@@ -103,11 +103,21 @@ for (name in phenotypes)
 ```{r first_order_stats, results='asis'}
 cat('Number of cells:', nrow(csd), '\n\n')
 
-counts = csd %>% dplyr::group_by(Phenotype) %>% 
-  dplyr::summarize(Count=n())
+# Count phenotypes
+counts = tibble::tibble()
+
+# First the ones defined in the cell seg data.
+# Use `select_rows` here to accommodate consolidated data.
+for (pheno in unique_phenotypes(csd))
+  counts = dplyr::bind_rows(counts, 
+                            tibble::tibble(Phenotype=pheno, 
+                                           Count=sum(select_rows(csd, pheno))))
+
+# Phenotypes not in the cell seg data
+phenotype_specials = setdiff(phenotypes, unique_phenotypes(csd))
 for (special in phenotype_specials)
-  counts = dplyr::add_row(counts, Phenotype=special, 
-                 Count=sum(select_rows(csd, phenotype_rules[[special]])))
+  counts = dplyr::bind_rows(counts, tibble::tibble(Phenotype=special, 
+                 Count=sum(select_rows(csd, phenotype_rules[[special]]))))
 
 counts %>% dplyr::mutate(Proportion=scales::percent(round(Count/nrow(csd), 2))) %>% 
   knitr::kable(caption='Cell count and fraction of total per phenotype',
@@ -123,15 +133,18 @@ counts %>% dplyr::mutate(Proportion=scales::percent(round(Count/nrow(csd), 2))) 
 # Colorbrewer Dark2 palette
 dark2 = c('#1b9e77','#d95f02','#7570b3','#e7298a',
           '#66a61e','#e6ab02','#a6761d','#666666')
-p = ggplot(csd, aes(x=`Cell X Position`, y=`Cell Y Position`, color=Phenotype))
+
+# If csd doesn't have a Phenotype column, make one
+csd2 = make_phenotype_column(csd)
+p = ggplot(csd2, aes(x=`Cell X Position`, y=`Cell Y Position`, color=Phenotype))
 p = add_scales_and_background(p, background, xlim, ylim)
 p = p + geom_point() 
-if (length(unique(csd$Phenotype<=8)))
+if (length(unique(csd2$Phenotype<=8)))
   p = p + scale_color_manual(values=dark2)
 p + labs(title='Locations of all cells')
 ```
 
-```{r cell_locations_faceted, fig.height=6+2*(length(unique(csd$Phenotype))-1) %/% 3}
+```{r cell_locations_faceted, fig.height=6+2*(length(unique(csd2$Phenotype))-1) %/% 3}
 p + facet_wrap(~Phenotype) + guides(color=FALSE)
 ```
 

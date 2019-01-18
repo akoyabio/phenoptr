@@ -1,7 +1,8 @@
 # phenoptr 0.1.3.9000
 
 - Update `find_nearest_distance`, `compute_all_nearest_distance`,
-  `density_at_distance`, `density_bands` and `count_within` to work
+  `density_at_distance`, `density_bands`, `count_within` and
+  `spatial_distribution_report` to work
   with consolidated data from `phenoptrReports` (#1).
   
 Bug fixes
