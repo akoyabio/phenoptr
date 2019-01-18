@@ -13,7 +13,7 @@ such as the result of calling
 \link{read_cell_seg_data}.}
 
 \item{phenotypes}{Optional list of phenotypes to include. If omitted,
-\code{unique(csd$Phenotype)} will be used.}
+\code{unique_phenotypes(csd)} will be used.}
 }
 \value{
 A \code{data_frame} containing a \code{Distance to <phenotype>} column

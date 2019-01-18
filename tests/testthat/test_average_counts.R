@@ -46,6 +46,14 @@ test_that('count_within works', {
   counts = count_within(d, 'Helper T', 'Cytotoxic T', 40)
   expected = c(40, 15, 6, 8, 23/15)
   expect_equal(as.numeric(counts), expected)
+
+  # Test with consolidated data
+  path = file.path('test_data', 'consolidated',
+                   'FIHC4_consolidated_merge_cell_seg_data.txt')
+  d = read_cell_seg_data(path) %>%
+    filter(`Sample Name`=="FIHC4__0929309_HP_IM3_2.im3")
+  counts = count_within(d, 'Helper_T+', 'Cytotoxic_T+', 40)
+  expect_equal(as.numeric(counts), expected)
 })
 
 test_that("count_within works with no data", {

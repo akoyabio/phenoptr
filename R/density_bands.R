@@ -37,6 +37,8 @@ if (getRversion() >= "2.15.1")
 #' e.g. "tumor".
 #' @param width Width of the bands, in microns
 #' @param pixels_per_micron Conversion factor to microns.
+#' @param map_path Path to the segmentation map file. If NULL, look for the
+#'  map in the same directory as `cell_seg_path`.
 #' @return Returns a `list` with three items:
 #' \tabular{ll}{
 #'   `densities` \tab A `data_frame` with five columns (see below).\cr
@@ -75,18 +77,18 @@ if (getRversion() >= "2.15.1")
 #' @importFrom foreach "%dopar%"
 #' @import dplyr
 density_bands = function(cell_seg_path, phenotypes, positive, negative,
-   width=25, pixels_per_micron=getOption('phenoptr.pixels.per.micron'))
+   width=25, pixels_per_micron=getOption('phenoptr.pixels.per.micron'),
+   map_path=NULL)
 {
   if (!file.exists(cell_seg_path))
     stop(paste('File not found:', cell_seg_path))
 
-  map_path = sub('_cell_seg_data.txt', '_binary_seg_maps.tif', cell_seg_path)
+  if (is.null(map_path))
+    map_path = sub('_cell_seg_data.txt', '_binary_seg_maps.tif', cell_seg_path)
   if (!file.exists(map_path))
     stop(paste('File not found:', map_path))
 
   csd = read_cell_seg_data(cell_seg_path, pixels_per_micron)
-  if (!'Phenotype' %in% names(csd))
-    stop('Cell seg data does not contain a Phenotype column.')
 
   # Check for multiple samples, this is probably an error
   if (length(unique(csd$`Sample Name`))>1)
@@ -94,7 +96,7 @@ density_bands = function(cell_seg_path, phenotypes, positive, negative,
 
   if (is.null(phenotypes)) {
     # Use phenotypes from file
-    phenotypes = sort(unique(csd$Phenotype)) %>% purrr::set_names()
+    phenotypes = unique_phenotypes(csd) %>% purrr::set_names()
   } else {
     # Phenotypes were provided
     stopifnot(length(phenotypes) > 0)

@@ -68,6 +68,7 @@ reference:
       - distance_matrix
       - plot_diverging
       - subset_distance_matrix
+      - unique_phenotypes
   - title: "Sample data"
     contents:
       - sample_cell_seg_data

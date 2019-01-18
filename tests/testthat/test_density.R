@@ -3,12 +3,7 @@ context('density')
 library(testthat)
 library(dplyr)
 
-test_that('density_bands works', {
-  # Compute density for the sample data
-  values <- density_bands(sample_cell_seg_path(),
-    list("CD8+", "CD68+", "FoxP3+"),
-    positive="Stroma", negative="Tumor")
-
+check_density_bands <- function(values) {
   expect_equal(names(values), c("densities", "cells", "distance"))
 
   densities = values$densities
@@ -44,4 +39,29 @@ test_that('density_bands works', {
 
   expect_equal(nrow(csd_summary), 6)
   expect_equal(csd_summary$count.x, csd_summary$count.y, tolerance=4)
+}
+
+test_that('density_bands works', {
+  # Compute density for the sample data
+  values <- density_bands(sample_cell_seg_path(),
+    list("CD8+", "CD68+", "FoxP3+"),
+    positive="Stroma", negative="Tumor")
+
+  check_density_bands(values)
+
+  # Try with consolidated format
+  cell_seg_path = testthat::test_path('test_data', 'consolidated',
+                  'Set4_1-6plex_[16142,55840]_cons_cell_seg_data.txt')
+
+  # Get the path to the segmentation map in the sample data
+  map_path = sub('_cell_seg_data.txt', '_binary_seg_maps.tif',
+                 sample_cell_seg_path())
+  values <- density_bands(cell_seg_path,
+                          list("CD8+", "CD68+", "FoxP3+"),
+                          positive="Stroma", negative="Tumor",
+                          map_path=map_path)
+
+  check_density_bands(values)
+
+
 })

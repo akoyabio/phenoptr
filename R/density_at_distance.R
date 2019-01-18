@@ -118,8 +118,6 @@ density_at_distance = function(cell_seg_path, phenotypes, positive, negative,
     stop(paste('File not found:', map_path))
 
   csd = read_cell_seg_data(cell_seg_path, pixels_per_micron)
-  if (!'Phenotype' %in% names(csd))
-    stop('Cell seg data does not contain a Phenotype column.')
 
   # Check for multiple samples, this is probably an error
   if (length(unique(csd$`Sample Name`))>1)
@@ -127,7 +125,7 @@ density_at_distance = function(cell_seg_path, phenotypes, positive, negative,
 
   if (is.null(phenotypes)) {
     # Use phenotypes from file
-    phenotypes = sort(unique(csd$Phenotype)) %>% purrr::set_names()
+    phenotypes = unique_phenotypes(csd) %>% purrr::set_names()
   } else {
     # Phenotypes were provided
     stopifnot(length(phenotypes) > 0)
