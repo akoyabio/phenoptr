@@ -1,5 +1,8 @@
 # phenoptr 0.1.3.9000
 
+- Update `find_nearest_distance` and `compute_all_nearest_distance` to work
+  with consolidated data from `phenoptrReports` (#1).
+  
 Bug fixes
 
 - Change `sq microns` and `sq mm` to `square microns` and `square mm` to match

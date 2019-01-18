@@ -236,3 +236,26 @@ make_phenotype_rules <- function (phenotypes, existing_rules=NULL) {
 
   c(existing_rules, new_rules)
 }
+
+#' Find unique phenotypes in a cell seg table
+#'
+#' For cell seg tables containing a single `Phenotype` column, this
+#' returns a vector containing all the non-blank phenotypes in the table.
+#' For cell seg tables containing multiple phenotype columns, it returns
+#' a vector with just the positive phenotypes.
+#' @param csd A cell seg table such as read by `read_cell_seg_table`.
+#' @return A character vector containing the phenotype names.
+#' @export
+unique_phenotypes = function(csd) {
+  if ('Phenotype' %in% names(csd))
+    return(purrr::discard(sort(unique(csd$Phenotype)), ~.x==''))
+
+  phenos = names(csd) %>%
+    stringr::str_subset('Phenotype ') %>%
+    stringr::str_remove('Phenotype ') %>%
+    stringr::str_c('+')
+
+  if (length(phenos)==0)
+    stop('Cell seg table does not have a phenotype column.')
+  phenos
+}

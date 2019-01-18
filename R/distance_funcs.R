@@ -35,7 +35,7 @@ compute_all_nearest_distance <- function(cell_table_path=NULL, out_path=NULL) {
   # Compute the distances
   cat('Computing distances\n')
   result = NULL
-  phenos = unique(csd$Phenotype)
+  phenos = unique_phenotypes(csd)
   result = csd %>%
     dplyr::group_by(`Sample Name`) %>%
     dplyr::do(dplyr::bind_cols(., find_nearest_distance(., phenos)))
@@ -57,7 +57,7 @@ compute_all_nearest_distance <- function(cell_table_path=NULL, out_path=NULL) {
 #'        such as the result of calling
 #'        [read_cell_seg_data].
 #' @param phenotypes Optional list of phenotypes to include. If omitted,
-#' `unique(csd$Phenotype)` will be used.
+#' `unique_phenotypes(csd)` will be used.
 #'
 #' @return A `data_frame` containing a `Distance to <phenotype>` column
 #' for each phenotype. Will contain `NA` values where there is no other cell
@@ -86,9 +86,6 @@ compute_all_nearest_distance <- function(cell_table_path=NULL, out_path=NULL) {
 #' }
 
 find_nearest_distance <- function(csd, phenotypes=NULL) {
-  if (!'Phenotype' %in% names(csd))
-    stop('Cell seg data does not contain a Phenotype column.')
-
   # Check for multiple samples, this is probably an error
   if (length(unique(csd$`Sample Name`))>1)
     stop('Data appears to contain multiple samples.')
@@ -96,12 +93,12 @@ find_nearest_distance <- function(csd, phenotypes=NULL) {
   dst = distance_matrix(csd)
 
   if (is.null(phenotypes))
-    phenotypes = sort(unique(csd$Phenotype))
+    phenotypes = unique_phenotypes(csd)
   stopifnot(length(phenotypes) > 0)
 
   result = lapply(phenotypes, FUN=function(phenotype) {
     # Which cells are in the target phenotype?
-    phenotype_cells = csd$Phenotype==phenotype
+    phenotype_cells = select_rows(csd, phenotype)
     if (sum(phenotype_cells)>0) {
       # Find the minimum distance > 0; i.e. from cells to not-self cells
       phenotype_mins = apply(dst[, phenotype_cells, drop=FALSE], 1, row_min)
