@@ -18,6 +18,7 @@ foreach ($newrev in $commits) {
     $rbUserList.add('lkopp@akoyabio.com', 'lorenzo')
     $rbUserList.add('adubey@akoyabio.com', 'ajay')
     $rbUserList.add('aostapenko@akoyabio.com', 'alex')
+    $rbUserList.add('ccoltharp@akoyabio.com', 'carla')
     $rbUserList.add('emarquez@akoyabio.com', 'elbano')
     $rbUserList.add('eedwards@akoyabio.com', 'elizabeth')
     $rbUserList.add('kjohnson@akoyabio.com', 'kent')
