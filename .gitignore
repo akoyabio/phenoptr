@@ -3,6 +3,8 @@
 .RData
 .Ruserdata
 
+.reviewboardrc
+
 inst/doc
 docs/articles/*.csv
 
