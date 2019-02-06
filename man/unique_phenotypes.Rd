@@ -10,7 +10,7 @@ unique_phenotypes(csd)
 \item{csd}{A cell seg table such as read by `read_cell_seg_table`.}
 }
 \value{
-A character vector containing the phenotype names.
+A named character vector containing the phenotype names.
 }
 \description{
 For cell seg tables containing a single `Phenotype` column, this

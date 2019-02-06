@@ -244,7 +244,7 @@ make_phenotype_rules <- function (phenotypes, existing_rules=NULL) {
 #' For cell seg tables containing multiple phenotype columns, it returns
 #' a vector with just the positive phenotypes.
 #' @param csd A cell seg table such as read by `read_cell_seg_table`.
-#' @return A character vector containing the phenotype names.
+#' @return A named character vector containing the phenotype names.
 #' @export
 unique_phenotypes = function(csd) {
   if ('Phenotype' %in% names(csd))
@@ -257,7 +257,7 @@ unique_phenotypes = function(csd) {
 
   if (length(phenos)==0)
     stop('Cell seg table does not have a phenotype column.')
-  phenos
+  rlang::set_names(phenos)
 }
 
 #' Mutate a cell seg table to have a Phenotype column with the desired phenotypes.
