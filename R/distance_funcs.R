@@ -87,7 +87,7 @@ compute_all_nearest_distance <- function(cell_table_path=NULL, out_path=NULL) {
 
 find_nearest_distance <- function(csd, phenotypes=NULL) {
   # Check for multiple samples, this is probably an error
-  if (length(unique(csd$`Sample Name`))>1)
+  if ('Sample Name' %in% names(csd) && length(unique(csd$`Sample Name`))>1)
     stop('Data appears to contain multiple samples.')
 
   dst = distance_matrix(csd)
@@ -95,6 +95,8 @@ find_nearest_distance <- function(csd, phenotypes=NULL) {
   if (is.null(phenotypes))
     phenotypes = unique_phenotypes(csd)
   stopifnot(length(phenotypes) > 0)
+  if (!rlang::is_named(phenotypes))
+    phenotypes = rlang::set_names(phenotypes)
 
   result = lapply(phenotypes, FUN=function(phenotype) {
     # Which cells are in the target phenotype?
@@ -109,7 +111,7 @@ find_nearest_distance <- function(csd, phenotypes=NULL) {
     phenotype_mins
   })
   # The names for the new columns
-  names(result) = paste('Distance to', phenotypes)
+  names(result) = paste('Distance to', names(phenotypes))
 
   tibble::as_tibble(result)
 }
