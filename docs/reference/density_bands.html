@@ -66,7 +66,7 @@ tissue classes." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">phenoptr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.4</span>
       </span>
     </div>
 
@@ -149,7 +149,8 @@ tissue classes.</p>
     </div>
 
     <pre class="usage"><span class='fu'>density_bands</span>(<span class='no'>cell_seg_path</span>, <span class='no'>phenotypes</span>, <span class='no'>positive</span>, <span class='no'>negative</span>, <span class='kw'>width</span> <span class='kw'>=</span> <span class='fl'>25</span>,
-  <span class='kw'>pixels_per_micron</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/options'>getOption</a></span>(<span class='st'>"phenoptr.pixels.per.micron"</span>))</pre>
+  <span class='kw'>pixels_per_micron</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/options'>getOption</a></span>(<span class='st'>"phenoptr.pixels.per.micron"</span>),
+  <span class='kw'>map_path</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -182,6 +183,11 @@ e.g. "tumor".</p></td>
     <tr>
       <th>pixels_per_micron</th>
       <td><p>Conversion factor to microns.</p></td>
+    </tr>
+    <tr>
+      <th>map_path</th>
+      <td><p>Path to the segmentation map file. If NULL, look for the
+map in the same directory as <code>cell_seg_path</code>.</p></td>
     </tr>
     </table>
     
@@ -278,7 +284,7 @@ to compute density.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
 </div>
       </footer>
    </div>

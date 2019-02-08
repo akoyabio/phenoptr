@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Read a component TIFF file. — read_components • phenoptr</title>
+<title>Mutate a cell seg table to have a Phenotype column with the desired phenotypes. — make_phenotype_column • phenoptr</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,13 +30,10 @@
 
 
 
-<meta property="og:title" content="Read a component TIFF file. — read_components" />
+<meta property="og:title" content="Mutate a cell seg table to have a Phenotype column with the desired phenotypes. — make_phenotype_column" />
 
-<meta property="og:description" content="Read an inForm component_data.tif file.
-If the file contains multiple resolutions or other data,
-keep only the full-resolution component images,
-extract the component names from the image descriptions,
-and return a named list of image matrices." />
+<meta property="og:description" content="Note: Cells that satisfy multiple phenotype definitions will appear
+multiple times in the result." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -135,58 +132,39 @@ and return a named list of image matrices." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Read a component TIFF file.</h1>
+    <h1>Mutate a cell seg table to have a Phenotype column with the desired phenotypes.</h1>
     
-    <div class="hidden name"><code>read_components.Rd</code></div>
+    <div class="hidden name"><code>make_phenotype_column.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Read an inForm <code>component_data.tif</code> file.
-If the file contains multiple resolutions or other data,
-keep only the full-resolution component images,
-extract the component names from the image descriptions,
-and return a named list of image matrices.</p>
+    <p>Note: Cells that satisfy multiple phenotype definitions will appear
+multiple times in the result.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>read_components</span>(<span class='no'>path</span>)</pre>
+    <pre class="usage"><span class='fu'>make_phenotype_column</span>(<span class='no'>csd</span>, <span class='kw'>phenotypes</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>path</th>
-      <td><p>Path to the <code>component_data.tif</code> file.</p></td>
+      <th>csd</th>
+      <td><p>A cell seg table.</p></td>
+    </tr>
+    <tr>
+      <th>phenotypes</th>
+      <td><p>A named vector or list of phenotype rules. If NULL, use
+`unique_phenotypes(csd)`.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A named list of matrices, one for each component.</p>
-    
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p>Images are oriented to match the coordinates in a cell seg data file,
-i.e. (0, 0) at the top left and the row corresponding to Y and
-column corresponding to X.</p>
-<p>Limited to 1x1 fields due to
-limitations in the <code>tiff</code> package. Install the PerkinElmer
-<a href='https://github.com/PerkinElmer/tiff'>fork</a> of the tiff package to
-remove this limitation.</p>
-    
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <div class='dont-index'><p>Other file readers: <code><a href='get_field_info.html'>get_field_info</a></code>,
-  <code><a href='list_cell_seg_files.html'>list_cell_seg_files</a></code>,
-  <code><a href='read_cell_seg_data.html'>read_cell_seg_data</a></code>, <code><a href='read_maps.html'>read_maps</a></code></p></div>
+    <p>A new cell seg table</p>
     
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='no'>path</span> <span class='kw'>&lt;-</span> <span class='st'>"/path/to/my_component_data.tif"</span>
-<span class='no'>components</span> <span class='kw'>&lt;-</span> <span class='fu'>read_components</span>(<span class='no'>path</span>)
-<span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -194,13 +172,7 @@ remove this limitation.</p>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
-
-      <li><a href="#details">Details</a></li>
-
-      <li><a href="#see-also">See also</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
+          </ul>
 
   </div>
 </div>

@@ -65,7 +65,7 @@ the cell to the nearest neighbor cells in each of the provided phenotypes." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">phenoptr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.4</span>
       </span>
     </div>
 
@@ -161,7 +161,7 @@ such as the result of calling
     <tr>
       <th>phenotypes</th>
       <td><p>Optional list of phenotypes to include. If omitted,
-<code><a href='https://www.rdocumentation.org/packages/base/topics/unique'>unique(csd$Phenotype)</a></code> will be used.</p></td>
+<code><a href='unique_phenotypes.html'>unique_phenotypes(csd)</a></code> will be used.</p></td>
     </tr>
     </table>
     
@@ -188,21 +188,21 @@ of the phenotype.</p>
     <pre class="examples"><div class='input'><span class='co'># Compute distance columns</span>
 <span class='no'>csd</span> <span class='kw'>&lt;-</span> <span class='no'>sample_cell_seg_data</span>
 <span class='no'>nearest</span> <span class='kw'>&lt;-</span> <span class='fu'>find_nearest_distance</span>(<span class='no'>csd</span>)
-<span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://dplyr.tidyverse.org/reference/reexports.html'>glimpse</a></span>(<span class='no'>nearest</span>)</div><div class='output co'>#&gt; Observations: 6,072
+<span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/reexports.html'>glimpse</a></span>(<span class='no'>nearest</span>)</div><div class='output co'>#&gt; Observations: 6,072
 #&gt; Variables: 5
-#&gt; $ `Distance to CD68+`  &lt;dbl&gt; 29.529646, 30.269622, 38.082148, 36.674242, 15...
-#&gt; $ `Distance to CD8+`   &lt;dbl&gt; 18.03469, 50.09241, 64.37585, 67.57403, 60.002...
-#&gt; $ `Distance to CK+`    &lt;dbl&gt; 36.830694, 21.377558, 109.317199, 3.605551, 10...
-#&gt; $ `Distance to FoxP3+` &lt;dbl&gt; 16.347783, 24.909837, 40.140379, 30.870698, 26...
-#&gt; $ `Distance to other`  &lt;dbl&gt; 10.307764, 6.800735, 8.062258, 19.811613, 5.59...</div><div class='input'>
+#&gt; $ `Distance to CD68+`  <span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> 29.529646, 30.269622, 38.082148, 36.674242, 15...
+#&gt; $ `Distance to CD8+`   </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> 18.03469, 50.09241, 64.37585, 67.57403, 60.002...
+#&gt; $ `Distance to CK+`    </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> 36.830694, 21.377558, 109.317199, 3.605551, 10...
+#&gt; $ `Distance to FoxP3+` </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> 16.347783, 24.909837, 40.140379, 30.870698, 26...
+#&gt; $ `Distance to other`  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> 10.307764, 6.800735, 8.062258, 19.811613, 5.59...</div><div class='input'>
 <span class='co'># Make a combined data frame including original data and distance columns</span>
-<span class='no'>csd</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/cbind'>cbind</a></span>(<span class='no'>csd</span>, <span class='fu'>find_nearest_distance</span>(<span class='no'>csd</span>))</div><span class='co'># NOT RUN {</span>
+<span class='no'>csd</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/cbind'>cbind</a></span>(<span class='no'>csd</span>, <span class='fu'>find_nearest_distance</span>(<span class='no'>csd</span>))</div></span><span class='co'># NOT RUN {</span>
 <span class='co'># If `merged` is a data frame containing cell seg data from multiple fields,</span>
 <span class='co'># this code will create a new `data_frame` with distance columns computed</span>
 <span class='co'># for each `Sample Name` in the data.</span>
 <span class='no'>merged_with_distance</span> <span class='kw'>&lt;-</span> <span class='no'>merged</span> <span class='kw'>%&gt;%</span>
-  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span>(<span class='no'>`Sample Name`</span>) <span class='kw'>%&gt;%</span>
-  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://dplyr.tidyverse.org/reference/do.html'>do</a></span>(<span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://dplyr.tidyverse.org/reference/bind.html'>bind_cols</a></span>(<span class='no'>.</span>, <span class='fu'>find_nearest_distance</span>(<span class='no'>.</span>)))
+  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span>(<span class='no'>`Sample Name`</span>) <span class='kw'>%&gt;%</span>
+  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/do.html'>do</a></span>(<span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/bind.html'>bind_cols</a></span>(<span class='no'>.</span>, <span class='fu'>find_nearest_distance</span>(<span class='no'>.</span>)))
 <span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -226,7 +226,7 @@ of the phenotype.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
 </div>
       </footer>
    </div>
