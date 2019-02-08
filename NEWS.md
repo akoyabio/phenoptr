@@ -1,4 +1,5 @@
-# phenoptr 0.1.3.9000
+# phenoptr 0.1.4
+**2019-02-08**
 
 - Update `find_nearest_distance`, `compute_all_nearest_distance`,
   `density_at_distance`, `density_bands`, `count_within` and

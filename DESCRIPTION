@@ -1,8 +1,8 @@
 Package: phenoptr
 Type: Package
 Title: inForm Helper Functions
-Version: 0.1.3.9000
-Date: 2018-12-27
+Version: 0.1.4
+Date: 2019-02-08
 Description: Helper functions for working with inForm data.
 Language: en-US
 biocViews: 
