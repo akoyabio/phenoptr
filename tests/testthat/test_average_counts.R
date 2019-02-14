@@ -5,9 +5,8 @@ library(dplyr)
 
 check_within = function(within, radius, from, to) {
   expect_equal(nrow(within), length(radius))
-  expect_equal(names(within),
-               c("radius", "from_count", "to_count",
-                 "from_with", "within_mean"))
+  expect_true(all(c("radius", "from_count", "to_count",
+                    "from_with", "within_mean") %in% names(within)))
   expect_equal(within$from_count, from)
   expect_equal(within$to_count, to)
 }
@@ -81,6 +80,15 @@ test_that("count_within works with multiple radii", {
   check_within(within, c(15, 30), c(0, 0), c(0, 0))
   expect_equal(within$from_with, c(0, 0))
   expect_equal(within$within_mean, c(0, 0))
+})
+
+test_that("count_within_many works", {
+  # This is a little weak. It does test multiple pairs and categories.
+  pairs = list(c('CK+', 'CD8+'), c('CD8+', 'CK+'))
+  within = count_within_many(csd, pairs, c(15, 30), category=c(NA, NA))
+  check_within(within, rep(c(15, 30), 4),
+               rep(c(2257, 2257, 228, 228), 2),
+               rep(c(228, 228, 2257, 2257), 2))
 })
 
 test_that("count_within errors with invalid radii", {

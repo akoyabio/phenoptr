@@ -1,3 +1,7 @@
+# phenoptr 0.1.4.9000
+
+- Add `count_within_many` in support of phenoptrReports.
+
 # phenoptr 0.1.4
 **2019-02-08**
 

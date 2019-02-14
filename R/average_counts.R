@@ -7,7 +7,7 @@ if (getRversion() >= "2.15.1")
 #' Count cells within a radius for multiple tissue categories, phenotypes
 #' and fields.
 #'
-#' This is a batch version of [count_within]. Given the path to a directory
+#' This is a batch version of [count_within()]. Given the path to a directory
 #' containing cell seg data files, for each given tissue category,
 #' pair of
 #' 'from' phenotype and 'to' phenotype, and radius, it counts the number of
@@ -28,7 +28,7 @@ if (getRversion() >= "2.15.1")
 #' @param radius The radius or radii to search within.
 #' @param phenotype_rules (Optional) A named list.
 #'   Item names are phenotype names and must match entries in `pairs`.
-#'   Item values are selectors for [select_rows].
+#'   Item values are selectors for [select_rows()].
 #' @param category Optional tissue categories to restrict both `from` and
 #' `to` phenotypes.
 #' @param verbose If TRUE, display progress.
@@ -72,21 +72,12 @@ count_within_batch <- function(base_path, pairs, radius, category=NA,
   if (length(files) == 0)
     stop('No cell seg files found in ', base_path)
 
-  # Allow a single pair to be specified as a plain vector
-  if (is.character(pairs) && length(pairs)==2)
-    pairs = list(pairs)
-
-  stopifnot(is.list(pairs), length(pairs) > 0)
+  pairs = clean_pairs(pairs)
 
   all_phenotypes = unique(do.call(c, pairs))
   phenotype_rules = make_phenotype_rules(all_phenotypes, phenotype_rules)
 
-  # cross_n was renamed to cross and deprecated in purrr 0.2.3
-  # Use the new name if we can
-  if (utils::packageVersion('purrr') >= '0.2.3')
-    combos = purrr::cross(list(pair=pairs, category=category))
-  else
-    combos = purrr::cross_n(list(pair=pairs, category=category))
+  combos = purrr::cross(list(pair=pairs, category=category))
 
   # Loop through all the cell seg data files
   purrr::map_df(files, function(path) {
@@ -96,42 +87,149 @@ count_within_batch <- function(base_path, pairs, radius, category=NA,
     # Read one file
     csd = read_cell_seg_data(path)
 
-    if ('Slide ID' %in% names(csd))
-      slide = as.character(csd[1, 'Slide ID'])
-    else slide = NA
-
-    # Subset to what we care about, for faster distance calculation
-    if (!anyNA(category))
-      csd = csd %>% dplyr::filter(`Tissue Category` %in% category)
-
-    # Compute the distance matrix for these cells
-    dst = distance_matrix(csd)
-
-    # Compute counts for each from, to, and category in combos
-    row_count = purrr::map_df(combos, function(row) {
-      # Call count_within for each item in combos
-      # count_within handles multiple radii
-      from = row$pair[1]
-      from_sel = phenotype_rules[[from]]
-      to = row$pair[2]
-      to_sel = phenotype_rules[[to]]
-      count_within(csd=csd, from=from_sel, to=to_sel,
-                               category=row$category,
-                               radius=radius, dst=dst) %>%
-        # Add columns for from, to, category
-        tibble::add_column(
-          category = ifelse(is.na(row$category), 'all', row$category),
-          from=from,
-          to=to,
-          .before=1)
-      }) %>%
-      # Add columns for slide and source
-      tibble::add_column(source=name, .before=1)
-
-      if (!is.na(slide))
-        row_count = row_count %>% tibble::add_column(slide_id=slide, .before=1)
-      row_count
+    count_within_many_impl(csd, name, combos, radius, phenotype_rules)
   })
+}
+
+#' Count cells within a radius for multiple tissue categories and phenotypes
+#' in a single field.
+#'
+#' This is a wrapper around [count_within()] which supports counting
+#' multiple phenotype pairs and tissue categories within a single field.
+#' For each given tissue category, pair of
+#' 'from' phenotype and 'to' phenotype, and radius, it counts the number of
+#'  'from' cells
+#' having a 'to' cell within `radius` microns.
+#'
+#' The `category` parameter may be a single category or a list of categories.
+#'
+#' See the tutorial
+#' [Selecting cells within a cell segmentation table](https://akoyabio.github.io/phenoptr/articles/selecting_cells.html)
+#'  for more on
+#' the use of `pairs` and `phenotype_rules`.
+#'
+#' @param csd A cell seg data taable.
+#' @param pairs A list of pairs of phenotypes. Each entry is a two-element
+#'   vector. The result will contain values for each pair.
+#' @param radius The radius or radii to search within.
+#' @param phenotype_rules (Optional) A named list.
+#'   Item names are phenotype names and must match entries in `pairs`.
+#'   Item values are selectors for [select_rows()].
+#' @param category Optional tissue categories to restrict both `from` and
+#' `to` phenotypes.
+#' @param verbose If TRUE, display progress.
+#' @return A `data_frame` containing these columns:
+#'   \describe{
+#'    \item{\code{slide_id}}{Slide ID from the data, if available.}
+#'    \item{\code{source}}{Source field name.}
+#'    \item{\code{field}}{Name of the individual field, if available.}
+#'    \item{\code{category}}{Tissue category, if provided as a parameter,
+#'    or "all".}
+#'    \item{\code{from}}{From phenotype.}
+#'    \item{\code{to}}{To phenotype.}
+#'    \item{\code{radius}, \code{from_count}, \code{to_count},
+#'    \code{from_with}, \code{within_mean}}{Results from [count_within]
+#'    for this data file and tissue category.}
+#'  }
+#' @examples
+#' csd <- sample_cell_seg_data
+#'
+#' # Count tumor cells near macrophages, and tumor cells near CD8 separately,
+#' # in tumor and stroma tissue categories separately.
+#' pairs <- list(c('CK+', 'CD68+'),
+#'              c('CK+', 'CD8+'))
+#' radius <- c(10, 25)
+#' category <- list('Tumor', 'Stroma')
+#' count_within_many(csd, pairs, radius, category)
+#'
+#' # Count tumor cells near any T cell in all tissue categories.
+#' # Use `phenotype_rules` to define the T cell phenotype
+#' pairs <- c('CK+', 'T cell')
+#' rules <- list(
+#' 'T cell'=c('CD8+', 'FoxP3+'))
+#' count_within_many(csd, pairs, radius, phenotype_rules=rules)
+#' @md
+#' @export
+#' @family distance functions
+#' @importFrom magrittr "%>%"
+count_within_many <- function(csd, pairs, radius, category=NA,
+                               phenotype_rules=NULL, verbose=TRUE) {
+  pairs = clean_pairs(pairs)
+
+  all_phenotypes = unique(do.call(c, pairs))
+  phenotype_rules = make_phenotype_rules(all_phenotypes, phenotype_rules)
+
+  combos = purrr::cross(list(pair=pairs, category=category))
+
+  # Try to get a name for this field
+  field_col = dplyr::if_else('Annotation ID' %in% names(csd),
+                               'Annotation ID', 'Sample Name')
+  name = ifelse(field_col %in% names(csd),
+                        csd[[1, field_col]], NA_character_)
+
+  if (verbose) cat('Processing', name, '\n')
+
+  count_within_many_impl(csd, name, combos, radius, phenotype_rules)
+}
+
+# Helper functions for count_within_batch and count_within_many
+clean_pairs = function(pairs) {
+  # Allow a single pair to be specified as a plain vector
+  if (is.character(pairs) && length(pairs)==2)
+    pairs = list(pairs)
+
+  stopifnot(is.list(pairs), length(pairs) > 0)
+  pairs
+}
+
+#' Helper function for count_within_batch and count_within_many.
+#' This does the actual work of calling count_within multiple times and
+#' accumulating the result.
+#' @param csd Cell seg data for a single field.
+#' @param name Name associated with `csd`, for example the basename of the
+#' image file.
+#' @param combos List of pairs of (from phenotype name, to phenotype name)
+#' and tissue category.
+#' @param radius Vector of radii.
+#' @param phenotype_rules Named list of phenotype rules.
+count_within_many_impl <- function(csd, name, combos, radius, phenotype_rules) {
+  if ('Slide ID' %in% names(csd))
+    slide = as.character(csd[1, 'Slide ID'])
+  else slide = NA
+
+  category = combos %>% purrr::map_chr('category') %>% unique()
+
+  # Subset to what we care about, for faster distance calculation
+  if (!anyNA(category))
+    csd = csd %>% dplyr::filter(`Tissue Category` %in% category)
+
+  # Compute the distance matrix for these cells
+  dst = distance_matrix(csd)
+
+  # Compute counts for each from, to, and category in combos
+  row_count = purrr::map_df(combos, function(row) {
+    # Call count_within for each item in combos
+    # count_within handles multiple radii
+    from = row$pair[1]
+    from_sel = phenotype_rules[[from]]
+    to = row$pair[2]
+    to_sel = phenotype_rules[[to]]
+    count_within(csd=csd, from=from_sel, to=to_sel,
+                 category=row$category,
+                 radius=radius, dst=dst) %>%
+      # Add columns for from, to, category
+      tibble::add_column(
+        category = ifelse(is.na(row$category), 'all', row$category),
+        from=from,
+        to=to,
+        .before=1)
+  }) %>%
+    # Add columns for slide and source
+    tibble::add_column(source=name, .before=1)
+
+  if (!is.na(slide))
+    row_count = row_count %>% tibble::add_column(slide_id=slide, .before=1)
+  row_count
 }
 
 #' Count cells within a radius for a single field.
