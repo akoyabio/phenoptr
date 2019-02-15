@@ -344,7 +344,7 @@ count_within <- function(csd, from, to, radius, category=NA, dst=NULL) {
   dst = subset_distance_matrix(csd, dst, from, to)
   if (prod(dim(dst))>0) {
     purrr::map_df(radius, function(rad) {
-      within = apply(dst, 1, function(r) sum(r<=rad))
+      within = apply(dst, 1, function(r) sum(r>0 & r<=rad))
       tibble::data_frame(
         radius = rad,
         from_count = dim(dst)[1], # Number of from cells
