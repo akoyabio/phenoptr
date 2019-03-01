@@ -2,6 +2,7 @@
 
 - Add `count_within_many` in support of phenoptrReports.
 - `count_within` does not count self when 'from' and 'to' phenotypes are the same.
+- Add `field_column` (moved from phenoptrReports).
 
 # phenoptr 0.1.4
 **2019-02-08**
