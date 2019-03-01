@@ -4,7 +4,7 @@
 \alias{find_nearest_distance}
 \title{Nearest neighbor distances for each cell and phenotype.}
 \usage{
-find_nearest_distance(csd, phenotypes = NULL)
+find_nearest_distance(csd, phenotypes = NULL, dst = NULL)
 }
 \arguments{
 \item{csd}{A data frame with \code{Cell X Position},
@@ -14,6 +14,9 @@ such as the result of calling
 
 \item{phenotypes}{Optional list of phenotypes to include. If omitted,
 \code{unique_phenotypes(csd)} will be used.}
+
+\item{dst}{Optional distance matrix. If provided, this should be
+\code{distance_matrix(csd)}.}
 }
 \value{
 A \code{data_frame} containing a \code{Distance to <phenotype>} column

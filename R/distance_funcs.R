@@ -58,7 +58,8 @@ compute_all_nearest_distance <- function(cell_table_path=NULL, out_path=NULL) {
 #'        [read_cell_seg_data].
 #' @param phenotypes Optional list of phenotypes to include. If omitted,
 #' `unique_phenotypes(csd)` will be used.
-#'
+#' @param dst Optional distance matrix. If provided, this should be
+#' `distance_matrix(csd)`.
 #' @return A `data_frame` containing a `Distance to <phenotype>` column
 #' for each phenotype. Will contain `NA` values where there is no other cell
 #' of the phenotype.
@@ -85,12 +86,13 @@ compute_all_nearest_distance <- function(cell_table_path=NULL, out_path=NULL) {
 #'   dplyr::do(dplyr::bind_cols(., find_nearest_distance(.)))
 #' }
 
-find_nearest_distance <- function(csd, phenotypes=NULL) {
+find_nearest_distance <- function(csd, phenotypes=NULL, dst=NULL) {
   # Check for multiple samples, this is probably an error
   if ('Sample Name' %in% names(csd) && length(unique(csd$`Sample Name`))>1)
     stop('Data appears to contain multiple samples.')
 
-  dst = distance_matrix(csd)
+  if (is.null(dst))
+    dst = distance_matrix(csd)
 
   if (is.null(phenotypes))
     phenotypes = unique_phenotypes(csd)
