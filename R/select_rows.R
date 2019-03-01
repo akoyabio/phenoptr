@@ -237,6 +237,21 @@ make_phenotype_rules <- function (phenotypes, existing_rules=NULL) {
   c(existing_rules, new_rules)
 }
 
+#' Validate a phenotype parameter
+#' @param phenotypes Nominally, a list or vector of phenotype definitions,
+#' or NULL.
+#' @param csd A cell seg table
+#' @return A named list of phenotype definitions
+#' @export
+validate_phenotypes = function(phenotypes, csd) {
+  if (is.null(phenotypes))
+    phenotypes = unique_phenotypes(csd)
+  stopifnot(length(phenotypes) > 0)
+  if (!rlang::is_named(phenotypes))
+    phenotypes = rlang::set_names(phenotypes)
+  phenotypes
+}
+
 #' Find unique phenotypes in a cell seg table
 #'
 #' For cell seg tables containing a single `Phenotype` column, this

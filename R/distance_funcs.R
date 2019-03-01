@@ -91,14 +91,10 @@ find_nearest_distance <- function(csd, phenotypes=NULL, dst=NULL) {
   if ('Sample Name' %in% names(csd) && length(unique(csd$`Sample Name`))>1)
     stop('Data appears to contain multiple samples.')
 
+  phenotypes = validate_phenotypes(phenotypes, csd)
+
   if (is.null(dst))
     dst = distance_matrix(csd)
-
-  if (is.null(phenotypes))
-    phenotypes = unique_phenotypes(csd)
-  stopifnot(length(phenotypes) > 0)
-  if (!rlang::is_named(phenotypes))
-    phenotypes = rlang::set_names(phenotypes)
 
   result = lapply(phenotypes, FUN=function(phenotype) {
     # Which cells are in the target phenotype?

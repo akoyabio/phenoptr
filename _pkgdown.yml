@@ -63,12 +63,14 @@ reference:
       - density_at_distance
   - title: "Helpers"
     contents:
-      - parse_phenotypes
-      - select_rows
       - distance_matrix
+      - field_column
+      - parse_phenotypes
       - plot_diverging
+      - select_rows
       - subset_distance_matrix
       - unique_phenotypes
+      - validate_phenotypes
   - title: "Sample data"
     contents:
       - sample_cell_seg_data
