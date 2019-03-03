@@ -3,7 +3,9 @@
 - Add `count_within_many` in support of phenoptrReports.
 - `count_within` does not count self when 'from' and 'to' phenotypes are the same.
 - Add `field_column` (moved from phenoptrReports) and `validate_phenotypes`.
-
+- Fix `compute_all_nearest_distance` to recognize "Annotation ID" as a field 
+  name.
+  
 # phenoptr 0.1.4
 **2019-02-08**
 

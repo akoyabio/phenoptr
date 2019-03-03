@@ -37,7 +37,7 @@ compute_all_nearest_distance <- function(cell_table_path=NULL, out_path=NULL) {
   result = NULL
   phenos = unique_phenotypes(csd)
   result = csd %>%
-    dplyr::group_by(`Sample Name`) %>%
+    dplyr::group_by(!!rlang::sym(field_column(csd))) %>%
     dplyr::do(dplyr::bind_cols(., find_nearest_distance(., phenos)))
 
   if (is.null(out_path))
