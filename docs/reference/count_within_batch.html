@@ -34,7 +34,7 @@ and fields. — count_within_batch • phenoptr</title>
 <meta property="og:title" content="Count cells within a radius for multiple tissue categories, phenotypes
 and fields. — count_within_batch" />
 
-<meta property="og:description" content="This is a batch version of count_within. Given the path to a directory
+<meta property="og:description" content="This is a batch version of count_within(). Given the path to a directory
 containing cell seg data files, for each given tissue category,
 pair of
 'from' phenotype and 'to' phenotype, and radius, it counts the number of
@@ -70,7 +70,7 @@ having a 'to' cell within radius microns." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">phenoptr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5</span>
       </span>
     </div>
 
@@ -146,7 +146,7 @@ and fields.</h1>
 
     <div class="ref-description">
     
-    <p>This is a batch version of <a href='count_within.html'>count_within</a>. Given the path to a directory
+    <p>This is a batch version of <code><a href='count_within.html'>count_within()</a></code>. Given the path to a directory
 containing cell seg data files, for each given tissue category,
 pair of
 'from' phenotype and 'to' phenotype, and radius, it counts the number of
@@ -184,7 +184,7 @@ vector. The result will contain values for each pair.</p></td>
       <th>phenotype_rules</th>
       <td><p>(Optional) A named list.
 Item names are phenotype names and must match entries in <code>pairs</code>.
-Item values are selectors for <a href='select_rows.html'>select_rows</a>.</p></td>
+Item values are selectors for <code><a href='select_rows.html'>select_rows()</a></code>.</p></td>
     </tr>
     <tr>
       <th>verbose</th>
@@ -220,6 +220,7 @@ the use of <code>pairs</code> and <code>phenotype_rules</code>.</p>
 
     <div class='dont-index'><p>Other distance functions: <code><a href='compute_all_nearest_distance.html'>compute_all_nearest_distance</a></code>,
   <code><a href='count_touching_cells.html'>count_touching_cells</a></code>,
+  <code><a href='count_within_many.html'>count_within_many</a></code>,
   <code><a href='count_within.html'>count_within</a></code>,
   <code><a href='distance_matrix.html'>distance_matrix</a></code>,
   <code><a href='find_nearest_distance.html'>find_nearest_distance</a></code>,

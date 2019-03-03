@@ -60,7 +60,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">phenoptr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5</span>
       </span>
     </div>
 
@@ -219,6 +219,21 @@ and fields.</p></td>
       </tr><tr>
         
         <td>
+          <p><code><a href="count_within_many.html">count_within_many()</a></code> </p>
+        </td>
+        <td><p>Count cells within a radius for multiple tissue categories and phenotypes
+in a single field.</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="count_within_many_impl.html">count_within_many_impl()</a></code> </p>
+        </td>
+        <td><p>Helper function for count_within_batch and count_within_many.
+This does the actual work of calling count_within multiple times and
+accumulating the result.</p></td>
+      </tr><tr>
+        
+        <td>
           <p><code><a href="count_touching_cells.html">count_touching_cells()</a></code> </p>
         </td>
         <td><p>Find and count touching cells for pairs of phenotypes.</p></td>
@@ -259,27 +274,34 @@ and fields.</p></td>
       <tr>
         
         <td>
-          <p><code><a href="parse_phenotypes.html">parse_phenotypes()</a></code> </p>
-        </td>
-        <td><p>Parse a vector of phenotype names</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="select_rows.html">select_rows()</a></code> </p>
-        </td>
-        <td><p>Flexibly select rows of a data frame.</p></td>
-      </tr><tr>
-        
-        <td>
           <p><code><a href="distance_matrix.html">distance_matrix()</a></code> </p>
         </td>
         <td><p>Create a distance matrix from cell seg data.</p></td>
       </tr><tr>
         
         <td>
+          <p><code><a href="field_column.html">field_column()</a></code> </p>
+        </td>
+        <td><p>Get the name of the column that distinguishes fields in a merged cell
+seg data file.</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="parse_phenotypes.html">parse_phenotypes()</a></code> </p>
+        </td>
+        <td><p>Parse a vector of phenotype names</p></td>
+      </tr><tr>
+        
+        <td>
           <p><code><a href="plot_diverging.html">plot_diverging()</a></code> </p>
         </td>
         <td><p>Plot a distance map using a diverging color scale with white at 0</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="select_rows.html">select_rows()</a></code> </p>
+        </td>
+        <td><p>Flexibly select rows of a data frame.</p></td>
       </tr><tr>
         
         <td>
@@ -292,6 +314,12 @@ and fields.</p></td>
           <p><code><a href="unique_phenotypes.html">unique_phenotypes()</a></code> </p>
         </td>
         <td><p>Find unique phenotypes in a cell seg table</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="validate_phenotypes.html">validate_phenotypes()</a></code> </p>
+        </td>
+        <td><p>Validate a phenotype parameter</p></td>
       </tr>
     </tbody><tbody>
       <tr>

@@ -16,6 +16,12 @@
     <loc>http://akoyabio.github.io/phenoptr/reference/count_within_batch.html</loc>
   </url>
   <url>
+    <loc>http://akoyabio.github.io/phenoptr/reference/count_within_many.html</loc>
+  </url>
+  <url>
+    <loc>http://akoyabio.github.io/phenoptr/reference/count_within_many_impl.html</loc>
+  </url>
+  <url>
     <loc>http://akoyabio.github.io/phenoptr/reference/density_at_distance.html</loc>
   </url>
   <url>
@@ -23,6 +29,9 @@
   </url>
   <url>
     <loc>http://akoyabio.github.io/phenoptr/reference/distance_matrix.html</loc>
+  </url>
+  <url>
+    <loc>http://akoyabio.github.io/phenoptr/reference/field_column.html</loc>
   </url>
   <url>
     <loc>http://akoyabio.github.io/phenoptr/reference/find_nearest_distance.html</loc>
@@ -74,6 +83,9 @@
   </url>
   <url>
     <loc>http://akoyabio.github.io/phenoptr/reference/unique_phenotypes.html</loc>
+  </url>
+  <url>
+    <loc>http://akoyabio.github.io/phenoptr/reference/validate_phenotypes.html</loc>
   </url>
   <url>
     <loc>http://akoyabio.github.io/phenoptr/articles/computing_distances.html</loc>

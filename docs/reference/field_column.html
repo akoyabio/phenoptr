@@ -6,7 +6,8 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Read an inForm segmentation map file. — read_maps • phenoptr</title>
+<title>Get the name of the column that distinguishes fields in a merged cell
+seg data file. — field_column • phenoptr</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,13 +31,11 @@
 
 
 
-<meta property="og:title" content="Read an inForm segmentation map file. — read_maps" />
+<meta property="og:title" content="Get the name of the column that distinguishes fields in a merged cell
+seg data file. — field_column" />
 
-<meta property="og:description" content="Reads an inForm `binary_seg_maps.tif`` file and returns a named
-list of images. The names reflect the content of the individual images.
-Possible names are Nucleus, Cytoplasm, Membrane, Object,
-TissueClassMap, and ProcessRegionImage; not every image file will include all
-names." />
+<meta property="og:description" content="Get the name of the column that distinguishes fields in a merged cell
+seg data file." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -135,57 +134,35 @@ names." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Read an inForm segmentation map file.</h1>
+    <h1>Get the name of the column that distinguishes fields in a merged cell
+seg data file.</h1>
     
-    <div class="hidden name"><code>read_maps.Rd</code></div>
+    <div class="hidden name"><code>field_column.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Reads an inForm `binary_seg_maps.tif`` file and returns a named
-list of images. The names reflect the content of the individual images.
-Possible names are Nucleus, Cytoplasm, Membrane, Object,
-TissueClassMap, and ProcessRegionImage; not every image file will include all
-names.</p>
+    <p>Get the name of the column that distinguishes fields in a merged cell
+seg data file.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>read_maps</span>(<span class='no'>map_path</span>)</pre>
+    <pre class="usage"><span class='fu'>field_column</span>(<span class='no'>csd</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>map_path</th>
-      <td><p>Path to the map file or a cell seg data file in the same
-directory.</p></td>
+      <th>csd</th>
+      <td><p>Cell seg data</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A named list of images, one for each map in the source file.</p>
-    
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p>Images are oriented to match the coordinates in a cell seg data file,
-i.e. (0, 0) at the top left and the row corresponding to Y and
-column corresponding to X.</p>
-    
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <div class='dont-index'><p>Other file readers: <code><a href='get_field_info.html'>get_field_info</a></code>,
-  <code><a href='list_cell_seg_files.html'>list_cell_seg_files</a></code>,
-  <code><a href='read_cell_seg_data.html'>read_cell_seg_data</a></code>,
-  <code><a href='read_components.html'>read_components</a></code></p></div>
+    <p>A column name (as a string)</p>
     
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>path</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/system.file'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"sample"</span>,
-                   <span class='st'>"Set4_1-6plex_[16142,55840]_binary_seg_maps.tif"</span>,
-                   <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"phenoptr"</span>)
-<span class='no'>maps</span> <span class='kw'>&lt;-</span> <span class='fu'>read_maps</span>(<span class='no'>path</span>)
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/names'>names</a></span>(<span class='no'>maps</span>)</div><div class='output co'>#&gt; [1] "Nucleus"   "Cytoplasm" "Membrane"  "Tissue"   </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -193,13 +170,7 @@ column corresponding to X.</p>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
-
-      <li><a href="#details">Details</a></li>
-
-      <li><a href="#see-also">See also</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
+          </ul>
 
   </div>
 </div>

@@ -65,7 +65,7 @@ the cell to the nearest neighbor cells in each of the provided phenotypes." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">phenoptr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5</span>
       </span>
     </div>
 
@@ -146,7 +146,7 @@ the cell to the nearest neighbor cells in each of the provided phenotypes.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>find_nearest_distance</span>(<span class='no'>csd</span>, <span class='kw'>phenotypes</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>find_nearest_distance</span>(<span class='no'>csd</span>, <span class='kw'>phenotypes</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>dst</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -163,6 +163,11 @@ such as the result of calling
       <td><p>Optional list of phenotypes to include. If omitted,
 <code><a href='unique_phenotypes.html'>unique_phenotypes(csd)</a></code> will be used.</p></td>
     </tr>
+    <tr>
+      <th>dst</th>
+      <td><p>Optional distance matrix. If provided, this should be
+<code><a href='distance_matrix.html'>distance_matrix(csd)</a></code>.</p></td>
+    </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
@@ -178,6 +183,7 @@ of the phenotype.</p>
 <p>Other distance functions: <code><a href='compute_all_nearest_distance.html'>compute_all_nearest_distance</a></code>,
   <code><a href='count_touching_cells.html'>count_touching_cells</a></code>,
   <code><a href='count_within_batch.html'>count_within_batch</a></code>,
+  <code><a href='count_within_many.html'>count_within_many</a></code>,
   <code><a href='count_within.html'>count_within</a></code>,
   <code><a href='distance_matrix.html'>distance_matrix</a></code>,
   <code><a href='spatial_distribution_report.html'>spatial_distribution_report</a></code>,
