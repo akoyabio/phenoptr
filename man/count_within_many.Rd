@@ -9,7 +9,7 @@ count_within_many(csd, pairs, radius, category = NA,
   phenotype_rules = NULL, verbose = TRUE)
 }
 \arguments{
-\item{csd}{A cell seg data taable.}
+\item{csd}{A cell seg data table.}
 
 \item{pairs}{A list of pairs of phenotypes. Each entry is a two-element
 vector. The result will contain values for each pair.}

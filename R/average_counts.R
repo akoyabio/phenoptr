@@ -108,7 +108,7 @@ count_within_batch <- function(base_path, pairs, radius, category=NA,
 #'  for more on
 #' the use of `pairs` and `phenotype_rules`.
 #'
-#' @param csd A cell seg data taable.
+#' @param csd A cell seg data table.
 #' @param pairs A list of pairs of phenotypes. Each entry is a two-element
 #'   vector. The result will contain values for each pair.
 #' @param radius The radius or radii to search within.
