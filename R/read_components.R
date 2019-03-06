@@ -87,6 +87,8 @@ get_field_info = function(path) {
    } else {
     tif = tiff::readTIFF(path, all=FALSE, info=TRUE)
     info = attributes(tif)
+    info$length = info$dim[1]
+    info$width = info$dim[2]
 
     # We have to get the location from the file name; tiff::readTIFF()
     # doesn't read the location tags :-(

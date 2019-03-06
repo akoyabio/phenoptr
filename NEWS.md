@@ -1,3 +1,7 @@
+# phenoptr 0.1.5.9000
+
+- Fix `get_field_info` to work with the standard (CRAN) `tiff` package.
+
 # phenoptr 0.1.5
 **2019-03-03**
 
