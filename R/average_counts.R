@@ -365,3 +365,49 @@ count_within <- function(csd, from, to, radius, category=NA, dst=NULL) {
     )
   }
 }
+
+# Compute count within for individual cells.
+# Very fast version using `rtree::countWithinDistance()`.
+count_within_detail = function(csd, phenotypes=NULL, radii) {
+  # Check for multiple samples, this is probably an error
+  if ('Sample Name' %in% names(csd) && length(unique(csd$`Sample Name`))>1)
+    stop('Data appears to contain multiple samples.')
+
+  phenotypes = validate_phenotypes(phenotypes, csd)
+  field_locs = csd %>%
+    dplyr::select(X=`Cell X Position`, Y=`Cell Y Position`) %>%
+    as.matrix()
+
+  result = purrr::imap(phenotypes, function(phenotype, name) {
+    # Which cells are in the target phenotype?
+    phenotype_cells = select_rows(csd, phenotype)
+
+    if (sum(phenotype_cells)>0) {
+      # Make an rtree of the phenotype cells
+      to_cells_locs = field_locs[phenotype_cells,, drop=FALSE]
+      to_cells_tree = rtree::RTree(to_cells_locs)
+
+      # Now compute count within for each radius
+      purrr::map(radii, function(radius) {
+        within = rtree::countWithinDistance(to_cells_tree,
+                                            field_locs, radius)
+
+        # Subtract one for cells of type `pheno`; we don't want to count self
+        within = within - phenotype_cells
+
+        col_name = paste0(name, ' within ', radius)
+        list(within) %>% rlang::set_names(col_name)
+      }) %>% purrr::flatten()
+    }
+    else {
+      # No cells of the selected phenotype
+      count_col = list(rep(0L, nrow(csd)))
+      purrr::map(radii, function(radius) {
+        col_name = paste0(name, ' within ', radius)
+        count_col %>% rlang::set_names(col_name)
+      }) %>% purrr::flatten()
+    }
+  })
+
+  tibble::as_tibble(purrr::flatten(result))
+}
