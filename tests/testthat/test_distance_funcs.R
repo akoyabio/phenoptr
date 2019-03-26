@@ -3,7 +3,7 @@
 context('distance_functions')
 library(testthat)
 
-path = file.path('test_data',
+path = test_path('test_data',
               'FIHC4__0929309_HP_IM3_2_cell_seg_data.txt')
 
 # Compute the Euclidean distance between two cells given their row numbers
@@ -62,14 +62,27 @@ test_that("find_nearest_distance works", {
     expect_equal(as.numeric(nearest[ix2, pheno1]), dist, info=info)
   }
 
+  # Compare with rtree version
+  nearest_rtree = find_nearest_distance_rtree(csd)
+
+  # expect_equal (and all.equal) is weird with data frames.
+  # Check each column separately.
+  expect_equal(nearest[[1]], nearest_rtree[[1]])
+  expect_equal(nearest[[2]], nearest_rtree[[2]])
+  expect_equal(nearest[[3]], nearest_rtree[[3]])
+
   phenos = c(phenos, 'other') # A mising phenotype
   nearest = find_nearest_distance(csd, phenos)
   expect_equal(ncol(nearest), length(phenos))
   expect_equal(nearest$`Distance to other`, rep(NA_real_, nrow(csd)))
 
+  nearest_rtree = find_nearest_distance_rtree(csd, phenos)
+  expect_equal(nearest$`Distance to other`, nearest_rtree$`Distance to other`)
+
   # Force an error
   csd$`Sample Name`[1] = 'foo.im3'
   expect_error(find_nearest_distance(csd), 'multiple')
+  expect_error(find_nearest_distance_rtree(csd), 'multiple')
 })
 
 test_that('compute_all_nearest_distance works', {

@@ -31,10 +31,12 @@ Copyright: Akoya Biosciences
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.1.1
-Suggests: testthat,
+Suggests: 
+    testthat,
     covr,
     doParallel,
-    phenoptrExamples
+    phenoptrExamples,
+    rtree
 VignetteBuilder: knitr
 URL: https://akoyabio.github.io/phenoptr/
 BugReports: https://github.com/akoyabio/phenoptr/issues
@@ -43,3 +45,7 @@ Authors@R: c(
     person("Kent S", "Johnson", role = c("aut", "cre"),
            email = "kjohnson@akoyabio.com"),
     person("Akoya Biosciences", role="cph"))
+Remotes: 
+    akoyabio/phenoptrExamples,
+    akoyabio/rtree,
+    akoyabio/tiff

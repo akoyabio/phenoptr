@@ -85,7 +85,6 @@ compute_all_nearest_distance <- function(cell_table_path=NULL, out_path=NULL) {
 #'   dplyr::group_by(`Sample Name`) %>%
 #'   dplyr::do(dplyr::bind_cols(., find_nearest_distance(.)))
 #' }
-
 find_nearest_distance <- function(csd, phenotypes=NULL, dst=NULL) {
   # Check for multiple samples, this is probably an error
   if ('Sample Name' %in% names(csd) && length(unique(csd$`Sample Name`))>1)
@@ -114,10 +113,77 @@ find_nearest_distance <- function(csd, phenotypes=NULL, dst=NULL) {
   tibble::as_tibble(result)
 }
 
+# rtree version of find_nearest_distance
+find_nearest_distance_rtree <- function(csd, phenotypes=NULL) {
+  # Check for multiple samples, this is probably an error
+  if ('Sample Name' %in% names(csd) && length(unique(csd$`Sample Name`))>1)
+    stop('Data appears to contain multiple samples.')
+
+  phenotypes = validate_phenotypes(phenotypes, csd)
+  field_locs = csd %>%
+    dplyr::select(X=`Cell X Position`, Y=`Cell Y Position`)
+
+  result = lapply(phenotypes, FUN=function(phenotype) {
+    # Which cells are in the target phenotype?
+    phenotype_cells = select_rows(csd, phenotype)
+
+    if (sum(phenotype_cells)>0) {
+      # Make an rtree of the phenotype cells
+      to_cells_locs = csd[phenotype_cells,] %>%
+        dplyr::select(X=`Cell X Position`, Y=`Cell Y Position`)
+      to_cells_tree = rtree::RTree(as.matrix(to_cells_locs))
+
+      # Find nearest neighbor. Get two nearest neighbors so we can
+      # discard self when self is a member of the "to" phenotype.
+      # Note:
+      # It is possible for two distinct cells to have identical positions
+      # (when one wraps around the other). This gives two cells with
+      # nearest neighbor at distance zero. With n_nn==2 this results in a
+      # reported nearest distance of NA. With n_nn==3 the next nearest distance
+      # will be reported.
+      # This situation is rare, and it's not clear what the "correct"
+      # answer is, so we choose n_nn==2 because it is faster.
+      n_nn = 2L
+      to_cells_nn = rtree::knn(to_cells_tree, as.matrix(field_locs), k=n_nn)
+
+      # knn gives us the indices of nearest cells, we want distance
+      # Look up to_cells_nn in to_cells_locs, combine with field_locs,
+      # and compute distance. We have to do this n_nn times and take
+      # the minimum > 0
+      dist_col = purrr::map_dfc(1:n_nn, # For each nearest neighbor
+        ~{
+          # Convert indices of nearest neighbors to locations
+          # The neighbors are to_cells.
+          nn_indices = purrr::map_int(to_cells_nn, .x, .default=NA)
+          nn_locs = to_cells_locs[nn_indices,]
+
+          # Combine with original locations and compute distance
+          field_locs %>%
+            dplyr::bind_cols(nn_locs) %>%
+            dplyr::mutate(dist = sqrt( (X-X1)^2 + (Y-Y1)^2 )) %>%
+            dplyr::pull()
+        }) %>%
+        purrr::transpose() %>% # Get each row as a list
+        purrr::map_dbl(~row_min(unlist(.x))) # Min > 0 or NA
+    }
+    else {
+      # No cells of the selected phenotype
+      dist_col = rep(NA_real_, nrow(csd))
+    }
+    dist_col
+  })
+
+  # The names for the new columns
+  names(result) = paste('Distance to', names(phenotypes))
+
+  tibble::as_tibble(result)
+
+}
+
 # Find the minimum value > 0 in row
 # If none, return NA
 row_min = function(row) {
-  row = row[row>0]
+  row = row[!is.na(row) & row>0]
   if (length(row) > 0) min(row) else NA
 }
 
