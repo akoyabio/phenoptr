@@ -129,8 +129,7 @@ find_nearest_distance_rtree <- function(csd, phenotypes=NULL) {
 
     if (sum(phenotype_cells)>0) {
       # Make an rtree of the phenotype cells
-      to_cells_locs = csd[phenotype_cells,] %>%
-        dplyr::select(X=`Cell X Position`, Y=`Cell Y Position`)
+      to_cells_locs = field_locs[phenotype_cells,]
       to_cells_tree = rtree::RTree(as.matrix(to_cells_locs))
 
       # Find nearest neighbor. Get two nearest neighbors so we can
@@ -146,15 +145,22 @@ find_nearest_distance_rtree <- function(csd, phenotypes=NULL) {
       n_nn = 2L
       to_cells_nn = rtree::knn(to_cells_tree, as.matrix(field_locs), k=n_nn)
 
+      # Convert to a matrix for faster selection of a column.
+      # This will recycle values in any rows that don't have n_nn values,
+      # that won't affect the result.
+      # Note: If there is only one "to" cell, to_cells_nn will have
+      # only one column. Thus the map_dfc below goes to dim(to_cells_nn)[2]
+      to_cells_nn = do.call(rbind, to_cells_nn)
+
       # knn gives us the indices of nearest cells, we want distance
       # Look up to_cells_nn in to_cells_locs, combine with field_locs,
       # and compute distance. We have to do this n_nn times and take
       # the minimum > 0
-      dist_col = purrr::map_dfc(1:n_nn, # For each nearest neighbor
+      dist_col = purrr::map_dfc(1:(dim(to_cells_nn)[2]), # For each nearest neighbor
         ~{
           # Convert indices of nearest neighbors to locations
           # The neighbors are to_cells.
-          nn_indices = purrr::map_int(to_cells_nn, .x, .default=NA)
+          nn_indices = to_cells_nn[, .x]
           nn_locs = to_cells_locs[nn_indices,]
 
           # Combine with original locations and compute distance
