@@ -16,5 +16,10 @@
 #' To use a
 #' different value, either pass a `pixels_per_micron` parameter to functions
 #' which take one, or set `options(phenoptr.pixels.per.micron=<new value>)`.
+#'
+#' Several distance functions will use a fast implementation based on
+#' the `rtree` package if it is available. To disable this and use the
+#' simpler distance matrix-based implementations, set
+#' `options(use.rtree.if.available=FALSE)`.
 #' @md
 "_PACKAGE"

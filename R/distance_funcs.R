@@ -52,6 +52,15 @@ compute_all_nearest_distance <- function(cell_table_path=NULL, out_path=NULL) {
 #' find the distances from
 #' the cell to the nearest neighbor cells in each of the provided phenotypes.
 #'
+#' If the `rtree` package is available, this will use a fast, memory-efficient
+#' algorithm capable of processing fields with many thousand cells. Otherwise,
+#' a simple distance matrix algorithm is used. The simple algorithm
+#' requires at least 8 * (number of cells)^2 bytes of memory which becomes
+#' prohibitive as the number of cells becomes large.
+#'
+#' Install the `rtree` package from GitHub using the command
+#' `devtools::install_github('akoyabio/rtree')`.
+#'
 #' @param csd A data frame with `Cell X Position`,
 #'        `Cell Y Position` and `Phenotype` columns,
 #'        such as the result of calling
@@ -59,7 +68,7 @@ compute_all_nearest_distance <- function(cell_table_path=NULL, out_path=NULL) {
 #' @param phenotypes Optional list of phenotypes to include. If omitted,
 #' `unique_phenotypes(csd)` will be used.
 #' @param dst Optional distance matrix. If provided, this should be
-#' `distance_matrix(csd)`.
+#' `distance_matrix(csd)`. Not used if `rtree` is available.
 #' @return A `data_frame` containing a `Distance to <phenotype>` column
 #' for each phenotype. Will contain `NA` values where there is no other cell
 #' of the phenotype.
@@ -86,6 +95,16 @@ compute_all_nearest_distance <- function(cell_table_path=NULL, out_path=NULL) {
 #'   dplyr::do(dplyr::bind_cols(., find_nearest_distance(.)))
 #' }
 find_nearest_distance <- function(csd, phenotypes=NULL, dst=NULL) {
+  if (getOption('use.rtree.if.available') && requireNamespace('rtree'))
+    find_nearest_distance_rtree(csd, phenotypes)
+  else
+    find_nearest_distance_dist(csd, phenotypes, dst)
+}
+
+#' Distance-matrix implementation of `find_nearest_distance`.
+#' @seealso find_nearest_distance
+#' @md
+find_nearest_distance_dist = function(csd, phenotypes=NULL, dst=NULL) {
   # Check for multiple samples, this is probably an error
   if ('Sample Name' %in% names(csd) && length(unique(csd$`Sample Name`))>1)
     stop('Data appears to contain multiple samples.')
@@ -113,7 +132,9 @@ find_nearest_distance <- function(csd, phenotypes=NULL, dst=NULL) {
   tibble::as_tibble(result)
 }
 
-# rtree version of find_nearest_distance
+#' `rtree`-based implementation of `find_nearest_distance`.
+#' @seealso find_nearest_distance
+#' @md
 find_nearest_distance_rtree <- function(csd, phenotypes=NULL) {
   # Check for multiple samples, this is probably an error
   if ('Sample Name' %in% names(csd) && length(unique(csd$`Sample Name`))>1)

@@ -24,6 +24,11 @@ value of 2 pixels/micron, i.e. pixels are 0.5 micron square
 To use a
 different value, either pass a \code{pixels_per_micron} parameter to functions
 which take one, or set \code{options(phenoptr.pixels.per.micron=<new value>)}.
+
+Several distance functions will use a fast implementation based on
+the \code{rtree} package if it is available. To disable this and use the
+simpler distance matrix-based implementations, set
+\code{options(use.rtree.if.available=FALSE)}.
 }
 
 \seealso{

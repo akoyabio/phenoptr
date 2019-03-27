@@ -8,7 +8,8 @@
   # if they are not already set
   op <- options()
   my_opts = list(
-    phenoptr.pixels.per.micron=2)
+    phenoptr.pixels.per.micron=2,
+    use.rtree.if.available=TRUE)
   toset = !(names(my_opts) %in% names(op))
   if(any(toset)) options(my_opts[toset])
 }

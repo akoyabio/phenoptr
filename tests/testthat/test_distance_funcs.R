@@ -38,7 +38,7 @@ test_that("distance_matrix works", {
 test_that("find_nearest_distance works", {
   csd = read_cell_seg_data(path)
   phenos = sort(unique(csd$Phenotype))
-  nearest = find_nearest_distance(csd)
+  nearest = find_nearest_distance_dist(csd)
   expect_equal(ncol(nearest), length(phenos))
   expect_equal(nrow(nearest), nrow(csd))
   expect_equal(names(nearest), paste('Distance to', phenos))
@@ -72,7 +72,7 @@ test_that("find_nearest_distance works", {
   expect_equal(nearest[[3]], nearest_rtree[[3]])
 
   phenos = c(phenos, 'other') # A mising phenotype
-  nearest = find_nearest_distance(csd, phenos)
+  nearest = find_nearest_distance_dist(csd, phenos)
   expect_equal(ncol(nearest), length(phenos))
   expect_equal(nearest$`Distance to other`, rep(NA_real_, nrow(csd)))
 
@@ -81,12 +81,12 @@ test_that("find_nearest_distance works", {
 
   # Force an error
   csd$`Sample Name`[1] = 'foo.im3'
-  expect_error(find_nearest_distance(csd), 'multiple')
+  expect_error(find_nearest_distance_dist(csd), 'multiple')
   expect_error(find_nearest_distance_rtree(csd), 'multiple')
 })
 
 test_that('compute_all_nearest_distance works', {
-  merge_path = file.path('test_data',
+  merge_path = test_path('test_data',
               'merge/FIHC4_merge_cell_seg_data.txt')
   out_path = tempfile()
   compute_all_nearest_distance(merge_path, out_path)
@@ -96,19 +96,21 @@ test_that('compute_all_nearest_distance works', {
 
   # The result for the sample data should be the same
   csd = read_cell_seg_data(path)
-  nearby = find_nearest_distance(csd)
+  nearby = find_nearest_distance_dist(csd)
   all_d_2 = all_d %>%
     dplyr::filter(`Sample Name`=="FIHC4__0929309_HP_IM3_2.im3") %>%
     dplyr::arrange(`Cell ID`) %>%
     dplyr::select(`Distance to B`,
                   `Distance to Cytotoxic T`,
                   `Distance to Helper T`)
-  expect_equal(all_d_2, nearby)
+  expect_equal(all_d_2[[1]], nearby[[1]])
+  expect_equal(all_d_2[[2]], nearby[[2]])
+  expect_equal(all_d_2[[3]], nearby[[3]])
 
   file.remove(out_path)
 
   # Repeat with a consolidated file
-  merge_path = file.path('test_data',
+  merge_path = test_path('test_data',
                          'consolidated/FIHC4_consolidated_merge_cell_seg_data.txt')
   out_path = tempfile()
   compute_all_nearest_distance(merge_path, out_path)
@@ -123,7 +125,9 @@ test_that('compute_all_nearest_distance works', {
     dplyr::select(`Distance to B`=`Distance to B+`,
                   `Distance to Cytotoxic T`=`Distance to Cytotoxic_T+`,
                   `Distance to Helper T`=`Distance to Helper_T+`)
-  expect_equal(all_d_2, nearby)
+  expect_equal(all_d_2[[1]], nearby[[1]])
+  expect_equal(all_d_2[[2]], nearby[[2]])
+  expect_equal(all_d_2[[3]], nearby[[3]])
 
   file.remove(out_path)
 })

@@ -16,7 +16,7 @@ such as the result of calling
 \code{unique_phenotypes(csd)} will be used.}
 
 \item{dst}{Optional distance matrix. If provided, this should be
-\code{distance_matrix(csd)}.}
+\code{distance_matrix(csd)}. Not used if \code{rtree} is available.}
 }
 \value{
 A \code{data_frame} containing a \code{Distance to <phenotype>} column
@@ -27,6 +27,16 @@ of the phenotype.
 For each cell in a single sample,
 find the distances from
 the cell to the nearest neighbor cells in each of the provided phenotypes.
+}
+\details{
+If the \code{rtree} package is available, this will use a fast, memory-efficient
+algorithm capable of processing fields with many thousand cells. Otherwise,
+a simple distance matrix algorithm is used. The simple algorithm
+requires at least 8 * (number of cells)^2 bytes of memory which becomes
+prohibitive as the number of cells becomes large.
+
+Install the \code{rtree} package from GitHub using the command
+\code{devtools::install_github('akoyabio/rtree')}.
 }
 \examples{
 # Compute distance columns
