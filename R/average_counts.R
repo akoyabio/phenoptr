@@ -193,10 +193,27 @@ clean_pairs = function(pairs) {
 #' @param radius Vector of radii.
 #' @param phenotype_rules Named list of phenotype rules.
 count_within_many_impl <- function(csd, name, combos, radius, phenotype_rules) {
-  if ('Slide ID' %in% names(csd))
-    slide = as.character(csd[1, 'Slide ID'])
-  else slide = NA
+  if (getOption('use.rtree.if.available') && requireNamespace('rtree'))
+    counts = count_within_many_impl_rtree(csd, name, combos, radius, phenotype_rules)
+  else
+    counts = count_within_many_impl_dist(csd, name, combos, radius, phenotype_rules)
 
+  # Add columns for slide and source
+  counts = counts %>%
+    tibble::add_column(source=name, .before=1)
+
+  if ('Slide ID' %in% names(csd)) {
+    slide = as.character(csd[1, 'Slide ID'])
+    counts = counts %>% tibble::add_column(slide_id=slide, .before=1)
+  }
+
+  counts
+}
+
+#' Distance matrix implementation of count_within_many_impl
+#' @seealso count_within_many_impl
+#' @md
+count_within_many_impl_dist <- function(csd, name, combos, radius, phenotype_rules) {
   category = combos %>% purrr::map_chr('category') %>% unique()
 
   # Subset to what we care about, for faster distance calculation
@@ -223,13 +240,7 @@ count_within_many_impl <- function(csd, name, combos, radius, phenotype_rules) {
         from=from,
         to=to,
         .before=1)
-  }) %>%
-    # Add columns for slide and source
-    tibble::add_column(source=name, .before=1)
-
-  if (!is.na(slide))
-    row_count = row_count %>% tibble::add_column(slide_id=slide, .before=1)
-  row_count
+  })
 }
 
 #' Count cells within a radius for a single field.
@@ -364,50 +375,4 @@ count_within <- function(csd, from, to, radius, category=NA, dst=NULL) {
       within_mean = 0
     )
   }
-}
-
-# Compute count within for individual cells.
-# Very fast version using `rtree::countWithinDistance()`.
-count_within_detail = function(csd, phenotypes=NULL, radii) {
-  # Check for multiple samples, this is probably an error
-  if ('Sample Name' %in% names(csd) && length(unique(csd$`Sample Name`))>1)
-    stop('Data appears to contain multiple samples.')
-
-  phenotypes = validate_phenotypes(phenotypes, csd)
-  field_locs = csd %>%
-    dplyr::select(X=`Cell X Position`, Y=`Cell Y Position`) %>%
-    as.matrix()
-
-  result = purrr::imap(phenotypes, function(phenotype, name) {
-    # Which cells are in the target phenotype?
-    phenotype_cells = select_rows(csd, phenotype)
-
-    if (sum(phenotype_cells)>0) {
-      # Make an rtree of the phenotype cells
-      to_cells_locs = field_locs[phenotype_cells,, drop=FALSE]
-      to_cells_tree = rtree::RTree(to_cells_locs)
-
-      # Now compute count within for each radius
-      purrr::map(radii, function(radius) {
-        within = rtree::countWithinDistance(to_cells_tree,
-                                            field_locs, radius)
-
-        # Subtract one for cells of type `pheno`; we don't want to count self
-        within = within - phenotype_cells
-
-        col_name = paste0(name, ' within ', radius)
-        list(within) %>% rlang::set_names(col_name)
-      }) %>% purrr::flatten()
-    }
-    else {
-      # No cells of the selected phenotype
-      count_col = list(rep(0L, nrow(csd)))
-      purrr::map(radii, function(radius) {
-        col_name = paste0(name, ' within ', radius)
-        count_col %>% rlang::set_names(col_name)
-      }) %>% purrr::flatten()
-    }
-  })
-
-  tibble::as_tibble(purrr::flatten(result))
 }

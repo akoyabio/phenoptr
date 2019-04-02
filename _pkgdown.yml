@@ -54,7 +54,9 @@ reference:
     contents:
       - find_nearest_distance
       - compute_all_nearest_distance
-      - starts_with("count_within")
+      - count_within_batch
+      - count_within_detail
+      - count_within_many
       - count_touching_cells
       - spatial_distribution_report
   - title: "Estimate cell density"

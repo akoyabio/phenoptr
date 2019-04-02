@@ -89,6 +89,12 @@ test_that("count_within_many works", {
   check_within(within, rep(c(15, 30), 4),
                rep(c(2257, 2257, 228, 228), 2),
                rep(c(228, 228, 2257, 2257), 2))
+
+  # Compare with non-rtree version
+  old <- options(use.rtree.if.available=FALSE)
+  on.exit(options(old))
+  within_dist = count_within_many(csd, pairs, c(15, 30), category=c(NA, NA))
+  expect_equal(within, within_dist)
 })
 
 test_that("count_within errors with invalid radii", {
@@ -124,11 +130,20 @@ test_that('count_within_batch works', {
   categories = c('Tumor', 'Stroma')
   counts = count_within_batch(base_path, pairs, radius, categories, rules) %>%
     dplyr::mutate(within_mean=round(within_mean, 4))
-
   expect_equal(dim(counts), c(12, 10))
 
+  # Compare with non-rtree version
+  old <- options(use.rtree.if.available=FALSE)
+  on.exit(options(old))
+
+  counts_by_dist =
+    count_within_batch(base_path, pairs, radius, categories, rules) %>%
+           dplyr::mutate(within_mean=round(within_mean, 4))
+  expect_equal(dim(counts_by_dist), c(12, 10))
+  expect_equal(counts, counts_by_dist)
+
   # Regression test; these values haven't been hand-checked
-  expected = readr::read_csv(file.path('test_results', 'count_within.csv'),
+  expected = readr::read_csv(test_path('test_results', 'count_within.csv'),
                              col_types='cccccniiin') %>%
     dplyr::mutate(within_mean=round(within_mean, 4))
   expect_equal(counts, expected)

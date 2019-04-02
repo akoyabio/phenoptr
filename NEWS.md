@@ -1,5 +1,8 @@
 # phenoptr 0.1.5.9000
 
+- Add fast implementation of `count_within_many` and `count_within_batch` 
+  using `akoyabio/rtree` package.
+- Add fast `count_within_detail` to give per-cell counts.
 - Fix `get_field_info` to work with the standard (CRAN) `tiff` package.
 
 # phenoptr 0.1.5
