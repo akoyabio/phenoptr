@@ -57,9 +57,9 @@ count_within_many_impl_rtree = function(csd, name, combos, radii,
       tibble::data_frame(
         category=category,
         from=from, to=to, radius = radii,
-        from_count = 0,
+        from_count = 0L,
         to_count = to_count,
-        from_with = 0,
+        from_with = 0L,
         within_mean = NA
       )
 

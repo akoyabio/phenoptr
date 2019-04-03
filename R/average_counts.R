@@ -371,7 +371,7 @@ count_within <- function(csd, from, to, radius, category=NA, dst=NULL) {
       radius = radius,
       from_count = dim(dst)[1],
       to_count = dim(dst)[2],
-      from_with = 0,
+      from_with = 0L,
       within_mean = NA
     )
   }
