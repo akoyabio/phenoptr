@@ -249,7 +249,7 @@ validate_phenotypes = function(phenotypes, csd) {
   stopifnot(length(phenotypes) > 0)
   if (!rlang::is_named(phenotypes))
     phenotypes = rlang::set_names(phenotypes)
-  phenotypes
+  as.list(phenotypes)
 }
 
 #' Find unique phenotypes in a cell seg table
