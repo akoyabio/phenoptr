@@ -1,4 +1,4 @@
-# Pagkage load function
+# Package load function
 # Don't report code coverage of this file
 # nocov start
 

@@ -326,7 +326,7 @@ count_within_many_impl_dist <- function(csd, name, combos, radius, phenotype_rul
 #'
 #' # This will aggregate the fields by Slide ID:
 #' distances %>% group_by(`Slide ID`, radius) %>%
-#'   summarize(within=sum(from_count*within_mean),
+#'   summarize(within=sum(from_count*within_mean, na.rm=TRUE),
 #'             from_count=sum(from_count),
 #'             to_count=sum(to_count),
 #'             from_with=sum(from_with),
@@ -372,7 +372,7 @@ count_within <- function(csd, from, to, radius, category=NA, dst=NULL) {
       from_count = dim(dst)[1],
       to_count = dim(dst)[2],
       from_with = 0,
-      within_mean = 0
+      within_mean = NA
     )
   }
 }

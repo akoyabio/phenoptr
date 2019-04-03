@@ -39,7 +39,7 @@ test_that("count_within smoke test", {
 })
 
 test_that('count_within works', {
-  path = file.path('test_data',
+  path = test_path('test_data',
               'FIHC4__0929309_HP_IM3_2_cell_seg_data.txt')
   d = read_cell_seg_data(path)
   counts = count_within(d, 'Helper T', 'Cytotoxic T', 40)
@@ -47,7 +47,7 @@ test_that('count_within works', {
   expect_equal(as.numeric(counts), expected)
 
   # Test with consolidated data
-  path = file.path('test_data', 'consolidated',
+  path = test_path('test_data', 'consolidated',
                    'FIHC4_consolidated_merge_cell_seg_data.txt')
   d = read_cell_seg_data(path) %>%
     filter(`Sample Name`=="FIHC4__0929309_HP_IM3_2.im3")
@@ -59,17 +59,17 @@ test_that("count_within works with no data", {
   within = count_within(csd, 'other', 'CD8+', 15, dst=dst)
   check_within(within, 15, 0, 228)
   expect_equal(within$from_with, 0)
-  expect_equal(within$within_mean, 0)
+  expect_equal(within$within_mean, NA)
 
   within = count_within(csd, 'CK+', 'other', 15, dst=dst)
   check_within(within, 15, 2257, 0)
   expect_equal(within$from_with, 0)
-  expect_equal(within$within_mean, 0)
+  expect_equal(within$within_mean, NA)
 
   within = count_within(csd, 'other', 'other', 15, dst=dst)
   check_within(within, 15, 0, 0)
   expect_equal(within$from_with, 0)
-  expect_equal(within$within_mean, 0)
+  expect_equal(within$within_mean, NA)
 })
 
 test_that("count_within works with multiple radii", {
@@ -79,7 +79,7 @@ test_that("count_within works with multiple radii", {
   within = count_within(csd, 'other', 'other', c(15, 30), dst=dst)
   check_within(within, c(15, 30), c(0, 0), c(0, 0))
   expect_equal(within$from_with, c(0, 0))
-  expect_equal(within$within_mean, c(0, 0))
+  expect_equal(within$within_mean, c(NA, NA))
 })
 
 test_that("count_within_many works", {

@@ -94,7 +94,7 @@ distances = merged \%>\% group_by(`Slide ID`, `Sample Name`) \%>\%
 
 # This will aggregate the fields by Slide ID:
 distances \%>\% group_by(`Slide ID`, radius) \%>\%
-  summarize(within=sum(from_count*within_mean),
+  summarize(within=sum(from_count*within_mean, na.rm=TRUE),
             from_count=sum(from_count),
             to_count=sum(to_count),
             from_with=sum(from_with),

@@ -1,10 +1,15 @@
 # phenoptr 0.1.5.9000
 
+New features:
 - Add fast implementation of `count_within_many` and `count_within_batch` 
   using `akoyabio/rtree` package.
 - Add fast `count_within_detail` to give per-cell counts.
-- Fix `get_field_info` to work with the standard (CRAN) `tiff` package.
 
+Bug fixes:
+- Fix `get_field_info` to work with the standard (CRAN) `tiff` package.
+- `count_within` and related functions return `NA` for `within_mean`
+  when there are no `from` cells (rather than a mean of 0).
+  
 # phenoptr 0.1.5
 **2019-03-03**
 

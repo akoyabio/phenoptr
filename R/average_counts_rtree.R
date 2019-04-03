@@ -42,16 +42,28 @@ count_within_many_impl_rtree = function(csd, name, combos, radii,
       dplyr::filter(phenoptr::select_rows(., phenotype_rules[[from]]))
 
     # Now we can summarize per radius
-    purrr::map_dfr(radii, function(radius) {
-      count_col = count_col_name(to, radius)
-      counts = rows[[count_col]] # Single column of interest
+    if (nrow(rows) > 0) {
+      purrr::map_dfr(radii, function(radius) {
+        count_col = count_col_name(to, radius)
+        counts = rows[[count_col]] # Single column of interest
 
-      tibble::tibble(category=category,
-                     from=from, to=to, radius=radius,
-                     from_count=nrow(rows), to_count=to_count,
-                     from_with = sum(counts>0, na.rm=TRUE),
-                     within_mean = mean(counts, na.rm=TRUE))
+        tibble::tibble(category=category,
+                       from=from, to=to, radius=radius,
+                       from_count=nrow(rows), to_count=to_count,
+                       from_with = sum(counts>0, na.rm=TRUE),
+                       within_mean = mean(counts, na.rm=TRUE))
     })
+    } else {
+      tibble::data_frame(
+        category=category,
+        from=from, to=to, radius = radii,
+        from_count = 0,
+        to_count = to_count,
+        from_with = 0,
+        within_mean = NA
+      )
+
+    }
   }
 
   # Now we can do the work, computing summary stats for all combos and radii
