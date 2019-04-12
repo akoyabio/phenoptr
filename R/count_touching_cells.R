@@ -454,7 +454,7 @@ find_touching_cell_pairs <- function (i1, i2, extra_size) {
 
   # Find p1s touching p2s as pairs.
   overlap = cbind(as.numeric(i1_big), as.numeric(i2_big))
-  overlap = overlap[overlap[,1]>0.1 & overlap[,2]>0.1,]
+  overlap = overlap[overlap[,1]>0.1 & overlap[,2]>0.1, , drop=FALSE]
   overlap = unique(overlap)
   overlap
 }
