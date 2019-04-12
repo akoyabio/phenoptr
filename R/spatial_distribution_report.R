@@ -41,9 +41,13 @@ if (getRversion() >= "2.15.1")
 #' @examples
 #' \dontrun{
 #' # This example creates a report in the current user's
-#' # home or Document directory.
+#' # home or Document directory. It requires the phenoptrExamples
+#' # package, which includes extended sample data.
 #'
-#' cell_seg_path <- sample_cell_seg_path()
+#' library(phenoptrExamples)
+#' cell_seg_path = system.file("extdata", "samples",
+#'                             "Set4_1-6plex_[16142,55840]_cell_seg_data.txt",
+#'                             package = "phenoptrExamples")
 #'
 #' pairs <- list(
 #'   c("CK+", "CD8+"),

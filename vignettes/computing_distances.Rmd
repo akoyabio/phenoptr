@@ -183,15 +183,21 @@ for additional details.
 
 The `spatial_distribution_report` function is a bit different from the other
 functions
-mentioned in this tutorial Rather than calculate and return distance metrics,
+mentioned in this tutorial. Rather than calculate and return distance metrics,
 it creates a report which shows visually the nearest neighbor relations between
 two phenotypes in a single field. Because the result is a stand-alone HTML file,
-it can't easily be demonstrated in a tutorial For an example, 
+it can't easily be demonstrated in a tutorial. For an example, 
 copy and paste this code
 into your own copy of R. It will create a sample report in your user directory.
 
+This example requires the `phenoptrExamples` package, which includes extended
+sample data.
+
 ```{r eval=FALSE}
-cell_seg_path <- sample_cell_seg_path()
+library(phenoptrExamples)
+cell_seg_path = system.file("extdata", "samples", 
+                            "Set4_1-6plex_[16142,55840]_cell_seg_data.txt",
+                            package = "phenoptrExamples")
 
 pairs <- list(c('CD68+', 'CD8+'))
 colors <- c('CD68+'='magenta', 'CD8+'='yellow')
