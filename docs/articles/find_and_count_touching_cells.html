@@ -30,7 +30,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">phenoptr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.6</span>
       </span>
     </div>
 
@@ -100,7 +100,7 @@
       <h1>Find and count touching cells</h1>
                         <h4 class="author">Kent Johnson</h4>
             
-            <h4 class="date">2019-03-03</h4>
+            <h4 class="date">2019-04-12</h4>
       
       
       <div class="hidden name"><code>find_and_count_touching_cells.Rmd</code></div>
@@ -116,15 +116,15 @@
 <a href="#count-touching-cells-with-existing-phenotypes" class="anchor"></a>Count touching cells with existing phenotypes</h2>
 <p><code>count_touching_cells</code> processes a single field and multiple pairs of phenotypes. The specification of pairs and phenotypes is flexible to accommodate any requirement. The simplest case uses the phenotype names from inForm to select cells. For this case, only the <code>pairs</code> argument is needed.</p>
 <p>For example, this code finds and visualizes touches between <code>CK+</code> and <code>CD8+</code> cells, and also between <code>CK+</code> and <code>CD68+</code> cells:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(phenoptr)
-
-cell_seg_path &lt;-<span class="st"> </span><span class="kw"><a href="../reference/sample_cell_seg_data.html">sample_cell_seg_path</a></span>()
-pairs &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(
-  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">'CK+'</span>, <span class="st">'CD8+'</span>),
-  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">'CK+'</span>, <span class="st">'CD68+'</span>)
-)
-colors &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="st">'CK+'</span>=<span class="st">'cyan'</span>, <span class="st">'CD8+'</span>=<span class="st">'yellow'</span>, <span class="st">'CD68+'</span>=<span class="st">'magenta'</span>)
-<span class="kw"><a href="../reference/count_touching_cells.html">count_touching_cells</a></span>(cell_seg_path, pairs, colors)</code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(phenoptr)</a>
+<a class="sourceLine" id="cb1-2" title="2"></a>
+<a class="sourceLine" id="cb1-3" title="3">cell_seg_path &lt;-<span class="st"> </span><span class="kw"><a href="../reference/sample_cell_seg_data.html">sample_cell_seg_path</a></span>()</a>
+<a class="sourceLine" id="cb1-4" title="4">pairs &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(</a>
+<a class="sourceLine" id="cb1-5" title="5">  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">'CK+'</span>, <span class="st">'CD8+'</span>),</a>
+<a class="sourceLine" id="cb1-6" title="6">  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">'CK+'</span>, <span class="st">'CD68+'</span>)</a>
+<a class="sourceLine" id="cb1-7" title="7">)</a>
+<a class="sourceLine" id="cb1-8" title="8">colors &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="st">'CK+'</span>=<span class="st">'cyan'</span>, <span class="st">'CD8+'</span>=<span class="st">'yellow'</span>, <span class="st">'CD68+'</span>=<span class="st">'magenta'</span>)</a>
+<a class="sourceLine" id="cb1-9" title="9"><span class="kw"><a href="../reference/count_touching_cells.html">count_touching_cells</a></span>(cell_seg_path, pairs, colors)</a></code></pre></div>
 <p><small></small></p>
 <pre><code>## # A tibble: 2 x 9
 ##   slide_id source phenotype1 phenotype2 total1 total2 p1_touch_p2
@@ -143,39 +143,39 @@ colors &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocu
 See the tutorial <a href="https://akoyabio.github.io/phenoptr/articles/selecting_cells.html">Selecting cells within a cell segmentation table</a> for more details on selecting pairs.
 </div>
 </div>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pairs &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(
-  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">'CK+ PDL1+'</span>, <span class="st">'CD8+'</span>),
-  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">'CK+ PDL1+'</span>, <span class="st">'CD68+'</span>)
-)
-
-phenotype_rules &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(
-  <span class="st">'CK+ PDL1+'</span>=<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="st">'CK+'</span>, <span class="op">~</span><span class="st">`</span><span class="dt">Entire Cell PDL1 (Opal 520) Mean</span><span class="st">`</span><span class="op">&gt;</span><span class="dv">3</span>)
-)
-colors &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="st">'CK+ PDL1+'</span>=<span class="st">'cyan'</span>, <span class="st">'CD8+'</span>=<span class="st">'yellow'</span>, <span class="st">'CD68+'</span>=<span class="st">'magenta'</span>)
-<span class="kw"><a href="../reference/count_touching_cells.html">count_touching_cells</a></span>(cell_seg_path, pairs, colors, phenotype_rules)</code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1">pairs &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(</a>
+<a class="sourceLine" id="cb3-2" title="2">  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">'CK+ PDL1+'</span>, <span class="st">'CD8+'</span>),</a>
+<a class="sourceLine" id="cb3-3" title="3">  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">'CK+ PDL1+'</span>, <span class="st">'CD68+'</span>)</a>
+<a class="sourceLine" id="cb3-4" title="4">)</a>
+<a class="sourceLine" id="cb3-5" title="5"></a>
+<a class="sourceLine" id="cb3-6" title="6">phenotype_rules &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(</a>
+<a class="sourceLine" id="cb3-7" title="7">  <span class="st">'CK+ PDL1+'</span>=<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="st">'CK+'</span>, <span class="op">~</span><span class="st">`</span><span class="dt">Entire Cell PDL1 (Opal 520) Mean</span><span class="st">`</span><span class="op">&gt;</span><span class="dv">3</span>)</a>
+<a class="sourceLine" id="cb3-8" title="8">)</a>
+<a class="sourceLine" id="cb3-9" title="9">colors &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="st">'CK+ PDL1+'</span>=<span class="st">'cyan'</span>, <span class="st">'CD8+'</span>=<span class="st">'yellow'</span>, <span class="st">'CD68+'</span>=<span class="st">'magenta'</span>)</a>
+<a class="sourceLine" id="cb3-10" title="10"><span class="kw"><a href="../reference/count_touching_cells.html">count_touching_cells</a></span>(cell_seg_path, pairs, colors, phenotype_rules)</a></code></pre></div>
 </div>
 <div id="count-touching-cells-for-multiple-fields" class="section level2">
 <h2 class="hasAnchor">
 <a href="#count-touching-cells-for-multiple-fields" class="anchor"></a>Count touching cells for multiple fields</h2>
 <p>Using <code><a href="https://purrr.tidyverse.org/reference/map.html">purrr::map</a></code>, you can find touching cells for all cell seg data files in a single directory.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Directory containing data files</span>
-base_path &lt;-<span class="st"> '/path/to/data'</span>
-
-<span class="co"># A subdirectory for the results</span>
-output_base &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/file.path">file.path</a></span>(base_path, <span class="st">'touches'</span>)
-
-<span class="co"># All cell seg data files in base_path</span>
-files &lt;-<span class="st"> </span><span class="kw"><a href="../reference/list_cell_seg_files.html">list_cell_seg_files</a></span>(base_path)
-
-<span class="co"># Count and visualize touching cells</span>
-touch_counts &lt;-<span class="st"> </span>purrr<span class="op">::</span><span class="kw"><a href="https://purrr.tidyverse.org/reference/map.html">map_df</a></span>(files, <span class="cf">function</span>(path) {
-  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cat">cat</a></span>(<span class="st">'Processing'</span>, path, <span class="st">'</span><span class="ch">\n</span><span class="st">'</span>)
-  <span class="kw"><a href="../reference/count_touching_cells.html">count_touching_cells</a></span>(path, pairs, colors, phenotype_rules,
-                       <span class="dt">output_base=</span>output_base)
-})</code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1"><span class="co"># Directory containing data files</span></a>
+<a class="sourceLine" id="cb4-2" title="2">base_path &lt;-<span class="st"> '/path/to/data'</span></a>
+<a class="sourceLine" id="cb4-3" title="3"></a>
+<a class="sourceLine" id="cb4-4" title="4"><span class="co"># A subdirectory for the results</span></a>
+<a class="sourceLine" id="cb4-5" title="5">output_base &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/file.path">file.path</a></span>(base_path, <span class="st">'touches'</span>)</a>
+<a class="sourceLine" id="cb4-6" title="6"></a>
+<a class="sourceLine" id="cb4-7" title="7"><span class="co"># All cell seg data files in base_path</span></a>
+<a class="sourceLine" id="cb4-8" title="8">files &lt;-<span class="st"> </span><span class="kw"><a href="../reference/list_cell_seg_files.html">list_cell_seg_files</a></span>(base_path)</a>
+<a class="sourceLine" id="cb4-9" title="9"></a>
+<a class="sourceLine" id="cb4-10" title="10"><span class="co"># Count and visualize touching cells</span></a>
+<a class="sourceLine" id="cb4-11" title="11">touch_counts &lt;-<span class="st"> </span>purrr<span class="op">::</span><span class="kw"><a href="https://purrr.tidyverse.org/reference/map.html">map_df</a></span>(files, <span class="cf">function</span>(path) {</a>
+<a class="sourceLine" id="cb4-12" title="12">  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cat">cat</a></span>(<span class="st">'Processing'</span>, path, <span class="st">'</span><span class="ch">\n</span><span class="st">'</span>)</a>
+<a class="sourceLine" id="cb4-13" title="13">  <span class="kw"><a href="../reference/count_touching_cells.html">count_touching_cells</a></span>(path, pairs, colors, phenotype_rules,</a>
+<a class="sourceLine" id="cb4-14" title="14">                       <span class="dt">output_base=</span>output_base)</a>
+<a class="sourceLine" id="cb4-15" title="15">})</a></code></pre></div>
 <p>The result of the above is a <code>data_frame</code> which may be written to a CSV file:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">touches_path &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/file.path">file.path</a></span>(output_base, <span class="st">'TouchCounts.csv'</span>)
-readr<span class="op">::</span><span class="kw"><a href="https://readr.tidyverse.org/reference/write_delim.html">write_csv</a></span>(touch_counts, touches_path)</code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1">touches_path &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/file.path">file.path</a></span>(output_base, <span class="st">'TouchCounts.csv'</span>)</a>
+<a class="sourceLine" id="cb5-2" title="2">readr<span class="op">::</span><span class="kw"><a href="https://readr.tidyverse.org/reference/write_delim.html">write_csv</a></span>(touch_counts, touches_path)</a></code></pre></div>
 <div class="panel panel-default">
 <div class="panel-body">
 The tutorial <a href="https://akoyabio.github.io/phenoptrExamples/articles/count_touches.html">Aggregating touch counts</a> in the <code>phenoptrExamples</code> package demonstrates aggregation across multiple fields from multiple samples.

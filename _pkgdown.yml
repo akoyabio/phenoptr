@@ -54,6 +54,7 @@ reference:
     contents:
       - find_nearest_distance
       - compute_all_nearest_distance
+      - count_within
       - count_within_batch
       - count_within_detail
       - count_within_many

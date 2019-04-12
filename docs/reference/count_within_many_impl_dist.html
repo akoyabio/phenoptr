@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Read information about a field from a component image file. — get_field_info • phenoptr</title>
+<title>Distance matrix implementation of count_within_many_impl — count_within_many_impl_dist • phenoptr</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,10 +30,9 @@
 
 
 
-<meta property="og:title" content="Read information about a field from a component image file. — get_field_info" />
+<meta property="og:title" content="Distance matrix implementation of count_within_many_impl — count_within_many_impl_dist" />
 
-<meta property="og:description" content="Find the location, size and magnification of an inForm field by inspecting a
-component_data.tif file." />
+<meta property="og:description" content="Distance matrix implementation of count_within_many_impl" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -132,91 +131,59 @@ component_data.tif file." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Read information about a field from a component image file.</h1>
+    <h1>Distance matrix implementation of count_within_many_impl</h1>
     
-    <div class="hidden name"><code>get_field_info.Rd</code></div>
+    <div class="hidden name"><code>count_within_many_impl_dist.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Find the location, size and magnification of an inForm field by inspecting a
-<code>component_data.tif</code> file.</p>
+    <p>Distance matrix implementation of count_within_many_impl</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>get_field_info</span>(<span class='no'>path</span>)</pre>
+    <pre class="usage"><span class='fu'>count_within_many_impl_dist</span>(<span class='no'>csd</span>, <span class='no'>name</span>, <span class='no'>combos</span>, <span class='no'>radius</span>, <span class='no'>phenotype_rules</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>path</th>
-      <td><p>Path to the <code>component_data.tif</code> file.</p></td>
+      <th>csd</th>
+      <td><p>Cell seg data for a single field.</p></td>
+    </tr>
+    <tr>
+      <th>name</th>
+      <td><p>Name associated with <code>csd</code>, for example the basename of the
+image file.</p></td>
+    </tr>
+    <tr>
+      <th>combos</th>
+      <td><p>List of pairs of (from phenotype name, to phenotype name)
+and tissue category.</p></td>
+    </tr>
+    <tr>
+      <th>radius</th>
+      <td><p>Vector of radii.</p></td>
+    </tr>
+    <tr>
+      <th>phenotype_rules</th>
+      <td><p>Named list of phenotype rules.</p></td>
     </tr>
     </table>
     
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p>A named list with values</p><dl class='dl-horizontal'>
-<dt><code>location</code></dt><dd><p>The physical (x, y) location of the top-left
-corner of the field on the source slide, in microns.</p></dd>
-<dt><code>field_size</code></dt><dd><p>The physical (width, height)
-of the field, in microns.</p></dd>
-<dt><code>image_size</code></dt><dd><p>The (width, height) of the field image,
-in pixels.</p></dd>
-<dt><code>microns_per_pixel</code></dt><dd><p>The size of each pixel, in microns.</p></dd>
-</dl>
-
-    
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p>The field location is determined from the coordinates in the file
-name. The field size and magnification are read from TIFF tags
-in the file.</p>
-<p>Limited to 1x1 fields due to
-limitations in the <code>tiff</code> package. Install the PerkinElmer
-<a href='https://github.com/PerkinElmer/tiff'>fork</a> of the tiff package to
-remove this limitation.</p>
-    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>Other file readers: <code><a href='list_cell_seg_files.html'>list_cell_seg_files</a></code>,
-  <code><a href='read_cell_seg_data.html'>read_cell_seg_data</a></code>,
-  <code><a href='read_components.html'>read_components</a></code>, <code><a href='read_maps.html'>read_maps</a></code></p></div>
+    <div class='dont-index'><p>count_within_many_impl</p></div>
     
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>require</a></span>(<span class='st'>'phenoptrExamples'</span>)) {
-  <span class='no'>path</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/system.file'>system.file</a></span>(<span class='st'>'extdata'</span>, <span class='st'>'samples'</span>,
-    <span class='st'>'Set4_1-6plex_[16142,55840]_component_data.tif'</span>,
-    <span class='kw'>package</span><span class='kw'>=</span><span class='st'>'phenoptrExamples'</span>)
-  <span class='fu'>get_field_info</span>(<span class='no'>path</span>)
-}</div><div class='output co'>#&gt; <span class='message'>Loading required package: phenoptrExamples</span></div><div class='output co'>#&gt; $image_size
-#&gt; [1] 1868 1400
-#&gt; 
-#&gt; $microns_per_pixel
-#&gt; [1] 0.4981226
-#&gt; 
-#&gt; $field_size
-#&gt; [1] 930.4929 697.3716
-#&gt; 
-#&gt; $location
-#&gt; [1] 15704.71 55491.58
-#&gt; </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       
-      <li><a href="#value">Value</a></li>
-
-      <li><a href="#details">Details</a></li>
-
       <li><a href="#see-also">See also</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
+          </ul>
 
   </div>
 </div>

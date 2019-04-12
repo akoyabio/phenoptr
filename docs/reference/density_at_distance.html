@@ -65,7 +65,7 @@ phenotype on the distance from the boundary between the two tissue classes." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">phenoptr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.6</span>
       </span>
     </div>
 
@@ -269,7 +269,7 @@ Chapman and Hall/CRC Press, 2015. Sections 6.6.3-6.6.4.</p>
 #&gt; <span class='message'>Attaching package: 'nlme'</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from 'package:dplyr':</span>
 #&gt; <span class='message'></span>
 #&gt; <span class='message'>    collapse</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: rpart</span></div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>spatstat 1.58-2       (nickname: 'Not Even Wrong') </span>
+#&gt; <span class='message'>spatstat 1.59-0       (nickname: 'J'ai omis les oeufs de caille') </span>
 #&gt; <span class='message'>For an introduction to spatstat, type 'beginner' </span></div><div class='input'>
 <span class='co'># Combine all the densities into a single data_frame</span>
 <span class='co'># and filter out the extremes</span>
@@ -279,9 +279,9 @@ Chapman and Hall/CRC Press, 2015. Sections 6.6.3-6.6.4.</p>
 #&gt; <span class='warning'><span style='color: #555555;'>This warning is displayed once per session.</span><span></span></div><div class='input'>
 <span class='co'># Plot the densities in a single plot</span>
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>ggplot2</span>)
-<span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span>(<span class='no'>all_rho</span>, <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span>(<span class='no'>X</span>, <span class='no'>rho</span>*<span class='fl'>1000000</span>, <span class='kw'>color</span><span class='kw'>=</span><span class='no'>phenotype</span>)) +
-  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_path.html'>geom_line</a></span>(<span class='kw'>size</span><span class='kw'>=</span><span class='fl'>2</span>) +
-  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span>(<span class='kw'>x</span><span class='kw'>=</span><span class='st'>'Distance from tumor boundary (microns)'</span>,
+<span class='fu'><a href='https://www.rdocumentation.org/packages/ggplot2/topics/ggplot'>ggplot</a></span>(<span class='no'>all_rho</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/ggplot2/topics/aes'>aes</a></span>(<span class='no'>X</span>, <span class='no'>rho</span>*<span class='fl'>1000000</span>, <span class='kw'>color</span><span class='kw'>=</span><span class='no'>phenotype</span>)) +
+  <span class='fu'><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_path'>geom_line</a></span>(<span class='kw'>size</span><span class='kw'>=</span><span class='fl'>2</span>) +
+  <span class='fu'><a href='https://www.rdocumentation.org/packages/ggplot2/topics/labs'>labs</a></span>(<span class='kw'>x</span><span class='kw'>=</span><span class='st'>'Distance from tumor boundary (microns)'</span>,
        <span class='kw'>y</span><span class='kw'>=</span><span class='st'>'Estimated cell density (cells per sq mm)'</span>)</div><div class='img'><img src='density_at_distance-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># Show the distance map with CD68+ cells superimposed</span>
 <span class='fu'><a href='plot_diverging.html'>plot_diverging</a></span>(<span class='no'>values</span>$<span class='no'>distance</span>, <span class='kw'>show_boundary</span><span class='kw'>=</span><span class='fl'>TRUE</span>,

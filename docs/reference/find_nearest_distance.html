@@ -65,7 +65,7 @@ the cell to the nearest neighbor cells in each of the provided phenotypes." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">phenoptr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.6</span>
       </span>
     </div>
 
@@ -166,7 +166,7 @@ such as the result of calling
     <tr>
       <th>dst</th>
       <td><p>Optional distance matrix. If provided, this should be
-<code><a href='distance_matrix.html'>distance_matrix(csd)</a></code>.</p></td>
+<code><a href='distance_matrix.html'>distance_matrix(csd)</a></code>. Not used if <code>rtree</code> is available.</p></td>
     </tr>
     </table>
     
@@ -175,6 +175,16 @@ such as the result of calling
     <p>A <code>data_frame</code> containing a <code>Distance to &lt;phenotype&gt;</code> column
 for each phenotype. Will contain <code>NA</code> values where there is no other cell
 of the phenotype.</p>
+    
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>If the <code>rtree</code> package is available, this will use a fast, memory-efficient
+algorithm capable of processing fields with many thousand cells. Otherwise,
+a simple distance matrix algorithm is used. The simple algorithm
+requires at least 8 * (number of cells)^2 bytes of memory which becomes
+prohibitive as the number of cells becomes large.</p>
+<p>Install the <code>rtree</code> package from GitHub using the command
+<code><a href='https://www.rdocumentation.org/packages/devtools/topics/reexports'>devtools::install_github('akoyabio/rtree')</a></code>.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
@@ -217,6 +227,8 @@ of the phenotype.</p>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
+
+      <li><a href="#details">Details</a></li>
 
       <li><a href="#see-also">See also</a></li>
       

@@ -66,7 +66,7 @@ tissue classes." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">phenoptr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.6</span>
       </span>
     </div>
 
@@ -256,9 +256,9 @@ to compute density.</p>
 
 <span class='co'># Plot the densities in a single plot</span>
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>ggplot2</span>)
-<span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span>(<span class='no'>values</span>$<span class='no'>densities</span>, <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span>(<span class='no'>midpoint</span>, <span class='no'>density</span>*<span class='fl'>1000000</span>, <span class='kw'>color</span><span class='kw'>=</span><span class='no'>phenotype</span>)) +
-  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_path.html'>geom_line</a></span>(<span class='kw'>size</span><span class='kw'>=</span><span class='fl'>2</span>) +
-  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span>(<span class='kw'>x</span><span class='kw'>=</span><span class='st'>'Distance from tumor boundary (microns)'</span>,
+<span class='fu'><a href='https://www.rdocumentation.org/packages/ggplot2/topics/ggplot'>ggplot</a></span>(<span class='no'>values</span>$<span class='no'>densities</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/ggplot2/topics/aes'>aes</a></span>(<span class='no'>midpoint</span>, <span class='no'>density</span>*<span class='fl'>1000000</span>, <span class='kw'>color</span><span class='kw'>=</span><span class='no'>phenotype</span>)) +
+  <span class='fu'><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_path'>geom_line</a></span>(<span class='kw'>size</span><span class='kw'>=</span><span class='fl'>2</span>) +
+  <span class='fu'><a href='https://www.rdocumentation.org/packages/ggplot2/topics/labs'>labs</a></span>(<span class='kw'>x</span><span class='kw'>=</span><span class='st'>'Distance from tumor boundary (microns)'</span>,
        <span class='kw'>y</span><span class='kw'>=</span><span class='st'>'Estimated cell density (cells per sq mm)'</span>)</div><div class='img'><img src='density_bands-1.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
