@@ -9,6 +9,10 @@ Bug fixes:
 - Fix `get_field_info` to work with the standard (CRAN) `tiff` package.
 - `count_within` and related functions return `NA` for `within_mean`
   when there are no `from` cells (rather than a mean of 0).
+- Update `spatial_distribution_report` vignette and example to use
+  `phenoptrExamples`, which contains the required component data file (#3).
+- Fix problem in `count_touching_cells` when there is exactly 
+  one touching cell pair (#4)
   
 # phenoptr 0.1.5
 **2019-03-03**
