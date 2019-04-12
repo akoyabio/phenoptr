@@ -211,6 +211,13 @@ count_within_many_impl <- function(csd, name, combos, radius, phenotype_rules) {
 }
 
 #' Distance matrix implementation of count_within_many_impl
+#' @param csd Cell seg data for a single field.
+#' @param name Name associated with `csd`, for example the basename of the
+#' image file.
+#' @param combos List of pairs of (from phenotype name, to phenotype name)
+#' and tissue category.
+#' @param radius Vector of radii.
+#' @param phenotype_rules Named list of phenotype rules.
 #' @seealso count_within_many_impl
 #' @md
 count_within_many_impl_dist <- function(csd, name, combos, radius, phenotype_rules) {

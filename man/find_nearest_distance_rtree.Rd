@@ -6,6 +6,20 @@
 \usage{
 find_nearest_distance_rtree(csd, phenotypes = NULL)
 }
+\arguments{
+\item{csd}{A data frame with \code{Cell X Position},
+\code{Cell Y Position} and \code{Phenotype} columns,
+such as the result of calling
+\link{read_cell_seg_data}.}
+
+\item{phenotypes}{Optional list of phenotypes to include. If omitted,
+\code{unique_phenotypes(csd)} will be used.}
+}
+\value{
+A \code{data_frame} containing a \code{Distance to <phenotype>} column
+for each phenotype. Will contain \code{NA} values where there is no other cell
+of the phenotype.
+}
 \description{
 \code{rtree}-based implementation of \code{find_nearest_distance}.
 }

@@ -13,8 +13,6 @@ count_within_detail(csd, phenotypes = NULL, radii)
 will use \code{unique_phenotypes(csd)}. Counts are from each cell to each
 phenotype.}
 
-\item{radii}{Vector of radii to search within.}
-
 \item{radii}{The radius or radii to search within.}
 }
 \description{

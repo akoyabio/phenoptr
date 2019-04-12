@@ -1,4 +1,11 @@
 #' rtree implementation of count_within_many_impl
+#' @param csd Cell seg data for a single field.
+#' @param name Name associated with `csd`, for example the basename of the
+#' image file.
+#' @param combos List of pairs of (from phenotype name, to phenotype name)
+#' and tissue category.
+#' @param radii Vector of radii.
+#' @param phenotype_rules Named list of phenotype rules.
 #' @seealso count_within_many_impl
 #' @md
 count_within_many_impl_rtree = function(csd, name, combos, radii,
@@ -21,7 +28,7 @@ count_within_many_impl_rtree = function(csd, name, combos, radii,
         d_cat = csd %>% dplyr::filter(`Tissue Category`==category)
       else d_cat = csd
       dplyr::bind_cols(d_cat,
-                       phenoptr:::count_within_detail(d_cat, to_phenotypes, radii))
+                       count_within_detail(d_cat, to_phenotypes, radii))
     })
 
 
@@ -77,7 +84,6 @@ count_within_many_impl_rtree = function(csd, name, combos, radii,
 #'
 #' Very fast version using `rtree::countWithinDistance()`.
 #' @param csd Cell seg data.
-#' @param radii Vector of radii to search within.
 #' @param phenotypes Optional list of phenotypes to include. If omitted,
 #' will use `unique_phenotypes(csd)`. Counts are from each cell to each
 #' phenotype.

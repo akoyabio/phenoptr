@@ -6,6 +6,19 @@
 \usage{
 count_within_many_impl_dist(csd, name, combos, radius, phenotype_rules)
 }
+\arguments{
+\item{csd}{Cell seg data for a single field.}
+
+\item{name}{Name associated with \code{csd}, for example the basename of the
+image file.}
+
+\item{combos}{List of pairs of (from phenotype name, to phenotype name)
+and tissue category.}
+
+\item{radius}{Vector of radii.}
+
+\item{phenotype_rules}{Named list of phenotype rules.}
+}
 \description{
 Distance matrix implementation of count_within_many_impl
 }

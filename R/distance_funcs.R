@@ -102,6 +102,17 @@ find_nearest_distance <- function(csd, phenotypes=NULL, dst=NULL) {
 }
 
 #' Distance-matrix implementation of `find_nearest_distance`.
+#' @param csd A data frame with `Cell X Position`,
+#'        `Cell Y Position` and `Phenotype` columns,
+#'        such as the result of calling
+#'        [read_cell_seg_data].
+#' @param phenotypes Optional list of phenotypes to include. If omitted,
+#' `unique_phenotypes(csd)` will be used.
+#' @param dst Optional distance matrix. If provided, this should be
+#' `distance_matrix(csd)`.
+#' @return A `data_frame` containing a `Distance to <phenotype>` column
+#' for each phenotype. Will contain `NA` values where there is no other cell
+#' of the phenotype.
 #' @seealso find_nearest_distance
 #' @md
 find_nearest_distance_dist = function(csd, phenotypes=NULL, dst=NULL) {
@@ -133,6 +144,15 @@ find_nearest_distance_dist = function(csd, phenotypes=NULL, dst=NULL) {
 }
 
 #' `rtree`-based implementation of `find_nearest_distance`.
+#' @param csd A data frame with `Cell X Position`,
+#'        `Cell Y Position` and `Phenotype` columns,
+#'        such as the result of calling
+#'        [read_cell_seg_data].
+#' @param phenotypes Optional list of phenotypes to include. If omitted,
+#' `unique_phenotypes(csd)` will be used.
+#' @return A `data_frame` containing a `Distance to <phenotype>` column
+#' for each phenotype. Will contain `NA` values where there is no other cell
+#' of the phenotype.
 #' @seealso find_nearest_distance
 #' @md
 find_nearest_distance_rtree <- function(csd, phenotypes=NULL) {
