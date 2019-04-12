@@ -1,4 +1,5 @@
-# phenoptr 0.1.5.9000
+# phenoptr 0.1.6
+**2019-04-12**
 
 New features:
 - Add fast implementation of `count_within_many` and `count_within_batch` 
