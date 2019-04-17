@@ -29,7 +29,7 @@ is highly recommended as well.
 1. Install `phenoptr` from GitHub. In the RStudio console, copy and paste or type these commands (press Enter after each line):
 ```
 install.packages("devtools")
-devtools::install_github("akoyabio/phenoptr", build_vignettes=TRUE)
+devtools::install_github("akoyabio/phenoptr")
 ```
 1. When requested, enter `1` (Yes) to install BiocInstaller.
 
