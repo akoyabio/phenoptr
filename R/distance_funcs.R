@@ -186,11 +186,15 @@ find_nearest_distance_rtree <- function(csd, phenotypes=NULL) {
       n_nn = 2L
       to_cells_nn = rtree::knn(to_cells_tree, as.matrix(field_locs), k=n_nn)
 
-      # Convert to a matrix for faster selection of a column.
-      # This will recycle values in any rows that don't have n_nn values,
-      # that won't affect the result.
-      # Note: If there is only one "to" cell, to_cells_nn will have
-      # only one column. Thus the map_dfc below goes to dim(to_cells_nn)[2]
+      # rtree::knn() returns a list of vectors. For each "from" cell, it returns
+      # a vector of indices of "to" cells. Here we convert the list of vectors
+      # to a matrix. This allows fast selection of a single column in the
+      # map_dfc loop below.
+      # The conversion to matrix will recycle values in any rows that don't have
+      # n_nn values; that won't affect the result.
+      # Note: If there is only one "to" cell, to_cells_nn will have only one
+      # column. Thus the map_dfc below is from 1 to dim(to_cells_nn)[2],
+      # not from 1 to n_nn.
       to_cells_nn = do.call(rbind, to_cells_nn)
 
       # knn gives us the indices of nearest cells, we want distance
