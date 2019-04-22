@@ -3,7 +3,7 @@
 
 - Remove the scary `Failed with error: ‘there is no package called ‘rtree’’`
   message that `requireNamespace('rtree')` generates (#5).
-  
+
 # phenoptr 0.1.6
 **2019-04-12**
 
