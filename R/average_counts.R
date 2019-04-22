@@ -190,14 +190,14 @@ clean_pairs = function(pairs) {
 #' image file.
 #' @param combos List of pairs of (from phenotype name, to phenotype name)
 #' and tissue category.
-#' @param radius Vector of radii.
+#' @param radii Vector of radii.
 #' @param phenotype_rules Named list of phenotype rules.
-count_within_many_impl <- function(csd, name, combos, radius, phenotype_rules) {
+count_within_many_impl <- function(csd, name, combos, radii, phenotype_rules) {
   if (getOption('use.rtree.if.available') &&
       requireNamespace('rtree', quietly=TRUE))
-    counts = count_within_many_impl_rtree(csd, name, combos, radius, phenotype_rules)
+    counts = count_within_many_impl_rtree(csd, name, combos, radii, phenotype_rules)
   else
-    counts = count_within_many_impl_dist(csd, name, combos, radius, phenotype_rules)
+    counts = count_within_many_impl_dist(csd, name, combos, radii, phenotype_rules)
 
   # Add columns for slide and source
   counts = counts %>%
@@ -217,11 +217,11 @@ count_within_many_impl <- function(csd, name, combos, radius, phenotype_rules) {
 #' image file.
 #' @param combos List of pairs of (from phenotype name, to phenotype name)
 #' and tissue category.
-#' @param radius Vector of radii.
+#' @param radii Vector of radii.
 #' @param phenotype_rules Named list of phenotype rules.
 #' @seealso count_within_many_impl
 #' @md
-count_within_many_impl_dist <- function(csd, name, combos, radius, phenotype_rules) {
+count_within_many_impl_dist <- function(csd, name, combos, radii, phenotype_rules) {
   category = combos %>% purrr::map_chr('category') %>% unique()
 
   # Subset to what we care about, for faster distance calculation
@@ -241,7 +241,7 @@ count_within_many_impl_dist <- function(csd, name, combos, radius, phenotype_rul
     to_sel = phenotype_rules[[to]]
     count_within(csd=csd, from=from_sel, to=to_sel,
                  category=row$category,
-                 radius=radius, dst=dst) %>%
+                 radius=radii, dst=dst) %>%
       # Add columns for from, to, category
       tibble::add_column(
         category = ifelse(is.na(row$category), 'all', row$category),

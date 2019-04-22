@@ -6,7 +6,7 @@
 This does the actual work of calling count_within multiple times and
 accumulating the result.}
 \usage{
-count_within_many_impl(csd, name, combos, radius, phenotype_rules)
+count_within_many_impl(csd, name, combos, radii, phenotype_rules)
 }
 \arguments{
 \item{csd}{Cell seg data for a single field.}
@@ -17,7 +17,7 @@ image file.}
 \item{combos}{List of pairs of (from phenotype name, to phenotype name)
 and tissue category.}
 
-\item{radius}{Vector of radii.}
+\item{radii}{Vector of radii.}
 
 \item{phenotype_rules}{Named list of phenotype rules.}
 }
