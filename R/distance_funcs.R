@@ -95,7 +95,8 @@ compute_all_nearest_distance <- function(cell_table_path=NULL, out_path=NULL) {
 #'   dplyr::do(dplyr::bind_cols(., find_nearest_distance(.)))
 #' }
 find_nearest_distance <- function(csd, phenotypes=NULL, dst=NULL) {
-  if (getOption('use.rtree.if.available') && requireNamespace('rtree'))
+  if (getOption('use.rtree.if.available') &&
+      requireNamespace('rtree', quietly=TRUE))
     find_nearest_distance_rtree(csd, phenotypes)
   else
     find_nearest_distance_dist(csd, phenotypes, dst)
