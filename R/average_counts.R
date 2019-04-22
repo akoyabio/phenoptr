@@ -193,7 +193,8 @@ clean_pairs = function(pairs) {
 #' @param radius Vector of radii.
 #' @param phenotype_rules Named list of phenotype rules.
 count_within_many_impl <- function(csd, name, combos, radius, phenotype_rules) {
-  if (getOption('use.rtree.if.available') && requireNamespace('rtree'))
+  if (getOption('use.rtree.if.available') &&
+      requireNamespace('rtree', quietly=TRUE))
     counts = count_within_many_impl_rtree(csd, name, combos, radius, phenotype_rules)
   else
     counts = count_within_many_impl_dist(csd, name, combos, radius, phenotype_rules)
