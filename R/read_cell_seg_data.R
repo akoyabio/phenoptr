@@ -54,7 +54,7 @@ list_cell_seg_files <- function(path, ...) {
 #'        an associated \code{component_data.tif} file.
 #' @param remove_units If TRUE (default),
 #'        remove the unit name from expression columns.
-#' @return A \code{\link[tibble]{data_frame}}
+#' @return A \code{\link[tibble]{tibble}}
 #'         containing the cleaned-up data set.
 #' @export
 #' @family file readers
@@ -67,7 +67,7 @@ list_cell_seg_files <- function(path, ...) {
 #'
 #' \dontrun{
 #' # Use purrr::map_df to read all cell seg files in a directory
-#' # and return a single data_frame.
+#' # and return a single tibble.
 #' paths <- list_cell_seg_files(path)
 #' csd <- purrr::map_df(paths, read_cell_seg_data)
 #' }
@@ -205,7 +205,7 @@ read_cell_seg_data <- function(
       names(df) = sub(unit_name, '', names(df), fixed=TRUE)
   }
 
-  dplyr::as_data_frame(df)
+  dplyr::as_tibble(df)
 }
 
 # Convert cell locations back to pixels if possible

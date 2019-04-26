@@ -176,7 +176,7 @@ for (pair in pairs) {
   nn_mutual = merge(nn_mutual, nn_dist12)
   print(nn_plot_mutual(pheno_data1, pheno_data2, nn_mutual, background, xlim, ylim))
 
-  pair_counts = dplyr::bind_rows(pair_counts, tibble::data_frame(
+  pair_counts = dplyr::bind_rows(pair_counts, tibble::tibble(
     From = pheno_data1$pheno$name,
     To = pheno_data2$pheno$name,
     'From Count' = nrow(pheno_data1$data),

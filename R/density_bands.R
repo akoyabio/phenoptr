@@ -41,7 +41,7 @@ if (getRversion() >= "2.15.1")
 #'  map in the same directory as `cell_seg_path`.
 #' @return Returns a `list` with three items:
 #' \tabular{ll}{
-#'   `densities` \tab A `data_frame` with five columns (see below).\cr
+#'   `densities` \tab A `tibble` with five columns (see below).\cr
 #'  `cells` \tab Cell seg data with phenotypes updated per the `phenotypes`
 #'  parameter and an additional `distance` column.\cr
 #'  `distance` \tab The distance map, a pixel image
@@ -151,7 +151,7 @@ density_bands = function(cell_seg_path, phenotypes, positive, negative,
   area = graphics::hist(distance$v, breaks=cut_points, plot=FALSE)
 
   # Normalize by pixel size ^ 2
-  areas = as_data_frame(area[c('mids', 'counts')]) %>%
+  areas = as_tibble(area[c('mids', 'counts')]) %>%
     mutate(area = counts / pixels_per_micron^2) %>%
     select(-counts)
 
@@ -160,7 +160,7 @@ density_bands = function(cell_seg_path, phenotypes, positive, negative,
     summarize(count =
             list(graphics::hist(distance, breaks=cut_points, plot=FALSE))) %>%
     mutate(count = purrr::map(count,
-                              ~as_data_frame(.x[c('mids', 'counts')]))) %>%
+                              ~as_tibble(.x[c('mids', 'counts')]))) %>%
     tidyr::unnest() %>%
     rename(count=counts, phenotype=Phenotype)
 

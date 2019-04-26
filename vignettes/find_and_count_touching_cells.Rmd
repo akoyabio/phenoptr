@@ -107,7 +107,7 @@ touch_counts <- purrr::map_df(files, function(path) {
 })
 ```
 
-The result of the above is a `data_frame` which may be written to 
+The result of the above is a `tibble` which may be written to 
 a CSV file:
 
 ```{r write_csv}

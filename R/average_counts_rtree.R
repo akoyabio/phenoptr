@@ -61,7 +61,7 @@ count_within_many_impl_rtree = function(csd, name, combos, radii,
                        within_mean = mean(counts, na.rm=TRUE))
     })
     } else {
-      tibble::data_frame(
+      tibble::tibble(
         category=category,
         from=from, to=to, radius = radii,
         from_count = 0L,

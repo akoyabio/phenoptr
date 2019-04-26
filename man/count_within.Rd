@@ -23,7 +23,7 @@ rows and columns. Accepts all formats accepted by \code{\link{select_rows}}.}
 produced by calling \code{\link{distance_matrix}}.}
 }
 \value{
-A \code{\link{data_frame}} with five columns and one row for each
+A \code{\link{tibble}} with five columns and one row for each
   value in \code{radius}:
   \describe{
    \item{\code{radius}}{The value of \code{radius} for this row.}

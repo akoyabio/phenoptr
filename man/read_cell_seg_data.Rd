@@ -21,7 +21,7 @@ an associated \code{component_data.tif} file.}
 remove the unit name from expression columns.}
 }
 \value{
-A \code{\link[tibble]{data_frame}}
+A \code{\link[tibble]{tibble}}
         containing the cleaned-up data set.
 }
 \description{
@@ -65,7 +65,7 @@ table(csd$Phenotype)
 
 \dontrun{
 # Use purrr::map_df to read all cell seg files in a directory
-# and return a single data_frame.
+# and return a single tibble.
 paths <- list_cell_seg_files(path)
 csd <- purrr::map_df(paths, read_cell_seg_data)
 }

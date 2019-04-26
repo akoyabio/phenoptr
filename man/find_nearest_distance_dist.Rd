@@ -19,7 +19,7 @@ such as the result of calling
 \code{distance_matrix(csd)}.}
 }
 \value{
-A \code{data_frame} containing a \code{Distance to <phenotype>} column
+A \code{tibble} containing a \code{Distance to <phenotype>} column
 for each phenotype. Will contain \code{NA} values where there is no other cell
 of the phenotype.
 }

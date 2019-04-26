@@ -82,11 +82,11 @@ if (getRversion() >= "2.15.1")
 #'   list("CD8+", "CD68+", "FoxP3+"),
 #'   positive="Stroma", negative="Tumor")
 #'
-#' # Combine all the densities into a single data_frame
+#' # Combine all the densities into a single tibble
 #' # and filter out the extremes
 #' library(dplyr)
 #' all_rho <- purrr::map_dfr(values$rhohat, ~., .id='phenotype') %>%
-#'   as_data_frame %>% filter(X>=-50, X<=100)
+#'   as_tibble %>% filter(X>=-50, X<=100)
 #'
 #' # Plot the densities in a single plot
 #' library(ggplot2)

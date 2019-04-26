@@ -32,7 +32,7 @@ map in the same directory as \code{cell_seg_path}.}
 \value{
 Returns a \code{list} with three items:
 \tabular{ll}{
-\code{densities} \tab A \code{data_frame} with five columns (see below).\cr
+\code{densities} \tab A \code{tibble} with five columns (see below).\cr
 \code{cells} \tab Cell seg data with phenotypes updated per the \code{phenotypes}
 parameter and an additional \code{distance} column.\cr
 \code{distance} \tab The distance map, a pixel image

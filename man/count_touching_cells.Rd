@@ -36,7 +36,7 @@ If \code{NULL}, output will be to the same
 directory as the cell table.}
 }
 \value{
-Returns a \code{data_frame} with one row for each pair in
+Returns a \code{tibble} with one row for each pair in
 \code{pairs}, containing these columns:
 \describe{
 \item{\code{slide_id}}{Slide ID from the data file, if available.}

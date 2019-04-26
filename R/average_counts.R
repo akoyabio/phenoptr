@@ -32,7 +32,7 @@ if (getRversion() >= "2.15.1")
 #' @param category Optional tissue categories to restrict both `from` and
 #' `to` phenotypes.
 #' @param verbose If TRUE, display progress.
-#' @return A `data_frame` containing these columns:
+#' @return A `tibble` containing these columns:
 #'   \describe{
 #'    \item{\code{slide_id}}{Slide ID from the data files, if available.}
 #'    \item{\code{source}}{Base file name of the source file with
@@ -118,7 +118,7 @@ count_within_batch <- function(base_path, pairs, radius, category=NA,
 #' @param category Optional tissue categories to restrict both `from` and
 #' `to` phenotypes.
 #' @param verbose If TRUE, display progress.
-#' @return A `data_frame` containing these columns:
+#' @return A `tibble` containing these columns:
 #'   \describe{
 #'    \item{\code{slide_id}}{Slide ID from the data, if available.}
 #'    \item{\code{source}}{Source field name.}
@@ -302,7 +302,7 @@ count_within_many_impl_dist <- function(csd, name, combos, radii, phenotype_rule
 #' @param dst Optional distance matrix corresponding to \code{csd},
 #'        produced by calling \code{\link{distance_matrix}}.
 #'
-#' @return A \code{\link{data_frame}} with five columns and one row for each
+#' @return A \code{\link{tibble}} with five columns and one row for each
 #'   value in \code{radius}:
 #'   \describe{
 #'    \item{\code{radius}}{The value of \code{radius} for this row.}
@@ -364,7 +364,7 @@ count_within <- function(csd, from, to, radius, category=NA, dst=NULL) {
   if (prod(dim(dst))>0) {
     purrr::map_df(radius, function(rad) {
       within = apply(dst, 1, function(r) sum(r>0 & r<=rad))
-      tibble::data_frame(
+      tibble::tibble(
         radius = rad,
         from_count = dim(dst)[1], # Number of from cells
         to_count = dim(dst)[2],   # Number of to cells
@@ -375,7 +375,7 @@ count_within <- function(csd, from, to, radius, category=NA, dst=NULL) {
       )}
     )
   } else {
-    tibble::data_frame(
+    tibble::tibble(
       radius = radius,
       from_count = dim(dst)[1],
       to_count = dim(dst)[2],

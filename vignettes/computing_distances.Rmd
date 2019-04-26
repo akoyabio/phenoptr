@@ -42,7 +42,7 @@ relationship between cells in a single field.
 The `find_nearest_distance` function finds per-cell nearest neighbor distances.
 For each cell in a sample, it finds the distances to the nearest neighbor
 cells in each of the provided phenotypes. 
-The distances are returned in a `data_frame` with
+The distances are returned in a `tibble` with
 one column per phenotype.
 
 For example, the `phenoptr` sample data `sample_cell_seg_data` contains
@@ -66,7 +66,7 @@ interest, so first filter them out.
 csd <- csd %>% filter(Phenotype!='other')
 ```
 
-Calling `find_nearest_distance` on this file returns a `data_frame` with 
+Calling `find_nearest_distance` on this file returns a `tibble` with 
 four columns and one row for each cell:
 
 ```{r}

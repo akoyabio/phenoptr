@@ -7,7 +7,7 @@ Description: Helper functions for working with inForm data.
 Language: en-US
 biocViews: 
 Imports:
-    dplyr (>= 0.7.0),
+    dplyr (>= 0.8.0),
     EBImage,
     foreach,
     ggplot2,

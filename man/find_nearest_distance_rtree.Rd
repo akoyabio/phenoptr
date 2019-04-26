@@ -16,7 +16,7 @@ such as the result of calling
 \code{unique_phenotypes(csd)} will be used.}
 }
 \value{
-A \code{data_frame} containing a \code{Distance to <phenotype>} column
+A \code{tibble} containing a \code{Distance to <phenotype>} column
 for each phenotype. Will contain \code{NA} values where there is no other cell
 of the phenotype.
 }

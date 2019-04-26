@@ -59,7 +59,7 @@
 #' @param output_base Base path for image output.
 #' If `NULL`, output will be to the same
 #' directory as the cell table.
-#' @return Returns a `data_frame` with one row for each pair in
+#' @return Returns a `tibble` with one row for each pair in
 #' `pairs`, containing these columns:
 #'   \describe{
 #'    \item{\code{slide_id}}{Slide ID from the data file, if available.}
@@ -281,7 +281,7 @@ count_touching_cells <- function(cell_seg_path, pairs, colors=NULL,
       # No data for one of the phenotypes in this pair
       # Report empty result and go on
       result = rbind(result,
-                   tibble::data_frame(
+                   tibble::tibble(
                       slide_id=slide,
                       source=name,
                       phenotype1=p1,
@@ -307,7 +307,7 @@ count_touching_cells <- function(cell_seg_path, pairs, colors=NULL,
     touches_found = nrow(touch_pairs)
 
     result = rbind(result,
-                 tibble::data_frame(
+                 tibble::tibble(
                     slide_id=slide,
                     source=name,
                     phenotype1=p1,

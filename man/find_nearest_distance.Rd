@@ -19,7 +19,7 @@ such as the result of calling
 \code{distance_matrix(csd)}. Not used if \code{rtree} is available.}
 }
 \value{
-A \code{data_frame} containing a \code{Distance to <phenotype>} column
+A \code{tibble} containing a \code{Distance to <phenotype>} column
 for each phenotype. Will contain \code{NA} values where there is no other cell
 of the phenotype.
 }
@@ -49,7 +49,7 @@ csd <- cbind(csd, find_nearest_distance(csd))
 
 \dontrun{
 # If `merged` is a data frame containing cell seg data from multiple fields,
-# this code will create a new `data_frame` with distance columns computed
+# this code will create a new `tibble` with distance columns computed
 # for each `Sample Name` in the data.
 merged_with_distance <- merged \%>\%
   dplyr::group_by(`Sample Name`) \%>\%

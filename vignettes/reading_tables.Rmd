@@ -84,12 +84,11 @@ csd <- read_cell_seg_data(path)
 grep('Nucleus.*Mean', names(csd), value=TRUE)
 ```
 
-The value returned from `read_cell_seg_data` is a `data_frame` (also known
-as a `tibble` 
+The value returned from `read_cell_seg_data` is a `tibble`
 [<i class='fa fa-external-link'></i>](http://tibble.tidyverse.org/)
 - the
-[tidyverse](http://tidyverse.org/) version of a `data.frame`) and can be
-inspected as you would any other `data_frame`.
+[tidyverse](http://tidyverse.org/) version of a `data.frame` - which can be
+inspected as you would any other `tibble`.
 
 ```{r inspect}
 # How many cells did we read?

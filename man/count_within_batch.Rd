@@ -27,7 +27,7 @@ Item values are selectors for \code{\link[=select_rows]{select_rows()}}.}
 \item{verbose}{If TRUE, display progress.}
 }
 \value{
-A \code{data_frame} containing these columns:
+A \code{tibble} containing these columns:
 \describe{
 \item{\code{slide_id}}{Slide ID from the data files, if available.}
 \item{\code{source}}{Base file name of the source file with

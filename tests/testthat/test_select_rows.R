@@ -3,7 +3,7 @@ context('select_rows')
 library(dplyr)
 library(testthat)
 
-test_data = data_frame(
+test_data = tibble(
   Phenotype = c(rep('tumor', 3), rep('cd8', 2)),
   Expr = c(1:2, 1:3),
   E2 = c(1, 1, 2, 2, 1),

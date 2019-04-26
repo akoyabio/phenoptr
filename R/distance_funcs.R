@@ -69,7 +69,7 @@ compute_all_nearest_distance <- function(cell_table_path=NULL, out_path=NULL) {
 #' `unique_phenotypes(csd)` will be used.
 #' @param dst Optional distance matrix. If provided, this should be
 #' `distance_matrix(csd)`. Not used if `rtree` is available.
-#' @return A `data_frame` containing a `Distance to <phenotype>` column
+#' @return A `tibble` containing a `Distance to <phenotype>` column
 #' for each phenotype. Will contain `NA` values where there is no other cell
 #' of the phenotype.
 #' @md
@@ -88,7 +88,7 @@ compute_all_nearest_distance <- function(cell_table_path=NULL, out_path=NULL) {
 #'
 #' \dontrun{
 #' # If `merged` is a data frame containing cell seg data from multiple fields,
-#' # this code will create a new `data_frame` with distance columns computed
+#' # this code will create a new `tibble` with distance columns computed
 #' # for each `Sample Name` in the data.
 #' merged_with_distance <- merged %>%
 #'   dplyr::group_by(`Sample Name`) %>%
@@ -111,7 +111,7 @@ find_nearest_distance <- function(csd, phenotypes=NULL, dst=NULL) {
 #' `unique_phenotypes(csd)` will be used.
 #' @param dst Optional distance matrix. If provided, this should be
 #' `distance_matrix(csd)`.
-#' @return A `data_frame` containing a `Distance to <phenotype>` column
+#' @return A `tibble` containing a `Distance to <phenotype>` column
 #' for each phenotype. Will contain `NA` values where there is no other cell
 #' of the phenotype.
 #' @seealso find_nearest_distance
@@ -151,7 +151,7 @@ find_nearest_distance_dist = function(csd, phenotypes=NULL, dst=NULL) {
 #'        [read_cell_seg_data].
 #' @param phenotypes Optional list of phenotypes to include. If omitted,
 #' `unique_phenotypes(csd)` will be used.
-#' @return A `data_frame` containing a `Distance to <phenotype>` column
+#' @return A `tibble` containing a `Distance to <phenotype>` column
 #' for each phenotype. Will contain `NA` values where there is no other cell
 #' of the phenotype.
 #' @seealso find_nearest_distance
