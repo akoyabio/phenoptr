@@ -85,6 +85,32 @@ read_cell_seg_data <- function(
   # Read the data. Supplying col_types prevents output of the imputed types
   df <- readr::read_tsv(path, na=c('NA', '#N/A'), col_types=readr::cols())
 
+  # If columns containing "Mean" are character, check to see if the
+  # file may have been written in a locale that uses comma as a decimal
+  # separator. ("Mean" is not the only affected column, it is a proxy.)
+  mean_cols = df %>%
+    dplyr::select(dplyr::contains('Mean'))
+  mean_class = mean_cols %>% purrr::map(class)
+
+  if (any(mean_class=='character')) {
+    # Try to confirm; just pick one column
+    char_col = mean_cols[which(mean_class=='character')][[1]]
+    if (any(stringr::str_detect(char_col, ','))) {
+      message('Reading cell seg data with comma separator.')
+      df <- readr::read_tsv(path, na=c('NA', '#N/A'),
+                            locale=readr::locale(decimal_mark=','),
+                            col_types=readr::cols())
+    }
+  }
+
+  # Check again
+  mean_cols = df %>%
+    dplyr::select(dplyr::contains('Mean'))
+  mean_class = mean_cols %>% purrr::map(class)
+
+  if (any(mean_class=='character'))
+    stop('Error reading cell seg data: Expression columns have character values')
+
   # If any of these fields has missing values, the file may be damaged.
   no_na_cols = c("Path", "Sample Name", "Tissue Category", "Phenotype",
                  "Cell ID", "Slide ID")
@@ -106,11 +132,15 @@ read_cell_seg_data <- function(
     df <- cbind(tag, df)
   }
 
-  # Convert percents if it is not done already
+  # Convert percents if it is not done already. These may contain commas!!
   pcts <- grep('percent|confidence', names(df), ignore.case=TRUE)
-  for (i in pcts)
-    if (is.character(df[[i]]))
-        df[[i]] <- as.numeric(sub('\\s*%$', '', df[[i]]))/100
+  for (i in pcts) {
+    if (is.character(df[[i]])) {
+      clean_col = stringr::str_replace_all(df[[i]],
+        c('\\s*%$'='', ','='.')) # Remove trailing % and change comma to period
+      df[[i]] <- as.numeric(clean_col)/100
+    }
+  }
 
   # Remove columns that are all NA or all blank
   # The first condition is a preflight that speeds this up a lot

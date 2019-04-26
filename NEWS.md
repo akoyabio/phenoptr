@@ -1,3 +1,8 @@
+# phenoptr 0.1.6.9000
+
+- `read_cell_seg_data` recognizes and correctly reads inForm data 
+  which uses comma as the decimal separator (#8).
+  
 # phenoptr 0.1.6.1
 **2019-04-22**
 

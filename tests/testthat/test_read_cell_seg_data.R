@@ -3,11 +3,11 @@ context('read_cell_seg_data')
 
 library(testthat)
 
-path = file.path('test_data',
+path = test_path('test_data',
               'FIHC4__0929309_HP_IM3_2_cell_seg_data.txt')
 
 summary_path =
-  file.path('test_data',
+  test_path('test_data',
           'FIHC4__0929309_HP_IM3_2_cell_seg_data_summary.txt')
 
 expect_contains = function(container, items) {
@@ -21,8 +21,8 @@ expect_does_not_contain = function(container, items) {
 }
 
 test_that('list_cell_seg_files works', {
-  files = list_cell_seg_files('test_data')
-  expect_equal(length(files), 4)
+  files = list_cell_seg_files(test_path('test_data'))
+  expect_equal(length(files), 5)
 })
 
 test_that('sample_cell_seg_path is correct', {
@@ -84,6 +84,26 @@ test_that("read_cell_seg_data works", {
   expect_equal(as.numeric(d[1, 'Tissue Category Area (square microns)']), 89904/4)
   expect_equal(as.numeric(d[1, 'Cell Density (per square mm)']), 2770*4)
   expect_equal(as.numeric(d[1, 'Nucleus Area (percent)']), 0.5961)
+})
+
+test_that('Comma as decimal separator works', {
+  comma_path = test_path('test_data',
+                   'FIHC4__0929309_HP_IM3_2_comma_cell_seg_data.txt')
+  comma_summary_path =
+    test_path('test_data',
+              'FIHC4__0929309_HP_IM3_2_comma_cell_seg_data_summary.txt')
+
+  # These should match except for the Sample Name which has commas
+  d = read_cell_seg_data(path)
+  d_comma = expect_message(read_cell_seg_data(comma_path), 'comma')
+  expect_equal(d %>% dplyr::select(-`Sample Name`),
+               d_comma %>% dplyr::select(-`Sample Name`))
+
+  d = read_cell_seg_data(summary_path)
+  d_comma = expect_message(read_cell_seg_data(comma_summary_path), 'comma')
+  expect_equal(d %>% dplyr::select(-`Sample Name`),
+               d_comma %>% dplyr::select(-`Sample Name`))
+
 })
 
 test_that('Skipping pixels_per_micron works', {
