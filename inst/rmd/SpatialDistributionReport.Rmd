@@ -139,7 +139,7 @@ csd2 = make_phenotype_column(csd)
 p = ggplot(csd2, aes(x=`Cell X Position`, y=`Cell Y Position`, color=Phenotype))
 p = add_scales_and_background(p, background, xlim, ylim)
 p = p + geom_point() 
-if (length(unique(csd2$Phenotype<=8)))
+if (length(unique(csd2$Phenotype))<=8)
   p = p + scale_color_manual(values=dark2)
 p + labs(title='Locations of all cells')
 ```
