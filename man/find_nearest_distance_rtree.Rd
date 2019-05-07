@@ -17,7 +17,8 @@ such as the result of calling
 }
 \value{
 A \code{tibble} containing a \code{Distance to <phenotype>} column
-for each phenotype. Will contain \code{NA} values where there is no other cell
+and \code{Cell ID <phenotype>} column for each phenotype.
+Columns will contain \code{NA} values where there is no other cell
 of the phenotype.
 }
 \description{

@@ -1,5 +1,12 @@
 # phenoptr 0.1.6.9000
 
+New feature (and breaking change):
+- The nearest neighbor functions `compute_all_nearest_distance` and
+  `find_nearest_distance` now create columns containing the Cell ID
+  of the nearest cell, as well as the columns with the actual distance.
+  This column can be used to find the locations of nearest cells
+  and to find mutual nearest neighbors.
+  
 Bug fixes:
 - `read_cell_seg_data` recognizes and correctly reads inForm data 
   which uses comma as the decimal separator (#8).

@@ -70,7 +70,8 @@ compute_all_nearest_distance <- function(cell_table_path=NULL, out_path=NULL) {
 #' @param dst Optional distance matrix. If provided, this should be
 #' `distance_matrix(csd)`. Not used if `rtree` is available.
 #' @return A `tibble` containing a `Distance to <phenotype>` column
-#' for each phenotype. Will contain `NA` values where there is no other cell
+#' and `Cell ID <phenotype>` column for each phenotype.
+#' Columns will contain `NA` values where there is no other cell
 #' of the phenotype.
 #' @md
 #' @export
@@ -112,7 +113,8 @@ find_nearest_distance <- function(csd, phenotypes=NULL, dst=NULL) {
 #' @param dst Optional distance matrix. If provided, this should be
 #' `distance_matrix(csd)`.
 #' @return A `tibble` containing a `Distance to <phenotype>` column
-#' for each phenotype. Will contain `NA` values where there is no other cell
+#' and `Cell ID <phenotype>` column for each phenotype.
+#' Columns will contain `NA` values where there is no other cell
 #' of the phenotype.
 #' @seealso find_nearest_distance
 #' @md
@@ -126,22 +128,31 @@ find_nearest_distance_dist = function(csd, phenotypes=NULL, dst=NULL) {
   if (is.null(dst))
     dst = distance_matrix(csd)
 
-  result = lapply(phenotypes, FUN=function(phenotype) {
+  result = purrr::map2_dfc(names(phenotypes), phenotypes,
+                           function(name, phenotype) {
     # Which cells are in the target phenotype?
     phenotype_cells = select_rows(csd, phenotype)
     if (sum(phenotype_cells)>0) {
+      # Subset columns of the distance matrix to just phenotype cells
+      phenotype_dist = dst[, phenotype_cells, drop=FALSE]
+
       # Find the minimum distance > 0; i.e. from cells to not-self cells
-      phenotype_mins = apply(dst[, phenotype_cells, drop=FALSE], 1, row_min)
+      dist_col = apply(phenotype_dist, 1, row_min)
+
+      # Find the index of the minimum distance > 0
+      # and use this to index the Cell IDs of the target phenotypes
+      which_dist_col = apply(phenotype_dist, 1, which_row_min)
+      cell_id_col = csd$`Cell ID`[phenotype_cells][which_dist_col]
+      pheno_cols = tibble::tibble(dist_col, cell_id_col)
     }
     else {
-      phenotype_mins = rep(NA_real_, nrow(csd))
+      # No cells of the selected phenotype
+      na_col = rep(NA_integer_, nrow(csd))
+      pheno_cols = tibble::tibble(dist_col=na_col, cell_id_col=na_col)
     }
-    phenotype_mins
+    pheno_cols  %>%
+      rlang::set_names(paste(c('Distance to', 'Cell ID'), name))
   })
-  # The names for the new columns
-  names(result) = paste('Distance to', names(phenotypes))
-
-  tibble::as_tibble(result)
 }
 
 #' `rtree`-based implementation of `find_nearest_distance`.
@@ -152,7 +163,8 @@ find_nearest_distance_dist = function(csd, phenotypes=NULL, dst=NULL) {
 #' @param phenotypes Optional list of phenotypes to include. If omitted,
 #' `unique_phenotypes(csd)` will be used.
 #' @return A `tibble` containing a `Distance to <phenotype>` column
-#' for each phenotype. Will contain `NA` values where there is no other cell
+#' and `Cell ID <phenotype>` column for each phenotype.
+#' Columns will contain `NA` values where there is no other cell
 #' of the phenotype.
 #' @seealso find_nearest_distance
 #' @md
@@ -164,8 +176,10 @@ find_nearest_distance_rtree <- function(csd, phenotypes=NULL) {
   phenotypes = validate_phenotypes(phenotypes, csd)
   field_locs = csd %>%
     dplyr::select(X=`Cell X Position`, Y=`Cell Y Position`)
+  field_ids = csd$`Cell ID`
 
-  result = lapply(phenotypes, FUN=function(phenotype) {
+  result = purrr::map2_dfc(names(phenotypes), phenotypes,
+                           function(name, phenotype) {
     # Which cells are in the target phenotype?
     phenotype_cells = select_rows(csd, phenotype)
 
@@ -173,6 +187,8 @@ find_nearest_distance_rtree <- function(csd, phenotypes=NULL) {
       # Make an rtree of the phenotype cells
       to_cells_locs = field_locs[phenotype_cells,]
       to_cells_tree = rtree::RTree(as.matrix(to_cells_locs))
+
+      to_cells_ids = field_ids[phenotype_cells]
 
       # Find nearest neighbor. Get two nearest neighbors so we can
       # discard self when self is a member of the "to" phenotype.
@@ -201,8 +217,11 @@ find_nearest_distance_rtree <- function(csd, phenotypes=NULL) {
       # knn gives us the indices of nearest cells, we want distance
       # Look up to_cells_nn in to_cells_locs, combine with field_locs,
       # and compute distance. We have to do this n_nn times and take
-      # the minimum > 0
-      dist_col = purrr::map_dfc(1:(dim(to_cells_nn)[2]), # For each nearest neighbor
+      # the minimum > 0.
+      # First compute all the distances, giving a list of
+      # lists of length dim(to_cells_nn)
+      all_distances = purrr::map_dfc(1:(dim(to_cells_nn)[2]),
+                                      # For each nearest neighbor
         ~{
           # Convert indices of nearest neighbors to locations
           # The neighbors are to_cells.
@@ -215,21 +234,30 @@ find_nearest_distance_rtree <- function(csd, phenotypes=NULL) {
             dplyr::mutate(dist = sqrt( (X-X1)^2 + (Y-Y1)^2 )) %>%
             dplyr::pull()
         }) %>%
-        purrr::transpose() %>% # Get each row as a list
-        purrr::map_dbl(~row_min(unlist(.x))) # Min > 0 or NA
+        purrr::transpose() # Get each row as a list
+
+      # The actual minimum distances
+      dist_col = all_distances %>%
+        purrr::map_dbl(~row_min(unlist(.x)))
+
+      # Get the index to the minimum item > 0 in each list
+      which_dist_col = all_distances %>%
+        purrr::map_dbl(~which_row_min(unlist(.x))) # Index of Min > 0 or NA
+
+      # Applying which_dist_col to to_cells_nn gives indices into to_cells_ids
+      # which then gives us actual cell IDs.
+      cell_id_ix = to_cells_nn[cbind(seq_along(which_dist_col), which_dist_col)]
+      cell_id_col = to_cells_ids[cell_id_ix]
+      pheno_cols = tibble::tibble(dist_col, cell_id_col)
     }
     else {
       # No cells of the selected phenotype
-      dist_col = rep(NA_real_, nrow(csd))
+      na_col = rep(NA_integer_, nrow(csd))
+      pheno_cols = tibble::tibble(dist_col=na_col, cell_id_col=na_col)
     }
-    dist_col
+    pheno_cols  %>%
+      rlang::set_names(paste(c('Distance to', 'Cell ID'), name))
   })
-
-  # The names for the new columns
-  names(result) = paste('Distance to', names(phenotypes))
-
-  tibble::as_tibble(result)
-
 }
 
 # Find the minimum value > 0 in row
@@ -237,6 +265,17 @@ find_nearest_distance_rtree <- function(csd, phenotypes=NULL) {
 row_min = function(row) {
   row = row[!is.na(row) & row>0]
   if (length(row) > 0) min(row) else NA
+}
+
+# Find the index of the minimum value > 0 in row
+# If none, return NA
+which_row_min = function(row) {
+  good_values = (!is.na(row) & row>0)
+  if (sum(good_values) == 0) return(NA_integer_) # Nothing to see here
+
+  # Replace bad values with Inf so we can find the min of the rest
+  row[!good_values] = Inf
+  return(which.min(row))
 }
 
 #' Create a distance matrix from cell seg data.

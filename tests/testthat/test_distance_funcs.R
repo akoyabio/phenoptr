@@ -39,9 +39,12 @@ test_that("find_nearest_distance works", {
   csd = read_cell_seg_data(path)
   phenos = sort(unique(csd$Phenotype))
   nearest = find_nearest_distance_dist(csd)
-  expect_equal(ncol(nearest), length(phenos))
+  expect_equal(ncol(nearest), 2*length(phenos))
   expect_equal(nrow(nearest), nrow(csd))
-  expect_equal(names(nearest), paste('Distance to', phenos))
+  expect_equal(names(nearest)[seq(1, 2*length(phenos), 2)],
+               paste('Distance to', phenos))
+  expect_equal(names(nearest)[seq(2, 2*length(phenos), 2)],
+               paste('Cell ID', phenos))
 
   # Spot check some cells where nearest neighbors are clear from inspection
   dst = distance_matrix(csd)
@@ -65,15 +68,21 @@ test_that("find_nearest_distance works", {
   # Compare with rtree version
   nearest_rtree = find_nearest_distance_rtree(csd)
 
-  # expect_equal (and all.equal) is weird with data frames.
-  # Check each column separately.
-  expect_equal(nearest[[1]], nearest_rtree[[1]])
-  expect_equal(nearest[[2]], nearest_rtree[[2]])
-  expect_equal(nearest[[3]], nearest_rtree[[3]])
+  # There are two places where Cell ID B is different
+  # because there are two cells at the same distance and the two methods
+  # find different ones.
+  diff_b = c(76, 154)
+  expect_equal(nearest$`Cell ID B`[diff_b], c(72, 142))
+  expect_equal(nearest_rtree$`Cell ID B`[diff_b], c(92, 144))
+
+  # The rest should match
+  # all.equal.tbl_df is broken, coerce to data.frame.
+  expect_equal(as.data.frame(nearest)[-diff_b,],
+               as.data.frame(nearest_rtree)[-diff_b,])
 
   phenos = c(phenos, 'other') # A mising phenotype
   nearest = find_nearest_distance_dist(csd, phenos)
-  expect_equal(ncol(nearest), length(phenos))
+  expect_equal(ncol(nearest), 2*length(phenos))
   expect_equal(nearest$`Distance to other`, rep(NA_real_, nrow(csd)))
 
   nearest_rtree = find_nearest_distance_rtree(csd, phenos)
@@ -96,16 +105,17 @@ test_that('compute_all_nearest_distance works', {
 
   # The result for the sample data should be the same
   csd = read_cell_seg_data(path)
-  nearby = find_nearest_distance_dist(csd)
+  nearby = find_nearest_distance(csd)
   all_d_2 = all_d %>%
     dplyr::filter(`Sample Name`=="FIHC4__0929309_HP_IM3_2.im3") %>%
     dplyr::arrange(`Cell ID`) %>%
     dplyr::select(`Distance to B`,
+                  `Cell ID B`,
                   `Distance to Cytotoxic T`,
-                  `Distance to Helper T`)
-  expect_equal(all_d_2[[1]], nearby[[1]])
-  expect_equal(all_d_2[[2]], nearby[[2]])
-  expect_equal(all_d_2[[3]], nearby[[3]])
+                  `Cell ID Cytotoxic T`,
+                  `Distance to Helper T`,
+                  `Cell ID Helper T`)
+  expect_equivalent(as.data.frame(all_d_2), as.data.frame(nearby))
 
   file.remove(out_path)
 
@@ -119,15 +129,49 @@ test_that('compute_all_nearest_distance works', {
   expect_equal(nrow(all_d), 66+68+270+215)
 
   # The result for the sample data should be the same
+  # Column names are different
   all_d_2 = all_d %>%
     dplyr::filter(`Sample Name`=="FIHC4__0929309_HP_IM3_2.im3") %>%
     dplyr::arrange(`Cell ID`) %>%
     dplyr::select(`Distance to B`=`Distance to B+`,
+                  `Cell ID B` = `Cell ID B+`,
                   `Distance to Cytotoxic T`=`Distance to Cytotoxic_T+`,
-                  `Distance to Helper T`=`Distance to Helper_T+`)
-  expect_equal(all_d_2[[1]], nearby[[1]])
-  expect_equal(all_d_2[[2]], nearby[[2]])
-  expect_equal(all_d_2[[3]], nearby[[3]])
+                  `Cell ID Cytotoxic T` = `Cell ID Cytotoxic_T+`,
+                  `Distance to Helper T`=`Distance to Helper_T+`,
+                  `Cell ID Helper_T` = `Cell ID Helper_T+`)
+  expect_equivalent(as.data.frame(all_d_2), as.data.frame(nearby))
 
   file.remove(out_path)
+})
+
+test_that("which_row_min works", {
+  tests = list(
+    # Check all possibilities with rows of length 2
+    c(1, 2),
+    c(2, 1),
+    c(0, 2),
+    c(2, 0),
+    c(NA, 2),
+    c(2, NA),
+    c(0, NA),
+    c(NA, 0),
+    c(NA, NA),
+    c(0, 0),
+
+    # Check a few longer ones too
+    c(5, 4, 0),
+    c(5, NA, 0),
+    c(0, 4, 0),
+    c(0, NA, 0),
+    c(0, 0, 0),
+    c(NA, NA, NA)
+  )
+
+  # Indices in the vectors of `test` which have the smallest
+  # non-zero, non-NA value.
+  expected = c(1, 2, 2, 1, 2, 1, NA, NA, NA, NA,
+               2, 1, 2, NA, NA, NA)
+
+  purrr::walk2(tests, expected,
+               ~expect_equal(which_row_min(.x), .y, info=.x))
 })
