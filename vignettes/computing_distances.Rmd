@@ -8,8 +8,10 @@ output:
     toc: true
 vignette: >
   %\VignetteIndexEntry{Computing inter-cellular distances}
-  %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
 ---
 
 
@@ -18,7 +20,7 @@ library(dplyr)
 library(ggplot2)
 knitr::opts_chunk$set(fig.width=7, fig.height=5, 
                       comment=NA, warning=FALSE, message=FALSE)
-theme_set(theme_bw())
+theme_set(theme_minimal())
 # No figure margins
 par(mar=rep(0, 4))
 ```
@@ -40,10 +42,11 @@ relationship between cells in a single field.
 ### Computing with `find_nearest_distance`
 
 The `find_nearest_distance` function finds per-cell nearest neighbor distances.
-For each cell in a sample, it finds the distances to the nearest neighbor
-cells in each of the provided phenotypes. 
-The distances are returned in a `tibble` with
-one column per phenotype.
+For each cell in a sample, it finds the nearest neighbor
+cell in each of the provided phenotypes and reports the cell ID and distance
+to the nearest neighbor cell.
+Results are returned in a `tibble` with
+a `Distance to` and `Cell ID` column per phenotype.
 
 For example, the `phenoptr` sample data `sample_cell_seg_data` contains
 `r length(unique(phenoptr::sample_cell_seg_data$Phenotype))` unique
@@ -67,7 +70,9 @@ csd <- csd %>% filter(Phenotype!='other')
 ```
 
 Calling `find_nearest_distance` on this file returns a `tibble` with 
-four columns and one row for each cell:
+two columns for each phenotype and one row for each cell. The 
+`Distance to <phenotype>` columns give the distance to the nearest cell
+of the phenotype; the `Cell ID <phenotype>` columns identify the nearest cell.
 
 ```{r}
 distances <- find_nearest_distance(csd)
@@ -81,13 +86,15 @@ To create a combined data frame, use `dplyr::bind_cols`.
 csd_with_distance <- bind_cols(csd, distances)
 ```
 
-Note: Cell positions in a cell seg data file are relative to the 
-top-left corner of the field, 
-so calling `find_nearest_distance` on a merged data file will 
-compute incorrect values. One 
-way to add distance columns to a merged data file is to use `dplyr::group_by`
+Note: The origin for cell positions in a cell seg data file may be the slide
+origin or the field origin,
+depending on the inForm version and the selected option.
+The field origin is the top-left corner of the field, 
+so calling `find_nearest_distance` on a merged data file with field positions
+will compute incorrect values. One 
+way to add distance columns to such a merged data file is to use `dplyr::group_by`
 to process each field separately. For example, if `merged` contains merged
-cell seg data, add distance columns with this code:
+cell seg data with field positions, add distance columns with this code:
 
 ```{r eval=FALSE}
 merged_with_distance <- merged %>%
@@ -111,7 +118,76 @@ Show the distribution of distances in a density plot:
 
 ```{r}
 ggplot(csd_with_distance, aes(`Distance to CD8+`, color=Phenotype)) +
-  geom_density(size=1) + theme_minimal()
+  geom_density(size=1)
+```
+
+### Visualizing nearest neighbors
+
+The `Cell ID <phenotype>` column allows 
+visualizing nearest neighbors by joining the combined cell seg table
+with itself. For example, to show the nearest CK+ cell
+for each CD8+ cell, join the `Cell ID CK+` field to the original `Cell ID`
+field. This example filters the data before joining.
+
+```{r}
+# Filter to just CD8+ and CK+ cells
+cd8_cells = csd_with_distance %>% filter(select_rows(csd_with_distance, 'CD8+'))
+ck_cells = csd_with_distance %>% filter(select_rows(csd_with_distance, 'CK+'))
+
+# For each CD8+ cell, join with the data for the nearest CK+ cell
+cd8_to_ck = cd8_cells %>% left_join(ck_cells, by=c('Cell ID CK+'='Cell ID'),
+                                    suffix=c('', '.CK'))
+```
+
+Show the CD8+ and CK+ cells with the nearest neigbors connected:
+
+```{r}
+ggplot(cd8_to_ck, mapping=aes(`Cell X Position`, `Cell Y Position`)) +
+  geom_segment(aes(xend=`Cell X Position.CK`, yend=`Cell Y Position.CK`),
+               size=1) +
+  geom_point(data=ck_cells, aes(color='CK+')) +
+  geom_point(data=cd8_cells, aes(color='CD8+')) +
+  scale_color_manual('Phenotype', values=c('CD8+'='red', 'CK+'='cyan2')) +
+  labs(title='Nearest CK+ to each CD8+')
+```
+
+To show the nearest CD8+ for each CK+, join in the other direction;
+for each CK+ cell, find the nearest CD8+ cell:
+
+```{r}
+ck_to_cd8 = ck_cells %>% left_join(cd8_cells, by=c('Cell ID CD8+'='Cell ID'),
+                                    suffix=c('', '.CD8'))
+ggplot(ck_to_cd8, mapping=aes(`Cell X Position`, `Cell Y Position`)) +
+  geom_segment(aes(xend=`Cell X Position.CD8`, yend=`Cell Y Position.CD8`),
+               size=1) +
+  geom_point(data=ck_cells, aes(color='CK+')) +
+  geom_point(data=cd8_cells, aes(color='CD8+')) +
+  scale_color_manual('Phenotype', values=c('CD8+'='red', 'CK+'='cyan2')) +
+  labs(title='Nearest CD8+ to each CK+')
+```
+
+### Mutual nearest neighbors
+
+Mutual nearest neighbors are cells which have each other as nearest neighbors;
+i.e. cells where the nearest neighbor of the nearest
+neighbor is the starting cell:
+
+```{r}
+mutual = ck_to_cd8 %>% filter(`Cell ID`==`Cell ID CK+.CD8`)
+```
+
+This data set contains `r nrow(mutual)` mutual nearest neighbor pairs
+between CD8+ and CK+ cells. 
+
+```{r}
+ggplot(mutual, mapping=aes(`Cell X Position`, `Cell Y Position`)) +
+  geom_segment(aes(xend=`Cell X Position.CD8`, yend=`Cell Y Position.CD8`),
+               size=1) +
+  geom_point(data=ck_cells, aes(color='CK+')) +
+  geom_point(data=cd8_cells, aes(color='CD8+')) +
+  scale_color_manual('Phenotype', values=c('CD8+'='red', 'CK+'='cyan2')) +
+  labs(title='Mutual nearest neighbors - CD8+ and CK+')
+
 ```
 
 ----
@@ -179,7 +255,7 @@ for additional details.
 
 ----
 
-## Visualizing nearest neighbors
+## Spatial distribution report
 
 The `spatial_distribution_report` function is a bit different from the other
 functions

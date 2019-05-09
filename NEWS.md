@@ -5,7 +5,8 @@ New feature (and breaking change):
   `find_nearest_distance` now create columns containing the Cell ID
   of the nearest cell, as well as the columns with the actual distance.
   This column can be used to find the locations of nearest cells
-  and to find mutual nearest neighbors.
+  and to find mutual nearest neighbors. The "Computing inter-cell
+  distances" tutorial shows some uses of this data.
   
 Bug fixes:
 - `read_cell_seg_data` recognizes and correctly reads inForm data 
