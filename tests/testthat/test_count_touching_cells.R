@@ -3,11 +3,12 @@ library(testthat)
 
 test_that('count_touching_cells works', {
   cell_seg_path =
-    file.path('test_data',
+    test_path('test_data',
               'FIHC4__0929309_HP_IM3_2_cell_seg_data.txt')
 
   pairs = list(c("Helper T", "B"),
                c("Helper T", "Cytotoxic T"),
+               c("Helper T", "Helper T"),
                c("Helper T", "FOO+"))
 
   # Colors for all the phenotypes mentioned in pairs
@@ -21,13 +22,19 @@ test_that('count_touching_cells works', {
   output_base = tempdir()
 
   # Error checking
-  expect_error(count_touching_cells(cell_seg_path, pairs, write_images=TRUE),
-               'requires colors')
-  expect_error(count_touching_cells(cell_seg_path, pairs,
-                                    colors=list('CD8+' = 'yellow')),
-               'requires colors')
+  # These get an error *and* a warning
+  expect_warning(
+    expect_error(count_touching_cells(cell_seg_path, pairs, write_images=TRUE),
+                 'requires colors'),
+    'Omitting')
 
-  # This one should work
+  expect_warning(
+    expect_error(count_touching_cells(cell_seg_path, pairs,
+                                    colors=list('CD8+' = 'yellow')),
+               'requires colors'),
+    'Omitting')
+
+  # This one works with warnings
   expect_warning(counts <- count_touching_cells(cell_seg_path, pairs, colors,
                                                 categories='Tumor',
                                                 output_base=output_base),

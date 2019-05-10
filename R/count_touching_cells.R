@@ -45,7 +45,9 @@
 #'   `write_images` is true, a  TIFF or JPEG composite image from inForm.
 #' @param pairs A list of pairs of phenotypes. Each entry is a two-element
 #'   vector. The result will contain one line for each pair showing the
-#'   number of cells and number of touches.
+#'   number of cells and number of touches. Pairs must match two different
+#'   sets of cells; in particular, touches of a phenotype to itself are
+#'   not supported.
 #' @param colors A named list of phenotype colors to use when drawing
 #'   the output. Only used when `write_images` is `TRUE`.
 #' @param phenotype_rules (Optional) A named list.
@@ -153,6 +155,17 @@ count_touching_cells <- function(cell_seg_path, pairs, colors=NULL,
   # Allow a single pair to be specified as a plain vector
   if (is.character(pairs) && length(pairs)==2)
     pairs = list(pairs)
+
+  # Don't allow pairs of self to self
+  equal_pairs = purrr::map_lgl(pairs, ~.x[1]==.x[2])
+  if (any(equal_pairs)) {
+    warning('count_touching_cells does not count self touching self.\n',
+            'Omitting ',
+            paste(purrr::map_chr(pairs[equal_pairs],
+                                 ~paste(.x, collapse=' - ')),
+                  collapse=', '))
+    pairs = pairs[!equal_pairs]
+  }
 
   # Make phenotype_rules for any not already specified
   phenotypes = unique(do.call(c, pairs))

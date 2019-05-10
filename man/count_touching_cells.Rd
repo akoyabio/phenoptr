@@ -15,7 +15,9 @@ must also contain \code{_memb_seg_map.tif} or \code{_binary_seg_maps.tif} and, i
 
 \item{pairs}{A list of pairs of phenotypes. Each entry is a two-element
 vector. The result will contain one line for each pair showing the
-number of cells and number of touches.}
+number of cells and number of touches. Pairs must match two different
+sets of cells; in particular, touches of a phenotype to itself are
+not supported.}
 
 \item{colors}{A named list of phenotype colors to use when drawing
 the output. Only used when \code{write_images} is \code{TRUE}.}
