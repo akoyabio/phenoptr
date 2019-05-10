@@ -139,7 +139,7 @@ cd8_to_ck = cd8_cells %>% left_join(ck_cells, by=c('Cell ID CK+'='Cell ID'),
                                     suffix=c('', '.CK'))
 ```
 
-Show the CD8+ and CK+ cells with the nearest neigbors connected:
+Show the CD8+ and CK+ cells with the nearest neighbors connected:
 
 ```{r}
 ggplot(cd8_to_ck, mapping=aes(`Cell X Position`, `Cell Y Position`)) +

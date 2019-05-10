@@ -39,6 +39,7 @@ rtree
 Rubak
 seg
 sel
+SpatialDistributionReport
 stroma
 tibble
 tidyverse
