@@ -70,7 +70,7 @@ having a 'to' cell within radius microns." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">phenoptr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
       </span>
     </div>
 
@@ -194,7 +194,7 @@ Item values are selectors for <code><a href='select_rows.html'>select_rows()</a>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A <code>data_frame</code> containing these columns:</p><dl class='dl-horizontal'>
+    <p>A <code>tibble</code> containing these columns:</p><dl class='dl-horizontal'>
 <dt><code>slide_id</code></dt><dd><p>Slide ID from the data files, if available.</p></dd>
 <dt><code>source</code></dt><dd><p>Base file name of the source file with
 <code>_cell_seg_data.txt</code> stripped off for brevity.</p></dd>
@@ -237,7 +237,7 @@ the use of <code>pairs</code> and <code>phenotype_rules</code>.</p>
              <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>'CK+'</span>, <span class='st'>'CD8+'</span>))
 <span class='no'>radius</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>10</span>, <span class='fl'>25</span>)
 <span class='no'>category</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='st'>'Tumor'</span>, <span class='st'>'Stroma'</span>)
-<span class='fu'>count_within_batch</span>(<span class='no'>base_path</span>, <span class='no'>pairs</span>, <span class='no'>radius</span>, <span class='no'>category</span>)</div><div class='output co'>#&gt; Processing Set4_1-6plex_[16142,55840] </div><div class='output co'>#&gt; <span class='message'>Loading required namespace: rtree</span></div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 8 x 10</span><span>
+<span class='fu'>count_within_batch</span>(<span class='no'>base_path</span>, <span class='no'>pairs</span>, <span class='no'>radius</span>, <span class='no'>category</span>)</div><div class='output co'>#&gt; Processing Set4_1-6plex_[16142,55840] </div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 8 x 10</span><span>
 #&gt;   slide_id source category from  to    radius from_count to_count from_with
 #&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>
 #&gt; </span><span style='color: #555555;'>1</span><span> Set4_1-~ Set4_~ Tumor    CK+   CD68+     10       </span><span style='text-decoration: underline;'>2</span><span>192      101        79

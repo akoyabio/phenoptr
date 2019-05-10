@@ -60,7 +60,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">phenoptr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.6.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
       </span>
     </div>
 
@@ -69,13 +69,13 @@
         <li>
   <a href="../index.html">
     <span class="fa fa-home fa-lg"></span>
-
+     
   </a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
     Tutorials
-
+     
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
@@ -100,38 +100,55 @@
   <a href="../reference/index.html">Reference</a>
 </li>
       </ul>
-
+      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="../news/index.html">
     <span class="fa fa-newspaper-o"></span>
-
+     
     news
   </a>
 </li>
 <li>
   <a href="https://github.com/akoyabio/phenoptr">
     <span class="fa fa-github fa-lg"></span>
-
+     
     github
   </a>
 </li>
       </ul>
-
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-
+      
       </header>
 
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
       <h1>Changelog <small></small></h1>
-
+      
     </div>
 
+    <div id="phenoptr-020" class="section level1">
+<h1 class="page-header">
+<a href="#phenoptr-020" class="anchor"></a>phenoptr 0.2.0</h1>
+<p><strong>2019-05-10</strong></p>
+<p>New feature (and breaking change):</p>
+<ul>
+<li>The nearest neighbor functions <code>compute_all_nearest_distance</code> and <code>find_nearest_distance</code> now create columns containing the Cell ID of the nearest cell, as well as the columns with the actual distance. This column can be used to find the locations of nearest cells and to find mutual nearest neighbors. The “Computing inter-cell distances” tutorial shows some uses of this data.</li>
+</ul>
+<p>Bug fixes:</p>
+<ul>
+<li>
+<code>read_cell_seg_data</code> recognizes and correctly reads inForm data which uses comma as the decimal separator (#8).</li>
+<li>Fix SpatialDistributionReport to work with more than 8 phenotypes (#6).</li>
+<li>
+<code>count_touching_cells</code> ignores phenotype pairs of self to self with a warning because the touching algorithm does not handle this case (#7).</li>
+</ul>
+</div>
     <div id="phenoptr-0161" class="section level1">
 <h1 class="page-header">
 <a href="#phenoptr-0161" class="anchor"></a>phenoptr 0.1.6.1</h1>
@@ -340,6 +357,7 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#phenoptr-020">0.2.0</a></li>
         <li><a href="#phenoptr-0161">0.1.6.1</a></li>
         <li><a href="#phenoptr-016">0.1.6</a></li>
         <li><a href="#phenoptr-015">0.1.5</a></li>
@@ -372,7 +390,7 @@
       </footer>
    </div>
 
-
+  
 
   </body>
 </html>

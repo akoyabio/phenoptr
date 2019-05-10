@@ -68,7 +68,7 @@ be done." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">phenoptr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
       </span>
     </div>
 
@@ -180,7 +180,7 @@ remove the unit name from expression columns.</p></td>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A <code><a href='https://tibble.tidyverse.org/reference/deprecated.html'>data_frame</a></code>
+    <p>A <code><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble</a></code>
         containing the cleaned-up data set.</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
@@ -223,7 +223,7 @@ the cell coordinates are offset to the correct spatial location.</p>
 #&gt;    417    228   2257    228   2942 </div><div class='input'>
 </div><span class='co'># NOT RUN {</span>
 <span class='co'># Use purrr::map_df to read all cell seg files in a directory</span>
-<span class='co'># and return a single data_frame.</span>
+<span class='co'># and return a single tibble.</span>
 <span class='no'>paths</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='list_cell_seg_files.html'>list_cell_seg_files</a></span>(<span class='no'>path</span>)
 <span class='no'>csd</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>purrr</span><span class='kw ns'>::</span><span class='fu'><a href='https://purrr.tidyverse.org/reference/map.html'>map_df</a></span>(<span class='no'>paths</span>, <span class='no'>read_cell_seg_data</span>)
 <span class='co'># }</span></pre>

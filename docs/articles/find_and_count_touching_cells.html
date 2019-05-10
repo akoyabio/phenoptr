@@ -30,7 +30,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">phenoptr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
       </span>
     </div>
 
@@ -100,7 +100,7 @@
       <h1>Find and count touching cells</h1>
                         <h4 class="author">Kent Johnson</h4>
             
-            <h4 class="date">2019-04-12</h4>
+            <h4 class="date">2019-05-10</h4>
       
       
       <div class="hidden name"><code>find_and_count_touching_cells.Rmd</code></div>
@@ -173,7 +173,7 @@ See the tutorial <a href="https://akoyabio.github.io/phenoptr/articles/selecting
 <a class="sourceLine" id="cb4-13" title="13">  <span class="kw"><a href="../reference/count_touching_cells.html">count_touching_cells</a></span>(path, pairs, colors, phenotype_rules,</a>
 <a class="sourceLine" id="cb4-14" title="14">                       <span class="dt">output_base=</span>output_base)</a>
 <a class="sourceLine" id="cb4-15" title="15">})</a></code></pre></div>
-<p>The result of the above is a <code>data_frame</code> which may be written to a CSV file:</p>
+<p>The result of the above is a <code>tibble</code> which may be written to a CSV file:</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1">touches_path &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/file.path">file.path</a></span>(output_base, <span class="st">'TouchCounts.csv'</span>)</a>
 <a class="sourceLine" id="cb5-2" title="2">readr<span class="op">::</span><span class="kw"><a href="https://readr.tidyverse.org/reference/write_delim.html">write_csv</a></span>(touch_counts, touches_path)</a></code></pre></div>
 <div class="panel panel-default">

@@ -30,7 +30,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">phenoptr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
       </span>
     </div>
 
@@ -100,7 +100,7 @@
       <h1>Reading and exploring inForm tables</h1>
                         <h4 class="author">Kent Johnson</h4>
             
-            <h4 class="date">2019-04-12</h4>
+            <h4 class="date">2019-05-10</h4>
       
       
       <div class="hidden name"><code>reading_tables.Rmd</code></div>
@@ -160,7 +160,7 @@ table {
 [3] "Nucleus FoxP3 (Opal 570) Mean" "Nucleus CD68 (Opal 620) Mean" 
 [5] "Nucleus PD1 (Opal 650) Mean"   "Nucleus CK (Opal 690) Mean"   
 [7] "Nucleus DAPI Mean"             "Nucleus Autofluorescence Mean"</code></pre>
-<p>The value returned from <code>read_cell_seg_data</code> is a <code>data_frame</code> (also known as a <code>tibble</code> <a href="http://tibble.tidyverse.org/"><i class="fa fa-external-link"></i></a> - the <a href="http://tidyverse.org/">tidyverse</a> version of a <code>data.frame</code>) and can be inspected as you would any other <code>data_frame</code>.</p>
+<p>The value returned from <code>read_cell_seg_data</code> is a <code>tibble</code> <a href="http://tibble.tidyverse.org/"><i class="fa fa-external-link"></i></a> - the <a href="http://tidyverse.org/">tidyverse</a> version of a <code>data.frame</code> - which can be inspected as you would any other <code>tibble</code>.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1"><span class="co"># How many cells did we read?</span></a>
 <a class="sourceLine" id="cb3-2" title="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/nrow">nrow</a></span>(csd)</a></code></pre></div>
 <pre><code>[1] 6072</code></pre>

@@ -1,4 +1,5 @@
-# phenoptr 0.1.6.9000
+# phenoptr 0.2.0
+**2019-05-10**
 
 New feature (and breaking change):
 - The nearest neighbor functions `compute_all_nearest_distance` and
