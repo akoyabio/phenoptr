@@ -120,8 +120,9 @@ test_that('compute_all_nearest_distance works', {
   file.remove(out_path)
 
   # Repeat with a consolidated file
-  merge_path = test_path('test_data',
-                         'consolidated/FIHC4_consolidated_merge_cell_seg_data.txt')
+  merge_path =
+    test_path('test_data',
+              'consolidated/FIHC4_consolidated_merge_cell_seg_data.txt')
   out_path = tempfile()
   compute_all_nearest_distance(merge_path, out_path)
   expect_true(file.exists(out_path))

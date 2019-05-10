@@ -81,7 +81,8 @@ test_that("read_cell_seg_data works", {
           ))
 
   expect_equal(as.character(d[1, 'Cell ID']), 'all')
-  expect_equal(as.numeric(d[1, 'Tissue Category Area (square microns)']), 89904/4)
+  expect_equal(as.numeric(d[1, 'Tissue Category Area (square microns)']),
+               89904/4)
   expect_equal(as.numeric(d[1, 'Cell Density (per square mm)']), 2770*4)
   expect_equal(as.numeric(d[1, 'Nucleus Area (percent)']), 0.5961)
 })

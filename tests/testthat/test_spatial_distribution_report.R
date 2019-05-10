@@ -34,7 +34,8 @@ test_that('spatial_distribution_report works with consolidated data', {
     dplyr::filter(`Sample Name`=="FIHC4__0929309_HP_IM3_2.im3")
 
   temp_dir = tempdir()
-  cell_seg_path =  file.path(temp_dir, "FIHC4__0929309_HP_IM3_2_cell_seg_data.txt")
+  cell_seg_path =  file.path(temp_dir,
+                             "FIHC4__0929309_HP_IM3_2_cell_seg_data.txt")
   readr::write_tsv(csd, cell_seg_path)
   file.copy(file.path('test_data',
                       'FIHC4__0929309_HP_IM3_2_component_data.tif'),

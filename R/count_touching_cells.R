@@ -185,7 +185,8 @@ count_touching_cells <- function(cell_seg_path, pairs, colors=NULL,
       composite_path = sub('tif', 'jpg', composite_path)
 
     if (!file.exists(composite_path))
-      stop('count_touching_cells requires a matching TIFF or JPEG composite image when write_images is TRUE.')
+      stop('count_touching_cells requires a matching TIFF or JPEG ',
+           'composite image when write_images is TRUE.')
   }
 
   # Make the output directory
@@ -237,7 +238,8 @@ count_touching_cells <- function(cell_seg_path, pairs, colors=NULL,
 
     masks = read_maps(mask_path)
     if (!all(c('Membrane', 'Nucleus') %in% names(masks)))
-      stop('binary_seg_maps file must contain nuclear and membrane segmentation.')
+      stop('binary_seg_maps file must contain ',
+           'nuclear and membrane segmentation.')
 
     membrane = masks[['Membrane']]
 
@@ -463,7 +465,8 @@ find_touching_cell_pairs <- function (i1, i2, extra_size) {
   # Order doesn't matter here, we are looking for kissing pairs.
   kernel = EBImage::makeBrush(3, shape='diamond')
   i1_big = EBImage::dilate(i1, EBImage::makeBrush(3, shape='diamond'))
-  i2_big = EBImage::dilate(i2, EBImage::makeBrush(3+extra_size, shape='diamond'))
+  i2_big = EBImage::dilate(i2,
+                           EBImage::makeBrush(3+extra_size, shape='diamond'))
 
   # Find p1s touching p2s as pairs.
   overlap = cbind(as.numeric(i1_big), as.numeric(i2_big))

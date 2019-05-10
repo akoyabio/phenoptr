@@ -70,7 +70,8 @@ parse_phenotypes = function(...) {
     if (stringr::str_detect(pheno, '/')) {
       # Can't have comma and slash
       if (stringr::str_detect(pheno, ','))
-        stop(paste("Phenotype selectors may not contain both '/' and '.':", pheno))
+        stop(paste("Phenotype selectors may not contain both '/' and '.':",
+                   pheno))
       as.list(split_and_trim(pheno, '/'))
     }
 
@@ -81,7 +82,8 @@ parse_phenotypes = function(...) {
     else if (stringr::str_detect(pheno, '[+-]$')) pheno
 
     # Contains Total or All returns NA which signals "Select All"
-    else if (stringr::str_detect(pheno, stringr::regex('Total|All', ignore_case=TRUE)))
+    else if (stringr::str_detect(pheno, stringr::regex('Total|All',
+                                                       ignore_case=TRUE)))
       NA
     else stop(paste("Unrecognized phenotype selector:", pheno))
   }) %>%

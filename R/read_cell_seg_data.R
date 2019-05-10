@@ -109,7 +109,8 @@ read_cell_seg_data <- function(
   mean_class = mean_cols %>% purrr::map(class)
 
   if (any(mean_class=='character'))
-    stop('Error reading cell seg data: Expression columns have character values')
+    stop('Error reading cell seg data: ',
+         'Expression columns have character values')
 
   # If any of these fields has missing values, the file may be damaged.
   no_na_cols = c("Path", "Sample Name", "Tissue Category", "Phenotype",
@@ -158,7 +159,8 @@ read_cell_seg_data <- function(
       # Get pixels_per_micron and field location from component_data.tif
       component_path = sub('_cell_seg_data.txt', '_component_data.tif', path)
       if(!file.exists(component_path))
-        stop('To convert cell seg data to microns, a matching component data file is required.')
+        stop('To convert cell seg data to microns, ',
+             'a matching component data file is required.')
       info = get_field_info(component_path)
       pixels_per_micron = 1/info$microns_per_pixel
       location = info$location
@@ -213,9 +215,11 @@ force_pixel_locations = function(csd, cell_seg_path) {
   if (unit_is_microns(csd)) {
     # The cell seg file's native unit is microns. Get image info
     # from the component data file and convert back to pixels
-    component_path = sub('_cell_seg_data.txt', '_component_data.tif', cell_seg_path)
+    component_path = sub('_cell_seg_data.txt', '_component_data.tif',
+                         cell_seg_path)
     if(!file.exists(component_path))
-      stop('For cell seg data in microns, a matching component data file is required.')
+      stop('For cell seg data in microns, ',
+           'a matching component data file is required.')
     info = get_field_info(component_path)
     pixels_per_micron = 1/info$microns_per_pixel
     location = info$location

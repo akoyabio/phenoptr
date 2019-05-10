@@ -195,9 +195,11 @@ clean_pairs = function(pairs) {
 count_within_many_impl <- function(csd, name, combos, radii, phenotype_rules) {
   if (getOption('use.rtree.if.available') &&
       requireNamespace('rtree', quietly=TRUE))
-    counts = count_within_many_impl_rtree(csd, name, combos, radii, phenotype_rules)
+    counts = count_within_many_impl_rtree(
+      csd, name, combos, radii, phenotype_rules)
   else
-    counts = count_within_many_impl_dist(csd, name, combos, radii, phenotype_rules)
+    counts = count_within_many_impl_dist(
+      csd, name, combos, radii, phenotype_rules)
 
   # Add columns for slide and source
   counts = counts %>%
@@ -221,7 +223,8 @@ count_within_many_impl <- function(csd, name, combos, radii, phenotype_rules) {
 #' @param phenotype_rules Named list of phenotype rules.
 #' @seealso count_within_many_impl
 #' @md
-count_within_many_impl_dist <- function(csd, name, combos, radii, phenotype_rules) {
+count_within_many_impl_dist <- function(
+    csd, name, combos, radii, phenotype_rules) {
   category = combos %>% purrr::map_chr('category') %>% unique()
 
   # Subset to what we care about, for faster distance calculation
