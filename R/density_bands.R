@@ -1,6 +1,6 @@
 # Suppress CMD CHECK notes for things that look like global vars
 if (getRversion() >= "2.15.1")
-  utils::globalVariables(c("counts", "mids"))
+  utils::globalVariables(c("count", "counts", "mids"))
 
 #' Estimate cell density in bands from a tissue boundary.
 #'
@@ -74,8 +74,6 @@ if (getRversion() >= "2.15.1")
 #' @export
 #' @md
 #' @importFrom magrittr "%>%"
-#' @importFrom foreach "%dopar%"
-#' @import dplyr
 density_bands = function(cell_seg_path, phenotypes, positive, negative,
    width=25, pixels_per_micron=getOption('phenoptr.pixels.per.micron'),
    map_path=NULL)
@@ -151,22 +149,22 @@ density_bands = function(cell_seg_path, phenotypes, positive, negative,
   area = graphics::hist(distance$v, breaks=cut_points, plot=FALSE)
 
   # Normalize by pixel size ^ 2
-  areas = as_tibble(area[c('mids', 'counts')]) %>%
-    mutate(area = counts / pixels_per_micron^2) %>%
-    select(-counts)
+  areas = tibble::as_tibble(area[c('mids', 'counts')]) %>%
+    dplyr::mutate(area = counts / pixels_per_micron^2) %>%
+    dplyr::select(-counts)
 
   # Count cells for each phenotype separately
-  cell_counts = csd %>% group_by(Phenotype) %>%
-    summarize(count =
+  cell_counts = csd %>% dplyr::group_by(Phenotype) %>%
+    dplyr::summarize(count =
             list(graphics::hist(distance, breaks=cut_points, plot=FALSE))) %>%
-    mutate(count = purrr::map(count,
-                              ~as_tibble(.x[c('mids', 'counts')]))) %>%
+    dplyr::mutate(count = purrr::map(count,
+                              ~tibble::as_tibble(.x[c('mids', 'counts')]))) %>%
     tidyr::unnest() %>%
-    rename(count=counts, phenotype=Phenotype)
+    dplyr::rename(count=counts, phenotype=Phenotype)
 
-  densities = cell_counts %>% inner_join(areas, by='mids') %>%
-    mutate(density=count/area) %>%
-    rename(midpoint=mids)
+  densities = cell_counts %>% dplyr::inner_join(areas, by='mids') %>%
+    dplyr::mutate(density=count/area) %>%
+    dplyr::rename(midpoint=mids)
 
   list(densities=densities, cells=csd, distance=distance)
 }

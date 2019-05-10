@@ -27,7 +27,8 @@ lintr::lint_package()
 # This takes a while to run and requires working R CMD CHECK
 install.packages('goodpractice')
 checks = goodpractice::all_checks()
-checks_to_omit = c("lintr_assignment_linter")
+checks_to_omit = c("covr", "cyclocomp",
+                   "lintr_assignment_linter", "no_description_date")
 checks = setdiff(checks, checks_to_omit)
 (gp=goodpractice::gp(checks=checks))
 

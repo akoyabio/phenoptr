@@ -186,67 +186,65 @@ nn_plot_impl <- function (nn_dist, pheno_data1, pheno_data2, title,
   # Draw non-paired cells fainter than paired cells
   alphas = c(0.3, 1)
   from_alpha = alphas[(pheno_data1$data$`Cell ID` %in% nn_dist$`Cell ID`) + 1]
-  p = p + geom_point(data=pheno_data1$data,
-                     aes(x=`Cell X Position`, y=`Cell Y Position`),
-                     color=pheno_data1$pheno$color, alpha=from_alpha)
+  p = p + ggplot2::geom_point(data=pheno_data1$data,
+                     ggplot2::aes(x=`Cell X Position`, y=`Cell Y Position`),
+                       color=pheno_data1$pheno$color, alpha=from_alpha)
 
   to_alpha = alphas[(pheno_data2$data$`Cell ID` %in% nn_dist$`To Cell ID`) + 1]
-  p = p + geom_point(data=pheno_data2$data,
-                     aes(`Cell X Position`, `Cell Y Position`),
-                     color=pheno_data2$pheno$color, alpha=to_alpha)
+  p = p + ggplot2::geom_point(data=pheno_data2$data,
+                     ggplot2::aes(`Cell X Position`, `Cell Y Position`),
+                       color=pheno_data2$pheno$color, alpha=to_alpha)
   p
 }
 
-#' @import ggplot2
 nn_plot_base = function(title, background, xlim, ylim) {
   # Fake d.f needed to get background to draw...
   if (length(xlim)==1) xlim = c(0, xlim)
   if (length(ylim)==1) ylim = c(0, ylim)
-  p = ggplot(data=data.frame(x=xlim, y=ylim), aes(x=x, y=y))
-  p = p + labs(x='Cell X Position', y='Cell Y Position', title=title)
+  p = ggplot2::ggplot(data=data.frame(x=xlim, y=ylim), ggplot2::aes(x=x, y=y))
+  p = p + ggplot2::labs(x='Cell X Position', y='Cell Y Position', title=title)
   add_scales_and_background(p, background, xlim, ylim)
 }
 
 # Add line segments according to nn_dist
-#' @import ggplot2
 add_dist_data = function(p, nn_dist, lineColor) {
   if (nrow(nn_dist) > 0) {
-    p = p + geom_segment(data = nn_dist,
-                         aes(x=`Cell X Position`,
-                             y=`Cell Y Position`,
-                             xend=`To X Position`,
-                             yend=`To Y Position`),
-                         color=lineColor)
+    p = p + ggplot2::geom_segment(data = nn_dist,
+                     ggplot2::aes(x=`Cell X Position`,
+                                  y=`Cell Y Position`,
+                                  xend=`To X Position`,
+                                  yend=`To Y Position`),
+                     color=lineColor)
   }
   p
 }
 
 # Add scales, scale line and background image to a ggplot object
-#' @import ggplot2
 add_scales_and_background = function(p, background, xlim, ylim) {
   if (length(xlim)==1) xlim = c(0, xlim)
   if (length(ylim)==1) ylim = c(0, ylim)
   # Add scales at the image limits. Reverse the y scale to match the image
-  p = p + scale_x_continuous(limits=xlim) +
-    scale_y_reverse(limits=rev(ylim))
+  p = p + ggplot2::scale_x_continuous(limits=xlim) +
+    ggplot2::scale_y_reverse(limits=rev(ylim))
 
   # Force square aspect ratio
-  p = p + coord_fixed()
+  p = p + ggplot2::coord_fixed()
 
   # Add background image if we have one
   if (length(background) > 1)
   {
-    p = p + annotation_raster(background,
+    p = p + ggplot2::annotation_raster(background,
                               xmin=xlim[1], xmax=xlim[2],
                               ymin=-ylim[1], ymax=-ylim[2])
   }
 
   # Add a 200-micron line segment for scale reference
-  p = p + geom_segment(aes(x=xlim[2]-50-200, xend=xlim[2]-50,
-                           y=ylim[2]-100, yend=ylim[2]-100),
-                       color='black', size=1)
-  p = p + geom_text(aes(x=xlim[2]-50-200/2, y=ylim[2]-90,
-                        label=paste(200, '~mu*m')),
-                    size=3, hjust=0.5, vjust=1, color='black', parse=TRUE)
+  p = p + ggplot2::geom_segment(ggplot2::aes(x=xlim[2]-50-200, xend=xlim[2]-50,
+                                             y=ylim[2]-100, yend=ylim[2]-100),
+                                color='black', size=1)
+  p = p + ggplot2::geom_text(ggplot2::aes(x=xlim[2]-50-200/2, y=ylim[2]-90,
+                                          label=paste(200, '~mu*m')),
+                             size=3, hjust=0.5, vjust=1, color='black',
+                             parse=TRUE)
   p
 }
