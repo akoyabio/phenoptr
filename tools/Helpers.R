@@ -54,9 +54,7 @@ pkgdown::build_site()
 # To merge and close a dev branch:
 # git checkout master
 # git merge 9000
-# -- Disable creation of RB items, e.g. rename .git/hooks/pre-push
 # git push
 # -- Check the upstream. Docs should have updated.
-# -- Re-enable RB
 # git push origin --delete 9000
 # git branch -d 9000
