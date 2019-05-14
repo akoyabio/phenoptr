@@ -101,16 +101,16 @@ read_cell_seg_data <- function(
                             locale=readr::locale(decimal_mark=','),
                             col_types=readr::cols())
     }
+
+    # Check again
+    mean_cols = df %>%
+      dplyr::select(dplyr::contains('Mean'))
+    mean_class = mean_cols %>% purrr::map(class)
+
+    if (any(mean_class=='character'))
+      stop('Error reading cell seg data: ',
+           'Expression columns have character values')
   }
-
-  # Check again
-  mean_cols = df %>%
-    dplyr::select(dplyr::contains('Mean'))
-  mean_class = mean_cols %>% purrr::map(class)
-
-  if (any(mean_class=='character'))
-    stop('Error reading cell seg data: ',
-         'Expression columns have character values')
 
   # If any of these fields has missing values, the file may be damaged.
   no_na_cols = c("Path", "Sample Name", "Tissue Category", "Phenotype",

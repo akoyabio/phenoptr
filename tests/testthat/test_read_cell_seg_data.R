@@ -95,6 +95,7 @@ test_that('Comma as decimal separator works', {
               'FIHC4__0929309_HP_IM3_2_comma_cell_seg_data_summary.txt')
 
   # These should match except for the Sample Name which has commas
+  # because of the hacky way I made the test file.
   d = read_cell_seg_data(path)
   d_comma = expect_message(read_cell_seg_data(comma_path), 'comma')
   expect_equal(d %>% dplyr::select(-`Sample Name`),
