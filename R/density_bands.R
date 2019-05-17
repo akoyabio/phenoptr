@@ -36,7 +36,6 @@ if (getRversion() >= "2.15.1")
 #' @param negative Name of the tissue category used as negative distance,
 #' e.g. "tumor".
 #' @param width Width of the bands, in microns
-#' @param pixels_per_micron Conversion factor to microns.
 #' @param map_path Path to the segmentation map file. If NULL, look for the
 #'  map in the same directory as `cell_seg_path`.
 #' @return Returns a `list` with three items:
@@ -75,8 +74,7 @@ if (getRversion() >= "2.15.1")
 #' @md
 #' @importFrom magrittr "%>%"
 density_bands = function(cell_seg_path, phenotypes, positive, negative,
-   width=25, pixels_per_micron=getOption('phenoptr.pixels.per.micron'),
-   map_path=NULL)
+   width=25, map_path=NULL, component_path=NULL)
 {
   if (!file.exists(cell_seg_path))
     stop(paste('File not found:', cell_seg_path))
@@ -86,7 +84,17 @@ density_bands = function(cell_seg_path, phenotypes, positive, negative,
   if (!file.exists(map_path))
     stop(paste('File not found:', map_path))
 
-  csd = read_cell_seg_data(cell_seg_path, pixels_per_micron)
+  csd = read_cell_seg_data(cell_seg_path, pixels_per_micron='auto')
+
+  # Get field metadata from the component data file
+  if (is.null(component_path))
+    component_path =
+      sub('_cell_seg_data.txt', '_component_data.tif', cell_seg_path)
+  if(!file.exists(component_path))
+    stop('density_bands() requires a matching component data file.')
+
+  field_info = get_field_info(component_path)
+  pixels_per_micron = 1/field_info$microns_per_pixel
 
   # Check for multiple samples, this is probably an error
   if (length(unique(csd$`Sample Name`))>1)
@@ -120,8 +128,8 @@ density_bands = function(cell_seg_path, phenotypes, positive, negative,
   pos_mask = tissue==layers[positive]
   neg_mask = tissue==layers[negative]
 
-  xrange=c(0, dim(tissue)[2]/pixels_per_micron)
-  yrange=c(0, dim(tissue)[1]/pixels_per_micron)
+  xrange=c(0, field_info$field_size[1])
+  yrange=c(0, field_info$field_size[2])
 
   # Make distance maps for distance from positive and negative
   pos_win = spatstat::owin(mask=pos_mask, xrange=xrange, yrange=yrange)
@@ -133,11 +141,24 @@ density_bands = function(cell_seg_path, phenotypes, positive, negative,
   # Positive distance is into the positive mask == away from negative
   distance = dist_from_neg - dist_from_pos
 
-  # For each cell, look up its distance
+  # For each cell, find its coordinates in the distance matrix
+  # Mask index is [row, col] so [y, x]!
+  ix = csd %>% dplyr::select(`Cell Y Position`, `Cell X Position`)
+
+  # Adjust ix to have the origin at top left if needed
+  if (max(ix$`Cell X Position` > field_info$field_size[1])
+          || max(ix$`Cell Y Position` > field_info$field_size[2])) {
+    ix = ix %>% dplyr::mutate(
+      `Cell Y Position` = `Cell Y Position`-field_info$location[2],
+      `Cell X Position` = `Cell X Position`-field_info$location[1]
+    )
+  }
+
   # Use the nearest point in the distance matrix
-  # Index is [row, col] so [y, x]!
-  ix = as.matrix(csd[,c('Cell Y Position', 'Cell X Position')])
+  ix = ix %>% as.matrix()
   ix = ix * pixels_per_micron %>% round() %>% as.integer()
+
+  # For each cell, look up its distance from the boundary
   csd$distance = distance$v[ix]
 
   # Compute cut-points for distance
