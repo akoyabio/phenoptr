@@ -141,28 +141,39 @@ cd8_to_ck = cd8_cells %>% left_join(ck_cells, by=c('Cell ID CK+'='Cell ID'),
 
 Show the CD8+ and CK+ cells with the nearest neighbors connected:
 
-```{r}
-ggplot(cd8_to_ck, mapping=aes(`Cell X Position`, `Cell Y Position`)) +
-  geom_segment(aes(xend=`Cell X Position.CK`, yend=`Cell Y Position.CK`),
-               size=1) +
-  geom_point(data=ck_cells, aes(color='CK+')) +
-  geom_point(data=cd8_cells, aes(color='CD8+')) +
-  scale_color_manual('Phenotype', values=c('CD8+'='red', 'CK+'='cyan2')) +
+```{r fig.width=8, fig.height=6}
+# Read a background image and make a base plot
+background_path = 
+  system.file("extdata/sample/Set4_1-6plex_[16142,55840]_composite_image.jpg", package='phenoptr')
+background = jpeg::readJPEG(background_path) %>% as.raster()
+xlim = c(0, 934)
+ylim = c(0, 700)
+base_plot = ggplot(mapping=aes(`Cell X Position`, `Cell Y Position`)) %>% 
+  phenoptr:::add_scales_and_background(background, xlim, ylim) +
+  labs(x='Cell X Position', y='Cell Y Position') +
+  scale_color_manual('Phenotype', values=c('CD8+'='red', 'CK+'='cyan2'))
+
+# Add lines and points
+base_plot + geom_segment(data=cd8_to_ck,
+               aes(xend=`Cell X Position.CK`, yend=`Cell Y Position.CK`),
+               color='white') +
+  geom_point(data=ck_cells, aes(color='CK+'), size=1) +
+  geom_point(data=cd8_cells, aes(color='CD8+'), size=1) +
   labs(title='Nearest CK+ to each CD8+')
 ```
 
 To show the nearest CD8+ for each CK+, join in the other direction;
 for each CK+ cell, find the nearest CD8+ cell:
 
-```{r}
+```{r fig.width=8, fig.height=6}
 ck_to_cd8 = ck_cells %>% left_join(cd8_cells, by=c('Cell ID CD8+'='Cell ID'),
                                     suffix=c('', '.CD8'))
-ggplot(ck_to_cd8, mapping=aes(`Cell X Position`, `Cell Y Position`)) +
-  geom_segment(aes(xend=`Cell X Position.CD8`, yend=`Cell Y Position.CD8`),
-               size=1) +
-  geom_point(data=ck_cells, aes(color='CK+')) +
-  geom_point(data=cd8_cells, aes(color='CD8+')) +
-  scale_color_manual('Phenotype', values=c('CD8+'='red', 'CK+'='cyan2')) +
+base_plot + 
+  geom_segment(data=ck_to_cd8,
+               aes(xend=`Cell X Position.CD8`, yend=`Cell Y Position.CD8`),
+               color='white') +
+  geom_point(data=ck_cells, aes(color='CK+'), size=1) +
+  geom_point(data=cd8_cells, aes(color='CD8+'), size=1) +
   labs(title='Nearest CD8+ to each CK+')
 ```
 
@@ -179,15 +190,14 @@ mutual = ck_to_cd8 %>% filter(`Cell ID`==`Cell ID CK+.CD8`)
 This data set contains `r nrow(mutual)` mutual nearest neighbor pairs
 between CD8+ and CK+ cells. 
 
-```{r}
-ggplot(mutual, mapping=aes(`Cell X Position`, `Cell Y Position`)) +
-  geom_segment(aes(xend=`Cell X Position.CD8`, yend=`Cell Y Position.CD8`),
-               size=1) +
-  geom_point(data=ck_cells, aes(color='CK+')) +
-  geom_point(data=cd8_cells, aes(color='CD8+')) +
-  scale_color_manual('Phenotype', values=c('CD8+'='red', 'CK+'='cyan2')) +
+```{r fig.width=8, fig.height=6}
+base_plot +
+  geom_segment(data=mutual,
+               aes(xend=`Cell X Position.CD8`, yend=`Cell Y Position.CD8`),
+               size=1, color='white') +
+  geom_point(data=ck_cells, aes(color='CK+'), size=1) +
+  geom_point(data=cd8_cells, aes(color='CD8+'), size=1) +
   labs(title='Mutual nearest neighbors - CD8+ and CK+')
-
 ```
 
 ----

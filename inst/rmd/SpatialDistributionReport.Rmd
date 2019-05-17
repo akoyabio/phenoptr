@@ -55,12 +55,12 @@ ylim=c(field_info$location[2], field_info$location[2]+field_info$field_size[2])
 if (grepl('cell_seg_data.txt', cell_seg_path))
 {
   image_endings = c(
+    'composite_image.tif',
+    'composite_image.jpg',
     'image_with_tissue_seg.tif',
     'image_with_tissue_seg.jpg',
     'tissue_seg_map.tif',
-    'tissue_seg_map.jpg',
-    'composite_image.tif',
-    'composite_image.jpg'
+    'tissue_seg_map.jpg'
   )
   for (ending in image_endings) {
     tissue_seg_path = sub('cell_seg_data.txt', ending, cell_seg_path)
