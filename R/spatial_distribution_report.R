@@ -220,9 +220,11 @@ add_dist_data = function(p, nn_dist, lineColor) {
 }
 
 # Add scales, scale line and background image to a ggplot object
-add_scales_and_background = function(p, background, xlim, ylim) {
+add_scales_and_background = function(p, background, xlim, ylim,
+                                     scale_color='black') {
   if (length(xlim)==1) xlim = c(0, xlim)
   if (length(ylim)==1) ylim = c(0, ylim)
+
   # Add scales at the image limits. Reverse the y scale to match the image
   p = p + ggplot2::scale_x_continuous(limits=xlim, expand=expand_scale()) +
     ggplot2::scale_y_reverse(limits=rev(ylim), expand=expand_scale())
@@ -241,10 +243,10 @@ add_scales_and_background = function(p, background, xlim, ylim) {
   # Add a 200-micron line segment for scale reference
   p = p + ggplot2::geom_segment(ggplot2::aes(x=xlim[2]-50-200, xend=xlim[2]-50,
                                              y=ylim[2]-100, yend=ylim[2]-100),
-                                color='black', size=1)
+                                color=scale_color, size=1)
   p = p + ggplot2::geom_text(ggplot2::aes(x=xlim[2]-50-200/2, y=ylim[2]-90,
                                           label=paste(200, '~mu*m')),
-                             size=3, hjust=0.5, vjust=1, color='black',
+                             size=3, hjust=0.5, vjust=1, color=scale_color,
                              parse=TRUE)
   p
 }

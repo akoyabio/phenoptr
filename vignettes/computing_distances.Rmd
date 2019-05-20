@@ -149,7 +149,7 @@ background = jpeg::readJPEG(background_path) %>% as.raster()
 xlim = c(0, 934)
 ylim = c(0, 700)
 base_plot = ggplot(mapping=aes(`Cell X Position`, `Cell Y Position`)) %>% 
-  phenoptr:::add_scales_and_background(background, xlim, ylim) +
+  phenoptr:::add_scales_and_background(background, xlim, ylim, scale_color='white') +
   labs(x='Cell X Position', y='Cell Y Position') +
   scale_color_manual('Phenotype', values=c('CD8+'='red', 'CK+'='cyan2'))
 
