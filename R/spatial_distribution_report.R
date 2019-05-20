@@ -153,34 +153,34 @@ find_nearest_neighbor = function(pheno_data1, pheno_data2)
 # @return a ggplot object
 nn_plot <- function (pheno_data1, pheno_data2, nn_dist,
                      background, xlim, ylim,
-                     line_color='gray40') {
+                     line_color='gray90', scale_color='white') {
   title = bquote('Nearest neighbor from'
                  ~ italic(.(pheno_data1$pheno$name))
                  ~ 'to'
                  ~ italic(.(pheno_data2$pheno$name)))
   nn_plot_impl(nn_dist, pheno_data1, pheno_data2, title,
                background, xlim, ylim,
-               line_color)
+               line_color, scale_color)
 }
 
 # Make a plot of mutual nearest neighbors in phenoData -
 # points for which each is the NN of the other
 nn_plot_mutual = function(pheno_data1, pheno_data2, nn_mutual,
                           background, xlim, ylim,
-                          line_color='gray40') {
+                          line_color='gray90', scale_color='white') {
   title = bquote('Mutual nearest neighbors for'
                  ~ italic(.(pheno_data1$pheno$name))
                  ~ 'and'
                  ~ italic(.(pheno_data2$pheno$name)))
   nn_plot_impl(nn_mutual, pheno_data1, pheno_data2, title,
-               background, xlim, ylim, line_color)
+               background, xlim, ylim, line_color, scale_color)
 }
 
 # Shared implementation for nearest-neighbor plots
 nn_plot_impl <- function (nn_dist, pheno_data1, pheno_data2, title,
                           background, xlim, ylim,
-                          lineColor) {
-  p = nn_plot_base(title, background, xlim, ylim)
+                          lineColor, scale_color) {
+  p = nn_plot_base(title, background, xlim, ylim, scale_color)
   p = add_dist_data(p, nn_dist, lineColor)
 
   # Draw non-paired cells fainter than paired cells
@@ -197,13 +197,13 @@ nn_plot_impl <- function (nn_dist, pheno_data1, pheno_data2, title,
   p
 }
 
-nn_plot_base = function(title, background, xlim, ylim) {
+nn_plot_base = function(title, background, xlim, ylim, scale_color) {
   # Fake d.f needed to get background to draw...
   if (length(xlim)==1) xlim = c(0, xlim)
   if (length(ylim)==1) ylim = c(0, ylim)
   p = ggplot2::ggplot(data=data.frame(x=xlim, y=ylim), ggplot2::aes(x=x, y=y))
   p = p + ggplot2::labs(x='Cell X Position', y='Cell Y Position', title=title)
-  add_scales_and_background(p, background, xlim, ylim)
+  add_scales_and_background(p, background, xlim, ylim, scale_color)
 }
 
 # Add line segments according to nn_dist

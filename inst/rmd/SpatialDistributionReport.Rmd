@@ -74,8 +74,6 @@ if (exists('tissue_seg_path') && file.exists(tissue_seg_path))
     background = jpeg::readJPEG(tissue_seg_path)
   else background = tiff::readTIFF(tissue_seg_path)
   
-  # Tone it down a bit by bringing it closer to neutral gray
-  background = (background - 0.75) / 8 + 0.75 
   background = as.raster(background)
 } else {
   background = NULL
