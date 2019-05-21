@@ -226,8 +226,10 @@ add_scales_and_background = function(p, background, xlim, ylim,
   if (length(ylim)==1) ylim = c(0, ylim)
 
   # Add scales at the image limits. Reverse the y scale to match the image
-  p = p + ggplot2::scale_x_continuous(limits=xlim, expand=expand_scale()) +
-    ggplot2::scale_y_reverse(limits=rev(ylim), expand=expand_scale())
+  p = p + ggplot2::scale_x_continuous(limits=xlim,
+                                      expand=ggplot2::expand_scale()) +
+    ggplot2::scale_y_reverse(limits=rev(ylim),
+                             expand=ggplot2::expand_scale())
 
   # Force square aspect ratio
   p = p + ggplot2::coord_fixed()
