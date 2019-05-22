@@ -4,6 +4,10 @@
   its background image. Connecting lines and the scale bar are white to be 
   visible against the dark background of the composite image.
 
+Bug fixes:
+- Fix `density_bands` to work with cell seg data in microns with slide
+  origin (#10).
+  
 # phenoptr 0.2.0
 **2019-05-10**
 
