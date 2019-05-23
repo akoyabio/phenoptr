@@ -146,8 +146,8 @@ density_bands = function(cell_seg_path, phenotypes, positive, negative,
   ix = csd %>% dplyr::select(`Cell Y Position`, `Cell X Position`)
 
   # Adjust ix to have the origin at top left if needed
-  if (max(ix$`Cell X Position` > field_info$field_size[1])
-          || max(ix$`Cell Y Position` > field_info$field_size[2])) {
+  if (max(ix$`Cell X Position`) > field_info$field_size[1]
+          || max(ix$`Cell Y Position`) > field_info$field_size[2]) {
     ix = ix %>% dplyr::mutate(
       `Cell Y Position` = `Cell Y Position`-field_info$location[2],
       `Cell X Position` = `Cell X Position`-field_info$location[1]
