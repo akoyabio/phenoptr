@@ -85,7 +85,16 @@ get_field_info = function(path) {
     info = tiff::readTIFFDirectory(path, all=FALSE)
     center = NA # Don't need this
    } else {
-    tif = tiff::readTIFF(path, all=FALSE, info=TRUE)
+    tif = try(tiff::readTIFF(path, all=FALSE, info=TRUE))
+    if (inherits(tif, 'try-error')) {
+      # Give a helpful error message if the problem is missing support
+      # for tiled images.
+      if (stringr::str_detect(tif, 'tile-based images'))
+        stop('Please install akoyabio/tiff to support large component data files.\n',
+             'Use "devtools::install_github(\'akoyabio/tiff\')"')
+      else
+        stop()
+    }
     info = attributes(tif)
     info$length = info$dim[1]
     info$width = info$dim[2]

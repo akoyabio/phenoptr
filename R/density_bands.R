@@ -38,6 +38,9 @@ if (getRversion() >= "2.15.1")
 #' @param width Width of the bands, in microns
 #' @param map_path Path to the segmentation map file. If NULL, look for the
 #'  map in the same directory as `cell_seg_path`.
+#' @param component_path Path to the component_data file corresponding to
+#' `cell_seg_path`; if omitted, look for the component data file in the
+#' same directory as `cell_seg_path`.
 #' @return Returns a `list` with three items:
 #' \tabular{ll}{
 #'   `densities` \tab A `tibble` with five columns (see below).\cr
@@ -91,7 +94,8 @@ density_bands = function(cell_seg_path, phenotypes, positive, negative,
     component_path =
       sub('_cell_seg_data.txt', '_component_data.tif', cell_seg_path)
   if(!file.exists(component_path))
-    stop('density_bands() requires a matching component data file.')
+    stop('density_bands() requires a matching component data file to access ',
+         'the spatial reference for the field.')
 
   field_info = get_field_info(component_path)
   pixels_per_micron = 1/field_info$microns_per_pixel
