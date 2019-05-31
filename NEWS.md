@@ -1,4 +1,5 @@
-# phenoptr 0.2.0.9000
+# phenoptr 0.2.1
+**2019-05-31**
 
 - The spatial analysis report now uses the full-intensity composite image as 
   its background image. Connecting lines and the scale bar are white to be 

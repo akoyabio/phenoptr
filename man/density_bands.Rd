@@ -5,8 +5,7 @@
 \title{Estimate cell density in bands from a tissue boundary.}
 \usage{
 density_bands(cell_seg_path, phenotypes, positive, negative, width = 25,
-  pixels_per_micron = getOption("phenoptr.pixels.per.micron"),
-  map_path = NULL)
+  map_path = NULL, component_path = NULL)
 }
 \arguments{
 \item{cell_seg_path}{Path to a cell segmentation data file.}
@@ -24,10 +23,12 @@ e.g. "tumor".}
 
 \item{width}{Width of the bands, in microns}
 
-\item{pixels_per_micron}{Conversion factor to microns.}
-
 \item{map_path}{Path to the segmentation map file. If NULL, look for the
 map in the same directory as \code{cell_seg_path}.}
+
+\item{component_path}{Path to the component_data file corresponding to
+\code{cell_seg_path}; if omitted, look for the component data file in the
+same directory as \code{cell_seg_path}.}
 }
 \value{
 Returns a \code{list} with three items:
