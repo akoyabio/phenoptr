@@ -73,6 +73,7 @@ reference:
       - select_rows
       - subset_distance_matrix
       - unique_phenotypes
+      - validate_phenotype_definitions
       - validate_phenotypes
   - title: "Sample data"
     contents:

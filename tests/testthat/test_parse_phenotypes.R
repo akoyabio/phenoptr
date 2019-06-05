@@ -66,3 +66,27 @@ test_that('split_and_trim works', {
   expect_equal(split_and_trim(' xx , yy ', ','), c('xx', 'yy'))
   expect_error(split_and_trim(c('xx', 'yy'), '/'))
 })
+
+test_that('validate_phenotype_definitions works', {
+  # These are all valid regardless of the second argument
+  expect_equal(validate_phenotype_definitions(NULL, ''), '')
+  expect_equal(validate_phenotype_definitions('', ''), '')
+  expect_equal(validate_phenotype_definitions('Total', ''), '')
+  expect_equal(validate_phenotype_definitions('All', ''), '')
+  expect_equal(validate_phenotype_definitions('~`Mean x`>3', ''), '')
+
+  expect_equal(validate_phenotype_definitions('CD3+', 'CD3'), '')
+  expect_equal(validate_phenotype_definitions('CD3+/~`Mean x`>3', 'CD3'), '')
+
+  expect_match(validate_phenotype_definitions('CD3', 'CD3'), 'must start')
+  expect_match(validate_phenotype_definitions('CD3+', 'CD8'), 'Unknown')
+  expect_match(validate_phenotype_definitions('CD3+,~`Mean x`>3', 'CD3'),
+               'not allowed')
+
+  df = tibble::tibble(x=1:2)
+  expect_equal(validate_phenotype_definitions('~x==1', '', df), '')
+  expect_match(validate_phenotype_definitions('~x==', ''),
+               'not a valid expression')
+  expect_match(validate_phenotype_definitions('~y==1', '', df),
+               'not found')
+})
