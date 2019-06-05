@@ -34,9 +34,14 @@ individual phenotypes. For example, "CD68+,CD163+" is a cell which is
 either CD68+ or CD163+ or both.
 
 Additionally,
-a phenotype name without a + or - and containing
+\itemize{
+\item A phenotype without a + or - and containing
 either "Total" or "All" will be
 interpreted as meaning "All cells".
+\item A phenotype starting with '~' will be interpreted as a formula expression.
+Formulas may be standalone phenotypes or combined with slash (/); they
+cannot be combined with comma (,).
+}
 }
 
 \examples{
@@ -44,8 +49,10 @@ interpreted as meaning "All cells".
 # - All CD3+ cells
 # - CD3+/CD8+ double-positive cells
 # - CD3+/CD8- single-positive cells
+# - CD3+ cells with membrane PDL-1 > 5
 # - All cells regardless of phenotype
 # - Macrophages, defined as either CD68+ OR CD163+
 parse_phenotypes("CD3+", "CD3+/CD8+", "CD3+/CD8-",
+                 "CD3+/PDL-1+"="CD3+/~`Membrane PDL-1 (Opal 520) Mean`>5",
                  "Total Cells", Macrophage="CD68+,CD163+")
 }

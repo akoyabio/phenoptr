@@ -22,9 +22,13 @@
 #' either CD68+ or CD163+ or both.
 #'
 #' Additionally,
-#' a phenotype name without a + or - and containing
+#' - A phenotype without a + or - and containing
 #' either "Total" or "All" will be
 #' interpreted as meaning "All cells".
+#' - A phenotype starting with '~' will be interpreted as a formula expression.
+#'   Formulas may be standalone phenotypes or combined with slash (/); they
+#'   cannot be combined with comma (,).
+#'
 #' @importFrom magrittr %>%
 #' @export
 #' @examples
@@ -32,9 +36,11 @@
 #' # - All CD3+ cells
 #' # - CD3+/CD8+ double-positive cells
 #' # - CD3+/CD8- single-positive cells
+#' # - CD3+ cells with membrane PDL-1 > 5
 #' # - All cells regardless of phenotype
 #' # - Macrophages, defined as either CD68+ OR CD163+
 #' parse_phenotypes("CD3+", "CD3+/CD8+", "CD3+/CD8-",
+#'                  "CD3+/PDL-1+"="CD3+/~`Membrane PDL-1 (Opal 520) Mean`>5",
 #'                  "Total Cells", Macrophage="CD68+,CD163+")
 #' @md
 parse_phenotypes = function(...) {
@@ -72,12 +78,23 @@ parse_phenotypes = function(...) {
       if (stringr::str_detect(pheno, ','))
         stop(paste("Phenotype selectors may not contain both '/' and '.':",
                    pheno))
-      as.list(split_and_trim(pheno, '/'))
+      ## Split the phenotypes and convert formulae
+      purrr::map(split_and_trim(pheno, '/'), ~{
+        if (startsWith(.x, '~')) stats::as.formula(.x, globalenv()) else .x
+      })
     }
 
     # Multiple OR phenotypes become a character vector
-    else if (stringr::str_detect(pheno, ',')) split_and_trim(pheno, ',')
+    # Formulae are not supported here, they can't be part of a char vector
+    else if (stringr::str_detect(pheno, ','))
+      purrr::map_chr(split_and_trim(pheno, ','),
+                     ~(if (startsWith(.x, '~'))
+                         stop('Invalid phenotype definition: ', .x)
+                       else .x))
 
+    # Starts with ~, its a formula
+    else if (startsWith(pheno, '~'))
+      stats::as.formula(pheno, globalenv())
     # Ends with +- and no '/' or ',' is a single phenotype
     else if (stringr::str_detect(pheno, '[+-]$')) pheno
 

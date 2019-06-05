@@ -38,10 +38,27 @@ test_that('parse_phenotypes works with a single list arg', {
   check_results(sels)
 })
 
+test_that('parse_phenotypes works with formulae', {
+  expect_equal(parse_phenotypes(PDL1='~`Membrane PDL1`>1'),
+               list(PDL1=~`Membrane PDL1`>1))
+  expect_equal(parse_phenotypes('CD8+', PDL1='~`Membrane PDL1`>1'),
+               list(`CD8+`='CD8+', PDL1=~`Membrane PDL1`>1))
+  expect_equal(parse_phenotypes(Mixed='CD8+/~`Membrane PDL1`>1'),
+               list(Mixed=list('CD8+', ~`Membrane PDL1`>1)))
+  expect_equal(parse_phenotypes('CD3+', Mixed='CD8+/~`Membrane PDL1`>1'),
+               list(`CD3+`='CD3+', Mixed=list('CD8+', ~`Membrane PDL1`>1)))
+})
+
 test_that('parse_phenotypes error checking works', {
   expect_error(parse_phenotypes('CD3+/CD8+,CD68+'))
   expect_error(parse_phenotypes('CD3'))
+
+  # Parse phenotypes expects string arguments
   expect_error(parse_phenotypes(PDL1=~`Membrane PDL1 (Opal 520) Mean`>1))
+
+  # ORing of ordinary phenotype and formula is not supported
+  # by the select_rows syntax and thus not here.
+  expect_error(parse_phenotypes('CD3+,~`Membrane PDL1`>1'))
 })
 
 test_that('split_and_trim works', {
