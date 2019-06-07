@@ -1,3 +1,9 @@
+# phenoptr 0.2.1.9000
+
+- Remove the explicit dependency on `phenoptrReports` to avoid installation pain.
+  `phenoptrReports` is still needed to build the vignettes and to run a few
+  of the examples.
+  
 # phenoptr 0.2.1
 **2019-05-31**
 
