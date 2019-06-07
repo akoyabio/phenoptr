@@ -71,12 +71,10 @@ read_components <- function(path)
 #' @family file readers
 #'
 #' @examples
-#' if (require('phenoptrExamples')) {
-#'   path <- system.file('extdata', 'samples',
+#'   path <- system.file('extdata', 'sample',
 #'     'Set4_1-6plex_[16142,55840]_component_data.tif',
-#'     package='phenoptrExamples')
+#'     package='phenoptr')
 #'   get_field_info(path)
-#' }
 #' @md
 get_field_info = function(path) {
   # Use readTIFFDirectory if available, it is faster, more complete

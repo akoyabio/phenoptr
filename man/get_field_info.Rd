@@ -36,12 +36,10 @@ limitations in the \code{tiff} package. Install the PerkinElmer
 remove this limitation.
 }
 \examples{
-if (require('phenoptrExamples')) {
-  path <- system.file('extdata', 'samples',
+  path <- system.file('extdata', 'sample',
     'Set4_1-6plex_[16142,55840]_component_data.tif',
-    package='phenoptrExamples')
+    package='phenoptr')
   get_field_info(path)
-}
 }
 \seealso{
 Other file readers: \code{\link{list_cell_seg_files}},
