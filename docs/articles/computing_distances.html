@@ -30,7 +30,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">phenoptr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2</span>
       </span>
     </div>
 
@@ -100,7 +100,7 @@
       <h1>Computing inter-cellular distances</h1>
                         <h4 class="author">Kent Johnson</h4>
             
-            <h4 class="date">2019-05-14</h4>
+            <h4 class="date">2019-06-11</h4>
       
       
       <div class="hidden name"><code>computing_distances.Rmd</code></div>
@@ -203,7 +203,7 @@ $ `Cell ID FoxP3+`     &lt;int&gt; 117, 214, 229, 138, 229, 102, 66, 229, 22...<
 <a class="sourceLine" id="cb15-5" title="5">xlim =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">0</span>, <span class="dv">934</span>)</a>
 <a class="sourceLine" id="cb15-6" title="6">ylim =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">0</span>, <span class="dv">700</span>)</a>
 <a class="sourceLine" id="cb15-7" title="7">base_plot =<span class="st"> </span><span class="kw">ggplot</span>(<span class="dt">mapping=</span><span class="kw">aes</span>(<span class="st">`</span><span class="dt">Cell X Position</span><span class="st">`</span>, <span class="st">`</span><span class="dt">Cell Y Position</span><span class="st">`</span>)) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb15-8" title="8"><span class="st">  </span>phenoptr<span class="op">:::</span><span class="kw">add_scales_and_background</span>(background, xlim, ylim) <span class="op">+</span></a>
+<a class="sourceLine" id="cb15-8" title="8"><span class="st">  </span>phenoptr<span class="op">:::</span><span class="kw">add_scales_and_background</span>(background, xlim, ylim, <span class="dt">scale_color=</span><span class="st">'white'</span>) <span class="op">+</span></a>
 <a class="sourceLine" id="cb15-9" title="9"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x=</span><span class="st">'Cell X Position'</span>, <span class="dt">y=</span><span class="st">'Cell Y Position'</span>) <span class="op">+</span></a>
 <a class="sourceLine" id="cb15-10" title="10"><span class="st">  </span><span class="kw">scale_color_manual</span>(<span class="st">'Phenotype'</span>, <span class="dt">values=</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">'CD8+'</span>=<span class="st">'red'</span>, <span class="st">'CK+'</span>=<span class="st">'cyan2'</span>))</a>
 <a class="sourceLine" id="cb15-11" title="11"></a>

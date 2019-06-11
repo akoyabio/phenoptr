@@ -64,7 +64,7 @@ component_data.tif file." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">phenoptr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2</span>
       </span>
     </div>
 
@@ -186,12 +186,10 @@ remove this limitation.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>require</a></span>(<span class='st'>'phenoptrExamples'</span>)) {
-  <span class='no'>path</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/system.file'>system.file</a></span>(<span class='st'>'extdata'</span>, <span class='st'>'samples'</span>,
+    <pre class="examples"><div class='input'>  <span class='no'>path</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/system.file'>system.file</a></span>(<span class='st'>'extdata'</span>, <span class='st'>'sample'</span>,
     <span class='st'>'Set4_1-6plex_[16142,55840]_component_data.tif'</span>,
-    <span class='kw'>package</span><span class='kw'>=</span><span class='st'>'phenoptrExamples'</span>)
-  <span class='fu'>get_field_info</span>(<span class='no'>path</span>)
-}</div><div class='output co'>#&gt; <span class='message'>Loading required package: phenoptrExamples</span></div><div class='output co'>#&gt; $image_size
+    <span class='kw'>package</span><span class='kw'>=</span><span class='st'>'phenoptr'</span>)
+  <span class='fu'>get_field_info</span>(<span class='no'>path</span>)</div><div class='output co'>#&gt; $image_size
 #&gt; [1] 1868 1400
 #&gt; 
 #&gt; $microns_per_pixel

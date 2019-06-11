@@ -67,7 +67,7 @@ details of select_rows." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">phenoptr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2</span>
       </span>
     </div>
 
@@ -177,10 +177,14 @@ also CD8-.</p>
 <p>Phenotypes containing commas are interpreted as requiring <em>any</em> of the
 individual phenotypes. For example, "CD68+,CD163+" is a cell which is
 either CD68+ or CD163+ or both.</p>
-<p>Additionally,
-a phenotype name without a + or - and containing
+<p>Additionally,</p><ul>
+<li><p>A phenotype without a + or - and containing
 either "Total" or "All" will be
-interpreted as meaning "All cells".</p>
+interpreted as meaning "All cells".</p></li>
+<li><p>A phenotype starting with '~' will be interpreted as a formula expression.
+Formulas may be standalone phenotypes or combined with slash (/); they
+cannot be combined with comma (,).</p></li>
+</ul>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -188,9 +192,11 @@ interpreted as meaning "All cells".</p>
 <span class='co'># - All CD3+ cells</span>
 <span class='co'># - CD3+/CD8+ double-positive cells</span>
 <span class='co'># - CD3+/CD8- single-positive cells</span>
+<span class='co'># - CD3+ cells with membrane PDL-1 &gt; 5</span>
 <span class='co'># - All cells regardless of phenotype</span>
 <span class='co'># - Macrophages, defined as either CD68+ OR CD163+</span>
 <span class='fu'>parse_phenotypes</span>(<span class='st'>"CD3+"</span>, <span class='st'>"CD3+/CD8+"</span>, <span class='st'>"CD3+/CD8-"</span>,
+                 <span class='st'>"CD3+/PDL-1+"</span><span class='kw'>=</span><span class='st'>"CD3+/~`Membrane PDL-1 (Opal 520) Mean`&gt;5"</span>,
                  <span class='st'>"Total Cells"</span>, <span class='kw'>Macrophage</span><span class='kw'>=</span><span class='st'>"CD68+,CD163+"</span>)</div><div class='output co'>#&gt; $`CD3+`
 #&gt; [1] "CD3+"
 #&gt; 
@@ -208,6 +214,14 @@ interpreted as meaning "All cells".</p>
 #&gt; 
 #&gt; $`CD3+/CD8-`[[2]]
 #&gt; [1] "CD8-"
+#&gt; 
+#&gt; 
+#&gt; $`CD3+/PDL-1+`
+#&gt; $`CD3+/PDL-1+`[[1]]
+#&gt; [1] "CD3+"
+#&gt; 
+#&gt; $`CD3+/PDL-1+`[[2]]
+#&gt; ~`Membrane PDL-1 (Opal 520) Mean` &gt; 5
 #&gt; 
 #&gt; 
 #&gt; $`Total Cells`
