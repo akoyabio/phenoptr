@@ -1,9 +1,12 @@
-# phenoptr 0.2.1.9000
+# phenoptr 0.2.2
+**2019-06-11**
 
 - Remove the explicit dependency on `phenoptrReports` to avoid installation pain.
   `phenoptrReports` is still needed to build the vignettes and to run a few
   of the examples.
-  
+- `parse_phenotypes` and `validate_phenotype_definitions` support
+  expressions in phenotype definitions.
+
 # phenoptr 0.2.1
 **2019-05-31**
 

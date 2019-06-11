@@ -1,4 +1,4 @@
-# phenoptr <img src="man/figures/Akoya.png" align="right" height="50px" />
+# phenoptr <img src="man/figures/Akoya.png" align="right" width="175" />
 
 ## Helpers for working with inForm data
 
@@ -91,5 +91,5 @@ section of the documentation for details on individual functions.
 
 To cite package `phenoptr` in publications use:
 
-&nbsp;&nbsp;Kent S Johnson (2019). phenoptr: inForm Helper Functions. R package version 0.2.0.  
+&nbsp;&nbsp;Kent S Johnson (2019). phenoptr: inForm Helper Functions. R package version 0.2.2.  
 &nbsp;&nbsp;https://akoyabio.github.io/phenoptr/
