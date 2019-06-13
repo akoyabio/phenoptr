@@ -103,9 +103,8 @@
 <div id="helpers-for-working-with-inform-data" class="section level2">
 <h2 class="hasAnchor">
 <a href="#helpers-for-working-with-inform-data" class="anchor"></a>Helpers for working with inForm data</h2>
-
 <p><code>phenoptr</code> contains functions that make it easier to read and analyze data tables and images created by Akoya Biosciences’ inForm<sup>®</sup> software.</p>
-<p><code>phenoptr</code> is part of the Akoya Biosciences Phenoptics™ family of Quantitative Pathology Research Solutions. For more information visit the Phenoptics™ <a href="http://www.perkinelmer.com/category/quantitative-pathology-research">home page</a>.</p>
+<p><code>phenoptr</code> is part of the Akoya Biosciences Phenoptics™ family of Quantitative Pathology Research Solutions. For more information visit the <a href="https://www.akoyabio.com/phenopticstm/technology/quantitative-pathology-research">Phenoptics™ home page</a>.</p>
 <hr>
 </div>
 <div id="installation" class="section level2">
@@ -123,7 +122,18 @@ devtools::install_github("akoyabio/phenoptr")</code></pre>
 <ol>
 <li>When requested, enter <code>1</code> (Yes) to install BiocInstaller.</li>
 </ol>
+<div id="optional-packages" class="section level3">
+<h3 class="hasAnchor">
+<a href="#optional-packages" class="anchor"></a>Optional packages</h3>
+<p>Two optional packages are recommended in specific circumstances.</p>
+<ul>
+<li>
+<strong>2x2 fields from inForm</strong> The Akoya Biosciences fork of the <code>tiff</code> package includes support for tiled images and allows <code>phenoptr</code> to work with 2x2 component images from inForm. See the <a href="https://github.com/akoyabio/tiff/tree/master#installation">installation instructions</a> in the package README file.</li>
+<li>
+<strong>Spatial metrics</strong> The Akoya Biosciences <code>rtree</code> package dramatically speeds calculation and reduces memory requirements of spatial metrics such as nearest neighbors and count within. See the <a href="https://github.com/akoyabio/rtree/tree/master#installation">installation instructions</a> in the package README file.</li>
+</ul>
 <hr>
+</div>
 </div>
 <div id="getting-started" class="section level2">
 <h2 class="hasAnchor">
@@ -194,14 +204,7 @@ package.
 </ul>
 </div>
 
-  <div class="dev-status">
-<h2>Dev status</h2>
-<ul class="list-unstyled">
-<li><a href="https://travis-ci.org/akoyabio/phenoptr"><img src="https://travis-ci.org/akoyabio/phenoptr.svg?branch=master" alt="Travis-CI Build Status"></a></li>
-<li><a href="https://codecov.io/github/akoyabio/phenoptr?branch=master"><img src="https://img.shields.io/codecov/c/github/akoyabio/phenoptr/master.svg" alt="Coverage Status"></a></li>
-</ul>
-</div>
-</div>
+  </div>
 </div>
 
       <footer><div class="copyright">

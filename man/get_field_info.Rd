@@ -31,9 +31,9 @@ name. The field size and magnification are read from TIFF tags
 in the file.
 
 Limited to 1x1 fields due to
-limitations in the \code{tiff} package. Install the PerkinElmer
-\href{https://github.com/PerkinElmer/tiff}{fork} of the tiff package to
-remove this limitation.
+limitations in the \code{tiff} package. Install the
+\href{https://github.com/akoyabio/tiff}{Akoya Biosciences fork}
+of the tiff package to remove this limitation.
 }
 \examples{
   path <- system.file('extdata', 'sample',

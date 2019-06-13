@@ -11,9 +11,9 @@
 #' column corresponding to X.
 #'
 #' Limited to 1x1 fields due to
-#' limitations in the `tiff` package. Install the PerkinElmer
-#' [fork](https://github.com/PerkinElmer/tiff) of the tiff package to
-#' remove this limitation.
+#' limitations in the `tiff` package. Install the
+#' [Akoya Biosciences fork](https://github.com/akoyabio/tiff)
+#' of the tiff package to remove this limitation.
 #' @param path Path to the `component_data.tif` file.
 #' @return A named list of matrices, one for each component.
 #' @export
@@ -52,9 +52,9 @@ read_components <- function(path)
 #' in the file.
 #'
 #' Limited to 1x1 fields due to
-#' limitations in the `tiff` package. Install the PerkinElmer
-#' [fork](https://github.com/PerkinElmer/tiff) of the tiff package to
-#' remove this limitation.
+#' limitations in the `tiff` package. Install the
+#' [Akoya Biosciences fork](https://github.com/akoyabio/tiff)
+#' of the tiff package to remove this limitation.
 #' @param path Path to the `component_data.tif` file.
 #' @return A named list with values
 #'   \describe{

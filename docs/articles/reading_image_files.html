@@ -100,7 +100,7 @@
       <h1>Reading and displaying inForm image Files</h1>
                         <h4 class="author">Kent Johnson</h4>
             
-            <h4 class="date">2019-06-11</h4>
+            <h4 class="date">2019-06-13</h4>
       
       
       <div class="hidden name"><code>reading_image_files.Rmd</code></div>
@@ -153,7 +153,7 @@ img {
 <div id="reading-and-displaying-component-data" class="section level2">
 <h2 class="hasAnchor">
 <a href="#reading-and-displaying-component-data" class="anchor"></a>Reading and displaying component data</h2>
-<p>inForm saves component data as multiple 32-bit floating-point images within a single TIFF file. Images smaller than 2K by 2K pixels are saved in “strip” format and may be read by <code><a href="https://www.rdocumentation.org/packages/tiff/topics/readTIFF">tiff::readTIFF()</a></code>. Larger images are saved in “tiled” format which is not supported by <code>readTIFF()</code>. Single fields from Vectra Polaris, Vectra 3 and Mantra are all smaller than 2K by 2K and may be read by these functions; larger fields may not read. Install the PerkinElmer <a href="https://github.com/PerkinElmer/tiff">fork</a> of the tiff package to support tiled images and remove this limitation.</p>
+<p>inForm saves component data as multiple 32-bit floating-point images within a single TIFF file. Images smaller than 2K by 2K pixels are saved in “strip” format and may be read by <code><a href="https://www.rdocumentation.org/packages/tiff/topics/readTIFF">tiff::readTIFF()</a></code>. Larger images are saved in “tiled” format which is not supported by <code>readTIFF()</code>. Single fields from Vectra Polaris, Vectra 3 and Mantra are all smaller than 2K by 2K and may be read by these functions; larger fields may not read. Install the <a href="https://github.com/akoyabio/tiff">Akoya Biosciences fork</a> of the tiff package to support tiled images and remove this limitation.</p>
 <p><code><a href="../reference/read_components.html">phenoptr::read_components()</a></code> is a wrapper around <code>readTIFF()</code> which reads the individual component images from a <code>component_data.tif</code> file. It keeps the full-resolution component images, extracts the component names from the image descriptions, and returns a named list of image matrices.</p>
 <p>Component data may be displayed using <code>plot.raster</code> or <code><a href="https://www.rdocumentation.org/packages/EBImage/topics/display">EBImage::display</a></code>. See the next section for examples of displaying grayscale images such as these.</p>
 <hr>
@@ -200,7 +200,8 @@ img {
 <a class="sourceLine" id="cb15-9" title="9"><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">size=</span><span class="dv">2</span>) <span class="op">+</span><span class="st"> </span><span class="kw">coord_equal</span>() <span class="op">+</span></a>
 <a class="sourceLine" id="cb15-10" title="10"><span class="st">  </span><span class="kw">scale_color_manual</span>(<span class="dt">values=</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"CK+"</span>=<span class="st">"cyan"</span>, <span class="st">"CD8+"</span>=<span class="st">"yellow"</span>,</a>
 <a class="sourceLine" id="cb15-11" title="11">                              <span class="st">"other"</span>=<span class="st">"blue"</span>, <span class="st">"CD68+"</span>=<span class="st">"magenta"</span>, </a>
-<a class="sourceLine" id="cb15-12" title="12">                              <span class="st">"FoxP3+"</span>=<span class="st">"orange"</span>))</a></code></pre></div>
+<a class="sourceLine" id="cb15-12" title="12">                              <span class="st">"FoxP3+"</span>=<span class="st">"orange"</span>)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb15-13" title="13"><span class="st">  </span><span class="kw">theme_minimal</span>()</a></code></pre></div>
 <p><img src="reading_image_files_files/figure-html/plotting-1.png" width="672"></p>
 </div>
   </div>

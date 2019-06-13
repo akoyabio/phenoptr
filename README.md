@@ -2,16 +2,12 @@
 
 ## Helpers for working with inForm data
 
-[![Travis-CI Build Status](https://travis-ci.org/akoyabio/phenoptr.svg?branch=master)](https://travis-ci.org/akoyabio/phenoptr)
-[![Coverage Status](https://img.shields.io/codecov/c/github/akoyabio/phenoptr/master.svg)](https://codecov.io/github/akoyabio/phenoptr?branch=master)
-
 `phenoptr` contains functions that make it easier to read and analyze data tables
 and images created by Akoya Biosciences' inForm<sup>&reg;</sup> software.
 
 `phenoptr` is part of the Akoya Biosciences Phenoptics&trade; family of
-Quantitative Pathology Research Solutions. For more information
-visit the Phenoptics&trade;
-[home page](http://www.perkinelmer.com/category/quantitative-pathology-research).
+Quantitative Pathology Research Solutions. For more information visit the 
+[Phenoptics&trade; home page](https://www.akoyabio.com/phenopticstm/technology/quantitative-pathology-research).
 
 ----
 
@@ -32,6 +28,22 @@ install.packages("devtools")
 devtools::install_github("akoyabio/phenoptr")
 ```
 1. When requested, enter `1` (Yes) to install BiocInstaller.
+
+### Optional packages
+
+Two optional packages are recommended in specific circumstances.
+
+- **2x2 fields from inForm** 
+ The Akoya Biosciences fork of the `tiff` package includes support for tiled 
+  images and allows `phenoptr` to work with 2x2 component images from inForm.
+  See the [installation instructions](https://github.com/akoyabio/tiff/tree/master#installation)
+  in the package README file.
+- **Spatial metrics**
+  The Akoya Biosciences `rtree` package 
+  dramatically speeds calculation and reduces memory requirements of
+  spatial metrics such as nearest neighbors and count within.
+  See the [installation instructions](https://github.com/akoyabio/rtree/tree/master#installation)
+  in the package README file.
 
 ----
 

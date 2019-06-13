@@ -12,7 +12,7 @@ tables and images created by Akoya Biosciences' inForm software.
 \details{
 phenoptr is part of the Akoya Biosciences Phenoptics family of
 Quantitative Pathology Research Solutions. For more information visit the
-Phenoptics \href{http://www.perkinelmer.com/cancer-immunology/index.html}{home page}.
+\href{https://www.akoyabio.com/phenopticstm/technology/quantitative-pathology-research}{Phenoptics™ home page}.
 }
 \section{Package options}{
 

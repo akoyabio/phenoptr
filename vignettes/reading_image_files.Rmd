@@ -103,9 +103,9 @@ Images smaller than 2K by 2K pixels are saved in "strip" format and may
 be read by `tiff::readTIFF()`. Larger images are saved in "tiled" format
 which is not supported by `readTIFF()`. Single fields from Vectra Polaris,
 Vectra 3 and Mantra are all smaller than 2K by 2K and may be read
-by these functions; larger fields may not read.  Install the PerkinElmer
-[fork](https://github.com/PerkinElmer/tiff) of the tiff package to
-support tiled images and remove this limitation.
+by these functions; larger fields may not read.  Install the 
+[Akoya Biosciences fork](https://github.com/akoyabio/tiff) of the tiff 
+package to support tiled images and remove this limitation.
 
 `phenoptr::read_components()` is a wrapper around `readTIFF()` which reads
 the individual component images from a `component_data.tif` file. 
@@ -187,6 +187,7 @@ ggplot(data=csd, aes(`Cell X Position`, `Cell Y Position`, color=Phenotype)) +
   geom_point(size=2) + coord_equal() +
   scale_color_manual(values=c("CK+"="cyan", "CD8+"="yellow",
                               "other"="blue", "CD68+"="magenta", 
-                              "FoxP3+"="orange"))
+                              "FoxP3+"="orange")) +
+  theme_minimal()
 ```
 

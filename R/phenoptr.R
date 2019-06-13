@@ -5,8 +5,7 @@
 #'
 #' phenoptr is part of the Akoya Biosciences Phenoptics family of
 #' Quantitative Pathology Research Solutions. For more information visit the
-#' Phenoptics [home
-#' page](http://www.perkinelmer.com/cancer-immunology/index.html).
+#' [Phenoptics&trade; home page](https://www.akoyabio.com/phenopticstm/technology/quantitative-pathology-research).
 #' @section Package options:
 #' `read_cell_seg_data` converts pixel measurements to microns. Several other
 #' functions also implicitly convert pixels to microns. The default conversion
