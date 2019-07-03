@@ -237,9 +237,15 @@ add_scales_and_background = function(p, background, xlim, ylim,
   # Add background image if we have one
   if (length(background) > 1)
   {
-    p = p + ggplot2::annotation_raster(background,
+    if (inherits(background, 'nativeRaster')) {
+    p = p + annotation_raster_native(background,
                               xmin=xlim[1], xmax=xlim[2],
                               ymin=-ylim[1], ymax=-ylim[2])
+    } else {
+      p = p + ggplot2::annotation_raster(background,
+                                         xmin=xlim[1], xmax=xlim[2],
+                                         ymin=-ylim[1], ymax=-ylim[2])
+    }
   }
 
   # Add a 200-micron line segment for scale reference
@@ -251,4 +257,28 @@ add_scales_and_background = function(p, background, xlim, ylim,
                              size=3, hjust=0.5, vjust=1, color=scale_color,
                              parse=TRUE)
   p
+}
+
+
+# A version of ggplot2::annotation_raster which takes a nativeRaster
+# image. This is much faster than standard raster.
+annotation_raster_native <- function(raster, xmin, xmax, ymin, ymax,
+                                     interpolate = FALSE) {
+  stopifnot(inherits(raster, 'nativeRaster'))
+  layer(
+    data = ggplot2:::dummy_data(),
+    mapping = NULL,
+    stat = StatIdentity,
+    position = PositionIdentity,
+    geom = GeomRasterAnn,
+    inherit.aes = FALSE,
+    params = list(
+      raster = raster,
+      xmin = xmin,
+      xmax = xmax,
+      ymin = ymin,
+      ymax = ymax,
+      interpolate = interpolate
+    )
+  )
 }
