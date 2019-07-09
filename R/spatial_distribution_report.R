@@ -265,12 +265,12 @@ add_scales_and_background = function(p, background, xlim, ylim,
 annotation_raster_native <- function(raster, xmin, xmax, ymin, ymax,
                                      interpolate = FALSE) {
   stopifnot(inherits(raster, 'nativeRaster'))
-  layer(
+  ggplot2::layer(
     data = ggplot2:::dummy_data(),
     mapping = NULL,
-    stat = StatIdentity,
-    position = PositionIdentity,
-    geom = GeomRasterAnn,
+    stat = ggplot2::StatIdentity,
+    position = ggplot2::PositionIdentity,
+    geom = ggplot2::GeomRasterAnn,
     inherit.aes = FALSE,
     params = list(
       raster = raster,
