@@ -1,4 +1,5 @@
-# phenoptr 0.2.2.9000
+# phenoptr 0.2.3
+**2019-08-07**
 
 - Add `annotation_raster_native` for faster plotting with background images.
 

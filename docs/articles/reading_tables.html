@@ -30,7 +30,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">phenoptr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.3</span>
       </span>
     </div>
 
@@ -100,7 +100,7 @@
       <h1>Reading and exploring inForm tables</h1>
                         <h4 class="author">Kent Johnson</h4>
             
-            <h4 class="date">2019-06-11</h4>
+            <h4 class="date">2019-08-07</h4>
       
       
       <div class="hidden name"><code>reading_tables.Rmd</code></div>
@@ -143,29 +143,29 @@ table {
 <h3 class="hasAnchor">
 <a href="#reading-cell-segmentation-data-files" class="anchor"></a>Reading cell segmentation data files</h3>
 <p>The <code>read_cell_seg_data</code> function reads cell seg data files and does useful cleanup on the result including removing empty columns, converting pixels to microns and simplifying column names.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(phenoptr)</a>
-<a class="sourceLine" id="cb1-2" title="2"></a>
-<a class="sourceLine" id="cb1-3" title="3"><span class="co"># sample_cell_seg_path gives the path to a sample file included with phenoptr.</span></a>
-<a class="sourceLine" id="cb1-4" title="4"><span class="co"># Change this to be the path to your data. For example you might use</span></a>
-<a class="sourceLine" id="cb1-5" title="5"><span class="co"># path &lt;- 'C:/data/my_experiment/my_image_cell_seg_data.txt'</span></a>
-<a class="sourceLine" id="cb1-6" title="6">path &lt;-<span class="st"> </span><span class="kw"><a href="../reference/sample_cell_seg_data.html">sample_cell_seg_path</a></span>()</a>
-<a class="sourceLine" id="cb1-7" title="7"></a>
-<a class="sourceLine" id="cb1-8" title="8"><span class="co"># Read the data file</span></a>
-<a class="sourceLine" id="cb1-9" title="9">csd &lt;-<span class="st"> </span><span class="kw"><a href="../reference/read_cell_seg_data.html">read_cell_seg_data</a></span>(path)</a>
-<a class="sourceLine" id="cb1-10" title="10"></a>
-<a class="sourceLine" id="cb1-11" title="11"><span class="co"># Show some nicely shortened names</span></a>
-<a class="sourceLine" id="cb1-12" title="12"><span class="co"># The suffix "(Normalized Counts, Total Weighting)" has been removed.</span></a>
-<a class="sourceLine" id="cb1-13" title="13"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/grep">grep</a></span>(<span class="st">'Nucleus.*Mean'</span>, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/names">names</a></span>(csd), <span class="dt">value=</span><span class="ot">TRUE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(phenoptr)</span>
+<span id="cb1-2"><a href="#cb1-2"></a></span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="co"># sample_cell_seg_path gives the path to a sample file included with phenoptr.</span></span>
+<span id="cb1-4"><a href="#cb1-4"></a><span class="co"># Change this to be the path to your data. For example you might use</span></span>
+<span id="cb1-5"><a href="#cb1-5"></a><span class="co"># path &lt;- 'C:/data/my_experiment/my_image_cell_seg_data.txt'</span></span>
+<span id="cb1-6"><a href="#cb1-6"></a>path &lt;-<span class="st"> </span><span class="kw"><a href="../reference/sample_cell_seg_data.html">sample_cell_seg_path</a></span>()</span>
+<span id="cb1-7"><a href="#cb1-7"></a></span>
+<span id="cb1-8"><a href="#cb1-8"></a><span class="co"># Read the data file</span></span>
+<span id="cb1-9"><a href="#cb1-9"></a>csd &lt;-<span class="st"> </span><span class="kw"><a href="../reference/read_cell_seg_data.html">read_cell_seg_data</a></span>(path)</span>
+<span id="cb1-10"><a href="#cb1-10"></a></span>
+<span id="cb1-11"><a href="#cb1-11"></a><span class="co"># Show some nicely shortened names</span></span>
+<span id="cb1-12"><a href="#cb1-12"></a><span class="co"># The suffix "(Normalized Counts, Total Weighting)" has been removed.</span></span>
+<span id="cb1-13"><a href="#cb1-13"></a><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/grep">grep</a></span>(<span class="st">'Nucleus.*Mean'</span>, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/names">names</a></span>(csd), <span class="dt">value=</span><span class="ot">TRUE</span>)</span></code></pre></div>
 <pre><code>[1] "Nucleus PDL1 (Opal 520) Mean"  "Nucleus CD8 (Opal 540) Mean"  
 [3] "Nucleus FoxP3 (Opal 570) Mean" "Nucleus CD68 (Opal 620) Mean" 
 [5] "Nucleus PD1 (Opal 650) Mean"   "Nucleus CK (Opal 690) Mean"   
 [7] "Nucleus DAPI Mean"             "Nucleus Autofluorescence Mean"</code></pre>
 <p>The value returned from <code>read_cell_seg_data</code> is a <code>tibble</code> <a href="http://tibble.tidyverse.org/"><i class="fa fa-external-link"></i></a> - the <a href="http://tidyverse.org/">tidyverse</a> version of a <code>data.frame</code> - which can be inspected as you would any other <code>tibble</code>.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1"><span class="co"># How many cells did we read?</span></a>
-<a class="sourceLine" id="cb3-2" title="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/nrow">nrow</a></span>(csd)</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="co"># How many cells did we read?</span></span>
+<span id="cb3-2"><a href="#cb3-2"></a><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/nrow">nrow</a></span>(csd)</span></code></pre></div>
 <pre><code>[1] 6072</code></pre>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1"><span class="co"># How many cells of each phenotype are in each tissue category?</span></a>
-<a class="sourceLine" id="cb5-2" title="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/table">table</a></span>(csd<span class="op">$</span><span class="st">`</span><span class="dt">Tissue Category</span><span class="st">`</span>, csd<span class="op">$</span>Phenotype)</a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="co"># How many cells of each phenotype are in each tissue category?</span></span>
+<span id="cb5-2"><a href="#cb5-2"></a><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/table">table</a></span>(csd<span class="op">$</span><span class="st">`</span><span class="dt">Tissue Category</span><span class="st">`</span>, csd<span class="op">$</span>Phenotype)</span></code></pre></div>
 <pre><code>        
          CD68+ CD8+  CK+ FoxP3+ other
   Stroma   316  177   65    194  2760
@@ -182,9 +182,9 @@ table {
 <h2 class="hasAnchor">
 <a href="#creating-new-columns" class="anchor"></a>Creating new columns</h2>
 <p>The <code><a href="https://dplyr.tidyverse.org/reference/mutate.html">dplyr::mutate</a></code> function makes it very easy to add new columns to your data. This example adds a column for PDL1 positivity and counts cells in each phenotype stratified by positivity.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(tidyverse)</a></code></pre></div>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" title="1">csd &lt;-<span class="st"> </span>csd <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>(<span class="dt">pdl1_plus=</span><span class="st">`</span><span class="dt">Entire Cell PDL1 (Opal 520) Mean</span><span class="st">`</span><span class="op">&gt;</span><span class="dv">3</span>)</a>
-<a class="sourceLine" id="cb8-2" title="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/table">table</a></span>(csd<span class="op">$</span>pdl1_plus, csd<span class="op">$</span>Phenotype)</a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(tidyverse)</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>csd &lt;-<span class="st"> </span>csd <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>(<span class="dt">pdl1_plus=</span><span class="st">`</span><span class="dt">Entire Cell PDL1 (Opal 520) Mean</span><span class="st">`</span><span class="op">&gt;</span><span class="dv">3</span>)</span>
+<span id="cb8-2"><a href="#cb8-2"></a><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/table">table</a></span>(csd<span class="op">$</span>pdl1_plus, csd<span class="op">$</span>Phenotype)</span></code></pre></div>
 <pre><code>       
         CD68+ CD8+  CK+ FoxP3+ other
   FALSE   113  158 1726    131  1761
@@ -200,10 +200,10 @@ table {
 <h2 class="hasAnchor">
 <a href="#aggregating-data" class="anchor"></a>Aggregating data</h2>
 <p>The functions <code><a href="https://dplyr.tidyverse.org/reference/group_by.html">dplyr::group_by</a></code> and <code><a href="https://dplyr.tidyverse.org/reference/summarise.html">dplyr::summarize</a></code> can be used to aggregate data within groups. <code><a href="https://dplyr.tidyverse.org/reference/filter.html">dplyr::filter</a></code> removes unwanted values. This example computes the mean PDL1 expression for each phenotype, omitting <code>other</code> cells.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" title="1">csd <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb10-2" title="2"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/filter">filter</a></span>(Phenotype<span class="op">!=</span><span class="st">'other'</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb10-3" title="3"><span class="st">  </span><span class="kw">group_by</span>(Phenotype) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb10-4" title="4"><span class="st">  </span><span class="kw">summarize</span>(<span class="dt">mean_pdl1=</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/mean">mean</a></span>(<span class="st">`</span><span class="dt">Entire Cell PDL1 (Opal 520) Mean</span><span class="st">`</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a>csd <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb10-2"><a href="#cb10-2"></a><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/filter">filter</a></span>(Phenotype<span class="op">!=</span><span class="st">'other'</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb10-3"><a href="#cb10-3"></a><span class="st">  </span><span class="kw">group_by</span>(Phenotype) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb10-4"><a href="#cb10-4"></a><span class="st">  </span><span class="kw">summarize</span>(<span class="dt">mean_pdl1=</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/mean">mean</a></span>(<span class="st">`</span><span class="dt">Entire Cell PDL1 (Opal 520) Mean</span><span class="st">`</span>))</span></code></pre></div>
 <pre><code># A tibble: 4 x 2
   Phenotype mean_pdl1
   &lt;chr&gt;         &lt;dbl&gt;
@@ -221,21 +221,21 @@ The tutorial <a href="https://akoyabio.github.io/phenoptrExamples/articles/aggre
 <h2 class="hasAnchor">
 <a href="#plotting-data" class="anchor"></a>Plotting data</h2>
 <p><a href="http://ggplot2.tidyverse.org/">ggplot2</a> is a powerful and versatile plotting package well suited to exploratory data visualization. Here are two brief examples to whet your appetite.</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(ggplot2)</a>
-<a class="sourceLine" id="cb12-2" title="2"><span class="kw">ggplot</span>(csd, <span class="kw">aes</span>(Phenotype, <span class="st">`</span><span class="dt">Entire Cell PDL1 (Opal 520) Mean</span><span class="st">`</span>, <span class="dt">color=</span>Phenotype)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb12-3" title="3"><span class="st">  </span><span class="kw">geom_boxplot</span>() <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb12-4" title="4"><span class="st">  </span><span class="kw">scale_color_brewer</span>(<span class="dt">palette=</span><span class="st">'Set1'</span>) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb12-5" title="5"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">y=</span><span class="st">'PDL1 Expression'</span>, <span class="dt">title=</span><span class="st">'PDL1 Expression per Phenotype'</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(ggplot2)</span>
+<span id="cb12-2"><a href="#cb12-2"></a><span class="kw">ggplot</span>(csd, <span class="kw">aes</span>(Phenotype, <span class="st">`</span><span class="dt">Entire Cell PDL1 (Opal 520) Mean</span><span class="st">`</span>, <span class="dt">color=</span>Phenotype)) <span class="op">+</span></span>
+<span id="cb12-3"><a href="#cb12-3"></a><span class="st">  </span><span class="kw">geom_boxplot</span>() <span class="op">+</span><span class="st"> </span></span>
+<span id="cb12-4"><a href="#cb12-4"></a><span class="st">  </span><span class="kw">scale_color_brewer</span>(<span class="dt">palette=</span><span class="st">'Set1'</span>) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb12-5"><a href="#cb12-5"></a><span class="st">  </span><span class="kw">labs</span>(<span class="dt">y=</span><span class="st">'PDL1 Expression'</span>, <span class="dt">title=</span><span class="st">'PDL1 Expression per Phenotype'</span>)</span></code></pre></div>
 <p><img src="reading_tables_files/figure-html/ggplot2-1.png" width="576"></p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" title="1"><span class="kw">ggplot</span>(csd <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/filter">filter</a></span>(Phenotype<span class="op">!=</span><span class="st">'other'</span>), </a>
-<a class="sourceLine" id="cb13-2" title="2">       <span class="kw">aes</span>(<span class="st">`</span><span class="dt">Entire Cell PDL1 (Opal 520) Mean</span><span class="st">`</span>, </a>
-<a class="sourceLine" id="cb13-3" title="3">                <span class="st">`</span><span class="dt">Entire Cell PD1 (Opal 650) Mean</span><span class="st">`</span>,</a>
-<a class="sourceLine" id="cb13-4" title="4">                <span class="dt">color=</span>Phenotype)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb13-5" title="5"><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">size=</span><span class="dv">1</span>, <span class="dt">alpha=</span><span class="fl">0.2</span>) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb13-6" title="6"><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span>Phenotype) <span class="op">+</span></a>
-<a class="sourceLine" id="cb13-7" title="7"><span class="st">  </span><span class="kw">scale_x_log10</span>() <span class="op">+</span><span class="st"> </span><span class="kw">scale_y_log10</span>() <span class="op">+</span><span class="st"> </span><span class="kw">scale_color_brewer</span>(<span class="dt">palette=</span><span class="st">'Set1'</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb13-8" title="8"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x=</span><span class="st">'PDL1 Expression'</span>, <span class="dt">y=</span><span class="st">'PD1 Expression'</span>, </a>
-<a class="sourceLine" id="cb13-9" title="9">       <span class="dt">title=</span><span class="st">'Comparison of PD1 and PDL1 Expression per Phenotype'</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="kw">ggplot</span>(csd <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/filter">filter</a></span>(Phenotype<span class="op">!=</span><span class="st">'other'</span>), </span>
+<span id="cb13-2"><a href="#cb13-2"></a>       <span class="kw">aes</span>(<span class="st">`</span><span class="dt">Entire Cell PDL1 (Opal 520) Mean</span><span class="st">`</span>, </span>
+<span id="cb13-3"><a href="#cb13-3"></a>                <span class="st">`</span><span class="dt">Entire Cell PD1 (Opal 650) Mean</span><span class="st">`</span>,</span>
+<span id="cb13-4"><a href="#cb13-4"></a>                <span class="dt">color=</span>Phenotype)) <span class="op">+</span></span>
+<span id="cb13-5"><a href="#cb13-5"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">size=</span><span class="dv">1</span>, <span class="dt">alpha=</span><span class="fl">0.2</span>) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb13-6"><a href="#cb13-6"></a><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span>Phenotype) <span class="op">+</span></span>
+<span id="cb13-7"><a href="#cb13-7"></a><span class="st">  </span><span class="kw">scale_x_log10</span>() <span class="op">+</span><span class="st"> </span><span class="kw">scale_y_log10</span>() <span class="op">+</span><span class="st"> </span><span class="kw">scale_color_brewer</span>(<span class="dt">palette=</span><span class="st">'Set1'</span>) <span class="op">+</span></span>
+<span id="cb13-8"><a href="#cb13-8"></a><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x=</span><span class="st">'PDL1 Expression'</span>, <span class="dt">y=</span><span class="st">'PD1 Expression'</span>, </span>
+<span id="cb13-9"><a href="#cb13-9"></a>       <span class="dt">title=</span><span class="st">'Comparison of PD1 and PDL1 Expression per Phenotype'</span>)</span></code></pre></div>
 <p><img src="reading_tables_files/figure-html/ggplot2-2.png" width="576"></p>
 </div>
 <div id="further-reading-and-examples" class="section level2">
