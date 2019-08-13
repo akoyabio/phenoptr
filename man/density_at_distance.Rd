@@ -33,14 +33,14 @@ Default parameters are \code{method="ratio", smoother="kernel", bw="nrd"}.}
 }
 \value{
 Returns a \code{list} containing four items:
-\tabular{ll}{
-\code{points} \tab The points used, marked with their phenotype,
-a \code{\link[spatstat]{ppp.object}}.\cr
-\code{rhohat} \tab The density estimates (see Details).\cr
-\code{distance} \tab The distance map, a pixel image
-(\code{\link[spatstat]{im.object}}).\cr
-\code{mask} \tab A mask matrix showing the locations which are closer to
-the tissue boundary than to the border or other regions.\cr
+\describe{
+\item{\code{points}}{The points used, marked with their phenotype,
+a \code{\link[spatstat]{ppp.object}}.}
+\item{\code{rhohat}}{The density estimates (see Details).}
+\item{\code{distance}}{The distance map, a pixel image
+(\code{\link[spatstat]{im.object}}).}
+\item{\code{mask}}{A mask matrix showing the locations which are closer to
+the tissue boundary than to the border or other regions.}
 }
 }
 \description{

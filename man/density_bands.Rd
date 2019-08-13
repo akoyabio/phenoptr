@@ -32,23 +32,23 @@ same directory as \code{cell_seg_path}.}
 }
 \value{
 Returns a \code{list} with three items:
-\tabular{ll}{
-\code{densities} \tab A \code{tibble} with five columns (see below).\cr
-\code{cells} \tab Cell seg data with phenotypes updated per the \code{phenotypes}
-parameter and an additional \code{distance} column.\cr
-\code{distance} \tab The distance map, a pixel image
-(\code{\link[spatstat]{im.object}}).\cr
+\describe{
+\item{\code{densities}}{A \code{tibble} with five columns (see below).}
+\item{\code{cells}}{Cell seg data with phenotypes updated per the \code{phenotypes}
+parameter and an additional \code{distance} column.}
+\item{\code{distance}}{The distance map, a pixel image
+(\code{\link[spatstat]{im.object}}).}
 }
 
 The \code{densities} item contains five columns:
-\tabular{ll}{
-\code{phenotype} \tab The supplied phenotypes.\cr
-\code{midpoint} \tab The midpoint of the distance band.\cr
-\code{count} \tab The number of cells of the phenotype found
-within the band.\cr
-\code{area} \tab The area of the band, in square microns.\cr
-\code{density} \tab The density of cells of the phenotype in the band,
-in cells per square micron.\cr
+\describe{
+\item{\code{phenotype}}{The supplied phenotypes.}
+\item{\code{midpoint}}{The midpoint of the distance band.}
+\item{\code{count}}{The number of cells of the phenotype found
+within the band.}
+\item{\code{area}}{The area of the band, in square microns.}
+\item{\code{density}}{The density of cells of the phenotype in the band,
+in cells per square micron.}
 }
 }
 \description{

@@ -64,14 +64,14 @@ if (getRversion() >= "2.15.1")
 #' @param ... Additional arguments passed to \code{\link[spatstat]{rhohat}}.
 #' Default parameters are `method="ratio", smoother="kernel", bw="nrd"`.
 #' @return Returns a `list` containing four items:
-#'   \tabular{ll}{
-#'    `points` \tab The points used, marked with their phenotype,
-#'    a \code{\link[spatstat]{ppp.object}}.\cr
-#'    `rhohat` \tab The density estimates (see Details).\cr
-#'    `distance` \tab The distance map, a pixel image
-#'      (\code{\link[spatstat]{im.object}}).\cr
-#'    `mask` \tab A mask matrix showing the locations which are closer to
-#'    the tissue boundary than to the border or other regions.\cr
+#'   \describe{
+#'    \item{`points`}{The points used, marked with their phenotype,
+#'    a \code{\link[spatstat]{ppp.object}}.}
+#'    \item{`rhohat`}{The density estimates (see Details).}
+#'    \item{`distance`}{The distance map, a pixel image
+#'      (\code{\link[spatstat]{im.object}}).}
+#'    \item{`mask`}{A mask matrix showing the locations which are closer to
+#'    the tissue boundary than to the border or other regions.}
 #'  }
 #' @references A. Baddeley, E. Rubak and R.Turner.
 #' Spatial Point Patterns: Methodology and Applications with R.

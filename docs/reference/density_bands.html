@@ -194,37 +194,23 @@ same directory as <code>cell_seg_path</code>.</p></td>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Returns a <code>list</code> with three items:</p><table class='table'>
-<tr><td></td><td><code>densities</code></td></tr>
-<tr><td></td><td>A</td></tr>
-<tr><td><code>tibble</code></td><td>with five columns (see below).</td></tr>
-<tr><td></td><td><code>cells</code></td></tr>
-<tr><td></td><td>Cell seg data with phenotypes updated per the</td></tr>
-<tr><td><code>phenotypes</code></td><td></td></tr>
-<tr><td>parameter and an additional</td><td><code>distance</code></td></tr>
-<tr><td>column.</td><td></td></tr>
-<tr><td><code>distance</code></td><td></td></tr>
-<tr><td>The distance map, a pixel image</td><td>(</td></tr>
-<tr><td><code><a href='https://www.rdocumentation.org/packages/spatstat/topics/im.object'>im.object</a></code></td><td>).</td></tr>
-<tr><td></td><td></td></tr>
-</table>
+    <p>Returns a <code>list</code> with three items:</p><dl class='dl-horizontal'>
+<dt><code>densities</code></dt><dd><p>A <code>tibble</code> with five columns (see below).</p></dd>
+<dt><code>cells</code></dt><dd><p>Cell seg data with phenotypes updated per the <code>phenotypes</code>
+parameter and an additional <code>distance</code> column.</p></dd>
+<dt><code>distance</code></dt><dd><p>The distance map, a pixel image
+(<code><a href='https://www.rdocumentation.org/packages/spatstat/topics/im.object'>im.object</a></code>).</p></dd>
+</dl>
 
-
-<p>The <code>densities</code> item contains five columns:</p><table class='table'>
-<tr><td></td><td><code>phenotype</code></td></tr>
-<tr><td></td><td>The supplied phenotypes.</td></tr>
-<tr><td></td><td><code>midpoint</code></td></tr>
-<tr><td></td><td>The midpoint of the distance band.</td></tr>
-<tr><td></td><td><code>count</code></td></tr>
-<tr><td></td><td>The number of cells of the phenotype found</td></tr>
-<tr><td>within the band.</td><td></td></tr>
-<tr><td><code>area</code></td><td></td></tr>
-<tr><td>The area of the band, in square microns.</td><td></td></tr>
-<tr><td><code>density</code></td><td></td></tr>
-<tr><td>The density of cells of the phenotype in the band,</td><td>in cells per square micron.</td></tr>
-<tr><td></td><td></td></tr>
-</table>
-
+<p>The <code>densities</code> item contains five columns:</p><dl class='dl-horizontal'>
+<dt><code>phenotype</code></dt><dd><p>The supplied phenotypes.</p></dd>
+<dt><code>midpoint</code></dt><dd><p>The midpoint of the distance band.</p></dd>
+<dt><code>count</code></dt><dd><p>The number of cells of the phenotype found
+within the band.</p></dd>
+<dt><code>area</code></dt><dd><p>The area of the band, in square microns.</p></dd>
+<dt><code>density</code></dt><dd><p>The density of cells of the phenotype in the band,
+in cells per square micron.</p></dd>
+</dl>
 
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
