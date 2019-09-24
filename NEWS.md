@@ -1,3 +1,7 @@
+# phenoptr 0.2.3.9000
+
+- Don't return NA values from `select_rows()`; return `FALSE` instead.
+
 # phenoptr 0.2.3
 **2019-08-07**
 

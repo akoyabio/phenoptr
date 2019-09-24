@@ -238,7 +238,8 @@ select_rows <- function(csd, sel) {
       }
     } else {
       # Selector is a function, evaluate it on csd
-      lazyeval::f_eval(s, csd)
+      # Don't return NA values, treat them as false
+      lazyeval::f_eval(s, csd) %>% tidyr::replace_na(FALSE)
     }
   }
 
