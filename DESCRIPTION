@@ -22,7 +22,7 @@ Imports:
     spatstat,
     stringr,
     tibble,
-    tidyr,
+    tidyr (>= 1.0.0),
     tiff,
     xml2
 Depends: R (>= 3.3.0)

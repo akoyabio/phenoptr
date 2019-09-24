@@ -1,6 +1,7 @@
 # phenoptr 0.2.3.9000
 
 - Don't return NA values from `select_rows()`; return `FALSE` instead.
+- Now requires tidyr >= 1.0.0.
 
 # phenoptr 0.2.3
 **2019-08-07**

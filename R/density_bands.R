@@ -184,7 +184,7 @@ density_bands = function(cell_seg_path, phenotypes, positive, negative,
             list(graphics::hist(distance, breaks=cut_points, plot=FALSE))) %>%
     dplyr::mutate(count = purrr::map(count,
                               ~tibble::as_tibble(.x[c('mids', 'counts')]))) %>%
-    tidyr::unnest() %>%
+    tidyr::unnest(cols=c(count)) %>%
     dplyr::rename(count=counts, phenotype=Phenotype)
 
   densities = cell_counts %>% dplyr::inner_join(areas, by='mids') %>%
