@@ -25,6 +25,11 @@ test_that('Single expression works', {
   expect_equal(select_rows(test_data, ~E2==1), c(T, T, F, F, T))
 })
 
+test_that('Error checking works', {
+  expect_error(select_rows(test_data, ~D), 'Invalid.* ~D')
+  expect_error(select_rows(test_data, ~~D), 'Invalid.* ~~D')
+})
+
 test_that('Phenotype + expression works', {
   expect_equal(select_rows(test_data, list('tumor', ~Expr==1)),
                c(T, F, T, F, F))

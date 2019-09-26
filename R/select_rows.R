@@ -41,8 +41,13 @@ validate_phenotype_definitions = function(pheno, available, csd=NULL) {
     if (!is.null(csd)) {
       attempt = try(lazyeval::f_eval(fmla, csd), silent=TRUE)
       if (class(attempt) == 'try-error') {
+        # This is usually a misspelled variable name
         msg = stringr::str_split(attempt, ' : ')[[1]][[2]]
         return(paste0('Invalid expression: ', stringr::str_trim(msg), '.'))
+      } else if (class(attempt) != 'logical' || length(attempt) != nrow(csd)) {
+        # This catches other errors such as ~D (returns stats::D)
+        # or ~~D (returns the formula ~D)
+        return(paste0('Invalid expression: ~', lazyeval::f_text(fmla)))
       }
     }
   }
@@ -238,8 +243,14 @@ select_rows <- function(csd, sel) {
       }
     } else {
       # Selector is a function, evaluate it on csd
+      col_selections = lazyeval::f_eval(s, csd)
+
+      # Check for valid result
+      if (class(col_selections) != 'logical' ||
+          length(col_selections) != nrow(csd))
+        stop('Invalid expression in select_rows: ~', lazyeval::f_text(s))
       # Don't return NA values, treat them as false
-      lazyeval::f_eval(s, csd) %>% tidyr::replace_na(FALSE)
+      col_selections %>% tidyr::replace_na(FALSE)
     }
   }
 

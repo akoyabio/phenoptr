@@ -89,4 +89,8 @@ test_that('validate_phenotype_definitions works', {
                'not a valid expression')
   expect_match(validate_phenotype_definitions('~y==1', '', df),
                'not found')
+  expect_match(validate_phenotype_definitions('~D', '', df),
+               'Invalid.* ~D')
+  expect_match(validate_phenotype_definitions('~~D', '', df),
+               'Invalid.* ~~D')
 })
