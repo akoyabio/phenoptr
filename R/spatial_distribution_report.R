@@ -248,17 +248,22 @@ add_scales_and_background = function(p, background, xlim, ylim,
     }
   }
 
-  # Add a 200-micron line segment for scale reference
-  p = p + ggplot2::geom_segment(ggplot2::aes(x=xlim[2]-50-200, xend=xlim[2]-50,
-                                             y=ylim[2]-100, yend=ylim[2]-100),
-                                color=scale_color, size=1)
-  p = p + ggplot2::geom_text(ggplot2::aes(x=xlim[2]-50-200/2, y=ylim[2]-90,
-                                          label=paste(200, '~mu*m')),
-                             size=3, hjust=0.5, vjust=1, color=scale_color,
-                             parse=TRUE)
+  p = add_scale_line(p, xlim, ylim, scale_color, scale_alpha=1)
   p
 }
 
+# Add a 200-micron line segment for scale reference
+add_scale_line <- function(p, xlim, ylim, scale_color, scale_alpha) {
+  p = p + ggplot2::geom_segment(ggplot2::aes(x=xlim[2]-50-200, xend=xlim[2]-50,
+                                             y=ylim[2]-100, yend=ylim[2]-100),
+                                color=scale_color, alpha=scale_alpha, size=1)
+  p = p + ggplot2::geom_text(ggplot2::aes(x=xlim[2]-50-200/2, y=ylim[2]-90,
+                                          label=paste(200, '~mu*m')),
+                             size=3, hjust=0.5, vjust=1,
+                             color=scale_color, alpha=scale_alpha,
+                             parse=TRUE)
+  p
+}
 
 # A version of ggplot2::annotation_raster which takes a nativeRaster
 # image. This is much faster than standard raster.
