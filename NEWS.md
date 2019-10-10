@@ -1,5 +1,6 @@
 # phenoptr 0.2.3.9000
 
+- Add `count_touching_cells_single` for phenoptrReports spatial map viewer.
 - Don't return NA values from `select_rows()`; return `FALSE` instead.
 - Now requires tidyr >= 1.0.0.
 

@@ -34,12 +34,13 @@ test_that('count_touching_cells works', {
                'requires colors'),
     'Omitting')
 
-  # This one works with warnings
-  expect_warning(counts <- count_touching_cells(cell_seg_path, pairs, colors,
+  # This one works with multiple warnings
+  warnings = capture_warnings(counts <- count_touching_cells(cell_seg_path, pairs, colors,
                                                 categories='Tumor',
-                                                output_base=output_base),
-                 "No image for .* Helper T touching FOO+")
+                                                output_base=output_base))
 
+  expect_match(warnings[1], 'Omitting Helper T - Helper T')
+  expect_match(warnings[2], 'Helper T touching FOO+')
   expect_equal(dim(counts), c(3, 9))
   expect_equal(counts$phenotype1, rep('Helper T', 3))
   expect_equal(counts$phenotype2, c('B', 'Cytotoxic T', 'FOO+'))
@@ -62,6 +63,28 @@ test_that('count_touching_cells works', {
       expect_equal(actual, expected, info=image_name)
     }
   }
+})
+
+test_that('count_touching_cells_single works', {
+  cell_seg_path =
+    test_path('test_data/consolidated/FIHC4_consolidated_merge_cell_seg_data.txt')
+  csd = vroom::vroom(cell_seg_path, delim='\t', na='#N/A')
+  field_name = "FIHC4__0929309_HP_IM3_2.im3"
+  export_path = test_path('test_data')
+  phenos = list("Helper_T+", "B+")
+  color1 = 'green'
+  color2 = 'red'
+
+  result = count_touching_cells_single(csd, field_name, export_path,
+                                       phenos, color1, color2)
+
+  expected = tiff::readTIFF(test_path('test_results',
+                                      'FIHC4__0929309_HP_IM3_2_Helper_T_touch_B.tif'),
+                            as.is=TRUE)
+
+  # The actual data is transposed from the expected
+  expect_equal(aperm(result$image@.Data, c(2, 1, 3)), expected)
+  expect_equal(dim(result$data), c(31, 20))
 })
 
 test_that('replace_invalid_path_characters works', {

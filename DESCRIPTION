@@ -35,7 +35,8 @@ Suggests:
     testthat,
     covr,
     doParallel,
-    rtree
+    rtree,
+    vroom
 VignetteBuilder: knitr
 URL: https://akoyabio.github.io/phenoptr/
 BugReports: https://github.com/akoyabio/phenoptr/issues

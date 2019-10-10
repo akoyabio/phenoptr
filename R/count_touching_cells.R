@@ -178,15 +178,7 @@ count_touching_cells <- function(cell_seg_path, pairs, colors=NULL,
     if (!all(phenotypes %in% names(colors)))
       stop('count_touching_cells requires colors for all phenotypes.')
 
-    # Look for composite as TIFF or JPEG
-    composite_path =
-      sub('cell_seg_data.txt', 'composite_image.tif', cell_seg_path)
-    if (!file.exists(composite_path))
-      composite_path = sub('tif', 'jpg', composite_path)
-
-    if (!file.exists(composite_path))
-      stop('count_touching_cells requires a matching TIFF or JPEG ',
-           'composite image when write_images is TRUE.')
+    composite_path = find_composite_image(cell_seg_path)
   }
 
   # Make the output directory
@@ -211,9 +203,119 @@ count_touching_cells <- function(cell_seg_path, pairs, colors=NULL,
   slide = ifelse('Slide ID' %in% names(csd),
                  as.character(csd[1, 'Slide ID']), NA)
 
-  # Read the membrane and nuclear masks.
-  # Convert the membrane to single values.
-  # Use 0.5 to avoid conflict with cell labeling
+  masks = read_masks(cell_seg_path)
+
+  # Make images for the cells in each phenotype by filling in the membrane mask
+  # at each cell, then removing the membrane.
+  # Fill with a unique ID value for each cell (here, the cell ID)
+  cell_images = lapply(phenotypes, function(phenotype)
+  {
+    rule = phenotype_rules[[phenotype]]
+    d = csd[select_rows(csd, rule),]
+    make_cell_image(d, masks$nuclei, masks$membrane)
+  })
+  names(cell_images) = phenotypes
+
+  # Will be a data frame with counts etc
+  result = NULL
+
+  # Process each pair of phenotypes
+  for (pair in pairs)
+  {
+    # Get the names and images for each phenotype
+    pheno_name1 = pair[1]
+    cell_image1 = cell_images[[pheno_name1]]
+
+    pheno_name2 = pair[2]
+    cell_image2 = cell_images[[pheno_name2]]
+
+    p1_count = sum(select_rows(csd, phenotype_rules[[pheno_name1]]))
+    p2_count = sum(select_rows(csd, phenotype_rules[[pheno_name2]]))
+
+    touches_found = 0
+
+    if (p1_count == 0 || p2_count == 0)
+    {
+      # No data for one of the phenotypes in this pair
+      # Report empty result and go on
+      result = rbind(result,
+                   tibble::tibble(
+                      slide_id=slide,
+                      source=name,
+                      phenotype1=pheno_name1,
+                      phenotype2=pheno_name2,
+                      total1=p1_count,
+                      total2=p2_count,
+                      p1_touch_p2=0,
+                      p2_touch_p1=0,
+                      touch_pairs=0))
+      if (write_images)
+        warning('No image for ', name, ', ', pheno_name1, ' touching ', pheno_name2)
+      next
+    }
+
+    # We need a bigger dilation kernel if the membrane is two pixels wide
+    extra_size = ifelse(masks$membrane_width==1, 0, 2)
+    touch_pairs = find_touching_cell_pairs(cell_image1, cell_image2, extra_size)
+
+    # Need individual IDs for imaging and counting
+    touching_ids = list(unique(touch_pairs[,1]), unique(touch_pairs[,2]))
+    p1_touching_count = length(touching_ids[[1]])
+    p2_touching_count = length(touching_ids[[2]])
+    touches_found = nrow(touch_pairs)
+
+    result = rbind(result,
+                 tibble::tibble(
+                    slide_id=slide,
+                    source=name,
+                    phenotype1=pheno_name1,
+                    phenotype2=pheno_name2,
+                    total1=p1_count,
+                    total2=p2_count,
+                    p1_touch_p2=p1_touching_count,
+                    p2_touch_p1=p2_touching_count,
+                    touch_pairs=touches_found))
+
+    if (write_images)
+    {
+      composite = make_touching_image(pheno_name1, pheno_name2,
+                                      cell_image1,cell_image2,
+                                      touching_ids, masks,
+                                      composite_path, colors)
+
+      tag = paste0(replace_invalid_path_characters(pheno_name1, '_'), '_touch_',
+                   replace_invalid_path_characters(pheno_name2, '_'), '.tif')
+      composite_out = sub('composite_image.(tif|jpg)', tag, composite_path)
+      if (!is.null(output_base))
+        composite_out = file.path(output_base, basename(composite_out))
+
+      EBImage::writeImage(composite, composite_out, compression='LZW')
+    }
+  }
+
+  # Return the data
+  result
+}
+
+# Find the composite image as TIFF or JPEG
+find_composite_image = function(cell_seg_path) {
+  composite_path =
+    sub('cell_seg_data.txt', 'composite_image.tif', cell_seg_path)
+  if (!file.exists(composite_path))
+    composite_path = sub('tif', 'jpg', composite_path)
+
+  if (!file.exists(composite_path))
+    stop('count_touching_cells requires a matching TIFF or JPEG ',
+         'composite image when write_images is TRUE.')
+
+  composite_path
+}
+
+# Read the membrane and nuclear masks.
+# Convert the membrane to single values.
+# Use 0.5 to avoid conflict with cell labeling
+# Returns a list with `nuclei`, `membrane` and `membrane_width` members.
+read_masks = function(cell_seg_path) {
   mask_path = sub('cell_seg_data.txt', 'memb_seg_map.tif', cell_seg_path)
   if (file.exists(mask_path))
   {
@@ -253,7 +355,6 @@ count_touching_cells <- function(cell_seg_path, pairs, colors=NULL,
     membrane = t(membrane)
     nuclei = t(nuclei)
   }
-  stopifnot(exists('membrane'), exists('nuclei'))
 
   # inForm cell seg doesn't always draw the membrane to the edge of the image.
   # That is a disaster for flood fill. Draw a border around the membrane
@@ -262,131 +363,11 @@ count_touching_cells <- function(cell_seg_path, pairs, colors=NULL,
     membrane[dim(membrane)[1],] =
     membrane[,dim(membrane)[2]] = 0.5
 
-  # Make images for the cells in each phenotype by filling in the membrane mask
-  # at each cell, then removing the membrane.
-  # Fill with a unique ID value for each cell (here, the cell ID)
-  cell_images = lapply(phenotypes, function(phenotype)
-  {
-    rule = phenotype_rules[[phenotype]]
-    d = csd[select_rows(csd, rule),]
-    make_cell_image(d, nuclei, membrane)
-  })
-  names(cell_images) = phenotypes
-
-  # Will be a data frame with counts etc
-  result = NULL
-
-  # Process each pair of phenotypes
-  for (pair in pairs)
-  {
-    # Get the names and images for each phenotype
-    p1 = pair[1]
-    i1 = cell_images[[p1]]
-
-    p2 = pair[2]
-    i2 = cell_images[[p2]]
-
-    p1_count = sum(select_rows(csd, phenotype_rules[[p1]]))
-    p2_count = sum(select_rows(csd, phenotype_rules[[p2]]))
-
-    touches_found = 0
-
-    if (p1_count == 0 || p2_count == 0)
-    {
-      # No data for one of the phenotypes in this pair
-      # Report empty result and go on
-      result = rbind(result,
-                   tibble::tibble(
-                      slide_id=slide,
-                      source=name,
-                      phenotype1=p1,
-                      phenotype2=p2,
-                      total1=p1_count,
-                      total2=p2_count,
-                      p1_touch_p2=0,
-                      p2_touch_p1=0,
-                      touch_pairs=0))
-      if (write_images)
-        warning('No image for ', name, ', ', p1, ' touching ', p2)
-      next
-    }
-
-    # We need a bigger dilation kernel if the membrane is two pixels wide
-    extra_size = ifelse(membrane_width==1, 0, 2)
-    touch_pairs = find_touching_cell_pairs(i1, i2, extra_size)
-
-    # Need individual IDs for imaging and counting
-    touching_ids = list(unique(touch_pairs[,1]), unique(touch_pairs[,2]))
-    p1_touching_count = length(touching_ids[[1]])
-    p2_touching_count = length(touching_ids[[2]])
-    touches_found = nrow(touch_pairs)
-
-    result = rbind(result,
-                 tibble::tibble(
-                    slide_id=slide,
-                    source=name,
-                    phenotype1=p1,
-                    phenotype2=p2,
-                    total1=p1_count,
-                    total2=p2_count,
-                    p1_touch_p2=p1_touching_count,
-                    p2_touch_p1=p2_touching_count,
-                    touch_pairs=touches_found))
-
-    if (write_images)
-    {
-      tag = paste0(replace_invalid_path_characters(p1, '_'), '_touch_',
-                   replace_invalid_path_characters(p2, '_'), '.tif')
-      composite_out = sub('composite_image.(tif|jpg)', tag, composite_path)
-      if (!is.null(output_base))
-        composite_out = file.path(output_base, basename(composite_out))
-
-      # Make a pretty picture showing the touch points.
-      # First make a mask containing just the touching cells by searching for
-      # the touching IDs in the original cell images. Then dilate to overlap the
-      # membrane mask and mask out anything not in the membrane mask.
-      both = EBImage::Image(dim=dim(i1))
-      both[i1 %in% touching_ids[[1]]] = 1
-      both[i2 %in% touching_ids[[2]]] = 1
-
-      kern3 = EBImage::makeBrush(3, shape='diamond')
-      both = EBImage::dilate(both, kern3)
-      both[membrane==0] = 0
-
-      composite = EBImage::readImage(composite_path)
-      if (!is.null(colors))
-      {
-        # If we have colors, outline all cells of a type
-        # and fill the touching cells
-        i1_touching = i1
-        i1_touching[!i1 %in% touching_ids[[1]]] = 0
-
-        composite = EBImage::paintObjects(i1, composite,
-                                          col=c(colors[[p1]], NA))
-        composite = EBImage::paintObjects(i1_touching, composite,
-                                          col=c(colors[[p1]], colors[[p1]]))
-
-        i2_touching = i2
-        i2_touching[!i2 %in% touching_ids[[2]]] = 0
-
-        composite = EBImage::paintObjects(i2, composite,
-                                          col=c(colors[[p2]], NA))
-        composite = EBImage::paintObjects(i2_touching, composite,
-                                          col=c(colors[[p2]], colors[[p2]]))
-      }
-
-      # Draw the cell outlines onto the composite image and save
-      composite = EBImage::paintObjects(both, composite, col='white')
-      EBImage::writeImage(composite, composite_out, compression='LZW')
-    }
-  }
-
-  # Return the data
-  result
+  list(nuclei=nuclei, membrane=membrane, membrane_width=membrane_width)
 }
 
-# Given a data frame of cells and membrane and nuclear masks, make an image with
-# a region for each cell. Returns NULL if d is empty
+# Given a data frame of cells and membrane and nuclear masks,
+# make a label image with a region for each cell. Returns NULL if d is empty.
 make_cell_image <- function (d, nuclei, membrane) {
   stopifnot('Cell ID' %in% names(d))
 
@@ -395,13 +376,14 @@ make_cell_image <- function (d, nuclei, membrane) {
   image = membrane
   cell_ids = d$`Cell ID`
 
-  # Find locations of all points
+  # Find interior points of all cells
   nuc_locations = purrr::map(cell_ids, ~find_interior_point(nuclei, .x))
 
   # Filter out missing cells
   cell_ids = cell_ids[!is.null(nuc_locations)]
   nuc_locations = nuc_locations[!is.null(nuc_locations)]
 
+  # Fill each cell with its ID
   if (utils::packageVersion('EBImage') >= '4.19.9') {
     # Optimized version only needs one call to floodFill
     image = EBImage::floodFill(image, nuc_locations,
@@ -413,6 +395,7 @@ make_cell_image <- function (d, nuclei, membrane) {
       image = EBImage::floodFill(image, nuc_locations[i], cell_ids[i])
     }
   }
+
   # Remove the membrane outlines
   image[membrane==0.5] = 0
   image
@@ -473,6 +456,49 @@ find_touching_cell_pairs <- function (i1, i2, extra_size) {
   overlap = overlap[overlap[,1]>0.1 & overlap[,2]>0.1, , drop=FALSE]
   overlap = unique(overlap)
   overlap
+}
+
+make_touching_image <- function(pheno_name1, pheno_name2,
+                                cell_image1,cell_image2,
+                                touching_ids, masks,
+                                composite_path, colors) {
+  # Make a pretty picture showing the touch points.
+  # First make a mask containing just the touching cells by searching for
+  # the touching IDs in the original cell images. Then dilate to overlap the
+  # membrane mask and mask out anything not in the membrane mask.
+  both = EBImage::Image(dim=dim(cell_image1))
+  both[cell_image1 %in% touching_ids[[1]]] = 1
+  both[cell_image2 %in% touching_ids[[2]]] = 1
+
+  kern3 = EBImage::makeBrush(3, shape='diamond')
+  both = EBImage::dilate(both, kern3)
+  both[masks$membrane==0] = 0
+
+  composite = EBImage::readImage(composite_path)
+  if (!is.null(colors))
+  {
+    # If we have colors, outline all cells of a type
+    # and fill the touching cells
+    i1_touching = cell_image1
+    i1_touching[!cell_image1 %in% touching_ids[[1]]] = 0
+
+    composite = EBImage::paintObjects(cell_image1, composite,
+                                      col=c(colors[[pheno_name1]], NA))
+    composite = EBImage::paintObjects(i1_touching, composite,
+                                      col=c(colors[[pheno_name1]], colors[[pheno_name1]]))
+
+    i2_touching = cell_image2
+    i2_touching[!cell_image2 %in% touching_ids[[2]]] = 0
+
+    composite = EBImage::paintObjects(cell_image2, composite,
+                                      col=c(colors[[pheno_name2]], NA))
+    composite = EBImage::paintObjects(i2_touching, composite,
+                                      col=c(colors[[pheno_name2]], colors[[pheno_name2]]))
+  }
+
+  # Draw the cell outlines onto the composite image
+  composite = EBImage::paintObjects(both, composite, col='white')
+  composite
 }
 
 # Replace invalid path characters
