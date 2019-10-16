@@ -65,26 +65,26 @@ test_that('count_touching_cells works', {
   }
 })
 
-test_that('count_touching_cells_single works', {
+test_that('count_touching_cells_fast works', {
   cell_seg_path =
-    test_path('test_data/consolidated/FIHC4_consolidated_merge_cell_seg_data.txt')
+    'C:/Research/phenoptrTestData/touching_cells/180628 B-lung2_Scan1_[14659,46741]_cell_seg_data.txt'
+  skip_if_not(file.exists(cell_seg_path))
+
   csd = vroom::vroom(cell_seg_path, delim='\t', na='#N/A')
-  field_name = "FIHC4__0929309_HP_IM3_2.im3"
-  export_path = test_path('test_data')
-  phenos = list("Helper_T+", "B+")
-  color1 = 'green'
+  field_name = "180628 B-lung2_Scan1_[14659,46741]"
+  export_path = dirname(cell_seg_path)
+  phenos = list("CD8+", "CD68+")
+  color1 = 'cyan'
   color2 = 'red'
 
-  result = count_touching_cells_single(csd, field_name, export_path,
+  result = count_touching_cells_fast(csd, field_name, export_path,
                                        phenos, color1, color2)
 
-  expected = tiff::readTIFF(test_path('test_results',
-                                      'FIHC4__0929309_HP_IM3_2_Helper_T_touch_B.tif'),
-                            as.is=TRUE)
+  expected_path = file.path(export_path, '180628 B-lung2_Scan1_[14659,46741]_CD8+_touch_CD68+.tif')
+  expected = EBImage::readImage(expected_path)
 
-  # The actual data is transposed from the expected
-  expect_equal(aperm(result$image@.Data, c(2, 1, 3)), expected)
-  expect_equal(dim(result$data), c(31, 20))
+  expect_equal(result$image, expected)
+  expect_equal(dim(result$data), c(49, 14))
 })
 
 test_that('replace_invalid_path_characters works', {

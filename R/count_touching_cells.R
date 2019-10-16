@@ -407,7 +407,7 @@ find_interior_point = function(nuclei, cell_id)
   # Locate the nucleus in the overall map and extract it as a patch.
 
   # Where is the nucleus?
-  nuc_locations = which(nuclei==cell_id, arr.ind=TRUE)
+  nuc_locations = which(nuclei==cell_id, arr.ind=TRUE, useNames=FALSE)
   if (nrow(nuc_locations)==0) return(NULL) # Didn't find this cell
 
   # Figure out the bounds of the patch. Include a 1-pixel border if possible

@@ -2,7 +2,7 @@
 
 export(compute_all_nearest_distance)
 export(count_touching_cells)
-export(count_touching_cells_single)
+export(count_touching_cells_fast)
 export(count_within)
 export(count_within_batch)
 export(count_within_detail)
