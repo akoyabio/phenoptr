@@ -143,4 +143,3 @@ test_that("make_phenotype_rules works", {
     tumor= c('tumor PDL1+', 'tumor PDL1-'))
   expect_equal(make_phenotype_rules(phenotypes, rules), rules)
 })
-

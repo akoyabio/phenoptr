@@ -106,12 +106,11 @@ spatial_distribution_report <- function(cell_seg_path, pairs, colors,
 # @param pheno List of (name, color, select)
 # @param window spatstat::owin containing the points
 # @return List of (data subset, ppp, pheno)
-phenotype_as_ppp = function(data, pheno, window)
-{
+phenotype_as_ppp = function(data, pheno, window) {
   # Keep just the rows corresponding to the desired expression and phenotypes
   # for our data and columns containing fields of interest
-  fixedColumns = c('Cell ID', 'Cell X Position', 'Cell Y Position')
-  data = data[select_rows(data, pheno$select),fixedColumns]
+  fixed_columns = c('Cell ID', 'Cell X Position', 'Cell Y Position')
+  data = data[select_rows(data, pheno$select), fixed_columns]
 
   data = stats::na.omit(data)
 
@@ -128,13 +127,12 @@ phenotype_as_ppp = function(data, pheno, window)
 # @return A data.frame showing ID and location of from and to points
 # with the distance between them.
 # @importFrom magrittr "%>%"
-find_nearest_neighbor = function(pheno_data1, pheno_data2)
-{
+find_nearest_neighbor = function(pheno_data1, pheno_data2) {
   d = spatstat::nncross(pheno_data1$pp, pheno_data2$pp)
   names(d)[1] = 'Distance'
   from_data = pheno_data1$data %>%
     dplyr::select(`Cell ID`, `Cell X Position`, `Cell Y Position`)
-  to_data = pheno_data2$data[d$which,] %>%
+  to_data = pheno_data2$data[d$which, ] %>%
     dplyr::select('To Cell ID'=`Cell ID`,
                   'To X Position'=`Cell X Position`,
                   'To Y Position'=`Cell Y Position`)
@@ -151,9 +149,9 @@ find_nearest_neighbor = function(pheno_data1, pheno_data2)
 # @param nn_dist result of a call to find_nearest_neighbor
 # @param lineColor color for the connecting lines
 # @return a ggplot object
-nn_plot <- function (pheno_data1, pheno_data2, nn_dist,
-                     background, xlim, ylim,
-                     line_color='gray90', scale_color='white') {
+nn_plot <- function(pheno_data1, pheno_data2, nn_dist,
+                    background, xlim, ylim,
+                    line_color='gray90', scale_color='white') {
   title = bquote('Nearest neighbor from'
                  ~ italic(.(pheno_data1$pheno$name))
                  ~ 'to'
@@ -177,9 +175,9 @@ nn_plot_mutual = function(pheno_data1, pheno_data2, nn_mutual,
 }
 
 # Shared implementation for nearest-neighbor plots
-nn_plot_impl <- function (nn_dist, pheno_data1, pheno_data2, title,
-                          background, xlim, ylim,
-                          lineColor, scale_color) {
+nn_plot_impl <- function(nn_dist, pheno_data1, pheno_data2, title,
+                         background, xlim, ylim,
+                         lineColor, scale_color) {
   p = nn_plot_base(title, background, xlim, ylim, scale_color)
   p = add_dist_data(p, nn_dist, lineColor)
 
@@ -235,8 +233,7 @@ add_scales_and_background = function(p, background, xlim, ylim,
   p = p + ggplot2::coord_fixed()
 
   # Add background image if we have one
-  if (length(background) > 1)
-  {
+  if (length(background) > 1) {
     if (inherits(background, 'nativeRaster')) {
     p = p + annotation_raster_native(background,
                               xmin=xlim[1], xmax=xlim[2],

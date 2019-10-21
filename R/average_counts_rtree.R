@@ -106,7 +106,7 @@ count_within_detail = function(csd, phenotypes=NULL, radii) {
 
     if (sum(phenotype_cells)>0) {
       # Make an rtree of the phenotype cells
-      to_cells_locs = field_locs[phenotype_cells,, drop=FALSE]
+      to_cells_locs = field_locs[phenotype_cells, , drop=FALSE]
       to_cells_tree = rtree::RTree(to_cells_locs)
 
       # Now compute count within for each radius

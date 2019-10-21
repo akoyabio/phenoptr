@@ -2,8 +2,7 @@
 # Don't report code coverage of this file
 # nocov start
 
-.onLoad <- function(libname, pkgname)
-{
+.onLoad <- function(libname, pkgname) { # nolint
   # Set default options() related to functionality in 'phenoptr' pkg
   # if they are not already set
   op <- options()

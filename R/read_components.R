@@ -24,8 +24,7 @@
 #' components <- read_components(path)
 #' }
 #' @md
-read_components <- function(path)
-{
+read_components <- function(path) {
   stopifnot(file.exists(path), endsWith(path, 'component_data.tif'))
 
   # The readTIFF documentation for `as.is`` is misleading.
@@ -37,7 +36,7 @@ read_components <- function(path)
   images = grepl('FullResolution', infos)
 
   # Get the component names
-  names = stringr::str_match(infos[images], '<Name>(.*)</Name>')[,2]
+  names = stringr::str_match(infos[images], '<Name>(.*)</Name>')[, 2]
 
   purrr::set_names(tif[images], names)
 }
@@ -88,7 +87,8 @@ get_field_info = function(path) {
       # Give a helpful error message if the problem is missing support
       # for tiled images.
       if (stringr::str_detect(tif, 'tile-based images'))
-        stop('Please install akoyabio/tiff to support large component data files.\n',
+        stop('Please install akoyabio/tiff ',
+             'to support large component data files.\n',
              'Use "devtools::install_github(\'akoyabio/tiff\')"')
       else
         stop()
@@ -101,7 +101,7 @@ get_field_info = function(path) {
     # doesn't read the location tags :-(
     name = basename(path)
     center_pattern = "_\\[([\\d\\.]+),([\\d\\.]+)\\][^\\[]*$"
-    center = as.numeric(stringr::str_match(name, center_pattern)[,2:3])
+    center = as.numeric(stringr::str_match(name, center_pattern)[, 2:3])
     if (any(is.na(center)))
       stop("Field location not found in file name.")
   }

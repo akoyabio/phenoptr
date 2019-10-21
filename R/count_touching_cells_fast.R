@@ -32,11 +32,12 @@ count_touching_cells_fast = function(csd, field_name, export_path,
 
   # Make a fake cell_seg_path that will be used to find related images
   name = stringr::str_remove(field_name, '.im3')
-  fake_cell_seg_path = file.path(export_path, paste0(name, '_cell_seg_data.txt'))
+  fake_cell_seg_path = file.path(export_path,
+                                 paste0(name, '_cell_seg_data.txt'))
 
   # Subset csd to just the cells of interest and check that the phenotype
   # definitions don't overlap
-  csd = csd[csd[[field_column(csd)]]==field_name,]
+  csd = csd[csd[[field_column(csd)]]==field_name, ]
   csd = force_pixel_locations(csd, fake_cell_seg_path)
 
   # First just the boolean selections
@@ -45,17 +46,19 @@ count_touching_cells_fast = function(csd, field_name, export_path,
   selected_overlap = selected_cells1 & selected_cells2
   if (any(selected_overlap)) {
     if (discard_dups) {
-      message('Discarding ', sum(selected_overlap), ' cells which match both phenotypes.')
+      message('Discarding ', sum(selected_overlap),
+              ' cells which match both phenotypes.')
       selected_cells1 = selected_cells1 & !selected_overlap
       selected_cells2 = selected_cells2 & !selected_overlap
     } else {
-      stop('Phenotypes for count_touching_cells_fast must define distinct cells.')
+      stop('Phenotypes for count_touching_cells_fast ',
+           'must define distinct cells.')
     }
   }
 
   # Now the actual cells
-  selected_cells1 = csd[selected_cells1,]
-  selected_cells2 = csd[selected_cells2,]
+  selected_cells1 = csd[selected_cells1, ]
+  selected_cells2 = csd[selected_cells2, ]
 
   # Read membrane and nuclear masks
   masks = read_masks_label(fake_cell_seg_path)
@@ -71,7 +74,7 @@ count_touching_cells_fast = function(csd, field_name, export_path,
   touch_pairs = find_touching_cell_pairs(cell_image1, cell_image2, extra_size=0)
 
   # Need unique IDs for imaging
-  touching_ids = list(unique(touch_pairs[,1]), unique(touch_pairs[,2]))
+  touching_ids = list(unique(touch_pairs[, 1]), unique(touch_pairs[, 2]))
 
   # Make an image of the touching (and non-touching) cells
   colors = list(color1, color2) %>%
@@ -94,7 +97,8 @@ count_touching_cells_fast = function(csd, field_name, export_path,
       dplyr::matches('Cell . Position'),
       dplyr::contains('Tissue Category')) %>%
     # Suffix column names with the phenotype
-    dplyr::rename_at(.vars=dplyr::vars(-dplyr::contains('Slide ID'), -!!field_col),
+    dplyr::rename_at(.vars=dplyr::vars(-dplyr::contains('Slide ID'),
+                                       -!!field_col),
                      .funs = ~paste0(.x, '.', pheno_name1))
 
   touching2 = selected_cells2 %>%
@@ -143,7 +147,7 @@ read_masks_label = function(cell_seg_path) {
 
 # Make a pretty picture showing the touch points.
 make_touching_image_fast <- function(pheno_name1, pheno_name2,
-                                cell_image1,cell_image2,
+                                cell_image1, cell_image2,
                                 touching_ids, masks,
                                 composite_path, colors) {
   composite = EBImage::readImage(composite_path)

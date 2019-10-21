@@ -7,7 +7,8 @@
 parse_phenotypes(...)
 }
 \arguments{
-\item{...}{Phenotypes to be decoded, or a list of same, optionally with names.}
+\item{...}{Phenotypes to be decoded, or a list of same,
+optionally with names.}
 }
 \value{
 A named list of phenotype selectors for use with

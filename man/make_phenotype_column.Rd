@@ -2,7 +2,8 @@
 % Please edit documentation in R/select_rows.R
 \name{make_phenotype_column}
 \alias{make_phenotype_column}
-\title{Mutate a cell seg table to have a Phenotype column with the desired phenotypes.}
+\title{Mutate a cell seg table to have a Phenotype column with the
+desired phenotypes.}
 \usage{
 make_phenotype_column(csd, phenotypes = NULL)
 }

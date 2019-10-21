@@ -9,14 +9,16 @@ check_density_bands <- function(values, pixels_per_micron) {
   densities = values$densities
   expect_equal(range(densities$midpoint), c(-112.5, 212.5))
 
-  dens_summary = densities %>% group_by(phenotype) %>%
+  dens_summary = densities %>%
+    group_by(phenotype) %>%
     summarize(count=sum(count), pixels=sum(area)*pixels_per_micron^2)
 
   # Sum of pixels is image size
   expect_equal(dens_summary$pixels, rep(1868*1400, 3), tolerance=1)
 
   # Cell counts should match cell_seg_data
-  csd_summary = sample_cell_seg_data %>% group_by(Phenotype) %>%
+  csd_summary = sample_cell_seg_data %>%
+    group_by(Phenotype) %>%
     summarize(count=n()) %>%
     right_join(dens_summary, by=c(Phenotype='phenotype'))
 

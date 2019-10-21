@@ -355,7 +355,7 @@ count_within <- function(csd, from, to, radius, category=NA, dst=NULL) {
   # If a category is provided, subset now
   if (!is.na(category)) {
     category_cells = csd$`Tissue Category`==category
-    csd = csd[category_cells,]
+    csd = csd[category_cells, ]
     if (!is.null(dst))
       dst = dst[category_cells, category_cells, drop=FALSE]
   }

@@ -185,7 +185,7 @@ find_nearest_distance_rtree <- function(csd, phenotypes=NULL) {
 
     if (sum(phenotype_cells)>0) {
       # Make an rtree of the phenotype cells
-      to_cells_locs = field_locs[phenotype_cells,]
+      to_cells_locs = field_locs[phenotype_cells, ]
       to_cells_tree = rtree::RTree(as.matrix(to_cells_locs))
 
       to_cells_ids = field_ids[phenotype_cells]
@@ -226,12 +226,12 @@ find_nearest_distance_rtree <- function(csd, phenotypes=NULL) {
           # Convert indices of nearest neighbors to locations
           # The neighbors are to_cells.
           nn_indices = to_cells_nn[, .x]
-          nn_locs = to_cells_locs[nn_indices,]
+          nn_locs = to_cells_locs[nn_indices, ]
 
           # Combine with original locations and compute distance
           field_locs %>%
             dplyr::bind_cols(nn_locs) %>%
-            dplyr::mutate(dist = sqrt( (X-X1)^2 + (Y-Y1)^2 )) %>%
+            dplyr::mutate(dist = sqrt( (X-X1)^2 + (Y-Y1)^2 )) %>% # nolint
             dplyr::pull()
         }) %>%
         purrr::transpose() # Get each row as a list

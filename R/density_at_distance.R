@@ -169,8 +169,8 @@ density_at_distance = function(cell_seg_path, phenotypes, positive, negative,
   boundary_mask = (!pos_mask) & (!neg_mask)
 
   # Put a 1-pixel border around boundary_mask so we get distance from the edge
-  boundary_mask[c(1, nrow(boundary_mask)),]= TRUE
-  boundary_mask[,c(1, ncol(boundary_mask))]= TRUE
+  boundary_mask[c(1, nrow(boundary_mask)), ]= TRUE
+  boundary_mask[, c(1, ncol(boundary_mask))]= TRUE
 
   boundary_win =
     spatstat::owin(mask=boundary_mask, xrange=xrange, yrange=yrange)
@@ -230,7 +230,7 @@ plot_diverging = function(im, title, show_boundary=FALSE, ...) {
   if (show_boundary) colors[(color_levels+1)/2] = 'gray90'
   max_absolute_value=max(abs(im)) # what is the maximum absolute value of im?
   color_sequence =
-    seq(-max_absolute_value,max_absolute_value,length.out=color_levels+1)
+    seq(-max_absolute_value, max_absolute_value, length.out=color_levels+1)
   graphics::plot(im, main=title, col=colors, breaks=color_sequence, ...)
 }
 

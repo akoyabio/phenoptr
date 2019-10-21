@@ -62,7 +62,8 @@ validate_phenotype_definitions = function(pheno, available, csd=NULL) {
 #' a user does not have to know the (somewhat inscrutable)
 #' details of `select_rows`.
 #'
-#' @param ... Phenotypes to be decoded, or a list of same, optionally with names.
+#' @param ... Phenotypes to be decoded, or a list of same,
+#' optionally with names.
 #' @return A named list of phenotype selectors for use with
 #'   [phenoptr::select_rows].
 #' @section Details:
@@ -299,7 +300,7 @@ normalize_selector = function(sel) {
 # @param existing_rules A named list of phenotype rules.
 # @return A named list of rules containing one entry for each member
 # of `phenotypes`.
-make_phenotype_rules <- function (phenotypes, existing_rules=NULL) {
+make_phenotype_rules <- function(phenotypes, existing_rules=NULL) {
   if (is.null(existing_rules))
     existing_rules = list()
   else if (!is.list(existing_rules)
@@ -357,7 +358,8 @@ unique_phenotypes = function(csd) {
   rlang::set_names(phenos)
 }
 
-#' Mutate a cell seg table to have a Phenotype column with the desired phenotypes.
+#' Mutate a cell seg table to have a Phenotype column with the
+#' desired phenotypes.
 #'
 #' Note: Cells that satisfy multiple phenotype definitions will appear
 #' multiple times in the result.
@@ -377,7 +379,7 @@ make_phenotype_column = function(csd, phenotypes=NULL) {
   }
 
   purrr::map(names(phenotypes),
-                   ~(csd[select_rows(csd, phenotypes[[.x]]),] %>%
+                   ~(csd[select_rows(csd, phenotypes[[.x]]), ] %>%
                        dplyr::mutate(Phenotype=.x))) %>%
     dplyr::bind_rows()
 }

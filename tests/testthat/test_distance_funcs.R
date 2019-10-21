@@ -77,8 +77,8 @@ test_that("find_nearest_distance works", {
 
   # The rest should match
   # all.equal.tbl_df is broken, coerce to data.frame.
-  expect_equal(as.data.frame(nearest)[-diff_b,],
-               as.data.frame(nearest_rtree)[-diff_b,])
+  expect_equal(as.data.frame(nearest)[-diff_b, ],
+               as.data.frame(nearest_rtree)[-diff_b, ])
 
   phenos = c(phenos, 'other') # A mising phenotype
   nearest = find_nearest_distance_dist(csd, phenos)

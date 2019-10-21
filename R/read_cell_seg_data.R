@@ -179,8 +179,8 @@ read_cell_seg_data <- function(
 
     # Position columns get an offset, if available
     if (!anyNA(location)) {
-      df$`Cell X Position` = df$`Cell X Position` + location[1]
-      df$`Cell Y Position` = df$`Cell Y Position` + location[2]
+      df$`Cell X Position` = df$`Cell X Position` + location[1] # nolint
+      df$`Cell Y Position` = df$`Cell Y Position` + location[2] # nolint
     }
 
     cols = get_area_columns(df)

@@ -179,7 +179,8 @@ density_bands = function(cell_seg_path, phenotypes, positive, negative,
     dplyr::select(-counts)
 
   # Count cells for each phenotype separately
-  cell_counts = csd %>% dplyr::group_by(Phenotype) %>%
+  cell_counts = csd %>%
+    dplyr::group_by(Phenotype) %>%
     dplyr::summarize(count =
             list(graphics::hist(distance, breaks=cut_points, plot=FALSE))) %>%
     dplyr::mutate(count = purrr::map(count,
@@ -187,7 +188,8 @@ density_bands = function(cell_seg_path, phenotypes, positive, negative,
     tidyr::unnest(cols=c(count)) %>%
     dplyr::rename(count=counts, phenotype=Phenotype)
 
-  densities = cell_counts %>% dplyr::inner_join(areas, by='mids') %>%
+  densities = cell_counts %>%
+    dplyr::inner_join(areas, by='mids') %>%
     dplyr::mutate(density=count/area) %>%
     dplyr::rename(midpoint=mids)
 

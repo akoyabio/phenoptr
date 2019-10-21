@@ -35,9 +35,10 @@ test_that('count_touching_cells works', {
     'Omitting')
 
   # This one works with multiple warnings
-  warnings = capture_warnings(counts <- count_touching_cells(cell_seg_path, pairs, colors,
-                                                categories='Tumor',
-                                                output_base=output_base))
+  warnings = capture_warnings(
+    counts <- count_touching_cells(cell_seg_path, pairs, colors,
+                                   categories='Tumor',
+                                   output_base=output_base))
 
   expect_match(warnings[1], 'Omitting Helper T - Helper T')
   expect_match(warnings[2], 'Helper T touching FOO+')
@@ -67,7 +68,8 @@ test_that('count_touching_cells works', {
 
 test_that('count_touching_cells_fast works', {
   cell_seg_path =
-    'C:/Research/phenoptrTestData/touching_cells/180628 B-lung2_Scan1_[14659,46741]_cell_seg_data.txt'
+    file.path('C:/Research/phenoptrTestData/touching_cells',
+              '180628 B-lung2_Scan1_[14659,46741]_cell_seg_data.txt')
   skip_if_not(file.exists(cell_seg_path))
 
   csd = vroom::vroom(cell_seg_path, delim='\t', na='#N/A')
@@ -80,7 +82,8 @@ test_that('count_touching_cells_fast works', {
   result = count_touching_cells_fast(csd, field_name, export_path,
                                        phenos, color1, color2)
 
-  expected_path = file.path(export_path, '180628 B-lung2_Scan1_[14659,46741]_CD8+_touch_CD68+.tif')
+  expected_path = file.path(export_path,
+                      '180628 B-lung2_Scan1_[14659,46741]_CD8+_touch_CD68+.tif')
   expected = EBImage::readImage(expected_path)
 
   expect_equal(result$image, expected)
