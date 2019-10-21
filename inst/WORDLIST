@@ -43,6 +43,7 @@ sel
 SpatialDistributionReport
 stroma
 tibble
+tidyr
 tidyverse
 tif
 TissueClassMap
