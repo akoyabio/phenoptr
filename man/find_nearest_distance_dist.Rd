@@ -30,3 +30,4 @@ Distance-matrix implementation of \code{find_nearest_distance}.
 \seealso{
 find_nearest_distance
 }
+\keyword{internal}

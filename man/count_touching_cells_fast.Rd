@@ -19,17 +19,20 @@ and segmentation image files from inForm}
 
 \item{color1, color2}{Colors to draw the phenotype dots}
 
-\item{discard_dups}{If TRUE, cells matching both phenotypes will be
-discarded from the output. If FALSE, overlapping phenotypes is an error.}
+\item{discard_dups}{If \code{TRUE}, cells matching both phenotypes will be
+discarded from the output. If \code{FALSE}, overlapping phenotypes is an error.}
 }
 \value{
-Returns a `list` containing two items:
+Returns a \code{list} containing two items:
 \describe{
-  \item{`image`}{An `EBImage::Image` of touching cells.}
-  \item{`data`}{A \code{\link[tibble]{tibble}} containing
-  data about the touching cells.}
+\item{image}{An \code{EBImage::Image} of touching cells.}
+\item{data}{A \code{\link[tibble]{tibble}} containing
+data about the touching cells.}
 }
 }
 \description{
-Fast implementation, requires new-style (label image) membrane map.
+Fast implementation of count touching cells.
+This version requires a new-style (label image) membrane map such as
+created by inForm's adaptive cell segmentation. It will not work with
+maps created by older segmentation algorithms.
 }

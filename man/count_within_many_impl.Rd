@@ -26,3 +26,4 @@ Helper function for count_within_batch and count_within_many.
 This does the actual work of calling count_within multiple times and
 accumulating the result.
 }
+\keyword{internal}

@@ -1,4 +1,5 @@
-# phenoptr 0.2.3.9000
+# phenoptr 0.2.4
+**2019-10-22**
 
 - Add `count_touching_cells_fast` for phenoptrReports spatial map viewer.
 - Don't return NA values from `select_rows()`; return `FALSE` instead.

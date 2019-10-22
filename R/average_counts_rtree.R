@@ -8,6 +8,7 @@
 #' @param phenotype_rules Named list of phenotype rules.
 #' @seealso count_within_many_impl
 #' @md
+#' @keywords internal
 count_within_many_impl_rtree = function(csd, name, combos, radii,
                                         phenotype_rules) {
   # We will call count_within_detail to add a count column for

@@ -192,6 +192,7 @@ clean_pairs = function(pairs) {
 #' and tissue category.
 #' @param radii Vector of radii.
 #' @param phenotype_rules Named list of phenotype rules.
+#' @keywords internal
 count_within_many_impl <- function(csd, name, combos, radii, phenotype_rules) {
   if (getOption('use.rtree.if.available') &&
       requireNamespace('rtree', quietly=TRUE))
@@ -223,6 +224,7 @@ count_within_many_impl <- function(csd, name, combos, radii, phenotype_rules) {
 #' @param phenotype_rules Named list of phenotype rules.
 #' @seealso count_within_many_impl
 #' @md
+#' @keywords internal
 count_within_many_impl_dist <- function(
     csd, name, combos, radii, phenotype_rules) {
   category = combos %>% purrr::map_chr('category') %>% unique()

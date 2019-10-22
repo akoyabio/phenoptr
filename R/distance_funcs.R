@@ -118,6 +118,7 @@ find_nearest_distance <- function(csd, phenotypes=NULL, dst=NULL) {
 #' of the phenotype.
 #' @seealso find_nearest_distance
 #' @md
+#' @keywords internal
 find_nearest_distance_dist = function(csd, phenotypes=NULL, dst=NULL) {
   # Check for multiple samples, this is probably an error
   if ('Sample Name' %in% names(csd) && length(unique(csd$`Sample Name`))>1)
@@ -168,6 +169,7 @@ find_nearest_distance_dist = function(csd, phenotypes=NULL, dst=NULL) {
 #' of the phenotype.
 #' @seealso find_nearest_distance
 #' @md
+#' @keywords internal
 find_nearest_distance_rtree <- function(csd, phenotypes=NULL) {
   # Check for multiple samples, this is probably an error
   if ('Sample Name' %in% names(csd) && length(unique(csd$`Sample Name`))>1)

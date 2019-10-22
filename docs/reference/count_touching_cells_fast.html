@@ -6,8 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Parse the description tag of the tissue map image read from an
-inForm <code>binary_seg_maps</code> file — parse_tissue_description • phenoptr</title>
+<title>Count touching cells for a single pair of phenotypes — count_touching_cells_fast • phenoptr</title>
 
 
 <!-- jquery -->
@@ -36,10 +35,11 @@ inForm <code>binary_seg_maps</code> file — parse_tissue_description • phenop
 
 
 
-<meta property="og:title" content="Parse the description tag of the tissue map image read from an
-inForm <code>binary_seg_maps</code> file — parse_tissue_description" />
-<meta property="og:description" content="Parse the description tag of the tissue map image read from an
-inForm binary_seg_maps file" />
+<meta property="og:title" content="Count touching cells for a single pair of phenotypes — count_touching_cells_fast" />
+<meta property="og:description" content="Fast implementation of count touching cells.
+This version requires a new-style (label image) membrane map such as
+created by inForm's adaptive cell segmentation. It will not work with
+maps created by older segmentation algorithms." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -140,32 +140,61 @@ inForm binary_seg_maps file" />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Parse the description tag of the tissue map image read from an
-inForm <code>binary_seg_maps</code> file</h1>
+    <h1>Count touching cells for a single pair of phenotypes</h1>
     
-    <div class="hidden name"><code>parse_tissue_description.Rd</code></div>
+    <div class="hidden name"><code>count_touching_cells_fast.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Parse the description tag of the tissue map image read from an
-inForm <code>binary_seg_maps</code> file</p>
+    <p>Fast implementation of count touching cells.
+This version requires a new-style (label image) membrane map such as
+created by inForm's adaptive cell segmentation. It will not work with
+maps created by older segmentation algorithms.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>parse_tissue_description</span>(<span class='no'>img</span>)</pre>
+    <pre class="usage"><span class='fu'>count_touching_cells_fast</span>(<span class='no'>csd</span>, <span class='no'>field_name</span>, <span class='no'>export_path</span>, <span class='no'>phenos</span>, <span class='no'>color1</span>,
+  <span class='no'>color2</span>, <span class='kw'>discard_dups</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>img</th>
-      <td><p>The <code>Tissue</code> image from <code><a href='read_maps.html'>read_maps</a></code>.</p></td>
+      <th>csd</th>
+      <td><p>Cell seg data, may include multiple fields</p></td>
+    </tr>
+    <tr>
+      <th>field_name</th>
+      <td><p>Sample Name or Annotation ID to process</p></td>
+    </tr>
+    <tr>
+      <th>export_path</th>
+      <td><p>Path to a directory containing composite, component,
+and segmentation image files from inForm</p></td>
+    </tr>
+    <tr>
+      <th>phenos</th>
+      <td><p>Named list of phenotype definitions. Must have length 2.</p></td>
+    </tr>
+    <tr>
+      <th>color1, color2</th>
+      <td><p>Colors to draw the phenotype dots</p></td>
+    </tr>
+    <tr>
+      <th>discard_dups</th>
+      <td><p>If <code>TRUE</code>, cells matching both phenotypes will be
+discarded from the output. If <code>FALSE</code>, overlapping phenotypes is an error.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A named vector whose names are the tissue classes in <code>img</code> and
-whose values are the mask values for the class in <code>img</code>.</p>
+    <p>Returns a <code>list</code> containing two items:</p><dl class='dl-horizontal'>
+<dt>image</dt><dd><p>An <code><a href='https://rdrr.io/pkg/EBImage/man/Image.html'>EBImage::Image</a></code> of touching cells.</p></dd>
+<dt>data</dt><dd><p>A <code><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble</a></code> containing
+data about the touching cells.</p></dd>
+
+</dl>
+
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

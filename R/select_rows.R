@@ -168,6 +168,7 @@ parse_phenotypes = function(...) {
 #' @param str A single string.
 #' @param pattern Pattern to split on.
 #' @return A character vector of split components.
+#' @keywords internal
 split_and_trim = function(str, pattern) {
   stopifnot(is.character(str), length(str)==1)
   stringr::str_trim(stringr::str_split(str, pattern)[[1]])
@@ -368,6 +369,7 @@ unique_phenotypes = function(csd) {
 #' @param phenotypes A named vector or list of phenotype rules. If NULL, use
 #' `unique_phenotypes(csd)`.
 #' @return A new cell seg table
+#' @keywords internal
 make_phenotype_column = function(csd, phenotypes=NULL) {
   if (is.null(phenotypes)) {
     # If phenotypes==NULL and there is already a Phenotype column,

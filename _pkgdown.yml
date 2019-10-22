@@ -42,6 +42,9 @@ articles:
     - selecting_cells
 
 reference:
+  - title: "Package options"
+    contents:
+      - phenoptr-package
   - title: "Read and preprocess inForm data and image files"
     contents:
       - list_cell_seg_files
@@ -59,6 +62,7 @@ reference:
       - count_within_detail
       - count_within_many
       - count_touching_cells
+      - count_touching_cells_fast
       - spatial_distribution_report
   - title: "Estimate cell density"
     contents:

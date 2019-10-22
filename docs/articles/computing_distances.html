@@ -7,8 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Computing inter-cellular distances • phenoptr</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous">
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script><meta property="og:title" content="Computing inter-cellular distances">
 <meta property="og:description" content="">
 <meta name="twitter:card" content="summary">
@@ -30,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">phenoptr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.4</span>
       </span>
     </div>
 
@@ -94,13 +95,14 @@
 <!--/.navbar -->
 
       
+
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1>Computing inter-cellular distances</h1>
                         <h4 class="author">Kent Johnson</h4>
             
-            <h4 class="date">2019-08-07</h4>
+            <h4 class="date">2019-10-22</h4>
       
       
       <div class="hidden name"><code>computing_distances.Rmd</code></div>
@@ -127,8 +129,8 @@ table {
 </h3>
 <p>The <code>find_nearest_distance</code> function finds per-cell nearest neighbor distances. For each cell in a sample, it finds the nearest neighbor cell in each of the provided phenotypes and reports the cell ID and distance to the nearest neighbor cell. Results are returned in a <code>tibble</code> with a <code>Distance to</code> and <code>Cell ID</code> column per phenotype.</p>
 <p>For example, the <code>phenoptr</code> sample data <code>sample_cell_seg_data</code> contains 5 unique phenotypes:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(tidyverse)</span></code></pre></div>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(phenoptr)</span>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(tidyverse)</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(phenoptr)</span>
 <span id="cb2-2"><a href="#cb2-2"></a></span>
 <span id="cb2-3"><a href="#cb2-3"></a>csd &lt;-<span class="st"> </span>sample_cell_seg_data</span>
 <span id="cb2-4"><a href="#cb2-4"></a>csd <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">count</span>(Phenotype)</span></code></pre></div>
@@ -141,7 +143,7 @@ table {
 4 FoxP3+      228
 5 other      2942</code></pre>
 <p>The <code>other</code> cells are not of interest, so first filter them out.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>csd &lt;-<span class="st"> </span>csd <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/filter">filter</a></span>(Phenotype<span class="op">!=</span><span class="st">'other'</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>csd &lt;-<span class="st"> </span>csd <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span>(Phenotype<span class="op">!=</span><span class="st">'other'</span>)</span></code></pre></div>
 <p>Calling <code>find_nearest_distance</code> on this file returns a <code>tibble</code> with two columns for each phenotype and one row for each cell. The <code>Distance to &lt;phenotype&gt;</code> columns give the distance to the nearest cell of the phenotype; the <code>Cell ID &lt;phenotype&gt;</code> columns identify the nearest cell.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>distances &lt;-<span class="st"> </span><span class="kw"><a href="../reference/find_nearest_distance.html">find_nearest_distance</a></span>(csd)</span>
 <span id="cb5-2"><a href="#cb5-2"></a><span class="kw">glimpse</span>(distances)</span></code></pre></div>
@@ -155,7 +157,7 @@ $ `Distance to CK+`    &lt;dbl&gt; 36.830694, 109.317199, 3.605551, 4.031129...
 $ `Cell ID CK+`        &lt;int&gt; 192, 5127, 45, 58, 4943, 209, 636, 87, 30...
 $ `Distance to FoxP3+` &lt;dbl&gt; 16.347783, 40.140379, 30.870698, 65.40833...
 $ `Cell ID FoxP3+`     &lt;int&gt; 117, 214, 229, 138, 229, 102, 66, 229, 22...</code></pre>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/nrow">nrow</a></span>(csd)</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="kw"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(csd)</span></code></pre></div>
 <pre><code>[1] 3130</code></pre>
 <p>To create a combined data frame, use <code><a href="https://dplyr.tidyverse.org/reference/bind.html">dplyr::bind_cols</a></code>.</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a>csd_with_distance &lt;-<span class="st"> </span><span class="kw">bind_cols</span>(csd, distances)</span></code></pre></div>
@@ -170,7 +172,7 @@ $ `Cell ID FoxP3+`     &lt;int&gt; 117, 214, 229, 138, 229, 102, 66, 229, 22...<
 <p>Once the nearest neighbors have been computed per cell, standard aggregation, analysis and plotting commands can be used to examine the results. For example, find the mean nearest neighbor distances by phenotype:</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a>csd_with_distance <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">group_by</span>(Phenotype) <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb11-2"><a href="#cb11-2"></a><span class="st">  </span><span class="kw">select</span>(Phenotype, <span class="kw">starts_with</span>(<span class="st">'Distance to'</span>)) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb11-3"><a href="#cb11-3"></a><span class="st">  </span><span class="kw">summarize_all</span>(<span class="op">~</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Round">round</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/mean">mean</a></span>(.), <span class="dv">1</span>))</span></code></pre></div>
+<span id="cb11-3"><a href="#cb11-3"></a><span class="st">  </span><span class="kw">summarize_all</span>(<span class="op">~</span><span class="kw"><a href="https://rdrr.io/r/base/Round.html">round</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/mean.html">mean</a></span>(.), <span class="dv">1</span>))</span></code></pre></div>
 <pre><code># A tibble: 4 x 5
   Phenotype `Distance to CD~ `Distance to CD~ `Distance to CK~
   &lt;chr&gt;                &lt;dbl&gt;            &lt;dbl&gt;            &lt;dbl&gt;
@@ -189,23 +191,23 @@ $ `Cell ID FoxP3+`     &lt;int&gt; 117, 214, 229, 138, 229, 102, 66, 229, 22...<
 <a href="#visualizing-nearest-neighbors" class="anchor"></a>Visualizing nearest neighbors</h3>
 <p>The <code>Cell ID &lt;phenotype&gt;</code> column allows visualizing nearest neighbors by joining the combined cell seg table with itself. For example, to show the nearest CK+ cell for each CD8+ cell, join the <code>Cell ID CK+</code> field to the original <code>Cell ID</code> field. This example filters the data before joining.</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="co"># Filter to just CD8+ and CK+ cells</span></span>
-<span id="cb14-2"><a href="#cb14-2"></a>cd8_cells =<span class="st"> </span>csd_with_distance <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/filter">filter</a></span>(<span class="kw"><a href="../reference/select_rows.html">select_rows</a></span>(csd_with_distance, <span class="st">'CD8+'</span>))</span>
-<span id="cb14-3"><a href="#cb14-3"></a>ck_cells =<span class="st"> </span>csd_with_distance <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/filter">filter</a></span>(<span class="kw"><a href="../reference/select_rows.html">select_rows</a></span>(csd_with_distance, <span class="st">'CK+'</span>))</span>
+<span id="cb14-2"><a href="#cb14-2"></a>cd8_cells =<span class="st"> </span>csd_with_distance <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span>(<span class="kw"><a href="../reference/select_rows.html">select_rows</a></span>(csd_with_distance, <span class="st">'CD8+'</span>))</span>
+<span id="cb14-3"><a href="#cb14-3"></a>ck_cells =<span class="st"> </span>csd_with_distance <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span>(<span class="kw"><a href="../reference/select_rows.html">select_rows</a></span>(csd_with_distance, <span class="st">'CK+'</span>))</span>
 <span id="cb14-4"><a href="#cb14-4"></a></span>
 <span id="cb14-5"><a href="#cb14-5"></a><span class="co"># For each CD8+ cell, join with the data for the nearest CK+ cell</span></span>
-<span id="cb14-6"><a href="#cb14-6"></a>cd8_to_ck =<span class="st"> </span>cd8_cells <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">left_join</span>(ck_cells, <span class="dt">by=</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">'Cell ID CK+'</span>=<span class="st">'Cell ID'</span>),</span>
-<span id="cb14-7"><a href="#cb14-7"></a>                                    <span class="dt">suffix=</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">''</span>, <span class="st">'.CK'</span>))</span></code></pre></div>
+<span id="cb14-6"><a href="#cb14-6"></a>cd8_to_ck =<span class="st"> </span>cd8_cells <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">left_join</span>(ck_cells, <span class="dt">by=</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">'Cell ID CK+'</span>=<span class="st">'Cell ID'</span>),</span>
+<span id="cb14-7"><a href="#cb14-7"></a>                                    <span class="dt">suffix=</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">''</span>, <span class="st">'.CK'</span>))</span></code></pre></div>
 <p>Show the CD8+ and CK+ cells with the nearest neighbors connected:</p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a><span class="co"># Read a background image and make a base plot</span></span>
 <span id="cb15-2"><a href="#cb15-2"></a>background_path =<span class="st"> </span></span>
-<span id="cb15-3"><a href="#cb15-3"></a><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">"extdata/sample/Set4_1-6plex_[16142,55840]_composite_image.jpg"</span>, <span class="dt">package=</span><span class="st">'phenoptr'</span>)</span>
-<span id="cb15-4"><a href="#cb15-4"></a>background =<span class="st"> </span>jpeg<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/jpeg/topics/readJPEG">readJPEG</a></span>(background_path) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/grDevices/topics/as.raster">as.raster</a></span>()</span>
-<span id="cb15-5"><a href="#cb15-5"></a>xlim =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">0</span>, <span class="dv">934</span>)</span>
-<span id="cb15-6"><a href="#cb15-6"></a>ylim =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">0</span>, <span class="dv">700</span>)</span>
+<span id="cb15-3"><a href="#cb15-3"></a><span class="st">  </span><span class="kw"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"extdata/sample/Set4_1-6plex_[16142,55840]_composite_image.jpg"</span>, <span class="dt">package=</span><span class="st">'phenoptr'</span>)</span>
+<span id="cb15-4"><a href="#cb15-4"></a>background =<span class="st"> </span>jpeg<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/jpeg/man/readJPEG.html">readJPEG</a></span>(background_path) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/grDevices/as.raster.html">as.raster</a></span>()</span>
+<span id="cb15-5"><a href="#cb15-5"></a>xlim =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">0</span>, <span class="dv">934</span>)</span>
+<span id="cb15-6"><a href="#cb15-6"></a>ylim =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">0</span>, <span class="dv">700</span>)</span>
 <span id="cb15-7"><a href="#cb15-7"></a>base_plot =<span class="st"> </span><span class="kw">ggplot</span>(<span class="dt">mapping=</span><span class="kw">aes</span>(<span class="st">`</span><span class="dt">Cell X Position</span><span class="st">`</span>, <span class="st">`</span><span class="dt">Cell Y Position</span><span class="st">`</span>)) <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb15-8"><a href="#cb15-8"></a><span class="st">  </span>phenoptr<span class="op">:::</span><span class="kw">add_scales_and_background</span>(background, xlim, ylim, <span class="dt">scale_color=</span><span class="st">'white'</span>) <span class="op">+</span></span>
 <span id="cb15-9"><a href="#cb15-9"></a><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x=</span><span class="st">'Cell X Position'</span>, <span class="dt">y=</span><span class="st">'Cell Y Position'</span>) <span class="op">+</span></span>
-<span id="cb15-10"><a href="#cb15-10"></a><span class="st">  </span><span class="kw">scale_color_manual</span>(<span class="st">'Phenotype'</span>, <span class="dt">values=</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">'CD8+'</span>=<span class="st">'red'</span>, <span class="st">'CK+'</span>=<span class="st">'cyan2'</span>))</span>
+<span id="cb15-10"><a href="#cb15-10"></a><span class="st">  </span><span class="kw">scale_color_manual</span>(<span class="st">'Phenotype'</span>, <span class="dt">values=</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">'CD8+'</span>=<span class="st">'red'</span>, <span class="st">'CK+'</span>=<span class="st">'cyan2'</span>))</span>
 <span id="cb15-11"><a href="#cb15-11"></a></span>
 <span id="cb15-12"><a href="#cb15-12"></a><span class="co"># Add lines and points</span></span>
 <span id="cb15-13"><a href="#cb15-13"></a>base_plot <span class="op">+</span><span class="st"> </span><span class="kw">geom_segment</span>(<span class="dt">data=</span>cd8_to_ck,</span>
@@ -216,8 +218,8 @@ $ `Cell ID FoxP3+`     &lt;int&gt; 117, 214, 229, 138, 229, 102, 66, 229, 22...<
 <span id="cb15-18"><a href="#cb15-18"></a><span class="st">  </span><span class="kw">labs</span>(<span class="dt">title=</span><span class="st">'Nearest CK+ to each CD8+'</span>)</span></code></pre></div>
 <p><img src="computing_distances_files/figure-html/unnamed-chunk-10-1.png" width="768"></p>
 <p>To show the nearest CD8+ for each CK+, join in the other direction; for each CK+ cell, find the nearest CD8+ cell:</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a>ck_to_cd8 =<span class="st"> </span>ck_cells <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">left_join</span>(cd8_cells, <span class="dt">by=</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">'Cell ID CD8+'</span>=<span class="st">'Cell ID'</span>),</span>
-<span id="cb16-2"><a href="#cb16-2"></a>                                    <span class="dt">suffix=</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">''</span>, <span class="st">'.CD8'</span>))</span>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a>ck_to_cd8 =<span class="st"> </span>ck_cells <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">left_join</span>(cd8_cells, <span class="dt">by=</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">'Cell ID CD8+'</span>=<span class="st">'Cell ID'</span>),</span>
+<span id="cb16-2"><a href="#cb16-2"></a>                                    <span class="dt">suffix=</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">''</span>, <span class="st">'.CD8'</span>))</span>
 <span id="cb16-3"><a href="#cb16-3"></a>base_plot <span class="op">+</span><span class="st"> </span></span>
 <span id="cb16-4"><a href="#cb16-4"></a><span class="st">  </span><span class="kw">geom_segment</span>(<span class="dt">data=</span>ck_to_cd8,</span>
 <span id="cb16-5"><a href="#cb16-5"></a>               <span class="kw">aes</span>(<span class="dt">xend=</span><span class="st">`</span><span class="dt">Cell X Position.CD8</span><span class="st">`</span>, <span class="dt">yend=</span><span class="st">`</span><span class="dt">Cell Y Position.CD8</span><span class="st">`</span>),</span>
@@ -231,7 +233,7 @@ $ `Cell ID FoxP3+`     &lt;int&gt; 117, 214, 229, 138, 229, 102, 66, 229, 22...<
 <h3 class="hasAnchor">
 <a href="#mutual-nearest-neighbors" class="anchor"></a>Mutual nearest neighbors</h3>
 <p>Mutual nearest neighbors are cells which have each other as nearest neighbors; i.e. cells where the nearest neighbor of the nearest neighbor is the starting cell:</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a>mutual =<span class="st"> </span>ck_to_cd8 <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/filter">filter</a></span>(<span class="st">`</span><span class="dt">Cell ID</span><span class="st">`</span><span class="op">==</span><span class="st">`</span><span class="dt">Cell ID CK+.CD8</span><span class="st">`</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a>mutual =<span class="st"> </span>ck_to_cd8 <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span>(<span class="st">`</span><span class="dt">Cell ID</span><span class="st">`</span><span class="op">==</span><span class="st">`</span><span class="dt">Cell ID CK+.CD8</span><span class="st">`</span>)</span></code></pre></div>
 <p>This data set contains 126 mutual nearest neighbor pairs between CD8+ and CK+ cells.</p>
 <div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a>base_plot <span class="op">+</span></span>
 <span id="cb18-2"><a href="#cb18-2"></a><span class="st">  </span><span class="kw">geom_segment</span>(<span class="dt">data=</span>mutual,</span>
@@ -264,7 +266,7 @@ $ `Cell ID FoxP3+`     &lt;int&gt; 117, 214, 229, 138, 229, 102, 66, 229, 22...<
   radius from_count to_count from_with within_mean
    &lt;dbl&gt;      &lt;int&gt;    &lt;int&gt;     &lt;int&gt;       &lt;dbl&gt;
 1     25       2257      417       664       0.606</code></pre>
-<p>Please see <code><a href="https://www.rdocumentation.org/packages/utils/topics/help">help(count_within)</a></code> for details.</p>
+<p>Please see <code><a href="https://rdrr.io/r/utils/help.html">help(count_within)</a></code> for details.</p>
 </div>
 <div id="count-multiple-files-or-phenotypes-using-count_within_batch" class="section level3">
 <h3 class="hasAnchor">
@@ -274,13 +276,13 @@ $ `Cell ID FoxP3+`     &lt;int&gt; 117, 214, 229, 138, 229, 102, 66, 229, 22...<
 <p>For example, the following commands will count <code>FoxP3+</code> cells with a <code>CD8+</code> or <code>CK+</code> cell within 10 or 25 microns. Separate counts are returned for each <code>to</code> phenotype and for <code>Tumor</code> and <code>Stroma</code> tissue categories. Counts will be calculated for all <code>cell_seg_data.txt</code> files in <code>my_directory</code>.</p>
 <div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a>base_path &lt;-<span class="st"> "/path/to/my_directory"</span></span>
 <span id="cb23-2"><a href="#cb23-2"></a></span>
-<span id="cb23-3"><a href="#cb23-3"></a>pairs &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">'FoxP3+'</span>, <span class="st">'CD8+'</span>),</span>
-<span id="cb23-4"><a href="#cb23-4"></a>              <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">'FoxP3+'</span>, <span class="st">'CK+'</span>))</span>
-<span id="cb23-5"><a href="#cb23-5"></a>radii &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">10</span>, <span class="dv">25</span>)</span>
-<span id="cb23-6"><a href="#cb23-6"></a>categories &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">'Stroma'</span>, <span class="st">'Tumor'</span>)</span>
+<span id="cb23-3"><a href="#cb23-3"></a>pairs &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">'FoxP3+'</span>, <span class="st">'CD8+'</span>),</span>
+<span id="cb23-4"><a href="#cb23-4"></a>              <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">'FoxP3+'</span>, <span class="st">'CK+'</span>))</span>
+<span id="cb23-5"><a href="#cb23-5"></a>radii &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">10</span>, <span class="dv">25</span>)</span>
+<span id="cb23-6"><a href="#cb23-6"></a>categories &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">'Stroma'</span>, <span class="st">'Tumor'</span>)</span>
 <span id="cb23-7"><a href="#cb23-7"></a></span>
 <span id="cb23-8"><a href="#cb23-8"></a><span class="kw"><a href="../reference/count_within_batch.html">count_within_batch</a></span>(base_path, pairs, radii, categories)</span></code></pre></div>
-<p>See <code><a href="https://www.rdocumentation.org/packages/utils/topics/help">help(count_within_batch)</a></code> and the tutorial <a href="https://akoyabio.github.io/phenoptr/articles/selecting_cells.html">Selecting cells within a cell segmentation table</a> for additional details.</p>
+<p>See <code><a href="https://rdrr.io/r/utils/help.html">help(count_within_batch)</a></code> and the tutorial <a href="https://akoyabio.github.io/phenoptr/articles/selecting_cells.html">Selecting cells within a cell segmentation table</a> for additional details.</p>
 <hr>
 </div>
 </div>
@@ -289,14 +291,14 @@ $ `Cell ID FoxP3+`     &lt;int&gt; 117, 214, 229, 138, 229, 102, 66, 229, 22...<
 <a href="#spatial-distribution-report" class="anchor"></a>Spatial distribution report</h2>
 <p>The <code>spatial_distribution_report</code> function is a bit different from the other functions mentioned in this tutorial. Rather than calculate and return distance metrics, it creates a report which shows visually the nearest neighbor relations between two phenotypes in a single field. Because the result is a stand-alone HTML file, it can’t easily be demonstrated in a tutorial. For an example, copy and paste this code into your own copy of R. It will create a sample report in your user directory.</p>
 <p>This example requires the <code>phenoptrExamples</code> package, which includes extended sample data.</p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(phenoptrExamples)</span>
-<span id="cb24-2"><a href="#cb24-2"></a>cell_seg_path =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">"extdata"</span>, <span class="st">"samples"</span>, </span>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(phenoptrExamples)</span>
+<span id="cb24-2"><a href="#cb24-2"></a>cell_seg_path =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"extdata"</span>, <span class="st">"samples"</span>, </span>
 <span id="cb24-3"><a href="#cb24-3"></a>                            <span class="st">"Set4_1-6plex_[16142,55840]_cell_seg_data.txt"</span>,</span>
 <span id="cb24-4"><a href="#cb24-4"></a>                            <span class="dt">package =</span> <span class="st">"phenoptrExamples"</span>)</span>
 <span id="cb24-5"><a href="#cb24-5"></a></span>
-<span id="cb24-6"><a href="#cb24-6"></a>pairs &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">'CD68+'</span>, <span class="st">'CD8+'</span>))</span>
-<span id="cb24-7"><a href="#cb24-7"></a>colors &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">'CD68+'</span>=<span class="st">'magenta'</span>, <span class="st">'CD8+'</span>=<span class="st">'yellow'</span>)</span>
-<span id="cb24-8"><a href="#cb24-8"></a>out_path &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/path.expand">path.expand</a></span>(<span class="st">'~/spatial_distribution_report.html'</span>)</span>
+<span id="cb24-6"><a href="#cb24-6"></a>pairs &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">'CD68+'</span>, <span class="st">'CD8+'</span>))</span>
+<span id="cb24-7"><a href="#cb24-7"></a>colors &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">'CD68+'</span>=<span class="st">'magenta'</span>, <span class="st">'CD8+'</span>=<span class="st">'yellow'</span>)</span>
+<span id="cb24-8"><a href="#cb24-8"></a>out_path &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/path.expand.html">path.expand</a></span>(<span class="st">'~/spatial_distribution_report.html'</span>)</span>
 <span id="cb24-9"><a href="#cb24-9"></a></span>
 <span id="cb24-10"><a href="#cb24-10"></a><span class="kw"><a href="../reference/spatial_distribution_report.html">spatial_distribution_report</a></span>(cell_seg_path, pairs, colors, <span class="dt">output_path=</span>out_path)</span></code></pre></div>
 <p>To create reports for all cell seg data files in a directory, first define <code>phenotypes</code> and <code>colors</code> as above. Use <code>list_cell_seg_files</code> to find all the files. Then call <code>spatial_distribution_report</code> for each file. This will create reports in the same directory as the data files.</p>
@@ -308,6 +310,7 @@ $ `Cell ID FoxP3+`     &lt;int&gt; 117, 214, 229, 138, 229, 102, 66, 229, 22...<
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
+
         <div id="tocnav">
       <h2 class="hasAnchor">
 <a href="#tocnav" class="anchor"></a>Contents</h2>
@@ -322,17 +325,20 @@ $ `Cell ID FoxP3+`     &lt;int&gt; 117, 214, 229, 138, 229, 102, 66, 229, 22...<
 </div>
 
 
+
       <footer><div class="copyright">
   <p>Developed by Kent S Johnson.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
 </div>
+
       </footer>
 </div>
 
   
+
 
   </body>
 </html>

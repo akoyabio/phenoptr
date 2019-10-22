@@ -17,3 +17,4 @@ A character vector of split components.
 \description{
 Split a single string and trim whitespace from the results
 }
+\keyword{internal}

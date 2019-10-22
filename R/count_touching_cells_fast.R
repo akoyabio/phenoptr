@@ -1,6 +1,9 @@
 #' Count touching cells for a single pair of phenotypes
 #'
-#' Fast implementation, requires new-style (label image) membrane map.
+#' Fast implementation of count touching cells.
+#' This version requires a new-style (label image) membrane map such as
+#' created by inForm's adaptive cell segmentation. It will not work with
+#' maps created by older segmentation algorithms.
 #'
 #' @param csd Cell seg data, may include multiple fields
 #' @param field_name Sample Name or Annotation ID to process
@@ -8,15 +11,16 @@
 #'   and segmentation image files from inForm
 #' @param phenos Named list of phenotype definitions. Must have length 2.
 #' @param color1,color2 Colors to draw the phenotype dots
-#' @param discard_dups If TRUE, cells matching both phenotypes will be
-#' discarded from the output. If FALSE, overlapping phenotypes is an error.
+#' @param discard_dups If `TRUE`, cells matching both phenotypes will be
+#' discarded from the output. If `FALSE`, overlapping phenotypes is an error.
 #' @return Returns a `list` containing two items:
 #' \describe{
-#'   \item{`image`}{An `EBImage::Image` of touching cells.}
-#'   \item{`data`}{A \code{\link[tibble]{tibble}} containing
+#'   \item{image}{An `EBImage::Image` of touching cells.}
+#'   \item{data}{A \code{\link[tibble]{tibble}} containing
 #'   data about the touching cells.}
 #' }
 #' @export
+#' @md
 count_touching_cells_fast = function(csd, field_name, export_path,
                                        phenos, color1, color2,
                                      discard_dups=FALSE) {

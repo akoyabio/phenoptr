@@ -25,3 +25,4 @@ rtree implementation of count_within_many_impl
 \seealso{
 count_within_many_impl
 }
+\keyword{internal}
