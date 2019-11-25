@@ -1,16 +1,17 @@
 #' Count touching cells for a single pair of phenotypes
 #'
 #' Fast implementation of count touching cells.
-#' This version requires a new-style (label image) membrane map such as
-#' created by inForm's adaptive cell segmentation. It will not work with
-#' maps created by older segmentation algorithms.
+#' This function requires a membrane label image such as
+#' created by adaptive cell segmentation in inForm 2.4.3 or newer.
+#' It will not work with
+#' membrane masks created by older segmentation algorithms.
 #'
 #' @param csd Cell seg data, may include multiple fields
 #' @param field_name Sample Name or Annotation ID to process
 #' @param export_path Path to a directory containing composite, component,
 #'   and segmentation image files from inForm
 #' @param phenos Named list of phenotype definitions. Must have length 2.
-#' @param color1,color2 Colors to draw the phenotype dots
+#' @param color1,color2 Colors for cells matching `phenos`.
 #' @param discard_dups If `TRUE`, cells matching both phenotypes will be
 #' discarded from the output. If `FALSE`, overlapping phenotypes is an error.
 #' @return Returns a `list` containing two items:
@@ -56,7 +57,8 @@ count_touching_cells_fast = function(csd, field_name, export_path,
       selected_cells2 = selected_cells2 & !selected_overlap
     } else {
       stop('Phenotypes for count_touching_cells_fast ',
-           'must define distinct cells.')
+           'must define distinct cells. Found ', sum(selected_overlap),
+           ' cells which match both phenotypes.')
     }
   }
 
@@ -130,7 +132,8 @@ count_touching_cells_fast = function(csd, field_name, export_path,
 read_masks_label = function(cell_seg_path) {
   mask_path = sub('cell_seg_data.txt', 'binary_seg_maps.tif', cell_seg_path)
   if (!file.exists(mask_path))
-    stop('count_touching_cells_fast requires a segmentation map file.')
+    stop('count_touching_cells_fast requires a membrane label image ',
+         'from inForm 2.4.3 or newer.')
 
   masks = read_maps(mask_path)
   if (!all(c('Membrane', 'Nucleus') %in% names(masks)))

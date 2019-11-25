@@ -88,6 +88,13 @@ test_that('count_touching_cells_fast works', {
 
   expect_equal(result$image, expected)
   expect_equal(dim(result$data), c(49, 14))
+
+  # Test error checking for non-distinct phenotypes.
+  # This is egregious duplication.
+  phenos = list("CD8+", "CD8+")
+  expect_error(count_touching_cells_fast(csd, field_name, export_path,
+                            phenos, color1, color2),
+               'Found 688 cells')
 })
 
 test_that('replace_invalid_path_characters works', {

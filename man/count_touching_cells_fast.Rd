@@ -17,7 +17,7 @@ and segmentation image files from inForm}
 
 \item{phenos}{Named list of phenotype definitions. Must have length 2.}
 
-\item{color1, color2}{Colors to draw the phenotype dots}
+\item{color1, color2}{Colors for cells matching \code{phenos}.}
 
 \item{discard_dups}{If \code{TRUE}, cells matching both phenotypes will be
 discarded from the output. If \code{FALSE}, overlapping phenotypes is an error.}
@@ -32,7 +32,8 @@ data about the touching cells.}
 }
 \description{
 Fast implementation of count touching cells.
-This version requires a new-style (label image) membrane map such as
-created by inForm's adaptive cell segmentation. It will not work with
-maps created by older segmentation algorithms.
+This function requires a membrane label image such as
+created by adaptive cell segmentation in inForm 2.4.3 or newer.
+It will not work with
+membrane masks created by older segmentation algorithms.
 }
