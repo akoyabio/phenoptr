@@ -82,8 +82,13 @@ read_cell_seg_data <- function(
   if (path=='')
     stop("File name is missing.")
 
-  # Read the data. Supplying col_types prevents output of the imputed types
-  df <- readr::read_tsv(path, na=c('NA', '#N/A'), col_types=readr::cols())
+  # Read the data. Supplying col_types prevents output of the imputed types.
+  # Supplying the grouping_mark keeps readr from mis-handling commas
+  # that are decimal separators.
+  # See https://github.com/akoyabio/phenoptrReports/issues/31
+  df <- readr::read_tsv(path, na=c('NA', '#N/A'),
+                        locale=readr::locale(grouping_mark=''),
+                        col_types=readr::cols())
 
   # If columns containing "Mean" are character, check to see if the
   # file may have been written in a locale that uses comma as a decimal
