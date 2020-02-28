@@ -103,5 +103,5 @@ section of the documentation for details on individual functions.
 
 To cite package `phenoptr` in publications use:
 
-&nbsp;&nbsp;Kent S Johnson (2019). phenoptr: inForm Helper Functions. R package version 0.2.4.  
+&nbsp;&nbsp;Kent S Johnson (2020). phenoptr: inForm Helper Functions. R package version 0.2.5.  
 &nbsp;&nbsp;https://akoyabio.github.io/phenoptr/

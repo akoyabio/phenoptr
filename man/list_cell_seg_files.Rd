@@ -20,8 +20,10 @@ A list of  file paths.
 or a directory hierarchy.
 }
 \seealso{
-Other file readers: \code{\link{get_field_info}},
-  \code{\link{read_cell_seg_data}},
-  \code{\link{read_components}}, \code{\link{read_maps}}
+Other file readers: 
+\code{\link{get_field_info}()},
+\code{\link{read_cell_seg_data}()},
+\code{\link{read_components}()},
+\code{\link{read_maps}()}
 }
 \concept{file readers}

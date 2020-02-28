@@ -76,7 +76,7 @@ having a 'to' cell within radius microns." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">phenoptr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.5</span>
       </span>
     </div>
 
@@ -159,8 +159,14 @@ pair of
 having a 'to' cell within <code>radius</code> microns.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>count_within_batch</span>(<span class='no'>base_path</span>, <span class='no'>pairs</span>, <span class='no'>radius</span>, <span class='kw'>category</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
-  <span class='kw'>phenotype_rules</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+    <pre class="usage"><span class='fu'>count_within_batch</span>(
+  <span class='no'>base_path</span>,
+  <span class='no'>pairs</span>,
+  <span class='no'>radius</span>,
+  <span class='kw'>category</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
+  <span class='kw'>phenotype_rules</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -221,14 +227,15 @@ for more on
 the use of <code>pairs</code> and <code>phenotype_rules</code>.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>Other distance functions: <code><a href='compute_all_nearest_distance.html'>compute_all_nearest_distance</a></code>,
-  <code><a href='count_touching_cells.html'>count_touching_cells</a></code>,
-  <code><a href='count_within_many.html'>count_within_many</a></code>,
-  <code><a href='count_within.html'>count_within</a></code>,
-  <code><a href='distance_matrix.html'>distance_matrix</a></code>,
-  <code><a href='find_nearest_distance.html'>find_nearest_distance</a></code>,
-  <code><a href='spatial_distribution_report.html'>spatial_distribution_report</a></code>,
-  <code><a href='subset_distance_matrix.html'>subset_distance_matrix</a></code></p></div>
+    <div class='dont-index'><p>Other distance functions: 
+<code><a href='compute_all_nearest_distance.html'>compute_all_nearest_distance</a>()</code>,
+<code><a href='count_touching_cells.html'>count_touching_cells</a>()</code>,
+<code><a href='count_within_many.html'>count_within_many</a>()</code>,
+<code><a href='count_within.html'>count_within</a>()</code>,
+<code><a href='distance_matrix.html'>distance_matrix</a>()</code>,
+<code><a href='find_nearest_distance.html'>find_nearest_distance</a>()</code>,
+<code><a href='spatial_distribution_report.html'>spatial_distribution_report</a>()</code>,
+<code><a href='subset_distance_matrix.html'>subset_distance_matrix</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>base_path</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='sample_cell_seg_data.html'>sample_cell_seg_folder</a></span>()
@@ -242,15 +249,15 @@ the use of <code>pairs</code> and <code>phenotype_rules</code>.</p>
 <span class='fu'>count_within_batch</span>(<span class='no'>base_path</span>, <span class='no'>pairs</span>, <span class='no'>radius</span>, <span class='no'>category</span>)</div><div class='output co'>#&gt; Processing Set4_1-6plex_[16142,55840] </div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 8 x 10</span><span>
 #&gt;   slide_id source category from  to    radius from_count to_count from_with
 #&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>
-#&gt; </span><span style='color: #555555;'>1</span><span> Set4_1-~ Set4_~ Tumor    CK+   CD68+     10       </span><span style='text-decoration: underline;'>2</span><span>192      101        79
-#&gt; </span><span style='color: #555555;'>2</span><span> Set4_1-~ Set4_~ Tumor    CK+   CD68+     25       </span><span style='text-decoration: underline;'>2</span><span>192      101       397
-#&gt; </span><span style='color: #555555;'>3</span><span> Set4_1-~ Set4_~ Tumor    CK+   CD8+      10       </span><span style='text-decoration: underline;'>2</span><span>192       51        63
-#&gt; </span><span style='color: #555555;'>4</span><span> Set4_1-~ Set4_~ Tumor    CK+   CD8+      25       </span><span style='text-decoration: underline;'>2</span><span>192       51       320
-#&gt; </span><span style='color: #555555;'>5</span><span> Set4_1-~ Set4_~ Stroma   CK+   CD68+     10         65      316         6
-#&gt; </span><span style='color: #555555;'>6</span><span> Set4_1-~ Set4_~ Stroma   CK+   CD68+     25         65      316        34
-#&gt; </span><span style='color: #555555;'>7</span><span> Set4_1-~ Set4_~ Stroma   CK+   CD8+      10         65      177         4
-#&gt; </span><span style='color: #555555;'>8</span><span> Set4_1-~ Set4_~ Stroma   CK+   CD8+      25         65      177        22
-#&gt; </span><span style='color: #555555;'># ... with 1 more variable: within_mean </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span></div><div class='input'>
+#&gt; </span><span style='color: #555555;'>1</span><span> Set4_1-… Set4_… Tumor    CK+   CD68+     10       </span><span style='text-decoration: underline;'>2</span><span>192      101        79
+#&gt; </span><span style='color: #555555;'>2</span><span> Set4_1-… Set4_… Tumor    CK+   CD68+     25       </span><span style='text-decoration: underline;'>2</span><span>192      101       397
+#&gt; </span><span style='color: #555555;'>3</span><span> Set4_1-… Set4_… Tumor    CK+   CD8+      10       </span><span style='text-decoration: underline;'>2</span><span>192       51        63
+#&gt; </span><span style='color: #555555;'>4</span><span> Set4_1-… Set4_… Tumor    CK+   CD8+      25       </span><span style='text-decoration: underline;'>2</span><span>192       51       320
+#&gt; </span><span style='color: #555555;'>5</span><span> Set4_1-… Set4_… Stroma   CK+   CD68+     10         65      316         6
+#&gt; </span><span style='color: #555555;'>6</span><span> Set4_1-… Set4_… Stroma   CK+   CD68+     25         65      316        34
+#&gt; </span><span style='color: #555555;'>7</span><span> Set4_1-… Set4_… Stroma   CK+   CD8+      10         65      177         4
+#&gt; </span><span style='color: #555555;'>8</span><span> Set4_1-… Set4_… Stroma   CK+   CD8+      25         65      177        22
+#&gt; </span><span style='color: #555555;'># … with 1 more variable: within_mean </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span></div><div class='input'>
 <span class='co'># Count tumor cells near any T cell in all tissue categories.</span>
 <span class='co'># Use `phenotype_rules` to define the T cell phenotype</span>
 <span class='no'>pairs</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>'CK+'</span>, <span class='st'>'T cell'</span>)
@@ -259,9 +266,9 @@ the use of <code>pairs</code> and <code>phenotype_rules</code>.</p>
 <span class='fu'>count_within_batch</span>(<span class='no'>base_path</span>, <span class='no'>pairs</span>, <span class='no'>radius</span>, <span class='kw'>phenotype_rules</span><span class='kw'>=</span><span class='no'>rules</span>)</div><div class='output co'>#&gt; Processing Set4_1-6plex_[16142,55840] </div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 2 x 10</span><span>
 #&gt;   slide_id source category from  to    radius from_count to_count from_with
 #&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>
-#&gt; </span><span style='color: #555555;'>1</span><span> Set4_1-~ Set4_~ all      CK+   T ce~     10       </span><span style='text-decoration: underline;'>2</span><span>257      456       150
-#&gt; </span><span style='color: #555555;'>2</span><span> Set4_1-~ Set4_~ all      CK+   T ce~     25       </span><span style='text-decoration: underline;'>2</span><span>257      456       824
-#&gt; </span><span style='color: #555555;'># ... with 1 more variable: within_mean </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span></div></span></pre>
+#&gt; </span><span style='color: #555555;'>1</span><span> Set4_1-… Set4_… all      CK+   T ce…     10       </span><span style='text-decoration: underline;'>2</span><span>257      456       150
+#&gt; </span><span style='color: #555555;'>2</span><span> Set4_1-… Set4_… all      CK+   T ce…     25       </span><span style='text-decoration: underline;'>2</span><span>257      456       824
+#&gt; </span><span style='color: #555555;'># … with 1 more variable: within_mean </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span></div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

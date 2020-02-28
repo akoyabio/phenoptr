@@ -4,9 +4,15 @@
 \alias{density_at_distance}
 \title{Estimate cell density at distance from a tissue boundary.}
 \usage{
-density_at_distance(cell_seg_path, phenotypes, positive, negative,
+density_at_distance(
+  cell_seg_path,
+  phenotypes,
+  positive,
+  negative,
   mask = FALSE,
-  pixels_per_micron = getOption("phenoptr.pixels.per.micron"), ...)
+  pixels_per_micron = getOption("phenoptr.pixels.per.micron"),
+  ...
+)
 }
 \arguments{
 \item{cell_seg_path}{Path to a cell segmentation data file.}
@@ -29,7 +35,7 @@ tissue boundary.}
 \item{pixels_per_micron}{Conversion factor to microns.}
 
 \item{...}{Additional arguments passed to \code{\link[spatstat]{rhohat}}.
-Default parameters are \code{method="ratio", smoother="kernel", bw="nrd"}.}
+Default parameters are \verb{method="ratio", smoother="kernel", bw="nrd"}.}
 }
 \value{
 Returns a \code{list} containing four items:
@@ -125,6 +131,7 @@ Spatial Point Patterns: Methodology and Applications with R.
 Chapman and Hall/CRC Press, 2015. Sections 6.6.3-6.6.4.
 }
 \seealso{
-Other density estimation: \code{\link{density_bands}}
+Other density estimation: 
+\code{\link{density_bands}()}
 }
 \concept{density estimation}

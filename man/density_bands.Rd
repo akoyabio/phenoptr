@@ -4,8 +4,15 @@
 \alias{density_bands}
 \title{Estimate cell density in bands from a tissue boundary.}
 \usage{
-density_bands(cell_seg_path, phenotypes, positive, negative, width = 25,
-  map_path = NULL, component_path = NULL)
+density_bands(
+  cell_seg_path,
+  phenotypes,
+  positive,
+  negative,
+  width = 25,
+  map_path = NULL,
+  component_path = NULL
+)
 }
 \arguments{
 \item{cell_seg_path}{Path to a cell segmentation data file.}
@@ -89,6 +96,7 @@ ggplot(values$densities, aes(midpoint, density*1000000, color=phenotype)) +
        y='Estimated cell density (cells per sq mm)')
 }
 \seealso{
-Other density estimation: \code{\link{density_at_distance}}
+Other density estimation: 
+\code{\link{density_at_distance}()}
 }
 \concept{density estimation}

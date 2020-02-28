@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">phenoptr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.5</span>
       </span>
     </div>
 
@@ -102,7 +102,7 @@
       <h1>Computing inter-cellular distances</h1>
                         <h4 class="author">Kent Johnson</h4>
             
-            <h4 class="date">2019-10-22</h4>
+            <h4 class="date">2020-02-28</h4>
       
       
       <div class="hidden name"><code>computing_distances.Rmd</code></div>
@@ -149,14 +149,14 @@ table {
 <span id="cb5-2"><a href="#cb5-2"></a><span class="kw">glimpse</span>(distances)</span></code></pre></div>
 <pre><code>Observations: 3,130
 Variables: 8
-$ `Distance to CD68+`  &lt;dbl&gt; 29.529646, 38.082148, 36.674242, 73.11976...
-$ `Cell ID CD68+`      &lt;int&gt; 108, 41, 262, 99, 217, 69, 236, 217, 262,...
-$ `Distance to CD8+`   &lt;dbl&gt; 18.03469, 64.37585, 67.57403, 91.44397, 3...
-$ `Cell ID CD8+`       &lt;int&gt; 101, 5068, 423, 189, 128, 188, 280, 128, ...
-$ `Distance to CK+`    &lt;dbl&gt; 36.830694, 109.317199, 3.605551, 4.031129...
-$ `Cell ID CK+`        &lt;int&gt; 192, 5127, 45, 58, 4943, 209, 636, 87, 30...
-$ `Distance to FoxP3+` &lt;dbl&gt; 16.347783, 40.140379, 30.870698, 65.40833...
-$ `Cell ID FoxP3+`     &lt;int&gt; 117, 214, 229, 138, 229, 102, 66, 229, 22...</code></pre>
+$ `Distance to CD68+`  &lt;dbl&gt; 29.529646, 38.082148, 36.674242, 73.119765, 51.0…
+$ `Cell ID CD68+`      &lt;int&gt; 108, 41, 262, 99, 217, 69, 236, 217, 262, 110, 2…
+$ `Distance to CD8+`   &lt;dbl&gt; 18.03469, 64.37585, 67.57403, 91.44397, 37.94733…
+$ `Cell ID CD8+`       &lt;int&gt; 101, 5068, 423, 189, 128, 188, 280, 128, 423, 18…
+$ `Distance to CK+`    &lt;dbl&gt; 36.830694, 109.317199, 3.605551, 4.031129, 5.590…
+$ `Cell ID CK+`        &lt;int&gt; 192, 5127, 45, 58, 4943, 209, 636, 87, 30, 45, 3…
+$ `Distance to FoxP3+` &lt;dbl&gt; 16.347783, 40.140379, 30.870698, 65.408333, 77.1…
+$ `Cell ID FoxP3+`     &lt;int&gt; 117, 214, 229, 138, 229, 102, 66, 229, 229, 95, …</code></pre>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="kw"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(csd)</span></code></pre></div>
 <pre><code>[1] 3130</code></pre>
 <p>To create a combined data frame, use <code><a href="https://dplyr.tidyverse.org/reference/bind.html">dplyr::bind_cols</a></code>.</p>
@@ -174,13 +174,12 @@ $ `Cell ID FoxP3+`     &lt;int&gt; 117, 214, 229, 138, 229, 102, 66, 229, 22...<
 <span id="cb11-2"><a href="#cb11-2"></a><span class="st">  </span><span class="kw">select</span>(Phenotype, <span class="kw">starts_with</span>(<span class="st">'Distance to'</span>)) <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb11-3"><a href="#cb11-3"></a><span class="st">  </span><span class="kw">summarize_all</span>(<span class="op">~</span><span class="kw"><a href="https://rdrr.io/r/base/Round.html">round</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/mean.html">mean</a></span>(.), <span class="dv">1</span>))</span></code></pre></div>
 <pre><code># A tibble: 4 x 5
-  Phenotype `Distance to CD~ `Distance to CD~ `Distance to CK~
-  &lt;chr&gt;                &lt;dbl&gt;            &lt;dbl&gt;            &lt;dbl&gt;
-1 CD68+                 14.2             30.6             23.1
-2 CD8+                  23.1             17.5             19.3
-3 CK+                   44.3             48.2              7.9
-4 FoxP3+                19.1             29.1             23.3
-# ... with 1 more variable: `Distance to FoxP3+` &lt;dbl&gt;</code></pre>
+  Phenotype `Distance to CD6… `Distance to CD… `Distance to CK… `Distance to Fo…
+  &lt;chr&gt;                 &lt;dbl&gt;            &lt;dbl&gt;            &lt;dbl&gt;            &lt;dbl&gt;
+1 CD68+                  14.2             30.6             23.1             24.8
+2 CD8+                   23.1             17.5             19.3             28.4
+3 CK+                    44.3             48.2              7.9             50.5
+4 FoxP3+                 19.1             29.1             23.3             22.3</code></pre>
 <p>Show the distribution of distances in a density plot:</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="kw">ggplot</span>(csd_with_distance, <span class="kw">aes</span>(<span class="st">`</span><span class="dt">Distance to CD8+</span><span class="st">`</span>, <span class="dt">color=</span>Phenotype)) <span class="op">+</span></span>
 <span id="cb13-2"><a href="#cb13-2"></a><span class="st">  </span><span class="kw">geom_density</span>(<span class="dt">size=</span><span class="dv">1</span>)</span></code></pre></div>

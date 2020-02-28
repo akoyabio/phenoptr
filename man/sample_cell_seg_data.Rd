@@ -18,8 +18,8 @@ sample_cell_seg_folder()
 A dataset containing inForm cell segmentation data for a single field.
 }
 \details{
-\code{sample_cell_seg_data} contains the \code{data_table} returned from\preformatted{read_cell_seg_data(sample_cell_seg_path())
-}
+\code{sample_cell_seg_data} contains the \code{data_table} returned from\if{html}{\out{<div class="{r eval=FALSE}">}}\preformatted{read_cell_seg_data(sample_cell_seg_path())
+}\if{html}{\out{</div>}}
 
 This table shows the stains used, the epitopes they were bound to,
 and the colors used to show the stains in the composite and phenotype views.\preformatted{  Stain    Epitope  Composite  Phenotype
@@ -33,9 +33,9 @@ and the colors used to show the stains in the composite and phenotype views.\pre
   Opal690  CK       Cyan       Cyan
 }
 
-The sample cell data includes phenotypes \code{CD8+} (cytotoxic T cell),
-\code{CD68+} (macrophage),
-\code{FoxP3+} (regulatory T cell), \code{CK+} (tumor), and \code{other}.
+The sample cell data includes phenotypes \verb{CD8+} (cytotoxic T cell),
+\verb{CD68+} (macrophage),
+\verb{FoxP3+} (regulatory T cell), \verb{CK+} (tumor), and \code{other}.
 
 \link{sample_cell_seg_path} and \link{sample_cell_seg_folder} are
 convenience functions which return the path to the sample cell seg file

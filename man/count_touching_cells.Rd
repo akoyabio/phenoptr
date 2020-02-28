@@ -4,13 +4,19 @@
 \alias{count_touching_cells}
 \title{Find and count touching cells for pairs of phenotypes.}
 \usage{
-count_touching_cells(cell_seg_path, pairs, colors = NULL,
-  phenotype_rules = NULL, categories = NULL,
-  write_images = !is.null(colors), output_base = NULL)
+count_touching_cells(
+  cell_seg_path,
+  pairs,
+  colors = NULL,
+  phenotype_rules = NULL,
+  categories = NULL,
+  write_images = !is.null(colors),
+  output_base = NULL
+)
 }
 \arguments{
 \item{cell_seg_path}{The path to the cell seg data file. The same directory
-must also contain \code{_memb_seg_map.tif} or \code{_binary_seg_maps.tif} and, if
+must also contain \verb{_memb_seg_map.tif} or \verb{_binary_seg_maps.tif} and, if
 \code{write_images} is true, a  TIFF or JPEG composite image from inForm.}
 
 \item{pairs}{A list of pairs of phenotypes. Each entry is a two-element
@@ -43,7 +49,7 @@ Returns a \code{tibble} with one row for each pair in
 \describe{
 \item{\code{slide_id}}{Slide ID from the data file, if available.}
 \item{\code{source}}{Base file name of the source file with
-\code{_cell_seg_data.txt} stripped off for brevity.}
+\verb{_cell_seg_data.txt} stripped off for brevity.}
 \item{\code{phenotype1}}{The name of the first phenotype in
 the touching pair.}
 \item{\code{phenotype2}}{The name of the second phenotype in
@@ -129,7 +135,7 @@ colors <- list(
 
 # Count and visualize touching cells
 touch_counts <- purrr::map_df(files, function(path) {
-  cat('Processing', path, '\\n')
+  cat('Processing', path, '\n')
   count_touching_cells(path, pairs, colors, output_base=output_base)
 })
 
@@ -152,7 +158,7 @@ phenotype_rules <- list(
 )
 
 touch_counts <- map_df(files, function(path) {
-  cat('Processing', path, '\\n')
+  cat('Processing', path, '\n')
   count_touching_cells(path, pairs, colors, phenotype_rules,
                        categories='tumor',
                        output_base=output_base)
@@ -162,13 +168,14 @@ touch_counts <- map_df(files, function(path) {
 }
 }
 \seealso{
-Other distance functions: \code{\link{compute_all_nearest_distance}},
-  \code{\link{count_within_batch}},
-  \code{\link{count_within_many}},
-  \code{\link{count_within}},
-  \code{\link{distance_matrix}},
-  \code{\link{find_nearest_distance}},
-  \code{\link{spatial_distribution_report}},
-  \code{\link{subset_distance_matrix}}
+Other distance functions: 
+\code{\link{compute_all_nearest_distance}()},
+\code{\link{count_within_batch}()},
+\code{\link{count_within_many}()},
+\code{\link{count_within}()},
+\code{\link{distance_matrix}()},
+\code{\link{find_nearest_distance}()},
+\code{\link{spatial_distribution_report}()},
+\code{\link{subset_distance_matrix}()}
 }
 \concept{distance functions}

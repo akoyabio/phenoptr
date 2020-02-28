@@ -5,12 +5,18 @@
 \title{Count cells within a radius for multiple tissue categories, phenotypes
 and fields.}
 \usage{
-count_within_batch(base_path, pairs, radius, category = NA,
-  phenotype_rules = NULL, verbose = TRUE)
+count_within_batch(
+  base_path,
+  pairs,
+  radius,
+  category = NA,
+  phenotype_rules = NULL,
+  verbose = TRUE
+)
 }
 \arguments{
 \item{base_path}{Path to a directory containing at least
-one \code{_cell_seg_data.txt} file.}
+one \verb{_cell_seg_data.txt} file.}
 
 \item{pairs}{A list of pairs of phenotypes. Each entry is a two-element
 vector. The result will contain values for each pair.}
@@ -31,7 +37,7 @@ A \code{tibble} containing these columns:
 \describe{
 \item{\code{slide_id}}{Slide ID from the data files, if available.}
 \item{\code{source}}{Base file name of the source file with
-\code{_cell_seg_data.txt} stripped off for brevity.}
+\verb{_cell_seg_data.txt} stripped off for brevity.}
 \item{\code{category}}{Tissue category, if provided as a parameter,
 or "all".}
 \item{\code{from}}{From phenotype.}
@@ -76,13 +82,14 @@ rules <- list(
 count_within_batch(base_path, pairs, radius, phenotype_rules=rules)
 }
 \seealso{
-Other distance functions: \code{\link{compute_all_nearest_distance}},
-  \code{\link{count_touching_cells}},
-  \code{\link{count_within_many}},
-  \code{\link{count_within}},
-  \code{\link{distance_matrix}},
-  \code{\link{find_nearest_distance}},
-  \code{\link{spatial_distribution_report}},
-  \code{\link{subset_distance_matrix}}
+Other distance functions: 
+\code{\link{compute_all_nearest_distance}()},
+\code{\link{count_touching_cells}()},
+\code{\link{count_within_many}()},
+\code{\link{count_within}()},
+\code{\link{distance_matrix}()},
+\code{\link{find_nearest_distance}()},
+\code{\link{spatial_distribution_report}()},
+\code{\link{subset_distance_matrix}()}
 }
 \concept{distance functions}

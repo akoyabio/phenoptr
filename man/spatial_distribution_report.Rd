@@ -4,8 +4,13 @@
 \alias{spatial_distribution_report}
 \title{Create a spatial distribution report.}
 \usage{
-spatial_distribution_report(cell_seg_path, pairs, colors,
-  phenotype_rules = NULL, output_path = NULL)
+spatial_distribution_report(
+  cell_seg_path,
+  pairs,
+  colors,
+  phenotype_rules = NULL,
+  output_path = NULL
+)
 }
 \arguments{
 \item{cell_seg_path}{Path to a cell seg data file.}
@@ -79,13 +84,14 @@ spatial_distribution_report(cell_seg_path, pairs, colors, phenotype_rules,
 }
 }
 \seealso{
-Other distance functions: \code{\link{compute_all_nearest_distance}},
-  \code{\link{count_touching_cells}},
-  \code{\link{count_within_batch}},
-  \code{\link{count_within_many}},
-  \code{\link{count_within}},
-  \code{\link{distance_matrix}},
-  \code{\link{find_nearest_distance}},
-  \code{\link{subset_distance_matrix}}
+Other distance functions: 
+\code{\link{compute_all_nearest_distance}()},
+\code{\link{count_touching_cells}()},
+\code{\link{count_within_batch}()},
+\code{\link{count_within_many}()},
+\code{\link{count_within}()},
+\code{\link{distance_matrix}()},
+\code{\link{find_nearest_distance}()},
+\code{\link{subset_distance_matrix}()}
 }
 \concept{distance functions}

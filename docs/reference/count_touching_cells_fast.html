@@ -37,9 +37,10 @@
 
 <meta property="og:title" content="Count touching cells for a single pair of phenotypes — count_touching_cells_fast" />
 <meta property="og:description" content="Fast implementation of count touching cells.
-This version requires a new-style (label image) membrane map such as
-created by inForm's adaptive cell segmentation. It will not work with
-maps created by older segmentation algorithms." />
+This function requires a membrane label image such as
+created by adaptive cell segmentation in inForm 2.4.3 or newer.
+It will not work with
+membrane masks created by older segmentation algorithms." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -72,7 +73,7 @@ maps created by older segmentation algorithms." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">phenoptr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.5</span>
       </span>
     </div>
 
@@ -147,13 +148,21 @@ maps created by older segmentation algorithms." />
 
     <div class="ref-description">
     <p>Fast implementation of count touching cells.
-This version requires a new-style (label image) membrane map such as
-created by inForm's adaptive cell segmentation. It will not work with
-maps created by older segmentation algorithms.</p>
+This function requires a membrane label image such as
+created by adaptive cell segmentation in inForm 2.4.3 or newer.
+It will not work with
+membrane masks created by older segmentation algorithms.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>count_touching_cells_fast</span>(<span class='no'>csd</span>, <span class='no'>field_name</span>, <span class='no'>export_path</span>, <span class='no'>phenos</span>, <span class='no'>color1</span>,
-  <span class='no'>color2</span>, <span class='kw'>discard_dups</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+    <pre class="usage"><span class='fu'>count_touching_cells_fast</span>(
+  <span class='no'>csd</span>,
+  <span class='no'>field_name</span>,
+  <span class='no'>export_path</span>,
+  <span class='no'>phenos</span>,
+  <span class='no'>color1</span>,
+  <span class='no'>color2</span>,
+  <span class='kw'>discard_dups</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -177,7 +186,7 @@ and segmentation image files from inForm</p></td>
     </tr>
     <tr>
       <th>color1, color2</th>
-      <td><p>Colors to draw the phenotype dots</p></td>
+      <td><p>Colors for cells matching <code>phenos</code>.</p></td>
     </tr>
     <tr>
       <th>discard_dups</th>

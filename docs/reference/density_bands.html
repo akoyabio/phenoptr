@@ -72,7 +72,7 @@ tissue classes." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">phenoptr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.5</span>
       </span>
     </div>
 
@@ -152,8 +152,15 @@ phenotype in bands from the boundary between the two
 tissue classes.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>density_bands</span>(<span class='no'>cell_seg_path</span>, <span class='no'>phenotypes</span>, <span class='no'>positive</span>, <span class='no'>negative</span>, <span class='kw'>width</span> <span class='kw'>=</span> <span class='fl'>25</span>,
-  <span class='kw'>map_path</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>component_path</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>density_bands</span>(
+  <span class='no'>cell_seg_path</span>,
+  <span class='no'>phenotypes</span>,
+  <span class='no'>positive</span>,
+  <span class='no'>negative</span>,
+  <span class='kw'>width</span> <span class='kw'>=</span> <span class='fl'>25</span>,
+  <span class='kw'>map_path</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>component_path</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -236,7 +243,8 @@ cell counts and areas across all fields from a sample, then dividing
 to compute density.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>Other density estimation: <code><a href='density_at_distance.html'>density_at_distance</a></code></p></div>
+    <div class='dont-index'><p>Other density estimation: 
+<code><a href='density_at_distance.html'>density_at_distance</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Compute density for the sample data</span>

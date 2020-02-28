@@ -4,8 +4,15 @@
 \alias{count_touching_cells_fast}
 \title{Count touching cells for a single pair of phenotypes}
 \usage{
-count_touching_cells_fast(csd, field_name, export_path, phenos, color1,
-  color2, discard_dups = FALSE)
+count_touching_cells_fast(
+  csd,
+  field_name,
+  export_path,
+  phenos,
+  color1,
+  color2,
+  discard_dups = FALSE
+)
 }
 \arguments{
 \item{csd}{Cell seg data, may include multiple fields}

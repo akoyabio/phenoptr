@@ -7,8 +7,8 @@
 find_nearest_distance_rtree(csd, phenotypes = NULL)
 }
 \arguments{
-\item{csd}{A data frame with \code{Cell X Position},
-\code{Cell Y Position} and \code{Phenotype} columns,
+\item{csd}{A data frame with \verb{Cell X Position},
+\verb{Cell Y Position} and \code{Phenotype} columns,
 such as the result of calling
 \link{read_cell_seg_data}.}
 
@@ -16,8 +16,8 @@ such as the result of calling
 \code{unique_phenotypes(csd)} will be used.}
 }
 \value{
-A \code{tibble} containing a \code{Distance to <phenotype>} column
-and \code{Cell ID <phenotype>} column for each phenotype.
+A \code{tibble} containing a \verb{Distance to <phenotype>} column
+and \verb{Cell ID <phenotype>} column for each phenotype.
 Columns will contain \code{NA} values where there is no other cell
 of the phenotype.
 }

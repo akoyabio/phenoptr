@@ -1,3 +1,9 @@
+# phenoptr 0.2.5
+**2020-02-28**
+
+- Make `read_cell_data` more robust against data with comma as the decimal separator.
+- Better documentation and error messages in `count_touching_cells_fast`.
+
 # phenoptr 0.2.4
 **2019-10-22**
 

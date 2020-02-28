@@ -71,7 +71,7 @@ phenotype on the distance from the boundary between the two tissue classes." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">phenoptr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.5</span>
       </span>
     </div>
 
@@ -150,9 +150,15 @@ classes, estimate the dependence of the density of cells of each
 phenotype on the distance from the boundary between the two tissue classes.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>density_at_distance</span>(<span class='no'>cell_seg_path</span>, <span class='no'>phenotypes</span>, <span class='no'>positive</span>, <span class='no'>negative</span>,
+    <pre class="usage"><span class='fu'>density_at_distance</span>(
+  <span class='no'>cell_seg_path</span>,
+  <span class='no'>phenotypes</span>,
+  <span class='no'>positive</span>,
+  <span class='no'>negative</span>,
   <span class='kw'>mask</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>pixels_per_micron</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"phenoptr.pixels.per.micron"</span>), <span class='no'>...</span>)</pre>
+  <span class='kw'>pixels_per_micron</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"phenoptr.pixels.per.micron"</span>),
+  <span class='no'>...</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -256,7 +262,8 @@ Spatial Point Patterns: Methodology and Applications with R.
 Chapman and Hall/CRC Press, 2015. Sections 6.6.3-6.6.4.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>Other density estimation: <code><a href='density_bands.html'>density_bands</a></code></p></div>
+    <div class='dont-index'><p>Other density estimation: 
+<code><a href='density_bands.html'>density_bands</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Compute density for the sample data</span>
@@ -268,8 +275,9 @@ Chapman and Hall/CRC Press, 2015. Sections 6.6.3-6.6.4.</p>
 #&gt; <span class='message'>Attaching package: 'nlme'</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from 'package:dplyr':</span>
 #&gt; <span class='message'></span>
 #&gt; <span class='message'>    collapse</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: rpart</span></div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>spatstat 1.61-0       (nickname: 'Puppy zoomies') </span>
-#&gt; <span class='message'>For an introduction to spatstat, type 'beginner' </span></div><div class='input'>
+#&gt; <span class='message'>spatstat 1.62-2       (nickname: 'Shape-shifting lizard') </span>
+#&gt; <span class='message'>For an introduction to spatstat, type 'beginner' </span></div><div class='output co'>#&gt; <span class='message'></span>
+#&gt; <span class='message'>Note: spatstat version 1.62-2 is out of date by more than 11 weeks; a newer version should be available.</span></div><div class='input'>
 <span class='co'># Combine all the densities into a single tibble</span>
 <span class='co'># and filter out the extremes</span>
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>dplyr</span>)

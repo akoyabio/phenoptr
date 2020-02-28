@@ -36,8 +36,10 @@ components <- read_components(path)
 }
 }
 \seealso{
-Other file readers: \code{\link{get_field_info}},
-  \code{\link{list_cell_seg_files}},
-  \code{\link{read_cell_seg_data}}, \code{\link{read_maps}}
+Other file readers: 
+\code{\link{get_field_info}()},
+\code{\link{list_cell_seg_files}()},
+\code{\link{read_cell_seg_data}()},
+\code{\link{read_maps}()}
 }
 \concept{file readers}

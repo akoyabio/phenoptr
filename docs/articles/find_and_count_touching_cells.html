@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">phenoptr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.5</span>
       </span>
     </div>
 
@@ -102,7 +102,7 @@
       <h1>Find and count touching cells</h1>
                         <h4 class="author">Kent Johnson</h4>
             
-            <h4 class="date">2019-10-22</h4>
+            <h4 class="date">2020-02-28</h4>
       
       
       <div class="hidden name"><code>find_and_count_touching_cells.Rmd</code></div>
@@ -129,11 +129,11 @@
 <span id="cb1-9"><a href="#cb1-9"></a><span class="kw"><a href="../reference/count_touching_cells.html">count_touching_cells</a></span>(cell_seg_path, pairs, colors)</span></code></pre></div>
 <p><small></small></p>
 <pre><code>## # A tibble: 2 x 9
-##   slide_id source phenotype1 phenotype2 total1 total2 p1_touch_p2
-##   &lt;chr&gt;    &lt;chr&gt;  &lt;chr&gt;      &lt;chr&gt;       &lt;dbl&gt;  &lt;dbl&gt;       &lt;dbl&gt;
-## 1 Set4_1-~ Set4_~ CK+        CD8+         2257    228         148
-## 2 Set4_1-~ Set4_~ CK+        CD68+        2257    417         250
-## # ... with 2 more variables: p2_touch_p1 &lt;dbl&gt;, touch_pairs &lt;dbl&gt;</code></pre>
+##   slide_id source phenotype1 phenotype2 total1 total2 p1_touch_p2 p2_touch_p1
+##   &lt;chr&gt;    &lt;chr&gt;  &lt;chr&gt;      &lt;chr&gt;       &lt;dbl&gt;  &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt;
+## 1 Set4_1-… Set4_… CK+        CD8+         2257    228         148          95
+## 2 Set4_1-… Set4_… CK+        CD68+        2257    417         250         163
+## # … with 1 more variable: touch_pairs &lt;dbl&gt;</code></pre>
 <p></p>
 </div>
 <div id="count-touching-cells-with-new-phenotypes" class="section level2">

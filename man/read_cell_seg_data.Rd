@@ -4,9 +4,11 @@
 \alias{read_cell_seg_data}
 \title{Read and clean an inForm data file.}
 \usage{
-read_cell_seg_data(path = NA,
+read_cell_seg_data(
+  path = NA,
   pixels_per_micron = getOption("phenoptr.pixels.per.micron"),
-  remove_units = TRUE)
+  remove_units = TRUE
+)
 }
 \arguments{
 \item{path}{Path to the file to read, or NA to use a file chooser.}
@@ -71,8 +73,10 @@ csd <- purrr::map_df(paths, read_cell_seg_data)
 }
 }
 \seealso{
-Other file readers: \code{\link{get_field_info}},
-  \code{\link{list_cell_seg_files}},
-  \code{\link{read_components}}, \code{\link{read_maps}}
+Other file readers: 
+\code{\link{get_field_info}()},
+\code{\link{list_cell_seg_files}()},
+\code{\link{read_components}()},
+\code{\link{read_maps}()}
 }
 \concept{file readers}

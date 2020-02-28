@@ -5,8 +5,14 @@
 \title{Count cells within a radius for multiple tissue categories and phenotypes
 in a single field.}
 \usage{
-count_within_many(csd, pairs, radius, category = NA,
-  phenotype_rules = NULL, verbose = TRUE)
+count_within_many(
+  csd,
+  pairs,
+  radius,
+  category = NA,
+  phenotype_rules = NULL,
+  verbose = TRUE
+)
 }
 \arguments{
 \item{csd}{A cell seg data table.}
@@ -75,13 +81,14 @@ rules <- list(
 count_within_many(csd, pairs, radius, phenotype_rules=rules)
 }
 \seealso{
-Other distance functions: \code{\link{compute_all_nearest_distance}},
-  \code{\link{count_touching_cells}},
-  \code{\link{count_within_batch}},
-  \code{\link{count_within}},
-  \code{\link{distance_matrix}},
-  \code{\link{find_nearest_distance}},
-  \code{\link{spatial_distribution_report}},
-  \code{\link{subset_distance_matrix}}
+Other distance functions: 
+\code{\link{compute_all_nearest_distance}()},
+\code{\link{count_touching_cells}()},
+\code{\link{count_within_batch}()},
+\code{\link{count_within}()},
+\code{\link{distance_matrix}()},
+\code{\link{find_nearest_distance}()},
+\code{\link{spatial_distribution_report}()},
+\code{\link{subset_distance_matrix}()}
 }
 \concept{distance functions}

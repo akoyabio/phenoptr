@@ -71,7 +71,7 @@ the cell to the nearest neighbor cells in each of the provided phenotypes." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">phenoptr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.5</span>
       </span>
     </div>
 
@@ -193,14 +193,15 @@ prohibitive as the number of cells becomes large.</p>
 
     <div class='dont-index'><p><a href='compute_all_nearest_distance.html'>compute_all_nearest_distance</a> which applies this function to a
 (possibly merged) data file.</p>
-<p>Other distance functions: <code><a href='compute_all_nearest_distance.html'>compute_all_nearest_distance</a></code>,
-  <code><a href='count_touching_cells.html'>count_touching_cells</a></code>,
-  <code><a href='count_within_batch.html'>count_within_batch</a></code>,
-  <code><a href='count_within_many.html'>count_within_many</a></code>,
-  <code><a href='count_within.html'>count_within</a></code>,
-  <code><a href='distance_matrix.html'>distance_matrix</a></code>,
-  <code><a href='spatial_distribution_report.html'>spatial_distribution_report</a></code>,
-  <code><a href='subset_distance_matrix.html'>subset_distance_matrix</a></code></p></div>
+<p>Other distance functions: 
+<code><a href='compute_all_nearest_distance.html'>compute_all_nearest_distance</a>()</code>,
+<code><a href='count_touching_cells.html'>count_touching_cells</a>()</code>,
+<code><a href='count_within_batch.html'>count_within_batch</a>()</code>,
+<code><a href='count_within_many.html'>count_within_many</a>()</code>,
+<code><a href='count_within.html'>count_within</a>()</code>,
+<code><a href='distance_matrix.html'>distance_matrix</a>()</code>,
+<code><a href='spatial_distribution_report.html'>spatial_distribution_report</a>()</code>,
+<code><a href='subset_distance_matrix.html'>subset_distance_matrix</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Compute distance columns</span>
@@ -208,16 +209,16 @@ prohibitive as the number of cells becomes large.</p>
 <span class='no'>nearest</span> <span class='kw'>&lt;-</span> <span class='fu'>find_nearest_distance</span>(<span class='no'>csd</span>)
 <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/reexports.html'>glimpse</a></span>(<span class='no'>nearest</span>)</div><div class='output co'>#&gt; Observations: 6,072
 #&gt; Variables: 10
-#&gt; $ `Distance to CD68+`  <span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> 29.529646, 30.269622, 38.082148, 36.674242, 15...
-#&gt; $ `Cell ID CD68+`      </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> 108, 99, 41, 262, 41, 99, 4949, 217, 69, 99, 1...
-#&gt; $ `Distance to CD8+`   </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> 18.03469, 50.09241, 64.37585, 67.57403, 60.002...
-#&gt; $ `Cell ID CD8+`       </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> 101, 189, 5068, 423, 5068, 189, 182, 128, 188,...
-#&gt; $ `Distance to CK+`    </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> 36.830694, 21.377558, 109.317199, 3.605551, 10...
-#&gt; $ `Cell ID CK+`        </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> 192, 166, 5127, 45, 636, 58, 68, 4943, 209, 16...
-#&gt; $ `Distance to FoxP3+` </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> 16.347783, 24.909837, 40.140379, 30.870698, 26...
-#&gt; $ `Cell ID FoxP3+`     </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> 117, 138, 214, 229, 214, 138, 437, 229, 102, 1...
-#&gt; $ `Distance to other`  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> 10.307764, 6.800735, 8.062258, 19.811613, 5.59...
-#&gt; $ `Cell ID other`      </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> 76, 36, 84, 57, 50, 40, 43, 142, 49, 71, 60, 8...</div><div class='input'>
+#&gt; $ `Distance to CD68+`  <span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> 29.529646, 30.269622, 38.082148, 36.674242, 15.6…
+#&gt; $ `Cell ID CD68+`      </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> 108, 99, 41, 262, 41, 99, 4949, 217, 69, 99, 108…
+#&gt; $ `Distance to CD8+`   </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> 18.03469, 50.09241, 64.37585, 67.57403, 60.00208…
+#&gt; $ `Cell ID CD8+`       </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> 101, 189, 5068, 423, 5068, 189, 182, 128, 188, 1…
+#&gt; $ `Distance to CK+`    </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> 36.830694, 21.377558, 109.317199, 3.605551, 105.…
+#&gt; $ `Cell ID CK+`        </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> 192, 166, 5127, 45, 636, 58, 68, 4943, 209, 166,…
+#&gt; $ `Distance to FoxP3+` </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> 16.347783, 24.909837, 40.140379, 30.870698, 26.4…
+#&gt; $ `Cell ID FoxP3+`     </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> 117, 138, 214, 229, 214, 138, 437, 229, 102, 138…
+#&gt; $ `Distance to other`  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> 10.307764, 6.800735, 8.062258, 19.811613, 5.5901…
+#&gt; $ `Cell ID other`      </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> 76, 36, 84, 57, 50, 40, 43, 142, 49, 71, 60, 85,…</div><div class='input'>
 <span class='co'># Make a combined data frame including original data and distance columns</span>
 <span class='no'>csd</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>cbind</a></span>(<span class='no'>csd</span>, <span class='fu'>find_nearest_distance</span>(<span class='no'>csd</span>))
 

@@ -7,8 +7,8 @@
 find_nearest_distance(csd, phenotypes = NULL, dst = NULL)
 }
 \arguments{
-\item{csd}{A data frame with \code{Cell X Position},
-\code{Cell Y Position} and \code{Phenotype} columns,
+\item{csd}{A data frame with \verb{Cell X Position},
+\verb{Cell Y Position} and \code{Phenotype} columns,
 such as the result of calling
 \link{read_cell_seg_data}.}
 
@@ -19,8 +19,8 @@ such as the result of calling
 \code{distance_matrix(csd)}. Not used if \code{rtree} is available.}
 }
 \value{
-A \code{tibble} containing a \code{Distance to <phenotype>} column
-and \code{Cell ID <phenotype>} column for each phenotype.
+A \code{tibble} containing a \verb{Distance to <phenotype>} column
+and \verb{Cell ID <phenotype>} column for each phenotype.
 Columns will contain \code{NA} values where there is no other cell
 of the phenotype.
 }
@@ -61,13 +61,14 @@ merged_with_distance <- merged \%>\%
 \link{compute_all_nearest_distance} which applies this function to a
 (possibly merged) data file.
 
-Other distance functions: \code{\link{compute_all_nearest_distance}},
-  \code{\link{count_touching_cells}},
-  \code{\link{count_within_batch}},
-  \code{\link{count_within_many}},
-  \code{\link{count_within}},
-  \code{\link{distance_matrix}},
-  \code{\link{spatial_distribution_report}},
-  \code{\link{subset_distance_matrix}}
+Other distance functions: 
+\code{\link{compute_all_nearest_distance}()},
+\code{\link{count_touching_cells}()},
+\code{\link{count_within_batch}()},
+\code{\link{count_within_many}()},
+\code{\link{count_within}()},
+\code{\link{distance_matrix}()},
+\code{\link{spatial_distribution_report}()},
+\code{\link{subset_distance_matrix}()}
 }
 \concept{distance functions}

@@ -15,7 +15,7 @@ input file path.}
 }
 \description{
 Compute nearest distance to each phenotype for each cell in a
-(possibly merged) inForm cell seg table. Add \code{Distance to <phenotype>}
+(possibly merged) inForm cell seg table. Add \verb{Distance to <phenotype>}
 columns.
 Write the result to a new file.
 }
@@ -26,13 +26,14 @@ and cleanup it does will be applied to the output data.
 \seealso{
 \link{find_nearest_distance} which performs the distance calculation.
 
-Other distance functions: \code{\link{count_touching_cells}},
-  \code{\link{count_within_batch}},
-  \code{\link{count_within_many}},
-  \code{\link{count_within}},
-  \code{\link{distance_matrix}},
-  \code{\link{find_nearest_distance}},
-  \code{\link{spatial_distribution_report}},
-  \code{\link{subset_distance_matrix}}
+Other distance functions: 
+\code{\link{count_touching_cells}()},
+\code{\link{count_within_batch}()},
+\code{\link{count_within_many}()},
+\code{\link{count_within}()},
+\code{\link{distance_matrix}()},
+\code{\link{find_nearest_distance}()},
+\code{\link{spatial_distribution_report}()},
+\code{\link{subset_distance_matrix}()}
 }
 \concept{distance functions}
