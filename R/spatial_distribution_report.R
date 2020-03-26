@@ -225,9 +225,9 @@ add_scales_and_background = function(p, background, xlim, ylim,
 
   # Add scales at the image limits. Reverse the y scale to match the image
   p = p + ggplot2::scale_x_continuous(limits=xlim,
-                                      expand=ggplot2::expand_scale()) +
+                                      expand=expansion()) +
     ggplot2::scale_y_reverse(limits=rev(ylim),
-                             expand=ggplot2::expand_scale())
+                             expand=expansion())
 
   # Force square aspect ratio
   p = p + ggplot2::coord_fixed()
@@ -283,4 +283,23 @@ annotation_raster_native <- function(raster, xmin, xmax, ymin, ymax,
       interpolate = interpolate
     )
   )
+}
+
+# ggplot2 3.3.0 deprecated expand_scale in favor of expansion.
+# Using this function supports the old version and
+# avoids deprecation warnings with the new version
+expansion = function(mult=0, add=0) {
+  if (function_exists('ggplot2', 'expansion'))
+    ggplot2::expansion(mult, add)
+  else
+    ggplot2::expand_scale(mult, add)
+}
+
+# Check if a function is available in a package
+# @param package Name of the package
+# @param fun Name of the function
+# @return TRUE if the package is installed and contains the function.
+function_exists =function(package, fun) {
+  requireNamespace(package, quietly=TRUE) &&
+    (fun %in% getNamespaceExports(package))
 }
