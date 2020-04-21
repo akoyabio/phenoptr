@@ -129,6 +129,10 @@ find_nearest_distance_dist = function(csd, phenotypes=NULL, dst=NULL) {
   if (is.null(dst))
     dst = distance_matrix(csd)
 
+  # Removing dimnames from dst gives unnamed columns in results
+  # The names are clutter, take up space and confuse the tests
+  dimnames(dst) = NULL
+
   result = purrr::map2_dfc(names(phenotypes), phenotypes,
                            function(name, phenotype) {
     # Which cells are in the target phenotype?
