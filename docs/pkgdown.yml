@@ -1,5 +1,5 @@
 pandoc: 2.7.3
-pkgdown: 1.4.1
+pkgdown: 1.5.1
 pkgdown_sha: ~
 articles:
   computing_distances: computing_distances.html
@@ -7,6 +7,7 @@ articles:
   reading_image_files: reading_image_files.html
   reading_tables: reading_tables.html
   selecting_cells: selecting_cells.html
+last_built: 2020-04-21T18:44Z
 urls:
   reference: http://akoyabio.github.io/phenoptr/reference
   article: http://akoyabio.github.io/phenoptr/articles

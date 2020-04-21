@@ -1,3 +1,8 @@
+# phenoptr 0.2.6
+**2020-04-21**
+
+- Avoid deprecation warning for `expand_scale` with ggplot2 version 3.3.0
+
 # phenoptr 0.2.5
 **2020-02-28**
 

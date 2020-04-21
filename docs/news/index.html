@@ -10,23 +10,27 @@
 
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/cerulean/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -53,7 +57,7 @@
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-news">
       <header>
       <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -67,7 +71,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">phenoptr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.6</span>
       </span>
     </div>
 
@@ -135,12 +139,20 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Changelog <small></small></h1>
-      
+      <h1 data-toc-skip>Changelog <small></small></h1>
+      <small>Source: <a href='https://github.com/akoyabio/phenoptr/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="phenoptr-026" class="section level1">
+<h1 class="page-header" data-toc-text="0.2.6">
+<a href="#phenoptr-026" class="anchor"></a>phenoptr 0.2.6</h1>
+<p><strong>2020-04-21</strong></p>
+<ul>
+<li>Avoid deprecation warning for <code>expand_scale</code> with ggplot2 version 3.3.0</li>
+</ul>
+</div>
     <div id="phenoptr-025" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.2.5">
 <a href="#phenoptr-025" class="anchor"></a>phenoptr 0.2.5</h1>
 <p><strong>2020-02-28</strong></p>
 <ul>
@@ -149,7 +161,7 @@
 </ul>
 </div>
     <div id="phenoptr-024" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.2.4">
 <a href="#phenoptr-024" class="anchor"></a>phenoptr 0.2.4</h1>
 <p><strong>2019-10-22</strong></p>
 <ul>
@@ -159,7 +171,7 @@
 </ul>
 </div>
     <div id="phenoptr-023" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.2.3">
 <a href="#phenoptr-023" class="anchor"></a>phenoptr 0.2.3</h1>
 <p><strong>2019-08-07</strong></p>
 <ul>
@@ -167,7 +179,7 @@
 </ul>
 </div>
     <div id="phenoptr-022" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.2.2">
 <a href="#phenoptr-022" class="anchor"></a>phenoptr 0.2.2</h1>
 <p><strong>2019-06-11</strong></p>
 <ul>
@@ -177,7 +189,7 @@
 </ul>
 </div>
     <div id="phenoptr-021" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.2.1">
 <a href="#phenoptr-021" class="anchor"></a>phenoptr 0.2.1</h1>
 <p><strong>2019-05-31</strong></p>
 <ul>
@@ -185,11 +197,11 @@
 </ul>
 <p>Bug fixes:</p>
 <ul>
-<li>Fix <code>density_bands</code> to work with cell seg data in microns with slide origin (#10).</li>
+<li>Fix <code>density_bands</code> to work with cell seg data in microns with slide origin (<a href='https://github.com/akoyabio/phenoptr/issues/10'>#10</a>).</li>
 </ul>
 </div>
     <div id="phenoptr-020" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.2.0">
 <a href="#phenoptr-020" class="anchor"></a>phenoptr 0.2.0</h1>
 <p><strong>2019-05-10</strong></p>
 <p>New feature (and breaking change):</p>
@@ -199,22 +211,22 @@
 <p>Bug fixes:</p>
 <ul>
 <li>
-<code>read_cell_seg_data</code> recognizes and correctly reads inForm data which uses comma as the decimal separator (#8).</li>
-<li>Fix SpatialDistributionReport to work with more than 8 phenotypes (#6).</li>
+<code>read_cell_seg_data</code> recognizes and correctly reads inForm data which uses comma as the decimal separator (<a href='https://github.com/akoyabio/phenoptr/issues/8'>#8</a>).</li>
+<li>Fix SpatialDistributionReport to work with more than 8 phenotypes (<a href='https://github.com/akoyabio/phenoptr/issues/6'>#6</a>).</li>
 <li>
-<code>count_touching_cells</code> ignores phenotype pairs of self to self with a warning because the touching algorithm does not handle this case (#7).</li>
+<code>count_touching_cells</code> ignores phenotype pairs of self to self with a warning because the touching algorithm does not handle this case (<a href='https://github.com/akoyabio/phenoptr/issues/7'>#7</a>).</li>
 </ul>
 </div>
     <div id="phenoptr-0161" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.1.6.1">
 <a href="#phenoptr-0161" class="anchor"></a>phenoptr 0.1.6.1</h1>
 <p><strong>2019-04-22</strong></p>
 <ul>
-<li>Remove the scary <code>Failed with error: ‘there is no package called ‘rtree’’</code> message that <code><a href="https://rdrr.io/r/base/ns-load.html">requireNamespace('rtree')</a></code> generates (#5).</li>
+<li>Remove the scary <code>Failed with error: ‘there is no package called ‘rtree’’</code> message that <code><a href="https://rdrr.io/pkg/rtree/man">requireNamespace('rtree')</a></code> generates (<a href='https://github.com/akoyabio/phenoptr/issues/5'>#5</a>).</li>
 </ul>
 </div>
     <div id="phenoptr-016" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.1.6">
 <a href="#phenoptr-016" class="anchor"></a>phenoptr 0.1.6</h1>
 <p><strong>2019-04-12</strong></p>
 <p>New features:</p>
@@ -227,12 +239,12 @@
 <li>Fix <code>get_field_info</code> to work with the standard (CRAN) <code>tiff</code> package.</li>
 <li>
 <code>count_within</code> and related functions return <code>NA</code> for <code>within_mean</code> when there are no <code>from</code> cells (rather than a mean of 0).</li>
-<li>Update <code>spatial_distribution_report</code> vignette and example to use <code>phenoptrExamples</code>, which contains the required component data file (#3).</li>
-<li>Fix problem in <code>count_touching_cells</code> when there is exactly one touching cell pair (#4)</li>
+<li>Update <code>spatial_distribution_report</code> vignette and example to use <code>phenoptrExamples</code>, which contains the required component data file (<a href='https://github.com/akoyabio/phenoptr/issues/3'>#3</a>).</li>
+<li>Fix problem in <code>count_touching_cells</code> when there is exactly one touching cell pair (<a href='https://github.com/akoyabio/phenoptr/issues/4'>#4</a>)</li>
 </ul>
 </div>
     <div id="phenoptr-015" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.1.5">
 <a href="#phenoptr-015" class="anchor"></a>phenoptr 0.1.5</h1>
 <p><strong>2019-03-03</strong></p>
 <ul>
@@ -244,11 +256,11 @@
 </ul>
 </div>
     <div id="phenoptr-014" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.1.4">
 <a href="#phenoptr-014" class="anchor"></a>phenoptr 0.1.4</h1>
 <p><strong>2019-02-08</strong></p>
 <ul>
-<li>Update <code>find_nearest_distance</code>, <code>compute_all_nearest_distance</code>, <code>density_at_distance</code>, <code>density_bands</code>, <code>count_within</code> and <code>spatial_distribution_report</code> to work with consolidated data from <code>phenoptrReports</code> (#1).</li>
+<li>Update <code>find_nearest_distance</code>, <code>compute_all_nearest_distance</code>, <code>density_at_distance</code>, <code>density_bands</code>, <code>count_within</code> and <code>spatial_distribution_report</code> to work with consolidated data from <code>phenoptrReports</code> (<a href='https://github.com/akoyabio/phenoptr/issues/1'>#1</a>).</li>
 </ul>
 <p>Bug fixes</p>
 <ul>
@@ -256,7 +268,7 @@
 </ul>
 </div>
     <div id="phenoptr-013" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.1.3">
 <a href="#phenoptr-013" class="anchor"></a>phenoptr 0.1.3</h1>
 <p><strong>2018-12-27</strong></p>
 <ul>
@@ -265,7 +277,7 @@
 <li>
 <code>count_touching_cells</code> works correctly when cell seg data is in microns.</li>
 <li>Require readr version 1.2.0 or higher to avoid incorrectly reading numeric data columns as integer.</li>
-<li>Add a simple data quality check to <code>read_cell_seg_data</code> <a href="https://github.com/PerkinElmer/phenoptr/issues/9">#9</a>
+<li>Add a simple data quality check to <code>read_cell_seg_data</code> <a href="https://github.com/PerkinElmer/phenoptr/issues/9"><a href='https://github.com/akoyabio/phenoptr/issues/9'>#9</a></a>
 </li>
 <li>
 <code>count_within</code> won’t complain if the data doesn’t have a <code>Sample Name</code> column.</li>
@@ -273,7 +285,7 @@
 </ul>
 </div>
     <div id="phenoptr-012" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.1.2">
 <a href="#phenoptr-012" class="anchor"></a>phenoptr 0.1.2</h1>
 <p><strong>2018-10-29</strong></p>
 <ul>
@@ -281,15 +293,15 @@
 </ul>
 </div>
     <div id="phenoptr-0119007" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.1.1.9007">
 <a href="#phenoptr-0119007" class="anchor"></a>phenoptr 0.1.1.9007</h1>
 <p><strong>2018-09-28</strong></p>
 <ul>
-<li>Remove import dependency on tidyverse. Examples and vignettes use dplyr, ggplot2 and magrittr instead. #6</li>
+<li>Remove import dependency on tidyverse. Examples and vignettes use dplyr, ggplot2 and magrittr instead. <a href='https://github.com/akoyabio/phenoptr/issues/6'>#6</a></li>
 </ul>
 </div>
     <div id="phenoptr-0119006" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.1.1.9006">
 <a href="#phenoptr-0119006" class="anchor"></a>phenoptr 0.1.1.9006</h1>
 <p><strong>2018-09-28</strong></p>
 <ul>
@@ -303,15 +315,15 @@
 </ul>
 </div>
     <div id="phenoptr-0119005" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.1.1.9005">
 <a href="#phenoptr-0119005" class="anchor"></a>phenoptr 0.1.1.9005</h1>
 <p><strong>2018-07-11</strong></p>
 <ul>
-<li>Fix <code>count_touching_cells</code> to work with two-pixel-wide membrane map. #8</li>
+<li>Fix <code>count_touching_cells</code> to work with two-pixel-wide membrane map. <a href='https://github.com/akoyabio/phenoptr/issues/8'>#8</a></li>
 </ul>
 </div>
     <div id="phenoptr-0119004" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.1.1.9004">
 <a href="#phenoptr-0119004" class="anchor"></a>phenoptr 0.1.1.9004</h1>
 <p><strong>2018-04-24</strong></p>
 <ul>
@@ -319,14 +331,14 @@
 </ul>
 </div>
     <div id="phenoptr-0119003" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.1.1.9003">
 <a href="#phenoptr-0119003" class="anchor"></a>phenoptr 0.1.1.9003</h1>
 <ul>
 <li>Add <code>density_at_distance</code> and <code>density_bands</code> to estimate cell density at a distance from a boundary.</li>
 </ul>
 </div>
     <div id="phenoptr-0119002" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.1.1.9002">
 <a href="#phenoptr-0119002" class="anchor"></a>phenoptr 0.1.1.9002</h1>
 <ul>
 <li>Add <code>pixels_per_micron="auto"</code> option to <code><a href="../reference/read_cell_seg_data.html">read_cell_seg_data()</a></code>.</li>
@@ -334,14 +346,14 @@
 </ul>
 </div>
     <div id="phenoptr-0119001" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.1.1.9001">
 <a href="#phenoptr-0119001" class="anchor"></a>phenoptr 0.1.1.9001</h1>
 <ul>
 <li>Faster count_touching_cells when EBImage 4.19.9 is available.</li>
 </ul>
 </div>
     <div id="phenoptr-0119000" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.1.1.9000">
 <a href="#phenoptr-0119000" class="anchor"></a>phenoptr 0.1.1.9000</h1>
 <div id="backwards-incompatible-changes" class="section level2">
 <h2 class="hasAnchor">
@@ -396,7 +408,7 @@
 </div>
 </div>
     <div id="phenoptr-0109001" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.1.0.9001">
 <a href="#phenoptr-0109001" class="anchor"></a>phenoptr 0.1.0.9001</h1>
 <div id="new-features-1" class="section level2">
 <h2 class="hasAnchor">
@@ -409,33 +421,10 @@
 </div>
   </div>
 
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <div id="tocnav">
-      <h2>Contents</h2>
-      <ul class="nav nav-pills nav-stacked">
-        <li><a href="#phenoptr-025">0.2.5</a></li>
-        <li><a href="#phenoptr-024">0.2.4</a></li>
-        <li><a href="#phenoptr-023">0.2.3</a></li>
-        <li><a href="#phenoptr-022">0.2.2</a></li>
-        <li><a href="#phenoptr-021">0.2.1</a></li>
-        <li><a href="#phenoptr-020">0.2.0</a></li>
-        <li><a href="#phenoptr-0161">0.1.6.1</a></li>
-        <li><a href="#phenoptr-016">0.1.6</a></li>
-        <li><a href="#phenoptr-015">0.1.5</a></li>
-        <li><a href="#phenoptr-014">0.1.4</a></li>
-        <li><a href="#phenoptr-013">0.1.3</a></li>
-        <li><a href="#phenoptr-012">0.1.2</a></li>
-        <li><a href="#phenoptr-0119007">0.1.1.9007</a></li>
-        <li><a href="#phenoptr-0119006">0.1.1.9006</a></li>
-        <li><a href="#phenoptr-0119005">0.1.1.9005</a></li>
-        <li><a href="#phenoptr-0119004">0.1.1.9004</a></li>
-        <li><a href="#phenoptr-0119003">0.1.1.9003</a></li>
-        <li><a href="#phenoptr-0119002">0.1.1.9002</a></li>
-        <li><a href="#phenoptr-0119001">0.1.1.9001</a></li>
-        <li><a href="#phenoptr-0119000">0.1.1.9000</a></li>
-        <li><a href="#phenoptr-0109001">0.1.0.9001</a></li>
-      </ul>
-    </div>
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 
 </div>
@@ -447,7 +436,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>
