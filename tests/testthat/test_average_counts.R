@@ -146,5 +146,5 @@ test_that('count_within_batch works', {
   expected = readr::read_csv(test_path('test_results', 'count_within.csv'),
                              col_types='cccccniiin') %>%
     dplyr::mutate(within_mean=round(within_mean, 4))
-  expect_equal(counts, expected)
+  expect_equal(counts, expected, check.attributes=FALSE)
 })
