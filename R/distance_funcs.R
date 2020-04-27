@@ -226,13 +226,14 @@ find_nearest_distance_rtree <- function(csd, phenotypes=NULL) {
       # the minimum > 0.
       # First compute all the distances, giving a list of
       # lists of length dim(to_cells_nn)
-      all_distances = purrr::map_dfc(1:(dim(to_cells_nn)[2]),
+      all_distances = purrr::map(1:(dim(to_cells_nn)[2]),
                                       # For each nearest neighbor
         ~{
           # Convert indices of nearest neighbors to locations
           # The neighbors are to_cells.
           nn_indices = to_cells_nn[, .x]
-          nn_locs = to_cells_locs[nn_indices, ]
+          nn_locs = to_cells_locs[nn_indices, ] %>%
+            rlang::set_names(c('X1', 'Y1')) # Avoid duplicate names
 
           # Combine with original locations and compute distance
           field_locs %>%
