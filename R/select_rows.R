@@ -28,7 +28,7 @@ validate_phenotype_definitions = function(pheno, available, csd=NULL) {
   if (any(missing))
     return(paste0('Unknown phenotype(s): ', paste(phenos[missing], sep=', ')))
 
-  # Check formala expressions
+  # Check formula expressions
   pheno_formulae = purrr::keep(phenos, ~startsWith(.x, '~'))
   if (length(pheno_formulae) > 0 && stringr::str_detect(pheno, ','))
     return("Formula expressions are not allowed in phenotypes combined with ','.")
@@ -119,9 +119,11 @@ parse_phenotypes = function(...) {
   # If no names were given, phenos will have names(pheno) == NULL
   # If any names were given, missing names will be ''
   # One way or another, get a named list.
-  if (is.null(names(phenos))) names(phenos)=phenos else {
+  # Make nicer names for formulas by deleting ~ and `
+  clean_names = phenotype_names(phenos)
+  if (is.null(names(phenos))) names(phenos)=clean_names else {
     no_names = names(phenos) == ''
-    names(phenos)[no_names] = phenos[no_names]
+    names(phenos)[no_names] = clean_names[no_names]
   }
 
   # This does the basic decoding
@@ -133,7 +135,7 @@ parse_phenotypes = function(...) {
     if (stringr::str_detect(pheno, '/')) {
       # Can't have comma and slash
       if (stringr::str_detect(pheno, ','))
-        stop(paste("Phenotype selectors may not contain both '/' and '.':",
+        stop(paste("Phenotype selectors may not contain both '/' and ',':",
                    pheno))
       ## Split the phenotypes and convert formulae
       purrr::map(split_and_trim(pheno, '/'), ~{
@@ -164,7 +166,39 @@ parse_phenotypes = function(...) {
     rlang::set_names(names(phenos))
 }
 
-#' Split a single string and trim whitespace from the results
+#' Find the columns used by phenotype formulae
+#'
+#' Given a list of parsed phenotypes, e.g. from `parse_phenotypes`,
+#' return a vector containing all the names referenced
+#' by formulae in `phenos`.
+#'
+#' @param phenos A list of parsed phenotypes
+#' @return A vector of names or NULL if none found
+#' @export
+phenotype_columns = function(phenos) {
+  result = NULL
+
+  # Recursively get names from a "call"
+  call_names = function(cl) {
+    rlang::call_args(cl) %>%
+      purrr::map(~{
+        if (is.name(.x)) rlang::as_string(.x) # Get name as a string
+        else if (is.call(.x)) call_names(.x) # Recurse
+        else NULL
+      }) %>%
+      unlist()
+  }
+
+  purrr::map(phenos, ~{
+    if(is.list(.x)) phenotype_columns(.x) # Recurse
+    else if (rlang::is_formula(.x)) call_names(rlang::f_rhs(.x))
+    else NULL
+  }) %>%
+    unlist() %>%
+    unname()
+}
+
+#' Split a single string and trim white space from the results
 #' @param str A single string.
 #' @param pattern Pattern to split on.
 #' @return A character vector of split components.
@@ -172,6 +206,15 @@ parse_phenotypes = function(...) {
 split_and_trim = function(str, pattern) {
   stopifnot(is.character(str), length(str)==1)
   stringr::str_trim(stringr::str_split(str, pattern)[[1]])
+}
+
+#' Make user-friendly names for phenotypes
+#' @param phenos A list or vector of phenotype definitions
+#' as used by `parse_phenotypes`.
+#' @return A vector of name for `phenos`.
+#' @keywords internal
+phenotype_names = function(phenos) {
+  stringr::str_remove_all(phenos, '[~`]')
 }
 
 #' Flexibly select rows of a data frame.

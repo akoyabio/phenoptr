@@ -2,7 +2,7 @@
 % Please edit documentation in R/select_rows.R
 \name{split_and_trim}
 \alias{split_and_trim}
-\title{Split a single string and trim whitespace from the results}
+\title{Split a single string and trim white space from the results}
 \usage{
 split_and_trim(str, pattern)
 }
@@ -15,6 +15,6 @@ split_and_trim(str, pattern)
 A character vector of split components.
 }
 \description{
-Split a single string and trim whitespace from the results
+Split a single string and trim white space from the results
 }
 \keyword{internal}

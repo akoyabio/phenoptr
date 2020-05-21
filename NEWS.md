@@ -1,3 +1,8 @@
+# phenoptr 0.2.6.9000
+
+- `parse_phenotypes` makes nicer names for expression-based phenotypes.
+- Add `phenotype_columns` in support of akoyabio/phenoptrReports#36.
+
 # phenoptr 0.2.6
 **2020-04-21**
 

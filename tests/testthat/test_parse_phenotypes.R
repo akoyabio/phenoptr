@@ -39,14 +39,23 @@ test_that('parse_phenotypes works with a single list arg', {
 })
 
 test_that('parse_phenotypes works with formulae', {
-  expect_equal(parse_phenotypes(PDL1='~`Membrane PDL1`>1'),
-               list(PDL1=~`Membrane PDL1`>1))
-  expect_equal(parse_phenotypes('CD8+', PDL1='~`Membrane PDL1`>1'),
-               list(`CD8+`='CD8+', PDL1=~`Membrane PDL1`>1))
-  expect_equal(parse_phenotypes(Mixed='CD8+/~`Membrane PDL1`>1'),
-               list(Mixed=list('CD8+', ~`Membrane PDL1`>1)))
-  expect_equal(parse_phenotypes('CD3+', Mixed='CD8+/~`Membrane PDL1`>1'),
-               list(`CD3+`='CD3+', Mixed=list('CD8+', ~`Membrane PDL1`>1)))
+  expect_equal(parse_phenotypes(
+         PDL1='~`Membrane PDL1`>1'),
+    list(PDL1=~`Membrane PDL1`>1))
+
+  expect_equal(parse_phenotypes(
+         'CD8+', PDL1='~`Membrane PDL1`>1', '~`Membrane PDL1`>1'),
+    list(`CD8+`='CD8+', PDL1=~`Membrane PDL1`>1,
+         'Membrane PDL1>1'=~`Membrane PDL1`>1))
+
+  expect_equal(parse_phenotypes(
+         Mixed='CD8+/~`Membrane PDL1`>1', 'CD8+/~`Membrane PDL1`>1'),
+    list(Mixed=list('CD8+', ~`Membrane PDL1`>1),
+         'CD8+/Membrane PDL1>1'=list('CD8+', ~`Membrane PDL1`>1)))
+
+  expect_equal(parse_phenotypes(
+         'CD3+', Mixed='CD8+/~`Membrane PDL1`>1'),
+    list(`CD3+`='CD3+', Mixed=list('CD8+', ~`Membrane PDL1`>1)))
 })
 
 test_that('parse_phenotypes error checking works', {
@@ -93,4 +102,26 @@ test_that('validate_phenotype_definitions works', {
                'Invalid.* ~D')
   expect_match(validate_phenotype_definitions('~~D', '', df),
                'Invalid.* ~~D')
+})
+
+test_that('phenotype_columns works', {
+  cols = phenotype_columns(parse_phenotypes('CD8+', 'CD68+', 'CD3+/FoxP3+'))
+  expect_equal(cols, NULL)
+
+  cols = phenotype_columns(parse_phenotypes(PDL1='~`Membrane PDL1`>1'))
+  expect_equal(cols, 'Membrane PDL1')
+
+  cols = phenotype_columns(parse_phenotypes(
+    'CD8+', PDL1='~`Membrane PDL1`>1', '~`Membrane PD1`>1'))
+  expect_equal(cols, c('Membrane PDL1', 'Membrane PD1'))
+
+  cols = phenotype_columns(parse_phenotypes(
+    Mixed='CD8+/~`Membrane PDL1`>1', 'CD8+/~`Membrane PD1`>1'))
+  expect_equal(cols, c('Membrane PDL1', 'Membrane PD1'))
+
+  # This is crazy but we handle it cuz you never know what someone will do...
+  cols = phenotype_columns(parse_phenotypes(
+    '~(foo+bar)*2>`baz`-3', '~`My name`==`Your name`*`x y z`'))
+  expect_equal(cols, c("foo", "bar", "baz", "My name", "Your name", "x y z"))
+
 })
