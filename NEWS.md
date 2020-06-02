@@ -1,3 +1,8 @@
+# phenoptr 0.2.7
+**2020-06-02**
+
+Fix to work with dplyr 1.0.0.
+
 # phenoptr 0.2.6
 **2020-04-21**
 
