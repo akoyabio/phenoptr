@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">phenoptr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.7</span>
       </span>
     </div>
 
@@ -102,7 +102,7 @@
       <h1 data-toc-skip>Reading and displaying inForm image Files</h1>
                         <h4 class="author">Kent Johnson</h4>
             
-            <h4 class="date">2020-04-21</h4>
+            <h4 class="date">2020-06-02</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/akoyabio/phenoptr/blob/master/vignettes/reading_image_files.Rmd"><code>vignettes/reading_image_files.Rmd</code></a></small>
       <div class="hidden name"><code>reading_image_files.Rmd</code></div>
@@ -144,7 +144,7 @@ img {
 <pre><code>[1] 1400 1868    3</code></pre>
 <p>Color images are read as 3D arrays. They can be displayed by converting to a raster.</p>
 <div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="no">snippet</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/as.raster.html">as.raster</a></span>(<span class="no">img</span>[<span class="fl">800</span>:<span class="fl">1000</span>, <span class="fl">1200</span>:<span class="fl">1500</span>,])
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(<span class="no">snippet</span>)</pre></body></html></div>
+<span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">snippet</span>)</pre></body></html></div>
 <p><img src="reading_image_files_files/figure-html/show_composite-1.png" width="672"></p>
 <p><code><a href="https://rdrr.io/pkg/EBImage/man/display.html">EBImage::display</a></code> will display an array in a web browser. RGB images are shown as three grayscale planes unless converted to an <code><a href="https://rdrr.io/pkg/EBImage/man/Image.html">EBImage::Image</a></code> first. <code><a href="https://rdrr.io/pkg/EBImage/man/display.html">EBImage::display</a></code> shows the first coordinate horizontally and the second coordinate vertically so the image must be flipped to display in the expected orientation.</p>
 <div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="no">img_transposed</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/aperm.html">aperm</a></span>(<span class="no">img</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">2</span>, <span class="fl">1</span>, <span class="fl">3</span>))
@@ -180,7 +180,7 @@ img {
 <pre><code>[1]   11 6183</code></pre>
 <p>Label images may be displayed with <code>plot.raster</code> or <code><a href="https://rdrr.io/pkg/EBImage/man/display.html">EBImage::display</a></code> (which requires swapping axes).</p>
 <div class="sourceCode" id="cb13"><html><body><pre class="r"><span class="no">nucleus_snippet</span> <span class="kw">&lt;-</span> <span class="no">nucleus</span>[<span class="fl">800</span>:<span class="fl">1000</span>, <span class="fl">1200</span>:<span class="fl">1500</span>]
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(<span class="fu"><a href="https://rdrr.io/r/grDevices/as.raster.html">as.raster</a></span>(<span class="no">nucleus_snippet</span>, <span class="kw">max</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span>(<span class="no">nucleus_snippet</span>)))</pre></body></html></div>
+<span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="fu"><a href="https://rdrr.io/r/grDevices/as.raster.html">as.raster</a></span>(<span class="no">nucleus_snippet</span>, <span class="kw">max</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span>(<span class="no">nucleus_snippet</span>)))</pre></body></html></div>
 <p><img src="reading_image_files_files/figure-html/display_map-1.png" width="672"></p>
 <div class="sourceCode" id="cb14"><html><body><pre class="r"><span class="kw pkg">EBImage</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/EBImage/man/display.html">display</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/t.html">t</a></span>(<span class="no">nucleus</span>/<span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span>(<span class="no">nucleus</span>)))
 <span class="kw pkg">EBImage</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/EBImage/man/display.html">display</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/t.html">t</a></span>(<span class="no">maps</span><span class="kw">[[</span><span class="st">'Membrane'</span>]]))</pre></body></html></div>
