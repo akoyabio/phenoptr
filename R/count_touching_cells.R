@@ -465,7 +465,7 @@ make_touching_image <- function(pheno_name1, pheno_name2,
   both = EBImage::dilate(both, kern3)
   both[masks$membrane==0] = 0
 
-  composite = EBImage::readImage(composite_path)
+  composite = EBImage::readImage(composite_path, all=FALSE)
   if (!is.null(colors)) {
     # If we have colors, outline all cells of a type
     # and fill the touching cells

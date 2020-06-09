@@ -157,7 +157,7 @@ make_touching_image_fast <- function(pheno_name1, pheno_name2,
                                 cell_image1, cell_image2,
                                 touching_ids, masks,
                                 composite_path, colors) {
-  composite = EBImage::readImage(composite_path)
+  composite = EBImage::readImage(composite_path, all=FALSE)
 
   # Fill touching cells
   i1_membrane = cell_image1
