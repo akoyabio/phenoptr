@@ -294,12 +294,3 @@ expansion = function(mult=0, add=0) {
   else
     ggplot2::expand_scale(mult, add)
 }
-
-# Check if a function is available in a package
-# @param package Name of the package
-# @param fun Name of the function
-# @return TRUE if the package is installed and contains the function.
-function_exists =function(package, fun) {
-  requireNamespace(package, quietly=TRUE) &&
-    (fun %in% getNamespaceExports(package))
-}

@@ -19,6 +19,7 @@ of the field, in microns.}
 \item{\code{image_size}}{The (width, height) of the field image,
 in pixels.}
 \item{\code{microns_per_pixel}}{The size of each pixel, in microns.}
+\item{\code{pixels_per_microns}}{The inverse of \verb{microns per pixel}}
 }
 }
 \description{

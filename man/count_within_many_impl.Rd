@@ -11,7 +11,7 @@ count_within_many_impl(csd, name, combos, radii, phenotype_rules)
 \arguments{
 \item{csd}{Cell seg data for a single field.}
 
-\item{name}{Name associated with `csd`, for example the basename of the
+\item{name}{Name associated with \code{csd}, for example the basename of the
 image file.}
 
 \item{combos}{List of pairs of (from phenotype name, to phenotype name)

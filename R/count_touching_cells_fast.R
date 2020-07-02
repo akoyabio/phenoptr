@@ -197,5 +197,6 @@ make_touching_image_fast <- function(pheno_name1, pheno_name2,
   composite = EBImage::paintObjects(i2_membrane, composite,
                                     col=c('white', NA))
 
+  names(composite) = NULL # No need for names and they confuse tests
   composite
 }

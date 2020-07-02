@@ -42,14 +42,11 @@ if(!file.exists(component_path))
   stop('Spatial distribution report requires a matching component data file.')
 field_info = get_field_info(component_path)
 
-# Window for spatial processing
-window = spatstat::owin(
-  xrange=c(field_info$location[1], field_info$location[1]+field_info$field_size[1]),
-  yrange=c(field_info$location[2], field_info$location[2]+field_info$field_size[2]))
-
-# Limits for charts
+# Window for spatial processing and limit for charts
 xlim=c(field_info$location[1], field_info$location[1]+field_info$field_size[1])
 ylim=c(field_info$location[2], field_info$location[2]+field_info$field_size[2])
+window = spatstat::owin(xrange=xlim, yrange=ylim)
+
 
 # Segmented image for background
 if (grepl('cell_seg_data.txt', cell_seg_path))

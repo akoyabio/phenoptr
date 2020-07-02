@@ -48,3 +48,4 @@ Authors@R: c(
 Remotes:
     akoyabio/rtree,
     akoyabio/tiff
+Roxygen: list(markdown = TRUE)

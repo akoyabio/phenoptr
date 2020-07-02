@@ -11,7 +11,7 @@ make_phenotype_column(csd, phenotypes = NULL)
 \item{csd}{A cell seg table.}
 
 \item{phenotypes}{A named vector or list of phenotype rules. If NULL, use
-`unique_phenotypes(csd)`.}
+\code{unique_phenotypes(csd)}.}
 }
 \value{
 A new cell seg table

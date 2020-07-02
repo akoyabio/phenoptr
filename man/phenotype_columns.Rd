@@ -13,7 +13,7 @@ phenotype_columns(phenos)
 A vector of names or NULL if none found
 }
 \description{
-Given a list of parsed phenotypes, e.g. from `parse_phenotypes`,
+Given a list of parsed phenotypes, e.g. from \code{parse_phenotypes},
 return a vector containing all the names referenced
-by formulae in `phenos`.
+by formulae in \code{phenos}.
 }

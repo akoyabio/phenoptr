@@ -8,10 +8,10 @@ phenotype_names(phenos)
 }
 \arguments{
 \item{phenos}{A list or vector of phenotype definitions
-as used by `parse_phenotypes`.}
+as used by \code{parse_phenotypes}.}
 }
 \value{
-A vector of name for `phenos`.
+A vector of name for \code{phenos}.
 }
 \description{
 Make user-friendly names for phenotypes

@@ -41,6 +41,29 @@ read_components <- function(path) {
   purrr::set_names(tif[images], names)
 }
 
+
+#' Read information about a field from a component image file.
+#'
+#' Find the location, size and magnification of an inForm field by inspecting a
+#' `component_data.tif` file.
+#'
+#' @param field_name Name of the field
+#' @param export_path Directory containing the component data file
+#' @return The result of calling [get_field_info()] on the correct
+#' component file.
+#' @export
+read_field_info = function(field_name, export_path) {
+  field_base = stringr::str_remove(field_name, '\\.im3')
+  component_path = file.path(export_path, paste0(field_base,
+                                                 '_component_data.tif'))
+  if(!file.exists(component_path)) {
+    warning('File not found: "', component_path, '"')
+    return(NULL)
+  }
+
+  phenoptr::get_field_info(component_path)
+}
+
 #' Read information about a field from a component image file.
 #'
 #' Find the location, size and magnification of an inForm field by inspecting a
@@ -64,6 +87,7 @@ read_components <- function(path) {
 #'    \item{\code{image_size}}{The (width, height) of the field image,
 #'    in pixels.}
 #'    \item{\code{microns_per_pixel}}{The size of each pixel, in microns.}
+#'    \item{\code{pixels_per_microns}}{The inverse of `microns per pixel`}
 #'  }
 #'
 #' @export
@@ -78,7 +102,7 @@ read_components <- function(path) {
 get_field_info = function(path) {
   # Use readTIFFDirectory if available, it is faster, more complete
   # and works with tiled images
-  if ('readTIFFDirectory' %in% ls(getNamespace('tiff'))) {
+  if (function_exists('tiff', 'readTIFFDirectory')) {
     info = tiff::readTIFFDirectory(path, all=FALSE)
     center = NA # Don't need this
    } else {
@@ -119,6 +143,7 @@ get_field_info = function(path) {
   result = list()
   result$image_size = c(info$width, info$length)
   result$microns_per_pixel = as.numeric(10000/info$x.resolution)
+  result$pixels_per_micron = 1/result$microns_per_pixel
   result$field_size = result$image_size * result$microns_per_pixel
   if (is.na(center)) {
     # Location directly from TIFF info

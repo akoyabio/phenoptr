@@ -2,6 +2,7 @@
 
 - `parse_phenotypes` makes nicer names for expression-based phenotypes.
 - Add `phenotype_columns` in support of akoyabio/phenoptrReports#36.
+- Add `read_field_info` and `get_map_path` functions.
 
 # phenoptr 0.2.7
 **2020-06-02**

@@ -428,17 +428,3 @@ make_phenotype_column = function(csd, phenotypes=NULL) {
                        dplyr::mutate(Phenotype=.x))) %>%
     dplyr::bind_rows()
 }
-
-
-#' Get the name of the column that distinguishes fields in a merged cell
-#' seg data file.
-#' @param csd Cell seg data
-#' @return A column name (as a string)
-#' @export
-field_column = function(csd) {
-  col = dplyr::if_else('Annotation ID' %in% names(csd),
-                       'Annotation ID', 'Sample Name')
-  if (!col %in% names(csd))
-    stop('Cell seg table does not include "Sample Name" or "Annotation ID".')
-  col
-}

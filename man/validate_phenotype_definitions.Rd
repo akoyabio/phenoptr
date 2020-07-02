@@ -8,12 +8,12 @@ validate_phenotype_definitions(pheno, available, csd = NULL)
 }
 \arguments{
 \item{pheno}{Text description of a phenotype,
-for `phenoptr::parse_phenotypes`.}
+for \code{phenoptr::parse_phenotypes}.}
 
 \item{available}{A character vector of available phenotypes}
 
 \item{csd}{If supplied, any formula arguments will be checked for
-validity against `csd`.}
+validity against \code{csd}.}
 }
 \value{
 An error message or empty string

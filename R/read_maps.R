@@ -45,3 +45,22 @@ read_maps <- function(map_path) {
 
   maps
 }
+
+#' Get the path to the segmentation map file for a field
+#'
+#' @param field_name Name of the field of interest
+#' @param export_path Path to the inForm export directory
+#' @return The path to the `binary_seg_maps` file for the given field.
+#' @export
+get_map_path = function(field_name, export_path) {
+  field_base = stringr::str_remove(field_name, '\\.im3')
+  map_path = file.path(export_path, paste0(field_base,
+                                                 '_binary_seg_maps.tif'))
+  if(!file.exists(map_path)) {
+    warning('File not found: "', map_path, '"')
+    return(NULL)
+  }
+
+  map_path
+}
+
