@@ -145,7 +145,7 @@ get_field_info = function(path) {
   result$microns_per_pixel = as.numeric(10000/info$x.resolution)
   result$pixels_per_micron = 1/result$microns_per_pixel
   result$field_size = result$image_size * result$microns_per_pixel
-  if (is.na(center)) {
+  if (any(is.na(center))) {
     # Location directly from TIFF info
     result$location = c(info$x.position, info$y.position) * 10000
   } else {
