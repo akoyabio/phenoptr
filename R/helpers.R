@@ -29,6 +29,8 @@ field_column = function(csd) {
 # Test for all cells in a field fitting within the field size after
 # correcting the location.
 correct_for_pixel_data = function(field_data, field_info) {
+  if (is.null(field_data) || nrow(field_data)==0) return(field_data)
+
   correction = 2 / field_info$pixels_per_micron
   if (max(field_data$`Cell X Position`)*correction < field_info$field_size[1]
       && max(field_data$`Cell Y Position`)*correction < field_info$field_size[2]) {
