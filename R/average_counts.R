@@ -154,6 +154,12 @@ count_within_batch <- function(base_path, pairs, radius, category=NA,
 #' @importFrom magrittr "%>%"
 count_within_many <- function(csd, pairs, radius, category=NA,
                                phenotype_rules=NULL, verbose=TRUE) {
+  # count_within_many_impl_rtree gives incorrect results if category
+  # is a list than includes both NA and named categories.
+  # This is not something we need to support, just disallow it
+  if (any(is.na(category)) && !all(is.na(category)))
+    stop('Category argument cannot include both NA and named categories.')
+
   pairs = clean_pairs(pairs)
 
   all_phenotypes = unique(do.call(c, pairs))
