@@ -76,7 +76,7 @@ names." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">phenoptr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.8</span>
       </span>
     </div>
 
@@ -157,7 +157,7 @@ TissueClassMap, and ProcessRegionImage; not every image file will include all
 names.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>read_maps</span>(<span class='no'>map_path</span>)</pre>
+    <pre class="usage"><span class='fu'>read_maps</span>(<span class='kw'>map_path</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -186,11 +186,12 @@ column corresponding to X.</p>
 <code><a href='read_components.html'>read_components</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>path</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"sample"</span>,
+    <pre class="examples"><div class='input'><span class='kw'>path</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"sample"</span>,
                    <span class='st'>"Set4_1-6plex_[16142,55840]_binary_seg_maps.tif"</span>,
-                   <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"phenoptr"</span>)
-<span class='no'>maps</span> <span class='kw'>&lt;-</span> <span class='fu'>read_maps</span>(<span class='no'>path</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span>(<span class='no'>maps</span>)</div><div class='output co'>#&gt; [1] "Nucleus"   "Cytoplasm" "Membrane"  "Tissue"   </div></pre>
+                   package = <span class='st'>"phenoptr"</span>)
+<span class='kw'>maps</span> <span class='op'>&lt;-</span> <span class='fu'>read_maps</span>(<span class='kw'>path</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span>(<span class='kw'>maps</span>)
+</div><div class='output co'>#&gt; [1] "Nucleus"   "Cytoplasm" "Membrane"  "Tissue"   </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -206,7 +207,7 @@ column corresponding to X.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

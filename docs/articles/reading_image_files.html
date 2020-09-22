@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">phenoptr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.8</span>
       </span>
     </div>
 
@@ -96,13 +96,13 @@
 
       
 
-      </header><div class="row">
+      </header><script src="reading_image_files_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Reading and displaying inForm image Files</h1>
                         <h4 class="author">Kent Johnson</h4>
             
-            <h4 class="date">2020-06-02</h4>
+            <h4 class="date">2020-09-22</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/akoyabio/phenoptr/blob/master/vignettes/reading_image_files.Rmd"><code>vignettes/reading_image_files.Rmd</code></a></small>
       <div class="hidden name"><code>reading_image_files.Rmd</code></div>
@@ -136,20 +136,26 @@ img {
 <h2 class="hasAnchor">
 <a href="#reading-and-displaying-color-images" class="anchor"></a>Reading and displaying color images</h2>
 <p>Color (RGB) images output from inForm, such as the composite image and segmentation images, can be read directly using <code><a href="https://rdrr.io/pkg/tiff/man/readTIFF.html">tiff::readTIFF()</a></code> or <code><a href="https://rdrr.io/pkg/jpeg/man/readJPEG.html">jpeg::readJPEG()</a></code>. For example,</p>
-<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="no">path</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"extdata"</span>, <span class="st">"sample"</span>,
-                   <span class="st">"Set4_1-6plex_[16142,55840]_composite_image.jpg"</span>,
-                   <span class="kw">package</span> <span class="kw">=</span> <span class="st">"phenoptr"</span>)
-<span class="no">img</span> <span class="kw">&lt;-</span> <span class="kw pkg">jpeg</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/jpeg/man/readJPEG.html">readJPEG</a></span>(<span class="no">path</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span>(<span class="no">img</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb1"><pre class="downlit">
+<span class="kw">path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"extdata"</span>, <span class="st">"sample"</span>, 
+                   <span class="st">"Set4_1-6plex_[16142,55840]_composite_image.jpg"</span>, 
+                   package = <span class="st">"phenoptr"</span>)
+<span class="kw">img</span> <span class="op">&lt;-</span> <span class="kw">jpeg</span>::<span class="fu"><a href="https://rdrr.io/pkg/jpeg/man/readJPEG.html">readJPEG</a></span>(<span class="kw">path</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span>(<span class="kw">img</span>)
+</pre></div>
 <pre><code>[1] 1400 1868    3</code></pre>
 <p>Color images are read as 3D arrays. They can be displayed by converting to a raster.</p>
-<div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="no">snippet</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/as.raster.html">as.raster</a></span>(<span class="no">img</span>[<span class="fl">800</span>:<span class="fl">1000</span>, <span class="fl">1200</span>:<span class="fl">1500</span>,])
-<span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">snippet</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb3"><pre class="downlit">
+<span class="kw">snippet</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/as.raster.html">as.raster</a></span>(<span class="kw">img</span>[<span class="fl">800</span><span class="op">:</span><span class="fl">1000</span>, <span class="fl">1200</span><span class="op">:</span><span class="fl">1500</span>,])
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span>(<span class="kw">snippet</span>)
+</pre></div>
 <p><img src="reading_image_files_files/figure-html/show_composite-1.png" width="672"></p>
 <p><code><a href="https://rdrr.io/pkg/EBImage/man/display.html">EBImage::display</a></code> will display an array in a web browser. RGB images are shown as three grayscale planes unless converted to an <code><a href="https://rdrr.io/pkg/EBImage/man/Image.html">EBImage::Image</a></code> first. <code><a href="https://rdrr.io/pkg/EBImage/man/display.html">EBImage::display</a></code> shows the first coordinate horizontally and the second coordinate vertically so the image must be flipped to display in the expected orientation.</p>
-<div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="no">img_transposed</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/aperm.html">aperm</a></span>(<span class="no">img</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">2</span>, <span class="fl">1</span>, <span class="fl">3</span>))
-<span class="kw pkg">EBImage</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/EBImage/man/display.html">display</a></span>(<span class="no">img_transposed</span>)
-<span class="kw pkg">EBImage</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/EBImage/man/display.html">display</a></span>(<span class="kw pkg">EBImage</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/EBImage/man/Image.html">Image</a></span>(<span class="no">img_transposed</span>, <span class="kw">colormode</span><span class="kw">=</span><span class="st">'Color'</span>))</pre></body></html></div>
+<div class="sourceCode" id="cb4"><pre class="downlit">
+<span class="kw">img_transposed</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/aperm.html">aperm</a></span>(<span class="kw">img</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">2</span>, <span class="fl">1</span>, <span class="fl">3</span>))
+<span class="kw">EBImage</span>::<span class="fu"><a href="https://rdrr.io/pkg/EBImage/man/display.html">display</a></span>(<span class="kw">img_transposed</span>)
+<span class="kw">EBImage</span>::<span class="fu"><a href="https://rdrr.io/pkg/EBImage/man/display.html">display</a></span>(<span class="kw">EBImage</span>::<span class="fu"><a href="https://rdrr.io/pkg/EBImage/man/Image.html">Image</a></span>(<span class="kw">img_transposed</span>, colormode=<span class="st">'Color'</span>))
+</pre></div>
 <hr>
 </div>
 <div id="reading-and-displaying-component-data" class="section level2">
@@ -165,25 +171,37 @@ img {
 <a href="#reading-and-displaying-segmentation-maps" class="anchor"></a>Reading and displaying segmentation maps</h2>
 <p>inForm saves segmentation maps (nuclear segmentation, etc.) as multiple 16-bit grayscale images within a single TIFF file. Most segmentation images are <em>label</em> images, where each object is represented by a region whose value is the object number. The membrane map is a binary image where the presence of membrane is indicated with a “1” value.</p>
 <p><code><a href="../reference/read_maps.html">phenoptr::read_maps()</a></code> is a wrapper around <code>readTIFF()</code> which reads map files. It returns a named list of integer-valued matrices. The list names reflect the content of the individual images, e.g. Nucleus, Cytoplasm, etc.</p>
-<div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="no">map_path</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"extdata"</span>, <span class="st">"sample"</span>,
-   <span class="st">"Set4_1-6plex_[16142,55840]_binary_seg_maps.tif"</span>, <span class="kw">package</span> <span class="kw">=</span> <span class="st">"phenoptr"</span>)
-<span class="no">maps</span> <span class="kw">&lt;-</span> <span class="kw pkg">phenoptr</span><span class="kw ns">::</span><span class="fu"><a href="../reference/read_maps.html">read_maps</a></span>(<span class="no">map_path</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span>(<span class="no">maps</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb5"><pre class="downlit">
+<span class="kw">map_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"extdata"</span>, <span class="st">"sample"</span>,
+   <span class="st">"Set4_1-6plex_[16142,55840]_binary_seg_maps.tif"</span>, package = <span class="st">"phenoptr"</span>)
+<span class="kw">maps</span> <span class="op">&lt;-</span> <span class="kw">phenoptr</span>::<span class="fu"><a href="../reference/read_maps.html">read_maps</a></span>(<span class="kw">map_path</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span>(<span class="kw">maps</span>)
+</pre></div>
 <pre><code>[1] "Nucleus"   "Cytoplasm" "Membrane"  "Tissue"   </code></pre>
 <p>The Nucleus label image contains values for background (0) and each Cell ID.</p>
-<div class="sourceCode" id="cb7"><html><body><pre class="r"><span class="no">nucleus</span> <span class="kw">&lt;-</span> <span class="no">maps</span><span class="kw">[[</span><span class="st">'Nucleus'</span>]]
-<span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span>(<span class="no">nucleus</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb7"><pre class="downlit">
+<span class="kw">nucleus</span> <span class="op">&lt;-</span> <span class="kw">maps</span>[[<span class="st">'Nucleus'</span>]]
+<span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span>(<span class="kw">nucleus</span>)
+</pre></div>
 <pre><code>[1] 1400 1868</code></pre>
-<div class="sourceCode" id="cb9"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/range.html">range</a></span>(<span class="no">nucleus</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb9"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/range.html">range</a></span>(<span class="kw">nucleus</span>)
+</pre></div>
 <pre><code>[1]    0 6183</code></pre>
-<div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/range.html">range</a></span>(<span class="kw pkg">phenoptr</span><span class="kw ns">::</span><span class="no"><a href="../reference/sample_cell_seg_data.html">sample_cell_seg_data</a></span>$<span class="no">`Cell ID`</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb11"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/range.html">range</a></span>(<span class="kw">phenoptr</span>::<span class="kw"><a href="../reference/sample_cell_seg_data.html">sample_cell_seg_data</a></span><span class="op">$</span><span class="kw">`Cell ID`</span>)
+</pre></div>
 <pre><code>[1]   11 6183</code></pre>
 <p>Label images may be displayed with <code>plot.raster</code> or <code><a href="https://rdrr.io/pkg/EBImage/man/display.html">EBImage::display</a></code> (which requires swapping axes).</p>
-<div class="sourceCode" id="cb13"><html><body><pre class="r"><span class="no">nucleus_snippet</span> <span class="kw">&lt;-</span> <span class="no">nucleus</span>[<span class="fl">800</span>:<span class="fl">1000</span>, <span class="fl">1200</span>:<span class="fl">1500</span>]
-<span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="fu"><a href="https://rdrr.io/r/grDevices/as.raster.html">as.raster</a></span>(<span class="no">nucleus_snippet</span>, <span class="kw">max</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span>(<span class="no">nucleus_snippet</span>)))</pre></body></html></div>
+<div class="sourceCode" id="cb13"><pre class="downlit">
+<span class="kw">nucleus_snippet</span> <span class="op">&lt;-</span> <span class="kw">nucleus</span>[<span class="fl">800</span><span class="op">:</span><span class="fl">1000</span>, <span class="fl">1200</span><span class="op">:</span><span class="fl">1500</span>]
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span>(<span class="fu"><a href="https://rdrr.io/r/grDevices/as.raster.html">as.raster</a></span>(<span class="kw">nucleus_snippet</span>, max=<span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span>(<span class="kw">nucleus_snippet</span>)))
+</pre></div>
 <p><img src="reading_image_files_files/figure-html/display_map-1.png" width="672"></p>
-<div class="sourceCode" id="cb14"><html><body><pre class="r"><span class="kw pkg">EBImage</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/EBImage/man/display.html">display</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/t.html">t</a></span>(<span class="no">nucleus</span>/<span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span>(<span class="no">nucleus</span>)))
-<span class="kw pkg">EBImage</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/EBImage/man/display.html">display</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/t.html">t</a></span>(<span class="no">maps</span><span class="kw">[[</span><span class="st">'Membrane'</span>]]))</pre></body></html></div>
+<div class="sourceCode" id="cb14"><pre class="downlit">
+<span class="kw">EBImage</span>::<span class="fu"><a href="https://rdrr.io/pkg/EBImage/man/display.html">display</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/t.html">t</a></span>(<span class="kw">nucleus</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span>(<span class="kw">nucleus</span>)))
+<span class="kw">EBImage</span>::<span class="fu"><a href="https://rdrr.io/pkg/EBImage/man/display.html">display</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/t.html">t</a></span>(<span class="kw">maps</span>[[<span class="st">'Membrane'</span>]]))
+</pre></div>
 <hr>
 </div>
 <div id="plotting-image-data" class="section level2">
@@ -191,19 +209,21 @@ img {
 <a href="#plotting-image-data" class="anchor"></a>Plotting image data</h2>
 <p>Images have the origin (0, 0) at the top left. This is consistent with the <code>Cell X Position</code> and <code>Cell Y Position</code> columns of an inForm cell seg table but it is reversed (in <span class="math inline">\(y\)</span>) from the usual plotting conventions. If you plot images and points together, you will have to reverse one or the other.</p>
 <p>Here is an example using <code>ggplot2</code>. The <span class="math inline">\(y\)</span>-axis is reversed using <code><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">ggplot2::scale_y_reverse()</a></code> and the image is then un-reversed by negating its <span class="math inline">\(y\)</span> limits.</p>
-<div class="sourceCode" id="cb15"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">ggplot2</span>)
-<span class="no">csd</span> <span class="kw">&lt;-</span> <span class="kw pkg">phenoptr</span><span class="kw ns">::</span><span class="no"><a href="../reference/sample_cell_seg_data.html">sample_cell_seg_data</a></span>
-<span class="no">csd</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html">subset</a></span>(<span class="no">csd</span>, <span class="no">`Cell X Position`</span><span class="kw">&gt;=</span><span class="fl">600</span> <span class="kw">&amp;</span> <span class="no">`Cell X Position`</span><span class="kw">&lt;=</span><span class="fl">750</span> <span class="kw">&amp;</span>
-              <span class="no">`Cell Y Position`</span><span class="kw">&gt;=</span><span class="fl">400</span> <span class="kw">&amp;</span> <span class="no">`Cell Y Position`</span><span class="kw">&lt;=</span><span class="fl">500</span>)
-<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="kw">data</span><span class="kw">=</span><span class="no">csd</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="no">`Cell X Position`</span>, <span class="no">`Cell Y Position`</span>, <span class="kw">color</span><span class="kw">=</span><span class="no">Phenotype</span>)) +
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_x_continuous</a></span>(<span class="kw">limits</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">600</span>, <span class="fl">750</span>)) +
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_reverse</a></span>(<span class="kw">limits</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">500</span>, <span class="fl">400</span>)) +
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/annotation_raster.html">annotation_raster</a></span>(<span class="no">snippet</span>, <span class="fl">600</span>, <span class="fl">750</span>, -<span class="fl">400</span>, -<span class="fl">500</span>) +
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span>(<span class="kw">size</span><span class="kw">=</span><span class="fl">2</span>) + <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_fixed.html">coord_equal</a></span>() +
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html">scale_color_manual</a></span>(<span class="kw">values</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"CK+"</span><span class="kw">=</span><span class="st">"cyan"</span>, <span class="st">"CD8+"</span><span class="kw">=</span><span class="st">"yellow"</span>,
-                              <span class="st">"other"</span><span class="kw">=</span><span class="st">"blue"</span>, <span class="st">"CD68+"</span><span class="kw">=</span><span class="st">"magenta"</span>,
-                              <span class="st">"FoxP3+"</span><span class="kw">=</span><span class="st">"orange"</span>)) +
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal</a></span>()</pre></body></html></div>
+<div class="sourceCode" id="cb15"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="http://ggplot2.tidyverse.org">ggplot2</a></span>)
+<span class="kw">csd</span> <span class="op">&lt;-</span> <span class="kw">phenoptr</span>::<span class="kw"><a href="../reference/sample_cell_seg_data.html">sample_cell_seg_data</a></span>
+<span class="kw">csd</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html">subset</a></span>(<span class="kw">csd</span>, <span class="kw">`Cell X Position`</span><span class="op">&gt;=</span><span class="fl">600</span> <span class="op">&amp;</span> <span class="kw">`Cell X Position`</span><span class="op">&lt;=</span><span class="fl">750</span> <span class="op">&amp;</span>
+              <span class="kw">`Cell Y Position`</span><span class="op">&gt;=</span><span class="fl">400</span> <span class="op">&amp;</span> <span class="kw">`Cell Y Position`</span><span class="op">&lt;=</span><span class="fl">500</span>)
+<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(data=<span class="kw">csd</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="kw">`Cell X Position`</span>, <span class="kw">`Cell Y Position`</span>, color=<span class="kw">Phenotype</span>)) <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_x_continuous</a></span>(limits=<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">600</span>, <span class="fl">750</span>)) <span class="op">+</span> 
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_reverse</a></span>(limits=<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">500</span>, <span class="fl">400</span>)) <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/annotation_raster.html">annotation_raster</a></span>(<span class="kw">snippet</span>, <span class="fl">600</span>, <span class="fl">750</span>, <span class="op">-</span><span class="fl">400</span>, <span class="op">-</span><span class="fl">500</span>) <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span>(size=<span class="fl">2</span>) <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_fixed.html">coord_equal</a></span>() <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html">scale_color_manual</a></span>(values=<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"CK+"</span>=<span class="st">"cyan"</span>, <span class="st">"CD8+"</span>=<span class="st">"yellow"</span>,
+                              <span class="st">"other"</span>=<span class="st">"blue"</span>, <span class="st">"CD68+"</span>=<span class="st">"magenta"</span>, 
+                              <span class="st">"FoxP3+"</span>=<span class="st">"orange"</span>)) <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal</a></span>()
+</pre></div>
 <p><img src="reading_image_files_files/figure-html/plotting-1.png" width="672"></p>
 </div>
   </div>
@@ -223,7 +243,7 @@ img {
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

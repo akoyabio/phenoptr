@@ -75,7 +75,7 @@ writes image files showing the touching cells." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">phenoptr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.8</span>
       </span>
     </div>
 
@@ -156,13 +156,13 @@ writes image files showing the touching cells.</p>
     </div>
 
     <pre class="usage"><span class='fu'>count_touching_cells</span>(
-  <span class='no'>cell_seg_path</span>,
-  <span class='no'>pairs</span>,
-  <span class='kw'>colors</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>phenotype_rules</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>categories</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>write_images</span> <span class='kw'>=</span> !<span class='fu'><a href='https://rdrr.io/r/base/NULL.html'>is.null</a></span>(<span class='no'>colors</span>),
-  <span class='kw'>output_base</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
+  <span class='kw'>cell_seg_path</span>,
+  <span class='kw'>pairs</span>,
+  colors = <span class='kw'>NULL</span>,
+  phenotype_rules = <span class='kw'>NULL</span>,
+  categories = <span class='kw'>NULL</span>,
+  write_images = <span class='op'>!</span><span class='fu'><a href='https://rdrr.io/r/base/NULL.html'>is.null</a></span>(<span class='kw'>colors</span>),
+  output_base = <span class='kw'>NULL</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -215,7 +215,7 @@ directory as the cell table.</p></td>
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>Returns a <code>tibble</code> with one row for each pair in
-<code>pairs</code>, containing these columns:</p><dl'>
+<code>pairs</code>, containing these columns:</p><dl>
 <dt><code>slide_id</code></dt><dd><p>Slide ID from the data file, if available.</p></dd>
 <dt><code>source</code></dt><dd><p>Base file name of the source file with
 <code>_cell_seg_data.txt</code> stripped off for brevity.</p></dd>
@@ -275,44 +275,44 @@ the use of <code>pairs</code> and <code>phenotype_rules</code>.</p>
 <code><a href='subset_distance_matrix.html'>subset_distance_matrix</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+    <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
 <span class='co'># This example creates an image in a subdirectory of the</span>
 <span class='co'># current user's directory.</span>
-<span class='no'>cell_seg_path</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='sample_cell_seg_data.html'>sample_cell_seg_path</a></span>()
+<span class='kw'>cell_seg_path</span> <span class='op'>&lt;-</span> <span class='fu'><a href='sample_cell_seg_data.html'>sample_cell_seg_path</a></span>()
 
-<span class='no'>pairs</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"CD68+"</span>, <span class='st'>"CD8+"</span>))
-<span class='no'>colors</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"CD68+"</span><span class='kw'>=</span><span class='st'>'magenta'</span>, <span class='st'>"CD8+"</span><span class='kw'>=</span><span class='st'>'yellow'</span>)
-<span class='no'>output_base</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/path.expand.html'>path.expand</a></span>(<span class='st'>'~/touches'</span>)
+<span class='kw'>pairs</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"CD68+"</span>, <span class='st'>"CD8+"</span>))
+<span class='kw'>colors</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"CD68+"</span>=<span class='st'>'magenta'</span>, <span class='st'>"CD8+"</span>=<span class='st'>'yellow'</span>)
+<span class='kw'>output_base</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/path.expand.html'>path.expand</a></span>(<span class='st'>'~/touches'</span>)
 
-<span class='fu'>count_touching_cells</span>(<span class='no'>cell_seg_path</span>, <span class='no'>pairs</span>, <span class='no'>colors</span>,
-  <span class='kw'>output_base</span><span class='kw'>=</span><span class='no'>output_base</span>)
+<span class='fu'>count_touching_cells</span>(<span class='kw'>cell_seg_path</span>, <span class='kw'>pairs</span>, <span class='kw'>colors</span>,
+  output_base=<span class='kw'>output_base</span>)
 
 <span class='co'># This example will count and image all files in the `base_path` directory.</span>
-<span class='no'>base_path</span> <span class='kw'>&lt;-</span> <span class='st'>'/path/to/data'</span>
-<span class='no'>output_base</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span>(<span class='no'>base_path</span>, <span class='st'>'touches'</span>)
-<span class='no'>files</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='list_cell_seg_files.html'>list_cell_seg_files</a></span>(<span class='no'>base_path</span>)
+<span class='kw'>base_path</span> <span class='op'>&lt;-</span> <span class='st'>'/path/to/data'</span>
+<span class='kw'>output_base</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span>(<span class='kw'>base_path</span>, <span class='st'>'touches'</span>)
+<span class='kw'>files</span> <span class='op'>&lt;-</span> <span class='fu'><a href='list_cell_seg_files.html'>list_cell_seg_files</a></span>(<span class='kw'>base_path</span>)
 
 <span class='co'># The phenotype pairs to locate. This will find CD8 cells touching</span>
 <span class='co'># tumor cells, and, separately, CD8 cells touching CD68 cells.</span>
-<span class='no'>pairs</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"CD8+"</span>, <span class='st'>"CK+"</span>),
+<span class='kw'>pairs</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"CD8+"</span>, <span class='st'>"CK+"</span>),
              <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"CD8+"</span>, <span class='st'>"CD68+"</span>))
 
 <span class='co'># Colors for all the phenotypes mentioned in pairs</span>
-<span class='no'>colors</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(
-  <span class='st'>'CD8+'</span> <span class='kw'>=</span> <span class='st'>'yellow'</span>,
-  <span class='st'>'CK+'</span> <span class='kw'>=</span> <span class='st'>'cyan'</span>,
-  <span class='st'>'CD68+'</span> <span class='kw'>=</span> <span class='st'>'magenta'</span>
+<span class='kw'>colors</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(
+  <span class='st'>'CD8+'</span> = <span class='st'>'yellow'</span>,
+  <span class='st'>'CK+'</span> = <span class='st'>'cyan'</span>,
+  <span class='st'>'CD68+'</span> = <span class='st'>'magenta'</span>
 )
 
 <span class='co'># Count and visualize touching cells</span>
-<span class='no'>touch_counts</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>purrr</span><span class='kw ns'>::</span><span class='fu'><a href='https://purrr.tidyverse.org/reference/map.html'>map_df</a></span>(<span class='no'>files</span>, <span class='kw'>function</span>(<span class='no'>path</span>) {
-  <span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span>(<span class='st'>'Processing'</span>, <span class='no'>path</span>, <span class='st'>'\n'</span>)
-  <span class='fu'>count_touching_cells</span>(<span class='no'>path</span>, <span class='no'>pairs</span>, <span class='no'>colors</span>, <span class='kw'>output_base</span><span class='kw'>=</span><span class='no'>output_base</span>)
+<span class='kw'>touch_counts</span> <span class='op'>&lt;-</span> <span class='kw'>purrr</span>::<span class='fu'><a href='https://purrr.tidyverse.org/reference/map.html'>map_df</a></span>(<span class='kw'>files</span>, <span class='fu'>function</span>(<span class='kw'>path</span>) {
+  <span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span>(<span class='st'>'Processing'</span>, <span class='kw'>path</span>, <span class='st'>'\n'</span>)
+  <span class='fu'>count_touching_cells</span>(<span class='kw'>path</span>, <span class='kw'>pairs</span>, <span class='kw'>colors</span>, output_base=<span class='kw'>output_base</span>)
 })
 
 <span class='co'># Save the result</span>
-<span class='no'>touches_path</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span>(<span class='no'>output_base</span>, <span class='st'>'TouchCounts.csv'</span>)
-<span class='kw pkg'>readr</span><span class='kw ns'>::</span><span class='fu'><a href='https://readr.tidyverse.org/reference/write_delim.html'>write_csv</a></span>(<span class='no'>touch_counts</span>, <span class='no'>touches_path</span>)
+<span class='kw'>touches_path</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span>(<span class='kw'>output_base</span>, <span class='st'>'TouchCounts.csv'</span>)
+<span class='kw'>readr</span>::<span class='fu'><a href='https://readr.tidyverse.org/reference/write_delim.html'>write_csv</a></span>(<span class='kw'>touch_counts</span>, <span class='kw'>touches_path</span>)
 
 <span class='co'># The phenotype definitions can be more complex. The default is to use</span>
 <span class='co'># the names in `pairs`. Using `phenotype_rules`, the definition can be</span>
@@ -322,21 +322,22 @@ the use of <code>pairs</code> and <code>phenotype_rules</code>.</p>
 
 <span class='co'># For example, find all touches between lymphocytes and tumor cells</span>
 <span class='co'># within the tumor:</span>
-<span class='no'>pairs</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>'Tumor'</span>, <span class='st'>'Lymphocyte'</span>))
-<span class='no'>colors</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>Tumor</span><span class='kw'>=</span><span class='st'>'cyan'</span>, <span class='kw'>Lymphocyte</span><span class='kw'>=</span><span class='st'>'yellow'</span>)
-<span class='no'>phenotype_rules</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(
-  <span class='kw'>Lymphocyte</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>'CD8+'</span>, <span class='st'>'FoxP3+'</span>)
+<span class='kw'>pairs</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>'Tumor'</span>, <span class='st'>'Lymphocyte'</span>))
+<span class='kw'>colors</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(Tumor=<span class='st'>'cyan'</span>, Lymphocyte=<span class='st'>'yellow'</span>)
+<span class='kw'>phenotype_rules</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(
+  Lymphocyte=<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>'CD8+'</span>, <span class='st'>'FoxP3+'</span>)
 )
 
-<span class='no'>touch_counts</span> <span class='kw'>&lt;-</span> <span class='fu'>map_df</span>(<span class='no'>files</span>, <span class='kw'>function</span>(<span class='no'>path</span>) {
-  <span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span>(<span class='st'>'Processing'</span>, <span class='no'>path</span>, <span class='st'>'\n'</span>)
-  <span class='fu'>count_touching_cells</span>(<span class='no'>path</span>, <span class='no'>pairs</span>, <span class='no'>colors</span>, <span class='no'>phenotype_rules</span>,
-                       <span class='kw'>categories</span><span class='kw'>=</span><span class='st'>'tumor'</span>,
-                       <span class='kw'>output_base</span><span class='kw'>=</span><span class='no'>output_base</span>)
+<span class='kw'>touch_counts</span> <span class='op'>&lt;-</span> <span class='fu'>map_df</span>(<span class='kw'>files</span>, <span class='fu'>function</span>(<span class='kw'>path</span>) {
+  <span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span>(<span class='st'>'Processing'</span>, <span class='kw'>path</span>, <span class='st'>'\n'</span>)
+  <span class='fu'>count_touching_cells</span>(<span class='kw'>path</span>, <span class='kw'>pairs</span>, <span class='kw'>colors</span>, <span class='kw'>phenotype_rules</span>,
+                       categories=<span class='st'>'tumor'</span>,
+                       output_base=<span class='kw'>output_base</span>)
 })
 
 <span class='co'># Then write the results as above.</span>
-}</div></pre>
+}
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -352,7 +353,7 @@ the use of <code>pairs</code> and <code>phenotype_rules</code>.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

@@ -74,7 +74,7 @@ in a single field." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">phenoptr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.8</span>
       </span>
     </div>
 
@@ -154,11 +154,11 @@ in a single field.</p>
     </div>
 
     <pre class="usage"><span class='fu'>spatial_distribution_report</span>(
-  <span class='no'>cell_seg_path</span>,
-  <span class='no'>pairs</span>,
-  <span class='no'>colors</span>,
-  <span class='kw'>phenotype_rules</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>output_path</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
+  <span class='kw'>cell_seg_path</span>,
+  <span class='kw'>pairs</span>,
+  <span class='kw'>colors</span>,
+  phenotype_rules = <span class='kw'>NULL</span>,
+  output_path = <span class='kw'>NULL</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -216,40 +216,41 @@ the use of <code>pairs</code> and <code>phenotype_rules</code>.</p>
 <code><a href='subset_distance_matrix.html'>subset_distance_matrix</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+    <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
 <span class='co'># This example creates a report in the current user's</span>
 <span class='co'># home or Document directory. It requires the phenoptrExamples</span>
 <span class='co'># package, which includes extended sample data.</span>
 
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>phenoptrExamples</span>)
-<span class='no'>cell_seg_path</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"samples"</span>,
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='https://github.com/akoyabio/phenoptrExamples'>phenoptrExamples</a></span>)
+<span class='kw'>cell_seg_path</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"samples"</span>,
                             <span class='st'>"Set4_1-6plex_[16142,55840]_cell_seg_data.txt"</span>,
-                            <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"phenoptrExamples"</span>)
+                            package = <span class='st'>"phenoptrExamples"</span>)
 
-<span class='no'>pairs</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(
+<span class='kw'>pairs</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(
   <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"CK+"</span>, <span class='st'>"CD8+"</span>),
   <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"CK+"</span>, <span class='st'>"CD68+"</span>))
-<span class='no'>colors</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>'CK+'</span><span class='kw'>=</span><span class='st'>"cyan"</span>, <span class='st'>"CD68+"</span><span class='kw'>=</span><span class='st'>"magenta"</span>, <span class='st'>"CD8+"</span><span class='kw'>=</span><span class='st'>"yellow"</span>)
-<span class='no'>out_path</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/path.expand.html'>path.expand</a></span>(<span class='st'>'~/spatial_distribution_report.html'</span>)
+<span class='kw'>colors</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>'CK+'</span>=<span class='st'>"cyan"</span>, <span class='st'>"CD68+"</span>=<span class='st'>"magenta"</span>, <span class='st'>"CD8+"</span>=<span class='st'>"yellow"</span>)
+<span class='kw'>out_path</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/path.expand.html'>path.expand</a></span>(<span class='st'>'~/spatial_distribution_report.html'</span>)
 
-<span class='fu'>spatial_distribution_report</span>(<span class='no'>cell_seg_path</span>, <span class='no'>pairs</span>, <span class='no'>colors</span>,
-  <span class='kw'>output_path</span><span class='kw'>=</span><span class='no'>out_path</span>)
+<span class='fu'>spatial_distribution_report</span>(<span class='kw'>cell_seg_path</span>, <span class='kw'>pairs</span>, <span class='kw'>colors</span>,
+  output_path=<span class='kw'>out_path</span>)
 
 <span class='co'># This example extends the previous example to restrict tumor cells to</span>
 <span class='co'># only PDL1+ cells.</span>
 <span class='co'># Note that spatial_distribution_report uses read_cell_seg_table</span>
 <span class='co'># so units are removed from the expression column names.</span>
 
-<span class='no'>pairs</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(
+<span class='kw'>pairs</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(
   <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"CK+ PDL1+"</span>, <span class='st'>"CD8+"</span>),
   <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"CK+ PDL1+"</span>, <span class='st'>"CD68+"</span>))
-<span class='no'>colors</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"CK+ PDL1+"</span><span class='kw'>=</span><span class='st'>"cyan"</span>, <span class='st'>"CD68+"</span><span class='kw'>=</span><span class='st'>"magenta"</span>, <span class='st'>"CD8+"</span><span class='kw'>=</span><span class='st'>"yellow"</span>)
-<span class='no'>phenotype_rules</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(
-  <span class='st'>"CK+ PDL1+"</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='st'>"CK+"</span>, ~<span class='no'>`Entire Cell PDL1 (Opal 520) Mean`</span><span class='kw'>&gt;</span><span class='fl'>3</span>))
+<span class='kw'>colors</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"CK+ PDL1+"</span>=<span class='st'>"cyan"</span>, <span class='st'>"CD68+"</span>=<span class='st'>"magenta"</span>, <span class='st'>"CD8+"</span>=<span class='st'>"yellow"</span>)
+<span class='kw'>phenotype_rules</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(
+  <span class='st'>"CK+ PDL1+"</span>=<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='st'>"CK+"</span>, <span class='op'>~</span><span class='kw'>`Entire Cell PDL1 (Opal 520) Mean`</span><span class='op'>&gt;</span><span class='fl'>3</span>))
 
-<span class='fu'>spatial_distribution_report</span>(<span class='no'>cell_seg_path</span>, <span class='no'>pairs</span>, <span class='no'>colors</span>, <span class='no'>phenotype_rules</span>,
-  <span class='kw'>output_path</span><span class='kw'>=</span><span class='no'>out_path</span>)
-}</div></pre>
+<span class='fu'>spatial_distribution_report</span>(<span class='kw'>cell_seg_path</span>, <span class='kw'>pairs</span>, <span class='kw'>colors</span>, <span class='kw'>phenotype_rules</span>,
+  output_path=<span class='kw'>out_path</span>)
+}
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -265,7 +266,7 @@ the use of <code>pairs</code> and <code>phenotype_rules</code>.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

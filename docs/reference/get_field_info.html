@@ -73,7 +73,7 @@ component_data.tif file." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">phenoptr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.8</span>
       </span>
     </div>
 
@@ -151,7 +151,7 @@ component_data.tif file." />
 <code>component_data.tif</code> file.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>get_field_info</span>(<span class='no'>path</span>)</pre>
+    <pre class="usage"><span class='fu'>get_field_info</span>(<span class='kw'>path</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -164,7 +164,7 @@ component_data.tif file." />
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A named list with values</p><dl'>
+    <p>A named list with values</p><dl>
 <dt><code>location</code></dt><dd><p>The physical (x, y) location of the top-left
 corner of the field on the source slide, in microns.</p></dd>
 <dt><code>field_size</code></dt><dd><p>The physical (width, height)
@@ -172,6 +172,7 @@ of the field, in microns.</p></dd>
 <dt><code>image_size</code></dt><dd><p>The (width, height) of the field image,
 in pixels.</p></dd>
 <dt><code>microns_per_pixel</code></dt><dd><p>The size of each pixel, in microns.</p></dd>
+<dt><code>pixels_per_microns</code></dt><dd><p>The inverse of <code>microns per pixel</code></p></dd>
 
 </dl>
 
@@ -193,14 +194,18 @@ of the tiff package to remove this limitation.</p>
 <code><a href='read_maps.html'>read_maps</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>  <span class='no'>path</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>'extdata'</span>, <span class='st'>'sample'</span>,
+    <pre class="examples"><div class='input'>  <span class='kw'>path</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>'extdata'</span>, <span class='st'>'sample'</span>,
     <span class='st'>'Set4_1-6plex_[16142,55840]_component_data.tif'</span>,
-    <span class='kw'>package</span><span class='kw'>=</span><span class='st'>'phenoptr'</span>)
-  <span class='fu'>get_field_info</span>(<span class='no'>path</span>)</div><div class='output co'>#&gt; $image_size
+    package=<span class='st'>'phenoptr'</span>)
+  <span class='fu'>get_field_info</span>(<span class='kw'>path</span>)
+</div><div class='output co'>#&gt; $image_size
 #&gt; [1] 1868 1400
 #&gt; 
 #&gt; $microns_per_pixel
 #&gt; [1] 0.4981226
+#&gt; 
+#&gt; $pixels_per_micron
+#&gt; [1] 2.007538
 #&gt; 
 #&gt; $field_size
 #&gt; [1] 930.4929 697.3716
@@ -223,7 +228,7 @@ of the tiff package to remove this limitation.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

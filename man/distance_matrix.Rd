@@ -13,9 +13,9 @@ and \code{Cell Y Position} columns, such as the result of
 }
 \value{
 A square matrix with both dimensions equal to \code{nrow(d)}.
-        The value at \code{[i, j]} will be the distance from the cell
-        at row \code{i} of \code{csd} to the cell at row \code{j}.
-        The returned matrix is symmetric.
+The value at \code{[i, j]} will be the distance from the cell
+at row \code{i} of \code{csd} to the cell at row \code{j}.
+The returned matrix is symmetric.
 }
 \description{
 Create a distance matrix from cell seg data.

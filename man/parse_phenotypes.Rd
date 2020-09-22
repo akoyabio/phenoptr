@@ -12,12 +12,12 @@ optionally with names.}
 }
 \value{
 A named list of phenotype selectors for use with
-\link[phenoptr:select_rows]{phenoptr::select_rows}.
+\link{select_rows}.
 }
 \description{
 This helper function takes a user-friendly list of single and
 multiple phenotype names and converts it to a named list of phenotype
-selectors for use with \link[phenoptr:select_rows]{phenoptr::select_rows}. By using \code{parse_phenotypes}
+selectors for use with \link{select_rows}. By using \code{parse_phenotypes}
 a user does not have to know the (somewhat inscrutable)
 details of \code{select_rows}.
 }

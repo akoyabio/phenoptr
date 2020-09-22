@@ -14,7 +14,7 @@ Quantitative Pathology Research Solutions. For more information visit the
 ## Installation
 
 `phenoptr` requires the [R environment](https://www.r-project.org/) 
-for statistical computing, version 3.3.0 or higher. To install R,
+for statistical computing, version 3.6.0 or higher. To install R,
 visit the [R download](https://cloud.r-project.org/) page.
 The [RStudio IDE](https://www.rstudio.com/products/rstudio/)
 is highly recommended as well.
@@ -103,5 +103,5 @@ section of the documentation for details on individual functions.
 
 To cite package `phenoptr` in publications use:
 
-&nbsp;&nbsp;Kent S Johnson (2020). phenoptr: inForm Helper Functions. R package version 0.2.7.  
+&nbsp;&nbsp;Kent S Johnson (2020). phenoptr: inForm Helper Functions. R package version 0.2.8.  
 &nbsp;&nbsp;https://akoyabio.github.io/phenoptr/

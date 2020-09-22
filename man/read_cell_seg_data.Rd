@@ -24,7 +24,7 @@ remove the unit name from expression columns.}
 }
 \value{
 A \code{\link[tibble]{tibble}}
-        containing the cleaned-up data set.
+containing the cleaned-up data set.
 }
 \description{
 \code{read_cell_seg_data} makes it easier to use data from Akoya Biosciences'
@@ -39,7 +39,7 @@ be done.
 and does useful cleanup on the data:
 \itemize{
 \item Removes columns that are all NA.
-      These are typically unused summary columns.
+These are typically unused summary columns.
 \item Converts percent columns to numeric fractions.
 \item Converts pixel distances to microns. The conversion factor may be
 specified as a parameter, by setting
@@ -47,10 +47,10 @@ specified as a parameter, by setting
 \code{component_data.tif} file.
 \item Optionally removes units from expression names
 \item If the file contains multiple sample names,
-      a \code{tag} column is created
-      containing a minimal, unique tag for each sample.
-      This is useful when a
-      short name is needed, for example in chart legends.
+a \code{tag} column is created
+containing a minimal, unique tag for each sample.
+This is useful when a
+short name is needed, for example in chart legends.
 }
 
 If \code{pixels_per_micron='auto'}, \code{read_cell_seg_data} looks for

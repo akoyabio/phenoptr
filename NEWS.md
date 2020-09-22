@@ -1,4 +1,5 @@
-# phenoptr 0.2.6.9000
+# phenoptr 0.2.8
+**2020-08-22**
 
 - Add `make_ppp` function to create marked point patterns.
 - `parse_phenotypes` makes nicer names for expression-based phenotypes.

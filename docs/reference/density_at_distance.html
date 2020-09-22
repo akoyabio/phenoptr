@@ -74,7 +74,7 @@ phenotype on the distance from the boundary between the two tissue classes." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">phenoptr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.8</span>
       </span>
     </div>
 
@@ -154,13 +154,13 @@ phenotype on the distance from the boundary between the two tissue classes.</p>
     </div>
 
     <pre class="usage"><span class='fu'>density_at_distance</span>(
-  <span class='no'>cell_seg_path</span>,
-  <span class='no'>phenotypes</span>,
-  <span class='no'>positive</span>,
-  <span class='no'>negative</span>,
-  <span class='kw'>mask</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>pixels_per_micron</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"phenoptr.pixels.per.micron"</span>),
-  <span class='no'>...</span>
+  <span class='kw'>cell_seg_path</span>,
+  <span class='kw'>phenotypes</span>,
+  <span class='kw'>positive</span>,
+  <span class='kw'>negative</span>,
+  mask = <span class='fl'>FALSE</span>,
+  pixels_per_micron = <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"phenoptr.pixels.per.micron"</span>),
+  <span class='kw'>...</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -206,7 +206,7 @@ Default parameters are <code>method="ratio", smoother="kernel", bw="nrd"</code>.
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Returns a <code>list</code> containing four items:</p><dl'>
+    <p>Returns a <code>list</code> containing four items:</p><dl>
 <dt><code>points</code></dt><dd><p>The points used, marked with their phenotype,
 a <code><a href='https://rdrr.io/pkg/spatstat/man/ppp.object.html'>ppp.object</a></code>.</p></dd>
 <dt><code>rhohat</code></dt><dd><p>The density estimates (see Details).</p></dd>
@@ -270,32 +270,38 @@ Chapman and Hall/CRC Press, 2015. Sections 6.6.3-6.6.4.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Compute density for the sample data</span>
-<span class='no'>values</span> <span class='kw'>&lt;-</span> <span class='fu'>density_at_distance</span>(<span class='fu'><a href='sample_cell_seg_data.html'>sample_cell_seg_path</a></span>(),
+<span class='kw'>values</span> <span class='op'>&lt;-</span> <span class='fu'>density_at_distance</span>(<span class='fu'><a href='sample_cell_seg_data.html'>sample_cell_seg_path</a></span>(),
   <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='st'>"CD8+"</span>, <span class='st'>"CD68+"</span>, <span class='st'>"FoxP3+"</span>),
-  <span class='kw'>positive</span><span class='kw'>=</span><span class='st'>"Stroma"</span>, <span class='kw'>negative</span><span class='kw'>=</span><span class='st'>"Tumor"</span>)</div><div class='output co'>#&gt; <span class='message'>Registered S3 method overwritten by 'spatstat':</span>
+  positive=<span class='st'>"Stroma"</span>, negative=<span class='st'>"Tumor"</span>)
+</div><div class='output co'>#&gt; <span class='message'>Registered S3 method overwritten by 'spatstat':</span>
 #&gt; <span class='message'>  method     from</span>
 #&gt; <span class='message'>  print.boxx cli </span></div><div class='output co'>#&gt; <span class='warning'>Warning: executing %dopar% sequentially: no parallel backend registered</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: spatstat.data</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: nlme</span></div><div class='output co'>#&gt; <span class='message'></span>
 #&gt; <span class='message'>Attaching package: 'nlme'</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from 'package:dplyr':</span>
 #&gt; <span class='message'></span>
 #&gt; <span class='message'>    collapse</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: rpart</span></div><div class='output co'>#&gt; <span class='message'></span>
 #&gt; <span class='message'>spatstat 1.64-1       (nickname: 'Help you I can, yes!') </span>
-#&gt; <span class='message'>For an introduction to spatstat, type 'beginner' </span></div><div class='input'>
+#&gt; <span class='message'>For an introduction to spatstat, type 'beginner' </span></div><div class='output co'>#&gt; <span class='message'></span>
+#&gt; <span class='message'>Note: spatstat version 1.64-1 is out of date by more than 4 months; we recommend upgrading to the latest version.</span></div><div class='input'>
 <span class='co'># Combine all the densities into a single tibble</span>
 <span class='co'># and filter out the extremes</span>
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>dplyr</span>)
-<span class='no'>all_rho</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>purrr</span><span class='kw ns'>::</span><span class='fu'><a href='https://purrr.tidyverse.org/reference/map.html'>map_dfr</a></span>(<span class='no'>values</span>$<span class='no'>rhohat</span>, ~<span class='no'>.</span>, <span class='kw'>.id</span><span class='kw'>=</span><span class='st'>'phenotype'</span>) <span class='kw'>%&gt;%</span>
-  <span class='no'>as_tibble</span> <span class='kw'>%&gt;%</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='no'>X</span><span class='kw'>&gt;=</span>-<span class='fl'>50</span>, <span class='no'>X</span><span class='kw'>&lt;=</span><span class='fl'>100</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='https://dplyr.tidyverse.org'>dplyr</a></span>)
+<span class='kw'>all_rho</span> <span class='op'>&lt;-</span> <span class='kw'>purrr</span>::<span class='fu'><a href='https://purrr.tidyverse.org/reference/map.html'>map_dfr</a></span>(<span class='kw'>values</span><span class='op'>$</span><span class='kw'>rhohat</span>, <span class='op'>~</span><span class='kw'>.</span>, .id=<span class='st'>'phenotype'</span>) <span class='op'>%&gt;%</span>
+  <span class='kw'>as_tibble</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='kw'>X</span><span class='op'>&gt;=</span><span class='op'>-</span><span class='fl'>50</span>, <span class='kw'>X</span><span class='op'>&lt;=</span><span class='fl'>100</span>)
+</div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='input'>
 <span class='co'># Plot the densities in a single plot</span>
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>ggplot2</span>)
-<span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span>(<span class='no'>all_rho</span>, <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span>(<span class='no'>X</span>, <span class='no'>rho</span>*<span class='fl'>1000000</span>, <span class='kw'>color</span><span class='kw'>=</span><span class='no'>phenotype</span>)) +
-  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_path.html'>geom_line</a></span>(<span class='kw'>size</span><span class='kw'>=</span><span class='fl'>2</span>) +
-  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span>(<span class='kw'>x</span><span class='kw'>=</span><span class='st'>'Distance from tumor boundary (microns)'</span>,
-       <span class='kw'>y</span><span class='kw'>=</span><span class='st'>'Estimated cell density (cells per sq mm)'</span>)</div><div class='img'><img src='density_at_distance-1.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='http://ggplot2.tidyverse.org'>ggplot2</a></span>)
+<span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span>(<span class='kw'>all_rho</span>, <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span>(<span class='kw'>X</span>, <span class='kw'>rho</span><span class='op'>*</span><span class='fl'>1000000</span>, color=<span class='kw'>phenotype</span>)) <span class='op'>+</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_path.html'>geom_line</a></span>(size=<span class='fl'>2</span>) <span class='op'>+</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span>(x=<span class='st'>'Distance from tumor boundary (microns)'</span>,
+       y=<span class='st'>'Estimated cell density (cells per sq mm)'</span>)
+</div><div class='img'><img src='density_at_distance-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># Show the distance map with CD68+ cells superimposed</span>
-<span class='fu'><a href='plot_diverging.html'>plot_diverging</a></span>(<span class='no'>values</span>$<span class='no'>distance</span>, <span class='kw'>show_boundary</span><span class='kw'>=</span><span class='fl'>TRUE</span>,
-  <span class='kw'>title</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span>(<span class='st'>'Distance from tumor for CD68+cells'</span>),
-  <span class='kw'>sub</span><span class='kw'>=</span><span class='st'>'Positive (blue) distances are away from tumor'</span>)</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='no'>values</span>$<span class='no'>points</span>[<span class='no'>values</span>$<span class='no'>points</span>$<span class='no'>marks</span><span class='kw'>==</span><span class='st'>'CD68+'</span>, <span class='kw'>drop</span><span class='kw'>=</span><span class='fl'>TRUE</span>],
-  <span class='kw'>add</span><span class='kw'>=</span><span class='fl'>TRUE</span>, <span class='kw'>use.marks</span><span class='kw'>=</span><span class='fl'>FALSE</span>, <span class='kw'>cex</span><span class='kw'>=</span><span class='fl'>0.5</span>, <span class='kw'>col</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/grDevices/rgb.html'>rgb</a></span>(<span class='fl'>0</span>,<span class='fl'>0</span>,<span class='fl'>0</span>,<span class='fl'>0.5</span>))</div><div class='img'><img src='density_at_distance-2.png' alt='' width='700' height='433' /></div></pre>
+<span class='fu'><a href='plot_diverging.html'>plot_diverging</a></span>(<span class='kw'>values</span><span class='op'>$</span><span class='kw'>distance</span>, show_boundary=<span class='fl'>TRUE</span>,
+  title=<span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span>(<span class='st'>'Distance from tumor for CD68+cells'</span>),
+  sub=<span class='st'>'Positive (blue) distances are away from tumor'</span>)
+</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span>(<span class='kw'>values</span><span class='op'>$</span><span class='kw'>points</span>[<span class='kw'>values</span><span class='op'>$</span><span class='kw'>points</span><span class='op'>$</span><span class='kw'>marks</span><span class='op'>==</span><span class='st'>'CD68+'</span>, drop=<span class='fl'>TRUE</span>],
+  add=<span class='fl'>TRUE</span>, use.marks=<span class='fl'>FALSE</span>, cex=<span class='fl'>0.5</span>, col=<span class='fu'><a href='https://rdrr.io/r/grDevices/rgb.html'>rgb</a></span>(<span class='fl'>0</span>,<span class='fl'>0</span>,<span class='fl'>0</span>,<span class='fl'>0.5</span>))
+</div><div class='img'><img src='density_at_distance-2.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -311,7 +317,7 @@ Chapman and Hall/CRC Press, 2015. Sections 6.6.3-6.6.4.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

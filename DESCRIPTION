@@ -1,8 +1,8 @@
 Package: phenoptr
 Type: Package
 Title: inForm Helper Functions
-Version: 0.2.7.9000
-Date: 2020-06-02
+Version: 0.2.8
+Date: 2020-08-22
 Description: Helper functions for working with inForm data.
 Language: en-US
 biocViews: 
@@ -15,8 +15,8 @@ Imports:
     knitr,
     lazyeval,
     magrittr,
-    purrr (>= 0.2.3),
-    readr (>= 1.2.0),
+    purrr (>= 0.3),
+    readr (>= 1.2.1),
     rlang,
     rmarkdown,
     spatstat,
@@ -25,12 +25,12 @@ Imports:
     tidyr (>= 1.0.0),
     tiff,
     xml2
-Depends: R (>= 3.3.0)
+Depends: R (>= 3.6.0)
 License: Zlib | file LICENSE
 Copyright: Akoya Biosciences
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.1.0
+RoxygenNote: 7.1.1
 Suggests: 
     testthat,
     covr,

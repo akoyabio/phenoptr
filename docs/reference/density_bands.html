@@ -75,7 +75,7 @@ tissue classes." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">phenoptr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.8</span>
       </span>
     </div>
 
@@ -156,13 +156,13 @@ tissue classes.</p>
     </div>
 
     <pre class="usage"><span class='fu'>density_bands</span>(
-  <span class='no'>cell_seg_path</span>,
-  <span class='no'>phenotypes</span>,
-  <span class='no'>positive</span>,
-  <span class='no'>negative</span>,
-  <span class='kw'>width</span> <span class='kw'>=</span> <span class='fl'>25</span>,
-  <span class='kw'>map_path</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>component_path</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
+  <span class='kw'>cell_seg_path</span>,
+  <span class='kw'>phenotypes</span>,
+  <span class='kw'>positive</span>,
+  <span class='kw'>negative</span>,
+  width = <span class='fl'>25</span>,
+  map_path = <span class='kw'>NULL</span>,
+  component_path = <span class='kw'>NULL</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -208,7 +208,7 @@ same directory as <code>cell_seg_path</code>.</p></td>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Returns a <code>list</code> with three items:</p><dl'>
+    <p>Returns a <code>list</code> with three items:</p><dl>
 <dt><code>densities</code></dt><dd><p>A <code>tibble</code> with five columns (see below).</p></dd>
 <dt><code>cells</code></dt><dd><p>Cell seg data with phenotypes updated per the <code>phenotypes</code>
 parameter and an additional <code>distance</code> column.</p></dd>
@@ -217,7 +217,7 @@ parameter and an additional <code>distance</code> column.</p></dd>
 
 </dl>
 
-<p>The <code>densities</code> item contains five columns:</p><dl'>
+<p>The <code>densities</code> item contains five columns:</p><dl>
 <dt><code>phenotype</code></dt><dd><p>The supplied phenotypes.</p></dd>
 <dt><code>midpoint</code></dt><dd><p>The midpoint of the distance band.</p></dd>
 <dt><code>count</code></dt><dd><p>The number of cells of the phenotype found
@@ -251,16 +251,17 @@ to compute density.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Compute density for the sample data</span>
-<span class='no'>values</span> <span class='kw'>&lt;-</span> <span class='fu'>density_bands</span>(<span class='fu'><a href='sample_cell_seg_data.html'>sample_cell_seg_path</a></span>(),
+<span class='kw'>values</span> <span class='op'>&lt;-</span> <span class='fu'>density_bands</span>(<span class='fu'><a href='sample_cell_seg_data.html'>sample_cell_seg_path</a></span>(),
   <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='st'>"CD8+"</span>, <span class='st'>"CD68+"</span>, <span class='st'>"FoxP3+"</span>),
-  <span class='kw'>positive</span><span class='kw'>=</span><span class='st'>"Stroma"</span>, <span class='kw'>negative</span><span class='kw'>=</span><span class='st'>"Tumor"</span>)
+  positive=<span class='st'>"Stroma"</span>, negative=<span class='st'>"Tumor"</span>)
 
 <span class='co'># Plot the densities in a single plot</span>
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>ggplot2</span>)
-<span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span>(<span class='no'>values</span>$<span class='no'>densities</span>, <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span>(<span class='no'>midpoint</span>, <span class='no'>density</span>*<span class='fl'>1000000</span>, <span class='kw'>color</span><span class='kw'>=</span><span class='no'>phenotype</span>)) +
-  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_path.html'>geom_line</a></span>(<span class='kw'>size</span><span class='kw'>=</span><span class='fl'>2</span>) +
-  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span>(<span class='kw'>x</span><span class='kw'>=</span><span class='st'>'Distance from tumor boundary (microns)'</span>,
-       <span class='kw'>y</span><span class='kw'>=</span><span class='st'>'Estimated cell density (cells per sq mm)'</span>)</div><div class='img'><img src='density_bands-1.png' alt='' width='700' height='433' /></div></pre>
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='http://ggplot2.tidyverse.org'>ggplot2</a></span>)
+<span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span>(<span class='kw'>values</span><span class='op'>$</span><span class='kw'>densities</span>, <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span>(<span class='kw'>midpoint</span>, <span class='kw'>density</span><span class='op'>*</span><span class='fl'>1000000</span>, color=<span class='kw'>phenotype</span>)) <span class='op'>+</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_path.html'>geom_line</a></span>(size=<span class='fl'>2</span>) <span class='op'>+</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span>(x=<span class='st'>'Distance from tumor boundary (microns)'</span>,
+       y=<span class='st'>'Estimated cell density (cells per sq mm)'</span>)
+</div><div class='img'><img src='density_bands-1.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -276,7 +277,7 @@ to compute density.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

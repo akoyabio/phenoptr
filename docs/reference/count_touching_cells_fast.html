@@ -76,7 +76,7 @@ membrane masks created by older segmentation algorithms." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">phenoptr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.8</span>
       </span>
     </div>
 
@@ -158,13 +158,13 @@ membrane masks created by older segmentation algorithms.</p>
     </div>
 
     <pre class="usage"><span class='fu'>count_touching_cells_fast</span>(
-  <span class='no'>csd</span>,
-  <span class='no'>field_name</span>,
-  <span class='no'>export_path</span>,
-  <span class='no'>phenos</span>,
-  <span class='no'>color1</span>,
-  <span class='no'>color2</span>,
-  <span class='kw'>discard_dups</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
+  <span class='kw'>csd</span>,
+  <span class='kw'>field_name</span>,
+  <span class='kw'>export_path</span>,
+  <span class='kw'>phenos</span>,
+  <span class='kw'>color1</span>,
+  <span class='kw'>color2</span>,
+  discard_dups = <span class='fl'>FALSE</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -200,7 +200,7 @@ discarded from the output. If <code>FALSE</code>, overlapping phenotypes is an e
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Returns a <code>list</code> containing two items:</p><dl'>
+    <p>Returns a <code>list</code> containing two items:</p><dl>
 <dt>image</dt><dd><p>An <code><a href='https://rdrr.io/pkg/EBImage/man/Image.html'>EBImage::Image</a></code> of touching cells.</p></dd>
 <dt>data</dt><dd><p>A <code><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble</a></code> containing
 data about the touching cells.</p></dd>
@@ -223,7 +223,7 @@ data about the touching cells.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

@@ -42,7 +42,7 @@
 <meta property="og:title" content="Parse a vector of phenotype names — parse_phenotypes" />
 <meta property="og:description" content="This helper function takes a user-friendly list of single and
 multiple phenotype names and converts it to a named list of phenotype
-selectors for use with phenoptr::select_rows. By using parse_phenotypes
+selectors for use with select_rows. By using parse_phenotypes
 a user does not have to know the (somewhat inscrutable)
 details of select_rows." />
 
@@ -76,7 +76,7 @@ details of select_rows." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">phenoptr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.8</span>
       </span>
     </div>
 
@@ -152,12 +152,12 @@ details of select_rows." />
     <div class="ref-description">
     <p>This helper function takes a user-friendly list of single and
 multiple phenotype names and converts it to a named list of phenotype
-selectors for use with <a href='select_rows.html'>phenoptr::select_rows</a>. By using <code>parse_phenotypes</code>
+selectors for use with <a href='select_rows.html'>select_rows</a>. By using <code>parse_phenotypes</code>
 a user does not have to know the (somewhat inscrutable)
 details of <code>select_rows</code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>parse_phenotypes</span>(<span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>parse_phenotypes</span>(<span class='kw'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -172,7 +172,7 @@ optionally with names.</p></td>
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A named list of phenotype selectors for use with
-<a href='select_rows.html'>phenoptr::select_rows</a>.</p>
+<a href='select_rows.html'>select_rows</a>.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     
@@ -204,8 +204,9 @@ cannot be combined with comma (,).</p></li>
 <span class='co'># - All cells regardless of phenotype</span>
 <span class='co'># - Macrophages, defined as either CD68+ OR CD163+</span>
 <span class='fu'>parse_phenotypes</span>(<span class='st'>"CD3+"</span>, <span class='st'>"CD3+/CD8+"</span>, <span class='st'>"CD3+/CD8-"</span>,
-                 <span class='st'>"CD3+/PDL-1+"</span><span class='kw'>=</span><span class='st'>"CD3+/~`Membrane PDL-1 (Opal 520) Mean`&gt;5"</span>,
-                 <span class='st'>"Total Cells"</span>, <span class='kw'>Macrophage</span><span class='kw'>=</span><span class='st'>"CD68+,CD163+"</span>)</div><div class='output co'>#&gt; $`CD3+`
+                 <span class='st'>"CD3+/PDL-1+"</span>=<span class='st'>"CD3+/~`Membrane PDL-1 (Opal 520) Mean`&gt;5"</span>,
+                 <span class='st'>"Total Cells"</span>, Macrophage=<span class='st'>"CD68+,CD163+"</span>)
+</div><div class='output co'>#&gt; $`CD3+`
 #&gt; [1] "CD3+"
 #&gt; 
 #&gt; $`CD3+/CD8+`
@@ -253,7 +254,7 @@ cannot be combined with comma (,).</p></li>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

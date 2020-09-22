@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">phenoptr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.8</span>
       </span>
     </div>
 
@@ -96,13 +96,13 @@
 
       
 
-      </header><div class="row">
+      </header><script src="find_and_count_touching_cells_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Find and count touching cells</h1>
                         <h4 class="author">Kent Johnson</h4>
             
-            <h4 class="date">2020-06-02</h4>
+            <h4 class="date">2020-09-22</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/akoyabio/phenoptr/blob/master/vignettes/find_and_count_touching_cells.Rmd"><code>vignettes/find_and_count_touching_cells.Rmd</code></a></small>
       <div class="hidden name"><code>find_and_count_touching_cells.Rmd</code></div>
@@ -118,15 +118,17 @@
 <a href="#count-touching-cells-with-existing-phenotypes" class="anchor"></a>Count touching cells with existing phenotypes</h2>
 <p><code>count_touching_cells</code> processes a single field and multiple pairs of phenotypes. The specification of pairs and phenotypes is flexible to accommodate any requirement. The simplest case uses the phenotype names from inForm to select cells. For this case, only the <code>pairs</code> argument is needed.</p>
 <p>For example, this code finds and visualizes touches between <code>CK+</code> and <code>CD8+</code> cells, and also between <code>CK+</code> and <code>CD68+</code> cells:</p>
-<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">phenoptr</span>)
+<div class="sourceCode" id="cb1"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://akoyabio.github.io/phenoptr">phenoptr</a></span>)
 
-<span class="no">cell_seg_path</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/sample_cell_seg_data.html">sample_cell_seg_path</a></span>()
-<span class="no">pairs</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(
+<span class="kw">cell_seg_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sample_cell_seg_data.html">sample_cell_seg_path</a></span>()
+<span class="kw">pairs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(
   <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">'CK+'</span>, <span class="st">'CD8+'</span>),
   <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">'CK+'</span>, <span class="st">'CD68+'</span>)
 )
-<span class="no">colors</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="st">'CK+'</span><span class="kw">=</span><span class="st">'cyan'</span>, <span class="st">'CD8+'</span><span class="kw">=</span><span class="st">'yellow'</span>, <span class="st">'CD68+'</span><span class="kw">=</span><span class="st">'magenta'</span>)
-<span class="fu"><a href="../reference/count_touching_cells.html">count_touching_cells</a></span>(<span class="no">cell_seg_path</span>, <span class="no">pairs</span>, <span class="no">colors</span>)</pre></body></html></div>
+<span class="kw">colors</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="st">'CK+'</span>=<span class="st">'cyan'</span>, <span class="st">'CD8+'</span>=<span class="st">'yellow'</span>, <span class="st">'CD68+'</span>=<span class="st">'magenta'</span>)
+<span class="fu"><a href="../reference/count_touching_cells.html">count_touching_cells</a></span>(<span class="kw">cell_seg_path</span>, <span class="kw">pairs</span>, <span class="kw">colors</span>)
+</pre></div>
 <p><small></small></p>
 <pre><code>## # A tibble: 2 x 9
 ##   slide_id source phenotype1 phenotype2 total1 total2 p1_touch_p2 p2_touch_p1
@@ -145,39 +147,45 @@
 See the tutorial <a href="https://akoyabio.github.io/phenoptr/articles/selecting_cells.html">Selecting cells within a cell segmentation table</a> for more details on selecting pairs.
 </div>
 </div>
-<div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="no">pairs</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(
+<div class="sourceCode" id="cb3"><pre class="downlit">
+<span class="kw">pairs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(
   <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">'CK+ PDL1+'</span>, <span class="st">'CD8+'</span>),
   <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">'CK+ PDL1+'</span>, <span class="st">'CD68+'</span>)
 )
 
-<span class="no">phenotype_rules</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(
-  <span class="st">'CK+ PDL1+'</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="st">'CK+'</span>, ~<span class="no">`Entire Cell PDL1 (Opal 520) Mean`</span><span class="kw">&gt;</span><span class="fl">3</span>)
+<span class="kw">phenotype_rules</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(
+  <span class="st">'CK+ PDL1+'</span>=<span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="st">'CK+'</span>, <span class="op">~</span><span class="kw">`Entire Cell PDL1 (Opal 520) Mean`</span><span class="op">&gt;</span><span class="fl">3</span>)
 )
-<span class="no">colors</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="st">'CK+ PDL1+'</span><span class="kw">=</span><span class="st">'cyan'</span>, <span class="st">'CD8+'</span><span class="kw">=</span><span class="st">'yellow'</span>, <span class="st">'CD68+'</span><span class="kw">=</span><span class="st">'magenta'</span>)
-<span class="fu"><a href="../reference/count_touching_cells.html">count_touching_cells</a></span>(<span class="no">cell_seg_path</span>, <span class="no">pairs</span>, <span class="no">colors</span>, <span class="no">phenotype_rules</span>)</pre></body></html></div>
+<span class="kw">colors</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="st">'CK+ PDL1+'</span>=<span class="st">'cyan'</span>, <span class="st">'CD8+'</span>=<span class="st">'yellow'</span>, <span class="st">'CD68+'</span>=<span class="st">'magenta'</span>)
+<span class="fu"><a href="../reference/count_touching_cells.html">count_touching_cells</a></span>(<span class="kw">cell_seg_path</span>, <span class="kw">pairs</span>, <span class="kw">colors</span>, <span class="kw">phenotype_rules</span>)
+</pre></div>
 </div>
 <div id="count-touching-cells-for-multiple-fields" class="section level2">
 <h2 class="hasAnchor">
 <a href="#count-touching-cells-for-multiple-fields" class="anchor"></a>Count touching cells for multiple fields</h2>
 <p>Using <code><a href="https://purrr.tidyverse.org/reference/map.html">purrr::map</a></code>, you can find touching cells for all cell seg data files in a single directory.</p>
-<div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="co"># Directory containing data files</span>
-<span class="no">base_path</span> <span class="kw">&lt;-</span> <span class="st">'/path/to/data'</span>
+<div class="sourceCode" id="cb4"><pre class="downlit">
+<span class="co"># Directory containing data files</span>
+<span class="kw">base_path</span> <span class="op">&lt;-</span> <span class="st">'/path/to/data'</span>
 
 <span class="co"># A subdirectory for the results</span>
-<span class="no">output_base</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="no">base_path</span>, <span class="st">'touches'</span>)
+<span class="kw">output_base</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="kw">base_path</span>, <span class="st">'touches'</span>)
 
 <span class="co"># All cell seg data files in base_path</span>
-<span class="no">files</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/list_cell_seg_files.html">list_cell_seg_files</a></span>(<span class="no">base_path</span>)
+<span class="kw">files</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/list_cell_seg_files.html">list_cell_seg_files</a></span>(<span class="kw">base_path</span>)
 
 <span class="co"># Count and visualize touching cells</span>
-<span class="no">touch_counts</span> <span class="kw">&lt;-</span> <span class="kw pkg">purrr</span><span class="kw ns">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html">map_df</a></span>(<span class="no">files</span>, <span class="kw">function</span>(<span class="no">path</span>) {
-  <span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span>(<span class="st">'Processing'</span>, <span class="no">path</span>, <span class="st">'\n'</span>)
-  <span class="fu"><a href="../reference/count_touching_cells.html">count_touching_cells</a></span>(<span class="no">path</span>, <span class="no">pairs</span>, <span class="no">colors</span>, <span class="no">phenotype_rules</span>,
-                       <span class="kw">output_base</span><span class="kw">=</span><span class="no">output_base</span>)
-})</pre></body></html></div>
+<span class="kw">touch_counts</span> <span class="op">&lt;-</span> <span class="kw">purrr</span>::<span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html">map_df</a></span>(<span class="kw">files</span>, <span class="fu">function</span>(<span class="kw">path</span>) {
+  <span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span>(<span class="st">'Processing'</span>, <span class="kw">path</span>, <span class="st">'\n'</span>)
+  <span class="fu"><a href="../reference/count_touching_cells.html">count_touching_cells</a></span>(<span class="kw">path</span>, <span class="kw">pairs</span>, <span class="kw">colors</span>, <span class="kw">phenotype_rules</span>,
+                       output_base=<span class="kw">output_base</span>)
+})
+</pre></div>
 <p>The result of the above is a <code>tibble</code> which may be written to a CSV file:</p>
-<div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="no">touches_path</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="no">output_base</span>, <span class="st">'TouchCounts.csv'</span>)
-<span class="kw pkg">readr</span><span class="kw ns">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/write_delim.html">write_csv</a></span>(<span class="no">touch_counts</span>, <span class="no">touches_path</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb5"><pre class="downlit">
+<span class="kw">touches_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="kw">output_base</span>, <span class="st">'TouchCounts.csv'</span>)
+<span class="kw">readr</span>::<span class="fu"><a href="https://readr.tidyverse.org/reference/write_delim.html">write_csv</a></span>(<span class="kw">touch_counts</span>, <span class="kw">touches_path</span>)
+</pre></div>
 <div class="panel panel-default">
 <div class="panel-body">
 The tutorial <a href="https://akoyabio.github.io/phenoptrExamples/articles/count_touches.html">Aggregating touch counts</a> in the <code>phenoptrExamples</code> package demonstrates aggregation across multiple fields from multiple samples.
@@ -201,7 +209,7 @@ The tutorial <a href="https://akoyabio.github.io/phenoptrExamples/articles/count
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

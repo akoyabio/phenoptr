@@ -58,10 +58,16 @@
     <loc>http://akoyabio.github.io/phenoptr/reference/get_field_info.html</loc>
   </url>
   <url>
+    <loc>http://akoyabio.github.io/phenoptr/reference/get_map_path.html</loc>
+  </url>
+  <url>
     <loc>http://akoyabio.github.io/phenoptr/reference/list_cell_seg_files.html</loc>
   </url>
   <url>
     <loc>http://akoyabio.github.io/phenoptr/reference/make_phenotype_column.html</loc>
+  </url>
+  <url>
+    <loc>http://akoyabio.github.io/phenoptr/reference/make_ppp.html</loc>
   </url>
   <url>
     <loc>http://akoyabio.github.io/phenoptr/reference/parse_phenotypes.html</loc>
@@ -73,6 +79,12 @@
     <loc>http://akoyabio.github.io/phenoptr/reference/phenoptr-package.html</loc>
   </url>
   <url>
+    <loc>http://akoyabio.github.io/phenoptr/reference/phenotype_columns.html</loc>
+  </url>
+  <url>
+    <loc>http://akoyabio.github.io/phenoptr/reference/phenotype_names.html</loc>
+  </url>
+  <url>
     <loc>http://akoyabio.github.io/phenoptr/reference/plot_diverging.html</loc>
   </url>
   <url>
@@ -80,6 +92,9 @@
   </url>
   <url>
     <loc>http://akoyabio.github.io/phenoptr/reference/read_components.html</loc>
+  </url>
+  <url>
+    <loc>http://akoyabio.github.io/phenoptr/reference/read_field_info.html</loc>
   </url>
   <url>
     <loc>http://akoyabio.github.io/phenoptr/reference/read_maps.html</loc>

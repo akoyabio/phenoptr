@@ -37,5 +37,12 @@ specified tissue categories and field.
 suppressPackageStartupMessages(library(spatstat))
 pp <- make_ppp(sample_cell_seg_data, sample_cell_seg_folder(),
   "CD8+", tissue_categories="Tumor")
-plot(pp)
+plot(pp, show.window=FALSE, main='')
+
+# To include multiple phenotypes in a single point pattern,
+# create them separately and join them with [spatstat::superimpose()].
+
+pp2 <- make_ppp(sample_cell_seg_data, sample_cell_seg_folder(),
+  "CK+", tissue_categories="Tumor")
+plot(superimpose(pp2, pp), cols=c('red', 'blue'), show.window=FALSE, main='')
 }

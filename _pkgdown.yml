@@ -65,6 +65,7 @@ reference:
       - count_within_many
       - count_touching_cells
       - count_touching_cells_fast
+      - make_ppp
       - spatial_distribution_report
   - title: "Estimate cell density"
     contents:

@@ -24,17 +24,17 @@ produced by calling \code{\link{distance_matrix}}.}
 }
 \value{
 A \code{\link{tibble}} with five columns and one row for each
-  value in \code{radius}:
-  \describe{
-   \item{\code{radius}}{The value of \code{radius} for this row.}
-   \item{\code{from_count}}{The number of \code{from} cells found in
-    \code{csd}.}
-   \item{\code{to_count}}{The number of \code{to} cells found in \code{csd}.}
-   \item{\code{from_with}}{The number of \code{from} cells with a
-   \code{to} cell within \code{radius}.}
-   \item{\code{within_mean}}{The average number of \code{to} cells found
-   within \code{radius} microns of each \code{from} cell.}
- }
+value in \code{radius}:
+\describe{
+\item{\code{radius}}{The value of \code{radius} for this row.}
+\item{\code{from_count}}{The number of \code{from} cells found in
+\code{csd}.}
+\item{\code{to_count}}{The number of \code{to} cells found in \code{csd}.}
+\item{\code{from_with}}{The number of \code{from} cells with a
+\code{to} cell within \code{radius}.}
+\item{\code{within_mean}}{The average number of \code{to} cells found
+within \code{radius} microns of each \code{from} cell.}
+}
 }
 \description{
 Count the number of \code{from} cells having a \code{to} cell within
@@ -56,15 +56,15 @@ use \code{\link[dplyr]{group_by}} and \code{\link[dplyr]{do}} to call
 
 There are some subtleties to the count calculation.
 \itemize{
-  \item It is not symmetric in \code{from} and \code{to}.
-  For example the number of tumor cells with a
-  macrophage within 25 microns is not the same as the number of macrophages
-  with a tumor cell within 25 microns.
-  \item \code{from_count*within_mean} is \emph{not} the number of
-  \code{to} cells within \code{radius} of a \code{from} cell, it may
-  count \code{to} cells multiple times.
-  \item Surprisingly, \code{from_count*within_mean} is symmetric in
-  \code{from} and \code{to}. The double-counting works out.
+\item It is not symmetric in \code{from} and \code{to}.
+For example the number of tumor cells with a
+macrophage within 25 microns is not the same as the number of macrophages
+with a tumor cell within 25 microns.
+\item \code{from_count*within_mean} is \emph{not} the number of
+\code{to} cells within \code{radius} of a \code{from} cell, it may
+count \code{to} cells multiple times.
+\item Surprisingly, \code{from_count*within_mean} is symmetric in
+\code{from} and \code{to}. The double-counting works out.
 }
 
 To aggregate \code{within_mean} across multiple samples (e.g. by Slide ID)
