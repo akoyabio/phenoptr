@@ -36,6 +36,7 @@ Suggests:
     covr,
     doParallel,
     rtree,
+    sf,
     vroom
 VignetteBuilder: knitr
 URL: https://akoyabio.github.io/phenoptr/

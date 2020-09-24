@@ -103,3 +103,43 @@ make_ppp = function(csd, export_path, pheno,
   pp
 }
 
+
+# Operations with ROIs
+# These require {sf}
+
+#' Read polygons and tags from a Phenochart annotation.
+#'
+#' Reads the polygons for all ROI annotations in a single file.
+#' @param xml_path Path to an annotations file.
+#' @return An `sf::sf` object with columns `tags` and `geometry`. Multiple
+#' tags are separated by spaces in a single string.
+#' @export
+#' @importFrom magrittr %>%
+read_phenochart_polygons = function(xml_path) {
+  xml = xml2::read_xml(xml_path)
+  rois = xml2::xml_find_all(xml, './/Annotations-i[@subtype="ROIAnnotation"]')
+  result = purrr::map_dfr(rois, function(roi) {
+    tags = xml2::xml_find_all(roi, './/Tags-i') %>%
+      xml2::xml_text() %>%
+      paste(collapse=' ')
+    locs = xml2::xml_find_all(roi, './/Perimeter-i')
+    x = xml2::xml_find_all(locs, './/X') %>% xml2::xml_double()
+    y = xml2::xml_find_all(locs, './/Y') %>% xml2::xml_double()
+    poly = sf::st_polygon(list(matrix(c(x, y), ncol=2)))
+    sf::st_sf(tags=tags,
+              geometry=sf::st_sfc(poly))
+  })
+
+  if (nrow(result) == 0)
+    result = tibble::tibble(tags=c(), geometry=c())
+  result
+}
+
+#' Add a geometry column to a cell seg table
+#' @param csd A cell seg data table
+#' @return The table with a `geometry` column of `sf::st_point` objects
+#' @export
+add_geometry = function(csd) {
+  sf::st_as_sf(csd, coords=c('Cell X Position', 'Cell Y Position'),
+               remove=FALSE, dim='XY')
+}
