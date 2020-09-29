@@ -18,10 +18,7 @@ list_cell_seg_files <- function(path, ...) {
 #'
 #' \code{read_cell_seg_data} makes it easier to use data from Akoya Biosciences'
 #' inForm program. It reads data files written by inForm 2.0 and later and does
-#' useful cleanup on the result. Data files written by inForm 2.0 can be read
-#' easily using \code{\link[utils]{read.delim}} or
-#' \code{\link[readr]{read_tsv}}. However there is still some useful cleanup to
-#' be done.
+#' useful cleanup on the result.
 #'
 #' \code{read_cell_seg_data} reads both single-image tables and merged tables
 #' and does useful cleanup on the data:
@@ -82,40 +79,13 @@ read_cell_seg_data <- function(
   if (path=='')
     stop("File name is missing.")
 
-  # Read the data. Supplying col_types prevents output of the imputed types.
-  # Supplying the grouping_mark keeps readr from mis-handling commas
-  # that are decimal separators.
-  # See https://github.com/akoyabio/phenoptrReports/issues/31
+  # Figure out what we are reading
+  data_types = get_col_types_and_decimal_mark(path)
+
+  # Read the data.
   df <- readr::read_tsv(path, na=c('NA', '#N/A'),
-                        locale=readr::locale(grouping_mark=''),
-                        col_types=readr::cols())
-
-  # If columns containing "Mean" are character, check to see if the
-  # file may have been written in a locale that uses comma as a decimal
-  # separator. ("Mean" is not the only affected column, it is a proxy.)
-  mean_cols = df %>%
-    dplyr::select(dplyr::contains('Mean'))
-  mean_class = mean_cols %>% purrr::map(class)
-
-  if (any(mean_class=='character')) {
-    # Try to confirm; just pick one column
-    char_col = mean_cols[which(mean_class=='character')][[1]]
-    if (any(stringr::str_detect(char_col, ','))) {
-      message('Reading cell seg data with comma separator.')
-      df <- readr::read_tsv(path, na=c('NA', '#N/A'),
-                            locale=readr::locale(decimal_mark=','),
-                            col_types=readr::cols())
-    }
-
-    # Check again
-    mean_cols = df %>%
-      dplyr::select(dplyr::contains('Mean'))
-    mean_class = mean_cols %>% purrr::map(class)
-
-    if (any(mean_class=='character'))
-      stop('Error reading cell seg data: ',
-           'Expression columns have character values')
-  }
+          locale=readr::locale(decimal_mark=data_types$decimal_mark),
+          col_types=data_types$col_spec)
 
   # If any of these fields has missing values, the file may be damaged.
   no_na_cols = c("Path", "Sample Name", "Tissue Category", "Phenotype",
@@ -213,6 +183,74 @@ read_cell_seg_data <- function(
   }
 
   dplyr::as_tibble(df)
+}
+
+# Make a best effort to get column types and decimal mark from the data.
+# The default imputation of column types fails if the first 1,000 rows
+# contain #N/A for any column. This can happen for e.g. Distance to Category Edge
+# @return A list with `col_spec` and `decimal_mark` items.
+get_col_types_and_decimal_mark = function(path) {
+  decimal_mark = '.' # Our default
+
+  # Read the first 1000 lines of data.
+  # Supplying col_types prevents console output of the imputed types.
+  # Supplying the grouping_mark keeps readr from mis-handling commas
+  # that are decimal separators.
+  # See https://github.com/akoyabio/phenoptrReports/issues/31
+  df <- readr::read_tsv(path, na=c('NA', '#N/A'), n_max=1000,
+                        locale=readr::locale(grouping_mark=''),
+                        col_types=readr::cols())
+
+  # If columns containing "Mean" are character, check to see if the
+  # file may have been written in a locale that uses comma as a decimal
+  # separator. ("Mean" is not the only affected column, it is a proxy.)
+  mean_cols = df %>%
+    dplyr::select(dplyr::contains('Mean'))
+  mean_class = mean_cols %>% purrr::map(class)
+
+  if (any(mean_class=='character')) {
+    # Try to confirm; just pick one column
+    char_col = mean_cols[which(mean_class=='character')][[1]]
+    if (any(stringr::str_detect(char_col, ','))) {
+      message('Reading cell seg data with comma separator.')
+      df <- readr::read_tsv(path, na=c('NA', '#N/A'), n_max=1000,
+                            locale=readr::locale(decimal_mark=','),
+                            col_types=readr::cols())
+    }
+
+    # Check again
+    mean_cols = df %>%
+      dplyr::select(dplyr::contains('Mean'))
+    mean_class = mean_cols %>% purrr::map(class)
+
+    if (any(mean_class=='character'))
+      stop('Error reading cell seg data: ',
+           'Expression columns have character values')
+
+    decimal_mark = ','
+  }
+
+  # Now clean up the column spec. Start with the imputed types from readr.
+  col_spec = readr::spec(df)$cols
+
+  # If df has fewer than 1000 rows, we read the entire file and the
+  # imputed column types should be fine.
+  if (nrow(df) < 1000)
+    return(list(col_spec=col_spec, decimal_mark=decimal_mark))
+
+  # Explicitly assign column type for columns that may not be represented
+  # in the first 1000 rows
+  # Notes:
+  # - Cell ID is "all" in summary tables, don't make it numeric here
+  # - Columns such as "Total Cells which are populated in summary tables and
+  #   present but unpopulated in detail tables don't need to be addressed here.
+  #   They will be read correctly in the summary tables and removed from the
+  #   detail tables.
+  col_names = names(col_spec)
+  col_spec[col_names=='Process Region ID'] = 'i'
+  col_spec[stringr::str_detect(col_names, 'Distance')] = 'd'
+
+  list(col_spec=do.call(readr::cols, col_spec), decimal_mark=decimal_mark)
 }
 
 # Convert cell locations back to pixels if possible

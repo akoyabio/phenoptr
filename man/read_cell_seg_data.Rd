@@ -29,10 +29,7 @@ containing the cleaned-up data set.
 \description{
 \code{read_cell_seg_data} makes it easier to use data from Akoya Biosciences'
 inForm program. It reads data files written by inForm 2.0 and later and does
-useful cleanup on the result. Data files written by inForm 2.0 can be read
-easily using \code{\link[utils]{read.delim}} or
-\code{\link[readr]{read_tsv}}. However there is still some useful cleanup to
-be done.
+useful cleanup on the result.
 }
 \details{
 \code{read_cell_seg_data} reads both single-image tables and merged tables

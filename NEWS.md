@@ -1,3 +1,8 @@
+# phenoptr 0.2.8.9000
+
+- Improved the way `read_cell_seg_data` determines column types to prevent
+  errors in some edge cases.
+  
 # phenoptr 0.2.8
 **2020-08-22**
 
