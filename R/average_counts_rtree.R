@@ -96,6 +96,10 @@ count_within_detail = function(csd, phenotypes=NULL, radii) {
   if ('Sample Name' %in% names(csd) && length(unique(csd$`Sample Name`))>1)
     stop('Data appears to contain multiple samples.')
 
+  if (!function_exists('rtree', 'countWithinDistance'))
+    stop('Please install the rtree package with the command\n',
+         '  remotes::install_github(\'akoyabio/rtree\')')
+
   phenotypes = validate_phenotypes(phenotypes, csd)
   field_locs = csd %>%
     dplyr::select(X=`Cell X Position`, Y=`Cell Y Position`) %>%
