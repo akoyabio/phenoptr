@@ -12,7 +12,7 @@ for \code{phenoptr::parse_phenotypes}.}
 
 \item{available}{A character vector of available phenotypes}
 
-\item{csd}{If supplied, any formula arguments will be checked for
+\item{csd}{If supplied, any formula and tag arguments will be checked for
 validity against \code{csd}.}
 }
 \value{

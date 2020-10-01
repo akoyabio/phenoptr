@@ -42,6 +42,7 @@ interpreted as meaning "All cells".
 \item A phenotype starting with '~' will be interpreted as a formula expression.
 Formulas may be standalone phenotypes or combined with slash (/); they
 cannot be combined with comma (,).
+\item A phenotype starting with '#' will be interpreted as a hashtag.
 }
 }
 
@@ -53,7 +54,9 @@ cannot be combined with comma (,).
 # - CD3+ cells with membrane PDL-1 > 5
 # - All cells regardless of phenotype
 # - Macrophages, defined as either CD68+ OR CD163+
+# - Cells tagged as #TumorMargin
 parse_phenotypes("CD3+", "CD3+/CD8+", "CD3+/CD8-",
                  "CD3+/PDL-1+"="CD3+/~`Membrane PDL-1 (Opal 520) Mean`>5",
-                 "Total Cells", Macrophage="CD68+,CD163+")
+                 "Total Cells", Macrophage="CD68+,CD163+",
+                 Margin="#TumorMargin")
 }

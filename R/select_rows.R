@@ -5,7 +5,7 @@
 #' @param pheno Text description of a phenotype,
 #' for `phenoptr::parse_phenotypes`.
 #' @param available A character vector of available phenotypes
-#' @param csd If supplied, any formula arguments will be checked for
+#' @param csd If supplied, any formula and tag arguments will be checked for
 #' validity against `csd`.
 #' @return An error message or empty string
 #' @export
@@ -17,16 +17,16 @@ validate_phenotype_definitions = function(pheno, available, csd=NULL) {
   phenos = stringr::str_split(pheno, '[,/]')[[1]] %>%
     stringr::str_trim()
 
-  if (!all(stringr::str_detect(phenos, '^~|[+-]$')))
-    return('Phenotype definitions must start with ~ or end with + or -.')
+  if (!all(stringr::str_detect(phenos, '^[~#]|[+-]$')))
+    return('Phenotype definitions must start with ~ or #, or end with + or -.')
 
   # Check non-formula phenotypes
-  pheno_strings = purrr::discard(phenos, ~startsWith(.x, '~'))
+  pheno_strings = purrr::discard(phenos, ~stringr::str_starts(.x, '[~#]'))
 
   pheno_strings = stringr::str_remove(pheno_strings, '[+-]$')
-  missing = !pheno_strings %in% available
-  if (any(missing))
-    return(paste0('Unknown phenotype(s): ', paste(phenos[missing], sep=', ')))
+  missing = setdiff(pheno_strings, available)
+  if (length(missing) > 0)
+    return(paste0('Unknown phenotype(s): ', paste(missing, sep=', ')))
 
   # Check formula expressions
   pheno_formulae = purrr::keep(phenos, ~startsWith(.x, '~'))
@@ -51,6 +51,16 @@ validate_phenotype_definitions = function(pheno, available, csd=NULL) {
       }
     }
   }
+
+  # Check hashtags
+  pheno_tags = purrr::keep(phenos, ~startsWith(.x, '#'))
+  if (!is.null(csd)) {
+    # Hashtags should be directly available as column names
+    missing = setdiff(pheno_tags, names(csd))
+    if (length(missing) > 0)
+      return(paste0('Unknown tag(s): ', paste(missing, sep=', ')))
+  }
+
   return('')
 }
 
@@ -85,6 +95,7 @@ validate_phenotype_definitions = function(pheno, available, csd=NULL) {
 #' - A phenotype starting with '~' will be interpreted as a formula expression.
 #'   Formulas may be standalone phenotypes or combined with slash (/); they
 #'   cannot be combined with comma (,).
+#' - A phenotype starting with '#' will be interpreted as a hashtag.
 #'
 #' @importFrom magrittr %>%
 #' @export
@@ -96,9 +107,11 @@ validate_phenotype_definitions = function(pheno, available, csd=NULL) {
 #' # - CD3+ cells with membrane PDL-1 > 5
 #' # - All cells regardless of phenotype
 #' # - Macrophages, defined as either CD68+ OR CD163+
+#' # - Cells tagged as #TumorMargin
 #' parse_phenotypes("CD3+", "CD3+/CD8+", "CD3+/CD8-",
 #'                  "CD3+/PDL-1+"="CD3+/~`Membrane PDL-1 (Opal 520) Mean`>5",
-#'                  "Total Cells", Macrophage="CD68+,CD163+")
+#'                  "Total Cells", Macrophage="CD68+,CD163+",
+#'                  Margin="#TumorMargin")
 #' @md
 parse_phenotypes = function(...) {
   phenos = list(...)
@@ -119,7 +132,7 @@ parse_phenotypes = function(...) {
   # If no names were given, phenos will have names(pheno) == NULL
   # If any names were given, missing names will be ''
   # One way or another, get a named list.
-  # Make nicer names for formulas by deleting ~ and `
+  # Make nicer names for formulas and tags by deleting ~, ` and #
   clean_names = phenotype_names(phenos)
   if (is.null(names(phenos))) names(phenos)=clean_names else {
     no_names = names(phenos) == ''
@@ -151,11 +164,13 @@ parse_phenotypes = function(...) {
                          stop('Invalid phenotype definition: ', .x)
                        else .x))
 
-    # Starts with ~, its a formula
+    # If it starts with ~, it's a formula
     else if (startsWith(pheno, '~'))
       stats::as.formula(pheno, globalenv())
-    # Ends with +- and no '/' or ',' is a single phenotype
+    # If it ends with +- and no '/' or ',' it's a single phenotype
     else if (stringr::str_detect(pheno, '[+-]$')) pheno
+    # If it starts with # it's a hashtag, treat it the same as a phenotype name
+    else if (stringr::str_detect(pheno, '^#')) pheno
 
     # Contains Total or All returns NA which signals "Select All"
     else if (stringr::str_detect(pheno, stringr::regex('Total|All',
@@ -214,7 +229,7 @@ split_and_trim = function(str, pattern) {
 #' @return A vector of name for `phenos`.
 #' @keywords internal
 phenotype_names = function(phenos) {
-  stringr::str_remove_all(phenos, '[~`]')
+  stringr::str_remove_all(phenos, '[#~`]')
 }
 
 #' Flexibly select rows of a data frame.
@@ -224,7 +239,8 @@ phenotype_names = function(phenos) {
 #'
 #' `select_rows` implements a flexible mechanism for selecting cells (rows)
 #' from a cell segmentation table. Cells may be selected by single or
-#' multiple phenotype, by expression level, or combinations of both.
+#' multiple phenotype, by expression level, by hashtag,
+#' or combinations of all three.
 #'
 #' See the tutorial
 #' [Selecting cells within a cell segmentation table](https://akoyabio.github.io/phenoptr/articles/selecting_cells.html)
@@ -234,8 +250,8 @@ phenotype_names = function(phenos) {
 #' @param sel May be a character vector, a one-sided formula, a list
 #'   containing such or `NA`. A character vector is interpreted as
 #'   the name(s) of one or
-#'   more phenotypes and selects any matching phenotype. A formula is
-#'   interpreted as an expression on the columns of `csd`.
+#'   more phenotypes or hashtags and selects any matching phenotype.
+#'   A formula is interpreted as an expression on the columns of `csd`.
 #'   Multiple list items are joined with AND. `NA` is interpreted
 #'   as "select all". It is convenient for lists of selection criteria.
 #' @return A logical vector of length `nrow(csd)` which selects rows
@@ -259,13 +275,23 @@ phenotype_names = function(phenos) {
 select_rows <- function(csd, sel) {
   stopifnot(is.data.frame(csd))
 
-  # Evaluate a single phenotype in a per-marker file
+  # Evaluate a single phenotype or hashtag in a per-marker file
   evaluate_per_marker = function(s) {
+    if (startsWith(s, '#')) {
+      # Handle hashtag == column name
+      if (!s %in% names(csd))
+        stop(s, ' is not a valid hashtag.')
+
+      # Hashtag columns are boolean already, just return it
+      return(csd[[s]])
+    }
+
+    # Process an actual phenotype
     if (!stringr::str_detect(s, '[+-]$'))
-      stop(paste0(s, ' is not a valid per-marker phenotype name.'))
+      stop(s, ' is not a valid per-marker phenotype name.')
     column_name = paste('Phenotype', stringr::str_remove(s, '[+-]$'))
     if (!column_name %in% names(csd))
-      stop(paste0("No '", column_name, "' column in data."))
+      stop("No '", column_name, "' column in data.")
     csd[[column_name]] == s
   }
 
@@ -278,7 +304,11 @@ select_rows <- function(csd, sel) {
       # Selector is one or more phenotype names,
       # look for match with phenotype column
       # Any match qualifies
+      # Note: We don't handle hashtags here, they are added by the same
+      # process that splits the Phenotype column
       if ('Phenotype' %in% names(csd)) {
+        if (any(startsWith(s, '#')))
+          stop('Hashtag selectors are not supported in un-consolidated data.')
         csd[['Phenotype']] %in% s
       }
       else {
@@ -307,33 +337,6 @@ select_rows <- function(csd, sel) {
   result
 }
 
-# Helper function to normalize lists of selectors into named lists of selectors,
-# so we can give names to the selected items.
-normalize_selector = function(sel) {
-  if (is.null(sel) || length(sel)==0)
-    stop("Empty selector")
-
-  stopifnot(is.list(sel))
-
-  if (!is.null(names(sel)))
-    return (sel)
-
-  # Name a single selector
-  name_item = function(s) {
-    if (is.character(s))
-      return (paste(s, collapse='|'))
-    else if (lazyeval::is_formula(s))
-      return (lazyeval::f_text(s))
-    else if (is.list(s))
-      return (paste(purrr::map_chr(s, name_item), collapse='&'))
-    else
-      stop('Unknown selector type')
-  }
-
-  names(sel) = purrr::map_chr(sel, name_item)
-  sel
-}
-
 # Make rules that select phenotypes.
 #
 # Given a list of phenotype names and a (possibly empty) list of rules
@@ -357,9 +360,10 @@ make_phenotype_rules <- function(phenotypes, existing_rules=NULL) {
     stop("A rule was given for an unused phenotype: ",
          paste(extra_names, sep=', '))
 
-  # The default rule is just the phenotype name itself.
+  # The default rule is just the phenotype name itself with a nice name.
   missing_names = setdiff(phenotypes, existing_names)
-  new_rules = purrr::set_names(as.list(missing_names))
+  new_rules = purrr::set_names(as.list(missing_names),
+                               phenotype_names(missing_names))
 
   c(existing_rules, new_rules)
 }
@@ -375,7 +379,7 @@ validate_phenotypes = function(phenotypes, csd) {
     phenotypes = unique_phenotypes(csd)
   stopifnot(length(phenotypes) > 0)
   if (!rlang::is_named(phenotypes))
-    phenotypes = rlang::set_names(phenotypes)
+    phenotypes = rlang::set_names(phenotypes, phenotype_names(phenotypes))
   as.list(phenotypes)
 }
 

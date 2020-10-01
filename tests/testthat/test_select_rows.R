@@ -3,6 +3,7 @@ context('select_rows')
 library(dplyr)
 library(testthat)
 
+# Single phenotype column
 test_data = tibble(
   Phenotype = c(rep('tumor', 3), rep('cd8', 2)),
   Expr = c(1:2, 1:3),
@@ -10,13 +11,27 @@ test_data = tibble(
   E3 = c(1, 2, 1, 2, 1)
 )
 
+# Column per phenotype and hashtag
+test_data2 = tibble(
+  `Phenotype tumor` = c(rep('tumor+', 3), rep('tumor-', 2)),
+  `Phenotype cd8` = c(rep('cd8-', 3), rep('cd8+', 2)),
+  Expr = c(1:2, 1:3),
+  E2 = c(1, 1, 2, 2, 1),
+  E3 = c(1, 2, 1, 2, 1),
+  `#margin` = c(T, F, F, F, T)
+)
+
 test_that('NA selects all', {
   expect_equal(select_rows(test_data, NA), c(T, T, T, T, T))
+  expect_equal(select_rows(test_data2, NA), c(T, T, T, T, T))
 })
 
 test_that("Select phenotype works", {
   expect_equal(select_rows(test_data, 'tumor'), c(T, T, T, F, F))
   expect_equal(select_rows(test_data, 'cd8'), c(F, F, F, T, T))
+
+  expect_equal(select_rows(test_data2, 'tumor+'), c(T, T, T, F, F))
+  expect_equal(select_rows(test_data2, 'cd8+'), c(F, F, F, T, T))
 })
 
 
@@ -39,6 +54,15 @@ test_that('Phenotype + expression works', {
                c(F, F, F, F, T))
   expect_equal(select_rows(test_data, list(~E2==1, 'cd8')),
                c(F, F, F, F, T))
+
+  expect_equal(select_rows(test_data2, list('tumor+', ~Expr==1)),
+               c(T, F, T, F, F))
+  expect_equal(select_rows(test_data2, list(~Expr==1, 'tumor+')),
+               c(T, F, T, F, F))
+  expect_equal(select_rows(test_data2, list('cd8+', ~E2==1)),
+               c(F, F, F, F, T))
+  expect_equal(select_rows(test_data2, list(~E2==1, 'cd8+')),
+               c(F, F, F, F, T))
 })
 
 test_that('Multiple phenotypes work', {
@@ -48,10 +72,19 @@ test_that('Multiple phenotypes work', {
                c(T, T, T, T, T))
   expect_equal(select_rows(test_data, list(~E3==1, c('tumor', 'cd8'))),
                c(T, F, T, F, T))
+
+  expect_equal(select_rows(test_data2, c('tumor+', 'cd8+')),
+               c(T, T, T, T, T))
+  expect_equal(select_rows(test_data2, list(c('tumor+', 'cd8+'))),
+               c(T, T, T, T, T))
+  expect_equal(select_rows(test_data2, list(~E3==1, c('tumor+', 'cd8+'))),
+               c(T, F, T, F, T))
 })
 
-test_that('Phenotype in as list are ANDed', {
+test_that('Phenotype in a list are ANDed', {
   expect_equal(select_rows(test_data, list('tumor', 'cd8')),
+               c(F, F, F, F, F))
+  expect_equal(select_rows(test_data2, list('tumor+', 'cd8+')),
                c(F, F, F, F, F))
 })
 
@@ -67,50 +100,25 @@ test_that('All together now', {
                c(T, F, F, F, F))
   expect_equal(select_rows(test_data, list(~E2==1, 'tumor', ~E3==1)),
                c(T, F, F, F, F))
+
+  expect_equal(select_rows(test_data2, list('tumor+', ~E2==1, ~E3==1)),
+               c(T, F, F, F, F))
+  expect_equal(select_rows(test_data2, list(~E2==1, 'tumor+', ~E3==1)),
+               c(T, F, F, F, F))
 })
 
-test_that('Normalize selector works', {
-  expect_error(normalize_selector(NULL))
-  expect_error(normalize_selector(c()))
-  expect_error(normalize_selector('cd8'))
-  expect_error(normalize_selector(list()))
+test_that('Hashtags work', {
+  # Hashtags are only supported with columns per phenotype
+  expect_error(select_rows(test_data, '#margin'), 'not supported')
 
-  expect_equal(normalize_selector(list(a='b')), list(a='b'))
-
-  expect_equal(normalize_selector(list('cd8')), list(cd8='cd8'))
-  expect_equal(normalize_selector(list(~Expr==1)),
-               list(`Expr == 1`= ~Expr==1))
-
-  # Note these are all different!
-  # Three selectors, each an individual phenotype
-  expect_equal(normalize_selector(list('a', 'b', 'c')),
-               list(a='a', b='b', c='c'))
-
-  # One selector, OR of three phenotypes
-  expect_equal(normalize_selector(list(c('a', 'b', 'c'))),
-               list(`a|b|c`=c('a', 'b', 'c')))
-
-  # One selector, AND of three phenotypes
-  expect_equal(normalize_selector(list(list('a', 'b', 'c'))),
-               list(`a&b&c`=list('a', 'b', 'c')))
-
-  # Mixed phenotype and threshold
-  expect_equal(normalize_selector(list(list('cd8', ~Expr==1))),
-               list(`cd8&Expr == 1`=list('cd8', ~Expr==1)))
-  expect_equal(normalize_selector(list(list('a', ~Expr==1, 'c'))),
-               list(`a&Expr == 1&c`=list('a', ~Expr==1, 'c')))
-
-  # Multiple selectors
-  expect_equal(normalize_selector(list(
-      list('cd8', ~Expr==1),
-      c('a', 'b', 'c'),
-      'tumor'
-    )),
-    list(
-      `cd8&Expr == 1`=list('cd8', ~Expr==1),
-      `a|b|c`=c('a', 'b', 'c'),
-      tumor='tumor'
-    ))
+  expect_equal(select_rows(test_data2, '#margin'),
+               c(T, F, F, F, T))
+  expect_equal(select_rows(test_data2, c('tumor+', '#margin')), # OR
+               c(T, T, T, F, T))
+  expect_equal(select_rows(test_data2, list('tumor+', '#margin')), # AND
+               c(T, F, F, F, F))
+  expect_equal(select_rows(test_data2, list(~E2==1, '#margin')), # AND
+               c(T, F, F, F, T))
 })
 
 test_that("make_phenotype_rules works", {

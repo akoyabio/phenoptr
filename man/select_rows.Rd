@@ -12,8 +12,8 @@ select_rows(csd, sel)
 \item{sel}{May be a character vector, a one-sided formula, a list
 containing such or \code{NA}. A character vector is interpreted as
 the name(s) of one or
-more phenotypes and selects any matching phenotype. A formula is
-interpreted as an expression on the columns of \code{csd}.
+more phenotypes or hashtags and selects any matching phenotype.
+A formula is interpreted as an expression on the columns of \code{csd}.
 Multiple list items are joined with AND. \code{NA} is interpreted
 as "select all". It is convenient for lists of selection criteria.}
 }
@@ -28,7 +28,8 @@ expressions.
 \details{
 \code{select_rows} implements a flexible mechanism for selecting cells (rows)
 from a cell segmentation table. Cells may be selected by single or
-multiple phenotype, by expression level, or combinations of both.
+multiple phenotype, by expression level, by hashtag,
+or combinations of all three.
 
 See the tutorial
 \href{https://akoyabio.github.io/phenoptr/articles/selecting_cells.html}{Selecting cells within a cell segmentation table}

@@ -1,5 +1,8 @@
 # phenoptr 0.2.8.9000
 
+- Add support for hashtags in `select_rows` and related functions.
+  This allows use of hashtags such as "#TumorMargin" in any
+  phenotype definition.
 - Add `add_geometry` and `read_phenochart_polygons` in support of 
   ROI processing in phenoptrReports.
 - Improve the way `read_cell_seg_data` determines column types to prevent
