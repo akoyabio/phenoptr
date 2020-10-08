@@ -20,3 +20,18 @@ test_that('make_ppp works', {
   expect_equal(pp$n, sum(sample_cell_seg_data$Phenotype=='CD8+'))
   expect_equal(levels(spatstat::marks(pp)), "CD8")
 })
+
+
+test_that('read_phenochart_polygons works', {
+  xml_path = test_path('test_data/test_annotations.xml')
+  rois = read_phenochart_polygons(xml_path)
+
+  # There are two ROIs. The first is not tagged and contains rectangles,
+  # the second is tagged and has no rectangles
+  expect_equal(rois$tags, c('', '#IncludeInResults #Test'))
+  expect_equal(purrr::map_int(rois$rects, length), c(10, 0))
+
+  expect_equal(as.numeric(sf::st_bbox(rois$rects[[1]])),
+               c(11547.55, 42073.73, 17093.25, 47617.44),
+               tolerance=0.01)
+})

@@ -126,13 +126,38 @@ read_phenochart_polygons = function(xml_path) {
     x = xml2::xml_find_all(locs, './/X') %>% xml2::xml_double()
     y = xml2::xml_find_all(locs, './/Y') %>% xml2::xml_double()
     poly = sf::st_polygon(list(matrix(c(x, y), ncol=2)))
-    sf::st_sf(tags=tags,
+    rects = parse_rects(roi)
+    parsed = sf::st_sf(tags=tags,
               geometry=sf::st_sfc(poly))
+    parsed$rects = list(rects)
+    parsed
   })
 
   if (nrow(result) == 0)
-    result = tibble::tibble(tags=c(), geometry=c())
+    result = NULL
   result
+}
+
+# Parse the rectangles from an ROI annotation
+# @param roi Parsed XML for an ROI annotation
+# @return An `sf::sfc` object with geometries for each rectangle in roi
+parse_rects = function(roi) {
+  fields = xml2::xml_find_all(roi, './/Fields-i[@subtype="RectangleAnnotation"]')
+  rects = purrr::map(fields, parse_field)
+  sf::st_sfc(rects)
+}
+
+parse_field = function(field) {
+  x = xml2::xml_find_first(field, './/Origin/X') %>% xml2::xml_double()
+  y = xml2::xml_find_first(field, './/Origin/Y') %>% xml2::xml_double()
+  width = xml2::xml_find_first(field, './/Size/Width') %>% xml2::xml_double()
+  height = xml2::xml_find_first(field, './/Size/Height') %>% xml2::xml_double()
+  pts = matrix(c(x, y,
+                 x, y+height,
+                 x+width, y+height,
+                 x+width, y,
+                 x, y), ncol=2, byrow=TRUE)
+  sf::st_polygon(list(pts))
 }
 
 #' Add a geometry column to a cell seg table
