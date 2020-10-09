@@ -109,10 +109,11 @@ make_ppp = function(csd, export_path, pheno,
 
 #' Read polygons and tags from a Phenochart annotation.
 #'
-#' Reads the polygons for all ROI annotations in a single file.
+#' Reads the polygons and included rectangles for all ROI annotations
+#' in a single file.
 #' @param xml_path Path to an annotations file.
-#' @return An `sf::sf` object with columns `tags` and `geometry`. Multiple
-#' tags are separated by spaces in a single string.
+#' @return An `sf::st_sf` object with columns `tags`, `geometry` and `rects`.
+#' Multiple tags for a single ROI are separated by spaces in a single string.
 #' @export
 #' @importFrom magrittr %>%
 read_phenochart_polygons = function(xml_path) {
@@ -167,4 +168,100 @@ parse_field = function(field) {
 add_geometry = function(csd) {
   sf::st_as_sf(csd, coords=c('Cell X Position', 'Cell Y Position'),
                remove=FALSE, dim='XY')
+}
+
+#' Compute corrected tissue category areas per annotation by clipping
+#' to a provided polygon and counting pixels.
+#' @param annotations Names of annotations to process
+#' @param roi Clipping polygon, as an `sf::st_sf` or `sf::st_sfc` object.
+#' @param export_path Path to a directory containing binary_seg_map files.
+#' These files must include TIFF tags for location and resolution.
+#' @param plot_path If not `NULL`, the file path at which to save
+#'  a check plot showing the given ROI and the trimmed tissue categories.
+#' @return A data frame containing computed tissue category areas for
+#' all annotations
+#' @export
+trim_tissue_categories = function(annotations, roi,
+                                  export_path, plot_path=NULL) {
+  # Sanity check the export path
+  expected_maps = paste0(annotations, '_binary_seg_maps.tif')
+  existing_maps = list.files(export_path, 'binary_seg_maps.tif')
+  if (!all(expected_maps %in% existing_maps))
+    stop('The export directory is missing segmentation maps.')
+
+  # raster::mask needs a Spatial* object
+  sp_roi = sf::as_Spatial(roi)
+
+  # This will capture the tissue category names and numbers
+  tissue_index = NULL
+
+  # Helper to process a single annotation
+  pb = dplyr::progress_estimated(length(annotations))
+  trim_tissue_categories_single = function(annotation) {
+    pb$tick()$print() # Show progress
+
+    # Get the tissue map for annotation and trim by roi
+    map_path = get_map_path(annotation, export_path)
+    maps = read_maps(map_path)
+    if (!'Tissue' %in% names(maps))
+      stop('No tissue category map in ', map_path)
+
+    tissue = maps$Tissue
+    tissue_index <<- get_tissue_category_index(tissue)
+
+    rastr = map_as_raster(tissue)
+    rastr = raster::mask(rastr, sp_roi)
+
+    # For each tissue category, get the area within the category in microns^2
+    values = raster::getValues(rastr)
+    mpp2 = prod(raster::res(rastr)) # microns^2 per pixel
+    areas = purrr::map_dbl(tissue_index,
+                           ~sum(values==.x, na.rm=TRUE) * mpp2)
+    areas['All'] = sum(areas)
+
+    data = tibble::enframe(areas, name='Tissue Category',
+                           value='Tissue Category Area (square microns)') %>%
+      tibble::add_column(`Annotation ID`=annotation, .before=1)
+
+    # Return the data and optionally the trimmed raster
+    ret = list(data=data)
+    if (!is.null(plot_path)) ret$raster=rastr
+    ret
+  }
+
+  # Process data for each field
+  cat('Trimming tissue categories\n')
+  trimmed = purrr::map(annotations, trim_tissue_categories_single)
+  result  = purrr::map_dfr(trimmed, 'data')
+  cat('\n')
+
+  if (!is.null(plot_path)) {
+    cat('Saving reference plot\n')
+
+    # Make a merged raster from the trimmed annotations
+    trimmed_rasters = purrr::map(trimmed, 'raster') %>%
+      c(list(tolerance=1)) # Extra parameter for raster::merge
+
+    rm(trimmed) # Free some memory before merging
+
+    # One big raster
+    merged_rasters = do.call(raster::merge, trimmed_rasters)
+
+    # Save a plot of the merged rasters
+    colors = grDevices::palette()[2:(max(tissue_index)+2)]
+
+    grDevices::png(plot_path, type='cairo', antialias='gray',
+        width=980, height=980)
+    raster::plot(merged_rasters, axes=TRUE, legend=FALSE,
+         col=colors,
+         main=tools::file_path_sans_ext(basename(plot_path)))
+    raster::plot(merged_rasters, legend.only=TRUE, col=colors,
+         axis.args=list(at=tissue_index,
+                        labels=names(tissue_index)))
+    plot(roi, add=TRUE, asp=1)
+    grDevices::dev.off()
+  }
+
+  # Return the trimmed data
+  result
 }

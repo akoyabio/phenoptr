@@ -16,14 +16,17 @@ Imports:
     lazyeval,
     magrittr,
     purrr (>= 0.3),
+    raster,
     readr (>= 1.2.1),
     rlang,
     rmarkdown,
+    sp,
     spatstat,
     stringr,
     tibble,
     tidyr (>= 1.0.0),
     tiff,
+    tools,
     xml2
 Depends: R (>= 3.6.0)
 License: Zlib | file LICENSE

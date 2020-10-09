@@ -46,6 +46,48 @@ read_maps <- function(map_path) {
   maps
 }
 
+#' Make a spatially-referenced raster from a map image
+#' @param map Map image from `read_maps`
+#' @result A spatially-referenced raster
+#' @export
+map_as_raster = function(map) {
+  # Check for required spatial reference in map attributes
+  attrs = attributes(map)
+  required_attrs = c('x.position', 'y.position',
+                     'x.resolution', 'resolution.unit')
+  if (!all(required_attrs %in% names(attrs)))
+    stop('Map file does not contain required attributes.')
+
+  if (attrs$resolution.unit != 'cm')
+    stop('map_as_raster requires centimeter units.')
+  microns_per_pixel = 10000 / attrs$x.resolution
+  rastr = raster::raster(map,
+                    xmn = attrs$x.position,
+                    xmx = attrs$x.position + dim(map)[2] * microns_per_pixel,
+                    ymn = attrs$y.position,
+                    ymx = attrs$y.position + dim(map)[1] * microns_per_pixel
+  )
+
+  # Flip to get the correct orientation
+  raster::flip(rastr, direction='y')
+}
+
+#' Get the mapping from tissue category name to label number for a
+#' tissue category map.
+#' @param map A tissue category image from read_maps.
+#' @result A named vector mapping tissue category names to label numbers
+#' for the map.
+#' @export
+get_tissue_category_index = function(map) {
+  desc = attr(map, 'description')
+  stopifnot(stringr::str_detect(desc, 'TissueClassMap'))
+  xml = xml2::read_xml(desc)
+  categories = xml2::xml_find_all(xml, './/Name') %>% xml2::xml_text()
+
+  # Categories are numbered starting from 0
+  (seq_along(categories)-1) %>% rlang::set_names(categories)
+}
+
 #' Get the path to the segmentation map file for a field
 #'
 #' @param field_name Name of the field of interest
