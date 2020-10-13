@@ -10,9 +10,10 @@ read_phenochart_polygons(xml_path)
 \item{xml_path}{Path to an annotations file.}
 }
 \value{
-An \code{sf::sf} object with columns \code{tags} and \code{geometry}. Multiple
-tags are separated by spaces in a single string.
+An \code{sf::st_sf} object with columns \code{tags}, \code{geometry} and \code{rects}.
+Multiple tags for a single ROI are separated by spaces in a single string.
 }
 \description{
-Reads the polygons for all ROI annotations in a single file.
+Reads the polygons and included rectangles for all ROI annotations
+in a single file.
 }
