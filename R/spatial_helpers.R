@@ -37,8 +37,7 @@ make_ppp = function(csd, export_path, pheno,
   stopifnot(!is.null(csd),
             unit_is_microns(csd),
             dir.exists(export_path),
-            !is.null(pheno),
-            length(pheno) == 1)
+            !is.null(pheno))
 
   # Get data for the correct field
   field_col = field_column(csd)
@@ -59,8 +58,11 @@ make_ppp = function(csd, export_path, pheno,
   }
 
   # Process the phenotype
-  if (is.character(pheno))
-    pheno = parse_phenotypes(as.list(pheno))
+  if (is.character(pheno)) {
+    stopifnot(length(pheno) == 1)
+    pheno = parse_phenotypes(as.list(pheno))[[1]] %>%
+      rlang::set_names(names(pheno))
+  }
   if (!rlang::is_named(pheno))
     pheno = rlang::set_names(pheno)
   field_data = field_data[select_rows(field_data, pheno), ]
