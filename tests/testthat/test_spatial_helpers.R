@@ -27,8 +27,9 @@ test_that('make_ppp works', {
   expect_equal(pp$n, sum(sample_cell_seg_data$Phenotype=='CD8+'))
 
   pp <- make_ppp(sample_cell_seg_data, sample_cell_seg_folder(),
-                 pheno=list('CD8+', 'CD8+'))
+                 pheno=list(CD8=list('CD8+', 'CD8+')))
   expect_equal(pp$n, sum(sample_cell_seg_data$Phenotype=='CD8+'))
+  expect_equal(levels(spatstat::marks(pp)), "CD8")
 
   # More than one phenotype is an error
   expect_error(make_ppp(sample_cell_seg_data, sample_cell_seg_folder(),
