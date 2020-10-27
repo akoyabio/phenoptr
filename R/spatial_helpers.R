@@ -126,7 +126,7 @@ read_phenochart_polygons = function(xml_path) {
     locs = xml2::xml_find_all(roi, './/Perimeter-i')
     x = xml2::xml_find_all(locs, './/X') %>% xml2::xml_double()
     y = xml2::xml_find_all(locs, './/Y') %>% xml2::xml_double()
-    poly = sf::st_polygon(list(matrix(c(x, y), ncol=2)))
+    poly = sf::st_polygon(list(matrix(c(x, y), ncol=2))) %>% sf::st_make_valid()
     rects = parse_rects(roi)
     parsed = sf::st_sf(tags=tags,
               geometry=sf::st_sfc(poly))
