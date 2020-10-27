@@ -126,10 +126,18 @@ read_phenochart_polygons = function(xml_path) {
     locs = xml2::xml_find_all(roi, './/Perimeter-i')
     x = xml2::xml_find_all(locs, './/X') %>% xml2::xml_double()
     y = xml2::xml_find_all(locs, './/Y') %>% xml2::xml_double()
-    poly = sf::st_polygon(list(matrix(c(x, y), ncol=2))) %>% sf::st_make_valid()
+    poly = sf::st_polygon(list(matrix(c(x, y), ncol=2)))
+
+    # At this point poly may not contain a valid geometry. There are two
+    # ways to fix this: st_make_valid() and st_buffer(., 0).
+    # st_make_valid makes GEOMETRYCOLLECTION values which can't be
+    # converted to Spatial objects. st_buffer makes MULTIPOLYGONs which
+    # are more tractable.
+    poly = sf::st_buffer(poly, 0)
     rects = parse_rects(roi)
     parsed = sf::st_sf(tags=tags,
-              geometry=sf::st_sfc(poly))
+              geometry=sf::st_sfc(poly),
+              stringsAsFactors=FALSE)
     parsed$rects = list(rects)
     parsed
   })
