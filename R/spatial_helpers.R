@@ -126,6 +126,10 @@ read_phenochart_polygons = function(xml_path) {
     locs = xml2::xml_find_all(roi, './/Perimeter-i')
     x = xml2::xml_find_all(locs, './/X') %>% xml2::xml_double()
     y = xml2::xml_find_all(locs, './/Y') %>% xml2::xml_double()
+
+    # A valid polygon has at least four points, making a triangle
+    if (length(x)<4) return(NULL)
+
     poly = sf::st_polygon(list(matrix(c(x, y), ncol=2)))
 
     # At this point poly may not contain a valid geometry. There are two
