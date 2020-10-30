@@ -256,7 +256,12 @@ trim_tissue_categories = function(annotations, roi,
     merged_rasters = do.call(raster::merge, trimmed_rasters)
 
     # Save a plot of the merged rasters
+    # One color for each tissue category, skipping black
+    # Fill in with black to get to 256 values
+    # Tissue maps may (rarely) include values of 255 when areas can't be classified
+    # 255 is not included in tissue_index
     colors = grDevices::palette()[2:(max(tissue_index)+2)]
+    colors = c(colors, rep('black', 256-length(colors)))
 
     grDevices::png(plot_path, type='cairo', antialias='gray',
         width=980, height=980)
