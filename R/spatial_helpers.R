@@ -219,7 +219,11 @@ trim_tissue_categories = function(annotations, roi,
       stop('No tissue category map in ', map_path)
 
     tissue = maps$Tissue
-    tissue_index <<- get_tissue_category_index(tissue)
+    tissue_ix = get_tissue_category_index(tissue)
+
+    # Merge tissue_ix into tissue_index while preserving names
+    # base set operations union and setdiff don't work here
+    tissue_index <<- c(tissue_index, tissue_ix[!tissue_ix %in% tissue_index])
 
     rastr = map_as_raster(tissue)
     rastr = raster::mask(rastr, sp_roi)
@@ -261,13 +265,15 @@ trim_tissue_categories = function(annotations, roi,
 
     # Save a plot of the merged rasters
     # One color for each tissue category, skipping black
-    # Fill in with black to get to 256 values
+    # Fill in with grey to get to 256 values
     # Tissue maps may (rarely) include values of 255 when areas can't be classified
     # 255 is not included in tissue_index
     colors = grDevices::palette()[2:(max(tissue_index)+2)]
-    colors = c(colors, rep('black', 256-length(colors)))
+    colors = c(colors, rep('grey', 256-length(colors)))
 
-    grDevices::png(plot_path, type='cairo', antialias='gray',
+   tissue_index = sort(tissue_index) # Make sure colors and legend match
+
+   grDevices::png(plot_path, type='cairo', antialias='gray',
         width=980, height=980)
     raster::plot(merged_rasters, axes=TRUE, legend=FALSE,
          col=colors,
