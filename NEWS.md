@@ -1,7 +1,10 @@
-# phenoptr 0.2.8.9000
+# phenoptr 0.2.9
+**2020-11-11**
 
 - Improved the way `read_cell_seg_data` determines column types to prevent
   errors in some edge cases.
+- Fixed `make_ppp` to work correctly when given compound phenotypes 
+  such as "CD8+/PD-L1+"
   
 # phenoptr 0.2.8
 **2020-08-22**

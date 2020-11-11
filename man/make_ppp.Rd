@@ -13,8 +13,8 @@ make_ppp(csd, export_path, pheno, field_name = NULL, tissue_categories = NULL)
 image files from inForm}
 
 \item{pheno}{Phenotype definition. Either a (possibly named) character
-vector to be parsed by \code{\link[=parse_phenotypes]{parse_phenotypes()}} or a named list as
-used by \code{\link[=select_rows]{select_rows()}}.}
+vector to be parsed by \code{\link[=parse_phenotypes]{parse_phenotypes()}} or a named list containing
+a single phenotype definition as used by \code{\link[=select_rows]{select_rows()}}.}
 
 \item{field_name}{Sample Name or Annotation ID for the field of interest.
 May be omitted if \code{csd} contains data for only one field.}
