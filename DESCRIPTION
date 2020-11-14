@@ -1,7 +1,7 @@
 Package: phenoptr
 Type: Package
 Title: inForm Helper Functions
-Version: 0.2.9
+Version: 0.2.9.9000
 Date: 2020-11-11
 Description: Helper functions for working with inForm data.
 Language: en-US
@@ -24,6 +24,7 @@ Imports:
     tibble,
     tidyr (>= 1.0.0),
     tiff,
+    vroom,
     xml2
 Depends: R (>= 3.6.0)
 License: Zlib | file LICENSE
@@ -34,8 +35,7 @@ RoxygenNote: 7.1.1
 Suggests: 
     testthat,
     doParallel,
-    rtree,
-    vroom
+    rtree
 VignetteBuilder: knitr
 URL: https://akoyabio.github.io/phenoptr/
 BugReports: https://github.com/akoyabio/phenoptr/issues
