@@ -45,7 +45,9 @@ make_ppp = function(csd, export_path, pheno,
   field_col = field_column(csd)
   if (is.null(field_name)) {
     # If field_name is not provided, csd must be for a single field
-    stopifnot(dplyr::n_distinct(csd[[field_col]]) == 1)
+    if (dplyr::n_distinct(csd[[field_col]]) != 1)
+      stop('Please pass a field_name to make_ppp to select a single field.')
+
     field_name = csd[[field_col]][[1]]
     field_data = csd
   } else {
