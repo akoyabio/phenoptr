@@ -1,4 +1,18 @@
-# phenoptr 0.2.8.9000
+# phenoptr 0.2.9.9000
+
+Changes to `read_cell_seg_data`:
+- Add a `col_select` parameter to support reading only
+  selected fields, with a `'phenoptrReports'` option to read only fields
+  needed by `phenoptrReports`.
+- For an export file containing all inForm fields,
+  `read_cell_seg_data(csd_path, col_select='phenoptrReports')` can be
+  4-5x faster and use 75% less memory for the results,
+  compared to the previous version.
+- Use `vroom::vroom()` instead of `readr::read_tsv` for speed and support
+  of `col_select`.
+  
+# phenoptr 0.2.9
+**2020-11-11**
 
 - Add support for hashtags in `select_rows` and related functions.
   This allows use of hashtags such as "#TumorMargin" in any
@@ -7,7 +21,9 @@
   ROI processing in phenoptrReports.
 - Improve the way `read_cell_seg_data` determines column types to prevent
   errors in some edge cases.
-
+- Fixed `make_ppp` to work correctly when given compound phenotypes 
+  such as "CD8+/PD-L1+"
+  
 # phenoptr 0.2.8
 **2020-08-22**
 

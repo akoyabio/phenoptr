@@ -8,8 +8,8 @@
 #' @param export_path Path to a directory containing composite and component
 #'   image files from inForm
 #' @param pheno Phenotype definition. Either a (possibly named) character
-#' vector to be parsed by [parse_phenotypes()] or a named list as
-#' used by [select_rows()].
+#' vector to be parsed by [parse_phenotypes()] or a named list containing
+#' a single phenotype definition as used by [select_rows()].
 #' @param field_name Sample Name or Annotation ID for the field of interest.
 #' May be omitted if `csd` contains data for only one field.
 #' @param tissue_categories Tissue categories of interest. If supplied, the
@@ -38,13 +38,16 @@ make_ppp = function(csd, export_path, pheno,
             unit_is_microns(csd),
             dir.exists(export_path),
             !is.null(pheno),
-            length(pheno) == 1)
+            length(pheno) == 1
+  )
 
   # Get data for the correct field
   field_col = field_column(csd)
   if (is.null(field_name)) {
     # If field_name is not provided, csd must be for a single field
-    stopifnot(dplyr::n_distinct(csd[[field_col]]) == 1)
+    if (dplyr::n_distinct(csd[[field_col]]) != 1)
+      stop('Please pass a field_name to make_ppp to select a single field.')
+
     field_name = csd[[field_col]][[1]]
     field_data = csd
   } else {
@@ -59,10 +62,20 @@ make_ppp = function(csd, export_path, pheno,
   }
 
   # Process the phenotype
-  if (is.character(pheno))
-    pheno = parse_phenotypes(as.list(pheno))
-  if (!rlang::is_named(pheno))
-    pheno = rlang::set_names(pheno)
+  if (is.character(pheno)) {
+    if (rlang::is_named(pheno))
+      pheno_name = names(pheno)
+    else
+      pheno_name = pheno
+
+    pheno = parse_phenotypes(as.list(pheno))[[1]]
+  } else {
+    # Pheno must be a named list containing a single definition
+    stopifnot(is.list(pheno), !is.null(names(pheno)))
+    pheno_name = names(pheno)
+    pheno = pheno[[1]] # Extract the actual phenotype definition
+  }
+
   field_data = field_data[select_rows(field_data, pheno), ]
 
   if (nrow(field_data) == 0)
@@ -99,7 +112,7 @@ make_ppp = function(csd, export_path, pheno,
   # Finally create the actual point pattern
   pp = spatstat::ppp(field_data$`Cell X Position`, field_data$`Cell Y Position`,
                 window=wind,
-                marks=factor(rep(names(pheno)[[1]], nrow(field_data))))
+                marks=factor(rep(pheno_name, nrow(field_data))))
   pp
 }
 

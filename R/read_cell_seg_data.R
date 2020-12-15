@@ -20,7 +20,8 @@ list_cell_seg_files <- function(path, ...) {
 #' inForm program. It reads data files written by inForm 2.0 and later and does
 #' useful cleanup on the result.
 #'
-#' \code{read_cell_seg_data} reads both single-image tables and merged tables
+#' \code{read_cell_seg_data} reads both single-field tables, merged tables
+#' and consolidated tables
 #' and does useful cleanup on the data:
 #' \itemize{
 #' \item Removes columns that are all NA.
@@ -43,6 +44,17 @@ list_cell_seg_files <- function(path, ...) {
 #' If found, \code{pixels_per_micron} is read from the file \strong{and}
 #' the cell coordinates are offset to the correct spatial location.
 #'
+#' If `col_select` is `"phenoptrReports"`, only columns normally needed by
+#' `phenoptrReports` are read. This can dramatically reduce the time to
+#' read a file and the memory required to store the results.
+#'
+#' Specifically, passing `col_select='phenoptrReports'` will omit
+#' - Component stats other than mean expression
+#' - Shape stats other than area
+#' - `Path`, `Processing Region ID`, `Category Region ID`,
+#'    `Lab ID`, `Confidence`, and columns which are normally
+#'   blank.
+#'
 #' @param path Path to the file to read, or NA to use a file chooser.
 #' @param pixels_per_micron Conversion factor to microns
 #'        (default 2 pixels/micron, the resolution of 20x MSI fields
@@ -51,6 +63,12 @@ list_cell_seg_files <- function(path, ...) {
 #'        an associated \code{component_data.tif} file.
 #' @param remove_units If TRUE (default),
 #'        remove the unit name from expression columns.
+#' @param col_select Optional column selection expression, may be
+#'   - NULL - retain all columns
+#'   - `"phenoptrReports"` - retain only columns needed by functions
+#'     in the `phenoptrReports` package.
+#'   - A quoted list of one or more selection expressions,
+#'     like in [dplyr::select()] (see example).
 #' @return A \code{\link[tibble]{tibble}}
 #'         containing the cleaned-up data set.
 #' @export
@@ -62,6 +80,13 @@ list_cell_seg_files <- function(path, ...) {
 #' # count all the phenotypes in the data
 #' table(csd$Phenotype)
 #'
+#' # Read only columns needed by phenoptrReports
+#' csd <- read_cell_seg_data(path, col_select='phenoptrReports')
+#'
+#' # Read only position and phenotype columns
+#' csd <- read_cell_seg_data(path,
+#'          col_select=rlang::quo(list(dplyr::contains('Position'),
+#'                                     dplyr::contains('Phenotype'))))
 #' \dontrun{
 #' # Use purrr::map_df to read all cell seg files in a directory
 #' # and return a single tibble.
@@ -71,7 +96,8 @@ list_cell_seg_files <- function(path, ...) {
 read_cell_seg_data <- function(
   path=NA,
   pixels_per_micron=getOption('phenoptr.pixels.per.micron'),
-  remove_units=TRUE) {
+  remove_units=TRUE,
+  col_select=NULL) {
   if (is.na(path)) {
     path <- file.choose() # nocov not going to happen...
     cat('Loading', path)  # nocov
@@ -79,13 +105,16 @@ read_cell_seg_data <- function(
   if (path=='')
     stop("File name is missing.")
 
+  # Handle options for col_select
+  col_select = process_col_select(col_select)
+
   # Figure out what we are reading
-  data_types = get_col_types_and_decimal_mark(path)
+  data_types = get_col_types_and_decimal_mark(path, col_select)
 
   # Read the data.
-  df <- readr::read_tsv(path, na=c('NA', '#N/A'),
+  df <- vroom::vroom(path, na=c('NA', '#N/A'), delim='\t',
           locale=readr::locale(decimal_mark=data_types$decimal_mark),
-          col_types=data_types$col_spec)
+          col_types=data_types$col_types, col_select=!!col_select)
 
   # If any of these fields has missing values, the file may be damaged.
   no_na_cols = c("Path", "Sample Name", "Tissue Category", "Phenotype",
@@ -185,11 +214,48 @@ read_cell_seg_data <- function(
   dplyr::as_tibble(df)
 }
 
+# Process the col_select argument to [read_cell_seg_data()]
+# @return A quoted list of selection expressions to pass as the `col_select`
+# parameter to [vroom::vroom()].
+process_col_select = function(col_select) {
+  # The col_select argument to vroom::vroom is funny.
+  # If you pass it as a variable, it has to be quoted.
+
+  # User passed a quoted selection, just use it
+  if (rlang::is_quosure(col_select))
+    return(col_select)
+
+  if (is.null(col_select))
+    return(rlang::quo(NULL))
+
+  else if (col_select != 'phenoptrReports')
+    stop('Invalid col_select parameter for read_cell_seg_data.')
+
+  # Create a column selection that omits most columns not used by
+  # phenoptrReports. This can dramatically reduce the size of the data table.
+  # We intentionally do not omit compartment area and TMA columns,
+  # they might be useful for other analysis.
+  return(rlang::quo(list(
+    # Component stats, either at the end of the name or followed by (unit)
+    -dplyr::matches('(Min|Max|Std Dev|Total)( \\(|$)'),
+
+    # Shape stats
+    -dplyr::matches('Area \\(percent|Axis|Compactness|Region ID'),
+
+    # inForm version
+    -dplyr::matches('^inForm '),
+
+    # Miscellaneous
+    -dplyr::any_of(c('Path', 'Total Cells', 'Lab ID', 'Confidence',
+                     'Tissue Category Area (square microns)',
+                     'Cell Density (per square mm)')))))
+}
+
 # Make a best effort to get column types and decimal mark from the data.
 # The default imputation of column types fails if the first 1,000 rows
 # contain #N/A for any column. This can happen for e.g. Distance to Category Edge
-# @return A list with `col_spec` and `decimal_mark` items.
-get_col_types_and_decimal_mark = function(path) {
+# @return A list with `col_types` and `decimal_mark` items.
+get_col_types_and_decimal_mark = function(path, col_select) {
   decimal_mark = '.' # Our default
 
   # Read the first 1000 lines of data.
@@ -197,9 +263,9 @@ get_col_types_and_decimal_mark = function(path) {
   # Supplying the grouping_mark keeps readr from mis-handling commas
   # that are decimal separators.
   # See https://github.com/akoyabio/phenoptrReports/issues/31
-  df <- readr::read_tsv(path, na=c('NA', '#N/A'), n_max=1000,
+  df <- vroom::vroom(path, na=c('NA', '#N/A'), n_max=1000, delim='\t',
                         locale=readr::locale(grouping_mark=''),
-                        col_types=readr::cols())
+                        col_types=readr::cols(), col_select=!!col_select)
 
   # If columns containing "Mean" are character, check to see if the
   # file may have been written in a locale that uses comma as a decimal
@@ -213,9 +279,9 @@ get_col_types_and_decimal_mark = function(path) {
     char_col = mean_cols[which(mean_class=='character')][[1]]
     if (any(stringr::str_detect(char_col, ','))) {
       message('Reading cell seg data with comma separator.')
-      df <- readr::read_tsv(path, na=c('NA', '#N/A'), n_max=1000,
+      df <- vroom::vroom(path, na=c('NA', '#N/A'), n_max=1000, delim='\t',
                             locale=readr::locale(decimal_mark=','),
-                            col_types=readr::cols())
+                            col_types=readr::cols(), col_select=!!col_select)
     }
 
     # Check again
@@ -230,27 +296,27 @@ get_col_types_and_decimal_mark = function(path) {
     decimal_mark = ','
   }
 
-  # Now clean up the column spec. Start with the imputed types from readr.
-  col_spec = readr::spec(df)$cols
+  # Now clean up the column types. Start with the imputed types from readr.
+  col_types = readr::spec(df)$cols
 
   # If df has fewer than 1000 rows, we read the entire file and the
   # imputed column types should be fine.
   if (nrow(df) < 1000)
-    return(list(col_spec=col_spec, decimal_mark=decimal_mark))
+    return(list(col_types=col_types, decimal_mark=decimal_mark))
 
   # Explicitly assign column type for columns that may not be represented
   # in the first 1000 rows
   # Notes:
   # - Cell ID is "all" in summary tables, don't make it numeric here
-  # - Columns such as "Total Cells which are populated in summary tables and
+  # - Columns such as "Total Cells" which are populated in summary tables and
   #   present but unpopulated in detail tables don't need to be addressed here.
   #   They will be read correctly in the summary tables and removed from the
   #   detail tables.
-  col_names = names(col_spec)
-  col_spec[col_names=='Process Region ID'] = 'i'
-  col_spec[stringr::str_detect(col_names, 'Distance')] = 'd'
+  col_names = names(col_types)
+  col_types[col_names=='Process Region ID'] = 'i'
+  col_types[stringr::str_detect(col_names, 'Distance')] = 'd'
 
-  list(col_spec=do.call(readr::cols, col_spec), decimal_mark=decimal_mark)
+  list(col_types=do.call(readr::cols, col_types), decimal_mark=decimal_mark)
 }
 
 # Convert cell locations back to pixels if possible
