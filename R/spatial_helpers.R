@@ -268,33 +268,48 @@ trim_tissue_categories = function(annotations, roi,
     cat('Saving reference plot\n')
 
     # Make a merged raster from the trimmed annotations
-    trimmed_rasters = purrr::map(trimmed, 'raster') %>%
-      c(list(tolerance=1)) # Extra parameter for raster::merge
+    trimmed_rasters = purrr::map(trimmed, 'raster')
 
     rm(trimmed) # Free some memory before merging
 
     # One big raster
-    merged_rasters = do.call(raster::merge, trimmed_rasters)
+    merged_rasters = rlang::exec(raster::merge, !!!trimmed_rasters, tolerance=1)
 
     # Save a plot of the merged rasters
     # One color for each tissue category, skipping black
-    # Fill in with grey to get to 256 values
+    # If necessary, fill in with grey to get to 256 values
     # Tissue maps may (rarely) include values of 255 when areas can't be classified
     # 255 is not included in tissue_index
+    raster_max = merged_rasters@data@max
     colors = grDevices::palette()[2:(max(tissue_index)+2)]
-    colors = c(colors, rep('grey', 256-length(colors)))
+    if (raster_max > max(tissue_index))
+      colors = c(colors, rep('grey', raster_max+1-length(colors)))
 
-   tissue_index = sort(tissue_index) # Make sure colors and legend match
+    tissue_index = sort(tissue_index) # Make sure colors and legend match
 
-   grDevices::png(plot_path, type='cairo', antialias='gray',
+    # Prepare to save the plot
+    grDevices::png(plot_path, type='cairo', antialias='gray',
         width=980, height=980)
+
+    # Plot the actual raster
     raster::plot(merged_rasters, axes=TRUE, legend=FALSE,
-         col=colors,
-         main=tools::file_path_sans_ext(basename(plot_path)))
-    raster::plot(merged_rasters, legend.only=TRUE, col=colors,
-         axis.args=list(at=tissue_index,
-                        labels=names(tissue_index)))
+                 col=colors,
+                 main=tools::file_path_sans_ext(basename(plot_path)))
+
+    # Legend
+    # This gets funky when raster_max != max(tissue_index)
+    # raster::plot is expecting a legend for raster_max + 1 colors
+    # We are only giving max(tissue_index) + 1 colors
+    # The label locations are corrected for the mismatch
+    raster::plot(merged_rasters, legend.only=TRUE,
+                 col=colors[1:length(tissue_index)],
+                 axis.args=list(
+                   at=tissue_index * raster_max/max(tissue_index),
+                   labels=names(tissue_index)))
+
+    # The ROI that we clipped to
     plot(roi, add=TRUE, asp=1)
+
     grDevices::dev.off()
   }
 
