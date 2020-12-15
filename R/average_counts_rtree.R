@@ -92,9 +92,7 @@ summarize_combo = function(d, category, phenotype_rules, from, to, radii) {
 #' @export
 #' @md
 count_within_detail = function(csd, phenotypes=NULL, radii) {
-  # Check for multiple samples, this is probably an error
-  if ('Sample Name' %in% names(csd) && length(unique(csd$`Sample Name`))>1)
-    stop('Data appears to contain multiple samples.')
+  stop_if_multiple_fields(csd)
 
   if (!function_exists('rtree', 'countWithinDistance'))
     stop('Please install the rtree package with the command\n',

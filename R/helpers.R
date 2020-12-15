@@ -15,13 +15,29 @@ function_exists =function(package, fun) {
 #' @return A column name (as a string)
 #' @export
 field_column = function(csd) {
-  col = dplyr::if_else('Annotation ID' %in% names(csd),
-                       'Annotation ID', 'Sample Name')
+  col = field_column_(csd)
   if (!col %in% names(csd))
     stop('Cell seg table does not include "Sample Name" or "Annotation ID".')
   col
 }
 
+#' Stop if `csd` contains multiple fields
+#' @keywords internal
+stop_if_multiple_fields = function(csd) {
+  # Get the field column name
+  col = field_column_(csd)
+
+  # Note: If no field column, let it go
+  if (col %in% names(csd) && length(unique(csd[[col]]))>1)
+    stop('Data contains multiple samples, ',
+         'please select one or set whole_slide=TRUE.')
+}
+
+# Just get the field column, don't check anything
+field_column_ = function(csd) {
+  dplyr::if_else('Annotation ID' %in% names(csd),
+                 'Annotation ID', 'Sample Name')
+}
 # Workaround for inForm data that was originally pixels. In that case
 # field_data will have the origin at top left; convert to slide origin
 # to match the field_info.

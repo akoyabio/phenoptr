@@ -354,10 +354,7 @@ count_within_many_impl_dist <- function(
 #' }
 
 count_within <- function(csd, from, to, radius, category=NA, dst=NULL) {
-  # Check for multiple samples, this is probably an error
-  if ('Sample Name' %in% names(csd) && length(unique(csd$`Sample Name`))>1)
-    stop('Data appears to contain multiple samples.')
-
+  stop_if_multiple_fields(csd)
   stopifnot(length(radius) > 0, all(radius>0))
 
   # If a category is provided, subset now
