@@ -90,8 +90,7 @@ test_that("find_nearest_distance works", {
 
   # Force an error
   csd$`Sample Name`[1] = 'foo.im3'
-  expect_error(find_nearest_distance_dist(csd), 'multiple')
-  expect_error(find_nearest_distance_rtree(csd), 'multiple')
+  expect_error(find_nearest_distance(csd), 'multiple')
 })
 
 test_that('compute_all_nearest_distance works', {
