@@ -4,7 +4,7 @@
 \alias{count_within_detail}
 \title{Compute count within for individual cells in a single field.}
 \usage{
-count_within_detail(csd, phenotypes = NULL, radii)
+count_within_detail(csd, phenotypes = NULL, radii, whole_slide = FALSE)
 }
 \arguments{
 \item{csd}{Cell seg data.}
@@ -14,6 +14,9 @@ will use \code{unique_phenotypes(csd)}. Counts are from each cell to each
 phenotype.}
 
 \item{radii}{The radius or radii to search within.}
+
+\item{whole_slide}{If \code{TRUE}, allow multiple fields in \code{csd}. Otherwise
+this is an error.}
 }
 \description{
 Very fast version using \code{rtree::countWithinDistance()}.

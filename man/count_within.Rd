@@ -4,7 +4,15 @@
 \alias{count_within}
 \title{Count cells within a radius for a single field.}
 \usage{
-count_within(csd, from, to, radius, category = NA, dst = NULL)
+count_within(
+  csd,
+  from,
+  to,
+  radius,
+  category = NA,
+  dst = NULL,
+  whole_slide = FALSE
+)
 }
 \arguments{
 \item{csd}{A data frame with \code{Cell X Position},
@@ -21,6 +29,9 @@ rows and columns. Accepts all formats accepted by \code{\link{select_rows}}.}
 
 \item{dst}{Optional distance matrix corresponding to \code{csd},
 produced by calling \code{\link{distance_matrix}}.}
+
+\item{whole_slide}{If \code{TRUE}, allow multiple fields in \code{csd}. Otherwise
+this is an error.}
 }
 \value{
 A \code{\link{tibble}} with five columns and one row for each

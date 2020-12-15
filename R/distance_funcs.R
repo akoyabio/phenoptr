@@ -69,6 +69,8 @@ compute_all_nearest_distance <- function(cell_table_path=NULL, out_path=NULL) {
 #' `unique_phenotypes(csd)` will be used.
 #' @param dst Optional distance matrix. If provided, this should be
 #' `distance_matrix(csd)`. Not used if `rtree` is available.
+#' @param whole_slide If `TRUE`, allow multiple fields in `csd`. Otherwise
+#' this is an error.
 #' @return A `tibble` containing a `Distance to <phenotype>` column
 #' and `Cell ID <phenotype>` column for each phenotype.
 #' Columns will contain `NA` values where there is no other cell
@@ -95,7 +97,11 @@ compute_all_nearest_distance <- function(cell_table_path=NULL, out_path=NULL) {
 #'   dplyr::group_by(`Sample Name`) %>%
 #'   dplyr::do(dplyr::bind_cols(., find_nearest_distance(.)))
 #' }
-find_nearest_distance <- function(csd, phenotypes=NULL, dst=NULL) {
+find_nearest_distance <- function(csd, phenotypes=NULL, dst=NULL,
+                                  whole_slide=FALSE) {
+  if (!whole_slide)
+    stop_if_multiple_fields(csd)
+
   if (getOption('use.rtree.if.available') &&
       requireNamespace('rtree', quietly=TRUE))
     find_nearest_distance_rtree(csd, phenotypes)
@@ -120,9 +126,6 @@ find_nearest_distance <- function(csd, phenotypes=NULL, dst=NULL) {
 #' @md
 #' @keywords internal
 find_nearest_distance_dist = function(csd, phenotypes=NULL, dst=NULL) {
-  # Check for multiple samples, this is probably an error
-  if ('Sample Name' %in% names(csd) && length(unique(csd$`Sample Name`))>1)
-    stop('Data appears to contain multiple samples.')
 
   phenotypes = validate_phenotypes(phenotypes, csd)
 
@@ -175,10 +178,6 @@ find_nearest_distance_dist = function(csd, phenotypes=NULL, dst=NULL) {
 #' @md
 #' @keywords internal
 find_nearest_distance_rtree <- function(csd, phenotypes=NULL) {
-  # Check for multiple samples, this is probably an error
-  if ('Sample Name' %in% names(csd) && length(unique(csd$`Sample Name`))>1)
-    stop('Data appears to contain multiple samples.')
-
   phenotypes = validate_phenotypes(phenotypes, csd)
   field_locs = csd %>%
     dplyr::select(X=`Cell X Position`, Y=`Cell Y Position`)

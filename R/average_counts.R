@@ -312,6 +312,8 @@ count_within_many_impl_dist <- function(
 #' \code{to}.
 #' @param dst Optional distance matrix corresponding to \code{csd},
 #'        produced by calling \code{\link{distance_matrix}}.
+#' @param whole_slide If `TRUE`, allow multiple fields in `csd`. Otherwise
+#' this is an error.
 #'
 #' @return A \code{\link{tibble}} with five columns and one row for each
 #'   value in \code{radius}:
@@ -325,6 +327,7 @@ count_within_many_impl_dist <- function(
 #'    \item{\code{within_mean}}{The average number of \code{to} cells found
 #'    within \code{radius} microns of each \code{from} cell.}
 #'  }
+#' @md
 #' @export
 #' @family distance functions
 #' @examples
@@ -353,11 +356,10 @@ count_within_many_impl_dist <- function(
 #'   select(-within)
 #' }
 
-count_within <- function(csd, from, to, radius, category=NA, dst=NULL) {
-  # Check for multiple samples, this is probably an error
-  if ('Sample Name' %in% names(csd) && length(unique(csd$`Sample Name`))>1)
-    stop('Data appears to contain multiple samples.')
-
+count_within <- function(csd, from, to, radius, category=NA, dst=NULL,
+                         whole_slide=FALSE) {
+  if (!whole_slide)
+    stop_if_multiple_fields(csd)
   stopifnot(length(radius) > 0, all(radius>0))
 
   # If a category is provided, subset now

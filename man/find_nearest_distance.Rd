@@ -4,7 +4,7 @@
 \alias{find_nearest_distance}
 \title{Nearest neighbor distances for each cell and phenotype.}
 \usage{
-find_nearest_distance(csd, phenotypes = NULL, dst = NULL)
+find_nearest_distance(csd, phenotypes = NULL, dst = NULL, whole_slide = FALSE)
 }
 \arguments{
 \item{csd}{A data frame with \verb{Cell X Position},
@@ -17,6 +17,9 @@ such as the result of calling
 
 \item{dst}{Optional distance matrix. If provided, this should be
 \code{distance_matrix(csd)}. Not used if \code{rtree} is available.}
+
+\item{whole_slide}{If \code{TRUE}, allow multiple fields in \code{csd}. Otherwise
+this is an error.}
 }
 \value{
 A \code{tibble} containing a \verb{Distance to <phenotype>} column

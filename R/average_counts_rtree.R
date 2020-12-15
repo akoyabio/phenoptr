@@ -89,12 +89,13 @@ summarize_combo = function(d, category, phenotype_rules, from, to, radii) {
 #' will use `unique_phenotypes(csd)`. Counts are from each cell to each
 #' phenotype.
 #' @param radii The radius or radii to search within.
+#' @param whole_slide If `TRUE`, allow multiple fields in `csd`. Otherwise
+#' this is an error.
 #' @export
 #' @md
-count_within_detail = function(csd, phenotypes=NULL, radii) {
-  # Check for multiple samples, this is probably an error
-  if ('Sample Name' %in% names(csd) && length(unique(csd$`Sample Name`))>1)
-    stop('Data appears to contain multiple samples.')
+count_within_detail = function(csd, phenotypes=NULL, radii, whole_slide=FALSE) {
+  if (!whole_slide)
+    stop_if_multiple_fields(csd)
 
   if (!function_exists('rtree', 'countWithinDistance'))
     stop('Please install the rtree package with the command\n',
