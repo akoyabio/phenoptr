@@ -11,6 +11,8 @@ Changes to `read_cell_seg_data`:
 - Use `vroom::vroom()` instead of `readr::read_tsv` for speed and support
   of `col_select`.
   
+- Fix `select_rows` to always return `FALSE` instead of `NA`
+
 # phenoptr 0.2.9
 **2020-11-11**
 
