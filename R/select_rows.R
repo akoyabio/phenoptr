@@ -295,7 +295,7 @@ select_rows <- function(csd, sel) {
           length(col_selections) != nrow(csd))
         stop('Invalid expression in select_rows: ~', lazyeval::f_text(s))
       # Don't return NA values, treat them as false
-      col_selections %>% tidyr::replace_na(FALSE)
+      col_selections
     }
   }
 
@@ -304,7 +304,7 @@ select_rows <- function(csd, sel) {
   if (!is.list(sel)) sel = list(sel)
   for (s in sel)
     result = result & select_one(s)
-  result
+  result %>% tidyr::replace_na(FALSE)
 }
 
 # Helper function to normalize lists of selectors into named lists of selectors,

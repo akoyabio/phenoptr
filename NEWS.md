@@ -11,6 +11,8 @@ Changes to `read_cell_seg_data`:
   4-5x faster and use 75% less memory for the results,
   compared to the previous version.
   
+- Fix `select_rows` to always return `FALSE` instead of `NA`
+
 # phenoptr 0.2.9
 **2020-11-11**
 
