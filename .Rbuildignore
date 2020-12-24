@@ -14,3 +14,4 @@ TODO
 ^\.travis\.yml$
 ^codecov\.yml$
 ^vignettes/README1000\.Rmd$
+^\.github$
