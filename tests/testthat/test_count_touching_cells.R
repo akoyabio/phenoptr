@@ -55,13 +55,16 @@ test_that('count_touching_cells works', {
   expect_equal(length(image_names), 2)
 
   # Don't do the image compare on Travis, it fails...
+  # There are minor differences in the actual image on macOS, hence
+  # the tolerance. We are just looking for diffs in the saturated colors
+  # representing the cells of interest.
   if (!identical(Sys.getenv("TRAVIS"), "true")) {
-    test_base = 'test_results'
+    test_base = test_path('test_results')
     for (image_name in image_names) {
       # Read the result images and compare to a reference
       actual = tiff::readTIFF(file.path(output_base, image_name), as.is=TRUE)
       expected = tiff::readTIFF(file.path(test_base, image_name), as.is=TRUE)
-      expect_equal(actual, expected, info=image_name)
+      expect_equal(actual, expected, tolerance=0.1, info=image_name)
     }
   }
 })
