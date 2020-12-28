@@ -1,5 +1,4 @@
 # Test for density_bands
-context('density')
 library(testthat)
 library(dplyr)
 

@@ -1,6 +1,5 @@
 # Tests for distance functions
 # Mostly smoke tests to make sure the code runs...
-context('distance_functions')
 library(testthat)
 
 path = test_path('test_data',
@@ -116,7 +115,7 @@ test_that('compute_all_nearest_distance works', {
                   `Cell ID Cytotoxic T`,
                   `Distance to Helper T`,
                   `Cell ID Helper T`)
-  expect_equivalent(as.data.frame(all_d_2), as.data.frame(nearby))
+  expect_equal(as.data.frame(all_d_2), as.data.frame(nearby), ignore_attr=TRUE)
 
   file.remove(out_path)
 
@@ -141,7 +140,7 @@ test_that('compute_all_nearest_distance works', {
                   `Cell ID Cytotoxic T` = `Cell ID Cytotoxic_T+`,
                   `Distance to Helper T`=`Distance to Helper_T+`,
                   `Cell ID Helper_T` = `Cell ID Helper_T+`)
-  expect_equivalent(as.data.frame(all_d_2), as.data.frame(nearby))
+  expect_equal(as.data.frame(all_d_2), as.data.frame(nearby), ignore_attr=TRUE)
 
   file.remove(out_path)
 })

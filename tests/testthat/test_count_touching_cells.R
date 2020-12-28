@@ -1,4 +1,3 @@
-context('count_touching_cells')
 library(testthat)
 
 test_that('count_touching_cells works', {
@@ -75,7 +74,7 @@ test_that('count_touching_cells_fast works', {
               '180628 B-lung2_Scan1_[14659,46741]_cell_seg_data.txt')
   skip_if_not(file.exists(cell_seg_path))
 
-  csd = vroom::vroom(cell_seg_path, delim='\t', na='#N/A')
+  csd = read_cell_seg_data(cell_seg_path)
   field_name = "180628 B-lung2_Scan1_[14659,46741]"
   export_path = dirname(cell_seg_path)
   phenos = list("CD8+", "CD68+")
@@ -90,7 +89,7 @@ test_that('count_touching_cells_fast works', {
   expected = EBImage::readImage(expected_path)
 
   expect_equal(result$image, expected)
-  expect_equal(dim(result$data), c(49, 14))
+  expect_equal(dim(result$data), c(49, 12))
 
   # Test error checking for non-distinct phenotypes.
   # This is egregious duplication.

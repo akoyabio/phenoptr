@@ -1,4 +1,3 @@
-context('parse_phenotypes')
 library(testthat)
 
 check_results = function(sels) {
@@ -41,21 +40,25 @@ test_that('parse_phenotypes works with a single list arg', {
 test_that('parse_phenotypes works with formulae', {
   expect_equal(parse_phenotypes(
          PDL1='~`Membrane PDL1`>1'),
-    list(PDL1=~`Membrane PDL1`>1))
+    list(PDL1=~`Membrane PDL1`>1),
+    ignore_attr=TRUE)
 
   expect_equal(parse_phenotypes(
          'CD8+', PDL1='~`Membrane PDL1`>1', '~`Membrane PDL1`>1'),
     list(`CD8+`='CD8+', PDL1=~`Membrane PDL1`>1,
-         'Membrane PDL1>1'=~`Membrane PDL1`>1))
+         'Membrane PDL1>1'=~`Membrane PDL1`>1),
+    ignore_attr=TRUE)
 
   expect_equal(parse_phenotypes(
          Mixed='CD8+/~`Membrane PDL1`>1', 'CD8+/~`Membrane PDL1`>1'),
     list(Mixed=list('CD8+', ~`Membrane PDL1`>1),
-         'CD8+/Membrane PDL1>1'=list('CD8+', ~`Membrane PDL1`>1)))
+         'CD8+/Membrane PDL1>1'=list('CD8+', ~`Membrane PDL1`>1)),
+    ignore_attr=TRUE)
 
   expect_equal(parse_phenotypes(
          'CD3+', Mixed='CD8+/~`Membrane PDL1`>1'),
-    list(`CD3+`='CD3+', Mixed=list('CD8+', ~`Membrane PDL1`>1)))
+    list(`CD3+`='CD3+', Mixed=list('CD8+', ~`Membrane PDL1`>1)),
+    ignore_attr=TRUE)
 })
 
 test_that('parse_phenotypes error checking works', {

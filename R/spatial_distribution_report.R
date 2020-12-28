@@ -253,7 +253,8 @@ add_scales_and_background = function(p, background, xlim, ylim,
 add_scale_line <- function(p, xlim, ylim, scale_color, scale_alpha) {
   p = p + ggplot2::geom_segment(ggplot2::aes(x=xlim[2]-50-200, xend=xlim[2]-50,
                                              y=ylim[2]-100, yend=ylim[2]-100),
-                                color=scale_color, alpha=scale_alpha, size=1)
+                                color=scale_color, alpha=scale_alpha, size=1,
+                                na.rm=TRUE)
   p = p + ggplot2::geom_text(ggplot2::aes(x=xlim[2]-50-200/2, y=ylim[2]-90,
                                           label=paste(200, '~mu*m')),
                              size=3, hjust=0.5, vjust=1,

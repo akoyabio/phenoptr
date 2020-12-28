@@ -1,5 +1,4 @@
 # Tests for read_components and read_maps
-context('read_images')
 library(testthat)
 
 test_that("read_components works", {
@@ -18,11 +17,14 @@ test_that("read_components works", {
                      "DAPI", "Autofluorescence")
   expect_equal(names(images), expected_names)
 
-  # expect_equivalent checks values only (ignores names)
-  expect_equivalent(purrr::map(images, dim), rep(list(c(1400, 1868)), 8))
-  expect_equivalent(purrr::map_dbl(images, min), rep(0, 8))
-  expect_equivalent(purrr::map_int(images, ~as.integer(max(.))),
-                    c(97, 30, 15, 6, 55, 41, 35, 31))
+  # Check values only (ignore names)
+  expect_equal(purrr::map(images, dim), rep(list(c(1400, 1868)), 8),
+               ignore_attr=TRUE)
+  expect_equal(purrr::map_dbl(images, min), rep(0, 8),
+               ignore_attr=TRUE)
+  expect_equal(purrr::map_int(images, ~as.integer(max(.))),
+                    c(97, 30, 15, 6, 55, 41, 35, 31),
+               ignore_attr=TRUE)
 })
 
 test_that('read_maps works', {
@@ -33,7 +35,8 @@ test_that('read_maps works', {
 
   expected_names = c("Nucleus", "Cytoplasm", "Membrane", "Tissue")
   expect_equal(names(maps), expected_names)
-  expect_equivalent(purrr::map(maps, dim), rep(list(c(260, 348)), 4))
+  expect_equal(purrr::map(maps, dim), rep(list(c(260, 348)), 4),
+               ignore_attr=TRUE)
 })
 
 test_that('get_field_info works', {
