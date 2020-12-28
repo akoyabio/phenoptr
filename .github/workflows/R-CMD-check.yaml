@@ -24,7 +24,9 @@ jobs:
       matrix:
         config:
           - {os: windows-latest, r: 'release'}
+          - {os: windows-latest, r: '3.6.3'}
           - {os: macOS-latest, r: 'release'}
+          - {os: macOS-latest, r: '3.6.3'}
 
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
