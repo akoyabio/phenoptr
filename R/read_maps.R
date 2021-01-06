@@ -48,7 +48,7 @@ read_maps <- function(map_path) {
 
 #' Make a spatially-referenced raster from a map image
 #' @param map Map image from `read_maps`
-#' @result A spatially-referenced raster
+#' @return A spatially-referenced raster
 #' @export
 map_as_raster = function(map) {
   # Check for required spatial reference in map attributes
@@ -75,7 +75,7 @@ map_as_raster = function(map) {
 #' Get the mapping from tissue category name to label number for a
 #' tissue category map.
 #' @param map A tissue category image from read_maps.
-#' @result A named vector mapping tissue category names to label numbers
+#' @return A named vector mapping tissue category names to label numbers
 #' for the map.
 #' @export
 get_tissue_category_index = function(map) {
