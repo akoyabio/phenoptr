@@ -1,4 +1,3 @@
-context('parse_phenotypes')
 library(testthat)
 
 check_results = function(sels) {
@@ -40,46 +39,26 @@ test_that('parse_phenotypes works with a single list arg', {
 
 test_that('parse_phenotypes works with formulae', {
   expect_equal(parse_phenotypes(
-    PDL1='~`Membrane PDL1`>1'),
-    list(PDL1=~`Membrane PDL1`>1))
+         PDL1='~`Membrane PDL1`>1'),
+    list(PDL1=~`Membrane PDL1`>1),
+    ignore_attr=TRUE)
 
   expect_equal(parse_phenotypes(
-    'CD8+', PDL1='~`Membrane PDL1`>1', '~`Membrane PDL1`>1'),
+         'CD8+', PDL1='~`Membrane PDL1`>1', '~`Membrane PDL1`>1'),
     list(`CD8+`='CD8+', PDL1=~`Membrane PDL1`>1,
-         'Membrane PDL1>1'=~`Membrane PDL1`>1))
+         'Membrane PDL1>1'=~`Membrane PDL1`>1),
+    ignore_attr=TRUE)
 
   expect_equal(parse_phenotypes(
-    Mixed='CD8+/~`Membrane PDL1`>1', 'CD8+/~`Membrane PDL1`>1'),
+         Mixed='CD8+/~`Membrane PDL1`>1', 'CD8+/~`Membrane PDL1`>1'),
     list(Mixed=list('CD8+', ~`Membrane PDL1`>1),
-         'CD8+/Membrane PDL1>1'=list('CD8+', ~`Membrane PDL1`>1)))
+         'CD8+/Membrane PDL1>1'=list('CD8+', ~`Membrane PDL1`>1)),
+    ignore_attr=TRUE)
 
   expect_equal(parse_phenotypes(
-    'CD3+', Mixed='CD8+/~`Membrane PDL1`>1'),
-    list(`CD3+`='CD3+', Mixed=list('CD8+', ~`Membrane PDL1`>1)))
-})
-
-test_that('parse_phenotypes works with hastags', {
-  expect_equal(parse_phenotypes(
-    margin='#TumorMargin'),
-    list(margin='#TumorMargin'))
-
-  expect_equal(parse_phenotypes(
-    tumor='#TumorMargin,#Tumor'),
-    list(tumor=c('#TumorMargin', '#Tumor')))
-
-  expect_equal(parse_phenotypes(
-    'CD8+', margin='#TumorMargin', '#TumorMargin'),
-    list(`CD8+`='CD8+', margin='#TumorMargin',
-         TumorMargin='#TumorMargin'))
-
-  expect_equal(parse_phenotypes(
-    Mixed='CD8+/#TumorMargin', 'CD8+/#TumorMargin'),
-    list(Mixed=list('CD8+', '#TumorMargin'),
-         'CD8+/TumorMargin'=list('CD8+', '#TumorMargin')))
-
-  expect_equal(parse_phenotypes(
-    'CD3+', Mixed='CD8+/#TumorMargin'),
-    list(`CD3+`='CD3+', Mixed=list('CD8+', '#TumorMargin')))
+         'CD3+', Mixed='CD8+/~`Membrane PDL1`>1'),
+    list(`CD3+`='CD3+', Mixed=list('CD8+', ~`Membrane PDL1`>1)),
+    ignore_attr=TRUE)
 })
 
 test_that('parse_phenotypes error checking works', {
@@ -107,21 +86,16 @@ test_that('validate_phenotype_definitions works', {
   expect_equal(validate_phenotype_definitions('Total', ''), '')
   expect_equal(validate_phenotype_definitions('All', ''), '')
   expect_equal(validate_phenotype_definitions('~`Mean x`>3', ''), '')
-  expect_equal(validate_phenotype_definitions('#TumorMargin', ''), '')
 
   expect_equal(validate_phenotype_definitions('CD3+', 'CD3'), '')
   expect_equal(validate_phenotype_definitions('CD3+/~`Mean x`>3', 'CD3'), '')
-  expect_equal(validate_phenotype_definitions(
-    'CD3+/~`Mean x`>3/#TumorMargin', 'CD3'), '')
 
-  expect_match(validate_phenotype_definitions('CD3', 'CD3'),
-               'must start')
-  expect_match(validate_phenotype_definitions('CD3+', 'CD8'),
-               'Unknown phenotype')
+  expect_match(validate_phenotype_definitions('CD3', 'CD3'), 'must start')
+  expect_match(validate_phenotype_definitions('CD3+', 'CD8'), 'Unknown')
   expect_match(validate_phenotype_definitions('CD3+,~`Mean x`>3', 'CD3'),
                'not allowed')
 
-  df = tibble::tibble(x=1:2, `#T`=3:4)
+  df = tibble::tibble(x=1:2)
   expect_equal(validate_phenotype_definitions('~x==1', '', df), '')
   expect_match(validate_phenotype_definitions('~x==', ''),
                'not a valid expression')
@@ -131,17 +105,6 @@ test_that('validate_phenotype_definitions works', {
                'Invalid.* ~D')
   expect_match(validate_phenotype_definitions('~~D', '', df),
                'Invalid.* ~~D')
-
-  expect_equal(validate_phenotype_definitions('#T', '', df), '')
-  expect_match(validate_phenotype_definitions('#X', '', df),
-               'Unknown tag')
-  expect_match(validate_phenotype_definitions('#X/~x==1', '', df),
-               'Unknown tag')
-  expect_match(validate_phenotype_definitions('#T/~y==1', '', df),
-               'not found')
-  expect_equal(validate_phenotype_definitions('CD3+/#T', 'CD3', df), '')
-  expect_match(validate_phenotype_definitions('CD3+/#X', 'CD3', df),
-               'Unknown tag')
 })
 
 test_that('phenotype_columns works', {

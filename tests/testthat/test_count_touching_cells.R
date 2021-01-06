@@ -1,4 +1,3 @@
-context('count_touching_cells')
 library(testthat)
 
 test_that('count_touching_cells works', {
@@ -55,13 +54,16 @@ test_that('count_touching_cells works', {
   expect_equal(length(image_names), 2)
 
   # Don't do the image compare on Travis, it fails...
+  # There are minor differences in the actual image on macOS, hence
+  # the tolerance. We are just looking for diffs in the saturated colors
+  # representing the cells of interest.
   if (!identical(Sys.getenv("TRAVIS"), "true")) {
-    test_base = 'test_results'
+    test_base = test_path('test_results')
     for (image_name in image_names) {
       # Read the result images and compare to a reference
       actual = tiff::readTIFF(file.path(output_base, image_name), as.is=TRUE)
       expected = tiff::readTIFF(file.path(test_base, image_name), as.is=TRUE)
-      expect_equal(actual, expected, info=image_name)
+      expect_equal(actual, expected, tolerance=0.1, info=image_name)
     }
   }
 })
@@ -72,7 +74,7 @@ test_that('count_touching_cells_fast works', {
               '180628 B-lung2_Scan1_[14659,46741]_cell_seg_data.txt')
   skip_if_not(file.exists(cell_seg_path))
 
-  csd = vroom::vroom(cell_seg_path, delim='\t', na='#N/A')
+  csd = read_cell_seg_data(cell_seg_path)
   field_name = "180628 B-lung2_Scan1_[14659,46741]"
   export_path = dirname(cell_seg_path)
   phenos = list("CD8+", "CD68+")
@@ -87,7 +89,7 @@ test_that('count_touching_cells_fast works', {
   expected = EBImage::readImage(expected_path)
 
   expect_equal(result$image, expected)
-  expect_equal(dim(result$data), c(49, 14))
+  expect_equal(dim(result$data), c(49, 12))
 
   # Test error checking for non-distinct phenotypes.
   # This is egregious duplication.

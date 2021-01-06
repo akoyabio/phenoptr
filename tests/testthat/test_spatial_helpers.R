@@ -2,15 +2,16 @@
 
 test_that('make_ppp works', {
   # Try a couple of different ways to make a ppp
-  pp <- make_ppp(sample_cell_seg_data, sample_cell_seg_folder(),
-                 "CD8+", tissue_categories="Tumor")
+  expect_warning(pp <- make_ppp(sample_cell_seg_data, sample_cell_seg_folder(),
+                 "CD8+", tissue_categories="Tumor"), 'rejected')
+
   expect_equal(pp$n, 45)
   expect_equal(levels(spatstat::marks(pp)), "CD8+")
 
-  pp <- make_ppp(sample_cell_seg_data, sample_cell_seg_folder(),
+  expect_warning(pp <- make_ppp(sample_cell_seg_data, sample_cell_seg_folder(),
                  pheno=list(CD8="CD8+"),
                  field_name="Set4_1-6plex_[16142,55840].im3",
-                 tissue_categories="Tumor")
+                 tissue_categories="Tumor"), 'rejected')
   expect_equal(pp$n, 45)
   expect_equal(levels(spatstat::marks(pp)), "CD8")
 

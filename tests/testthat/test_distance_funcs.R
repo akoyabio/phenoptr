@@ -1,6 +1,5 @@
 # Tests for distance functions
 # Mostly smoke tests to make sure the code runs...
-context('distance_functions')
 library(testthat)
 
 path = test_path('test_data',
@@ -68,12 +67,14 @@ test_that("find_nearest_distance works", {
   # Compare with rtree version
   nearest_rtree = find_nearest_distance_rtree(csd)
 
-  # There are two places where Cell ID B is different
+  # There are three places where Cell ID B may be different
   # because there are two cells at the same distance and the two methods
   # find different ones.
-  diff_b = c(76, 154)
-  expect_equal(nearest$`Cell ID B`[diff_b], c(72, 142))
-  expect_equal(nearest_rtree$`Cell ID B`[diff_b], c(92, 144))
+  # Just check the distances for these
+  diff_b = c(76, 154, 269)
+  distance_b = c(9.055385138, 6.800735254, 5.385164807)
+  expect_equal(nearest$`Distance to B`[diff_b], distance_b)
+  expect_equal(nearest_rtree$`Distance to B`[diff_b], distance_b)
 
   # The rest should match
   # all.equal.tbl_df is broken, coerce to data.frame.
@@ -114,7 +115,7 @@ test_that('compute_all_nearest_distance works', {
                   `Cell ID Cytotoxic T`,
                   `Distance to Helper T`,
                   `Cell ID Helper T`)
-  expect_equivalent(as.data.frame(all_d_2), as.data.frame(nearby))
+  expect_equal(as.data.frame(all_d_2), as.data.frame(nearby), ignore_attr=TRUE)
 
   file.remove(out_path)
 
@@ -139,7 +140,7 @@ test_that('compute_all_nearest_distance works', {
                   `Cell ID Cytotoxic T` = `Cell ID Cytotoxic_T+`,
                   `Distance to Helper T`=`Distance to Helper_T+`,
                   `Cell ID Helper_T` = `Cell ID Helper_T+`)
-  expect_equivalent(as.data.frame(all_d_2), as.data.frame(nearby))
+  expect_equal(as.data.frame(all_d_2), as.data.frame(nearby), ignore_attr=TRUE)
 
   file.remove(out_path)
 })

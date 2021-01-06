@@ -1,5 +1,4 @@
 # Create a spatial distribution report
-context('spatial_distribution_report')
 library(testthat)
 
 test_that('spatial_distribution_report runs', {
@@ -14,10 +13,8 @@ test_that('spatial_distribution_report runs', {
   colors = c(B='red', 'Helper T'='green', 'Cytotoxic T'="yellow")
   out_path = tempfile(fileext='.html')
 
-  # Note: the warning is from ggplot
-  expect_warning(spatial_distribution_report(cell_seg_path, pairs, colors,
-                                             output_path=out_path),
-                 'missing values', all=TRUE)
+  spatial_distribution_report(cell_seg_path, pairs, colors,
+                                             output_path=out_path)
 
   expect_true(file.exists(out_path))
   file.remove(out_path)
@@ -48,10 +45,8 @@ test_that('spatial_distribution_report works with consolidated data', {
   colors = c('B+'='red', 'Helper_T+'='green', 'Cytotoxic_T+'="yellow")
   out_path = tempfile(fileext='.html')
 
-  # Note: the warning is from ggplot
-  expect_warning(spatial_distribution_report(cell_seg_path, pairs, colors,
-                                             output_path=out_path),
-                 'missing values', all=TRUE)
+  spatial_distribution_report(cell_seg_path, pairs, colors,
+                                             output_path=out_path)
 
   expect_true(file.exists(out_path))
   file.remove(out_path)
