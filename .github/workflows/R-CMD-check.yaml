@@ -6,11 +6,13 @@ on:
       - main
       - master
       - 9000
+      - roi
   pull_request:
     branches:
       - main
       - master
       - 9000
+      - roi
 
 name: R-CMD-check
 
