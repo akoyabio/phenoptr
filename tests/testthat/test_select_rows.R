@@ -121,6 +121,13 @@ test_that('Hashtags work', {
                c(T, F, F, F, T, F))
 })
 
+test_that('select_rows with multi-scheme phenotyping gives an error', {
+  csd_path = "C:/Research/phenoptrTestData/Multi-schema/test_multi_schema.txt"
+  skip_if_not(file.exists(csd_path))
+  csd = read_cell_seg_data(csd_path)
+  expect_error(select_rows(csd, 'CD8+'), 'not supported')
+})
+
 test_that("make_phenotype_rules works", {
   phenotypes = c('CD8', 'CD68', 'tumor')
 

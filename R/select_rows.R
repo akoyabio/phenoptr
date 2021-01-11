@@ -275,6 +275,11 @@ phenotype_names = function(phenos) {
 select_rows <- function(csd, sel) {
   stopifnot(is.data.frame(csd))
 
+  # Don't support multi-schema phenotyping directly
+  if (any(stringr::str_detect(names(csd), 'Phenotype-')))
+    stop('Multi-scheme phenotyping is not supported in select_rows.\n',
+         'Please use the phenoptrReports "Consolidate and summarize" app first.')
+
   # Evaluate a single phenotype or hashtag in a per-marker file
   evaluate_per_marker = function(s) {
     if (startsWith(s, '#')) {
