@@ -2,12 +2,13 @@
 % Please edit documentation in R/read_components.R
 \name{get_field_info}
 \alias{get_field_info}
-\title{Read information about a field from a component image file.}
+\title{Read information about a field from a related image file.}
 \usage{
 get_field_info(path)
 }
 \arguments{
-\item{path}{Path to the \code{component_data.tif} file.}
+\item{path}{Path to the \code{cell_seg_data.txt}, \code{component_data.tif}
+or \code{binary_seg_maps.tif} file.}
 }
 \value{
 A named list with values
@@ -24,16 +25,20 @@ in pixels.}
 }
 \description{
 Find the location, size and magnification of an inForm field by inspecting a
-\code{component_data.tif} file.
+\code{component_data.tif} or \code{binary_seg_maps.tif} file.
 }
 \details{
-The field location is determined from the coordinates in the file
+If the provided \code{path} is for a \code{cell_seg_data.txt} file, this function
+will look for an appropriate image file. If none is found, it will
+return \code{NULL}.
+
+The field location is determined from TIFF tags,
+if akoyabio/tiff is installed, or from the coordinates in the file
 name. The field size and magnification are read from TIFF tags
 in the file.
 
-Limited to 1x1 fields due to
-limitations in the \code{tiff} package. Install the
-\href{https://github.com/akoyabio/tiff}{Akoya Biosciences fork}
+Limited to 1x1 fields when the standard \code{tiff} package is installed.
+Install the \href{https://github.com/akoyabio/tiff}{Akoya Biosciences fork}
 of the tiff package to remove this limitation.
 }
 \examples{

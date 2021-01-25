@@ -89,15 +89,13 @@ density_bands = function(cell_seg_path, phenotypes, positive, negative,
 
   csd = read_cell_seg_data(cell_seg_path, pixels_per_micron='auto')
 
-  # Get field metadata from the component data file
-  if (is.null(component_path))
-    component_path =
-      sub('_cell_seg_data.txt', '_component_data.tif', cell_seg_path)
-  if(!file.exists(component_path))
-    stop('density_bands() requires a matching component data file to access ',
-         'the spatial reference for the field.')
-
+  # Get field metadata
+  if (is.null(component_path)) component_path = cell_seg_path
   field_info = get_field_info(component_path)
+  if(is.null(field_info))
+    stop('density_bands() requires a matching component data or ',
+    'segmentation map file to access the spatial reference for the field.')
+
   pixels_per_micron = 1/field_info$microns_per_pixel
 
   # Check for multiple samples, this is probably an error

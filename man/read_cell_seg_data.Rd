@@ -18,7 +18,8 @@ read_cell_seg_data(
 (default 2 pixels/micron, the resolution of 20x MSI fields
 taken on Vectra Polaris and Vectra 3.).
 Set to NA to skip conversion. Set to \code{'auto'} to read from
-an associated \code{component_data.tif} file.}
+an associated \code{component_data.tif}
+or \code{binary_seg_maps.tif} file.}
 
 \item{remove_units}{If TRUE (default),
 remove the unit name from expression columns.}
@@ -52,7 +53,7 @@ These are typically unused summary columns.
 \item Converts pixel distances to microns. The conversion factor may be
 specified as a parameter, by setting
 \code{options(phenoptr.pixels.per.micron)}, or by reading an associated
-\code{component_data.tif} file.
+\code{component_data.tif} or \code{binary_seg_maps.tif} file.
 \item Optionally removes units from expression names
 \item If the file contains multiple sample names,
 a \code{tag} column is created
@@ -62,7 +63,8 @@ short name is needed, for example in chart legends.
 }
 
 If \code{pixels_per_micron='auto'}, \code{read_cell_seg_data} looks for
-a \code{component_data.tif} file in the same directory as \code{path}.
+a \code{component_data.tif} or \code{binary_seg_maps.tif} file in the
+same directory as \code{path}.
 If found, \code{pixels_per_micron} is read from the file \strong{and}
 the cell coordinates are offset to the correct spatial location.
 

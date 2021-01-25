@@ -8,7 +8,7 @@
 #'
 #' @param csd Cell seg data, may include multiple fields
 #' @param field_name Sample Name or Annotation ID to process
-#' @param export_path Path to a directory containing composite, component,
+#' @param export_path Path to a directory containing composite
 #'   and segmentation image files from inForm
 #' @param phenos Named list of phenotype definitions. Must have length 2.
 #' @param color1,color2 Colors for cells matching `phenos`.

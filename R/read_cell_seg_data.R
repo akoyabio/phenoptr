@@ -30,7 +30,7 @@ list_cell_seg_files <- function(path, ...) {
 #' \item Converts pixel distances to microns. The conversion factor may be
 #' specified as a parameter, by setting
 #' \code{options(phenoptr.pixels.per.micron)}, or by reading an associated
-#' \code{component_data.tif} file.
+#' \code{component_data.tif} or \code{binary_seg_maps.tif} file.
 #' \item Optionally removes units from expression names
 #' \item If the file contains multiple sample names,
 #'       a \code{tag} column is created
@@ -40,7 +40,8 @@ list_cell_seg_files <- function(path, ...) {
 #' }
 #'
 #' If \code{pixels_per_micron='auto'}, \code{read_cell_seg_data} looks for
-#' a \code{component_data.tif} file in the same directory as \code{path}.
+#' a \code{component_data.tif} or \code{binary_seg_maps.tif} file in the
+#' same directory as \code{path}.
 #' If found, \code{pixels_per_micron} is read from the file \strong{and}
 #' the cell coordinates are offset to the correct spatial location.
 #'
@@ -60,7 +61,8 @@ list_cell_seg_files <- function(path, ...) {
 #'        (default 2 pixels/micron, the resolution of 20x MSI fields
 #'        taken on Vectra Polaris and Vectra 3.).
 #'        Set to NA to skip conversion. Set to \code{'auto'} to read from
-#'        an associated \code{component_data.tif} file.
+#'        an associated \code{component_data.tif}
+#'        or \code{binary_seg_maps.tif} file.
 #' @param remove_units If TRUE (default),
 #'        remove the unit name from expression columns.
 #' @param col_select Optional column selection expression, may be
@@ -160,12 +162,11 @@ read_cell_seg_data <- function(
     message('Data is already in microns, no conversion performed')
   } else if (!is.na(pixels_per_micron)) {
     if (pixels_per_micron=='auto') {
-      # Get pixels_per_micron and field location from component_data.tif
-      component_path = sub('_cell_seg_data.txt', '_component_data.tif', path)
-      if(!file.exists(component_path))
+      # Get pixels_per_micron and field location
+      info = get_field_info(path)
+      if(is.null(info))
         stop('To convert cell seg data to microns, ',
-             'a matching component data file is required.')
-      info = get_field_info(component_path)
+             'a matching component data or segmentation maps file is required.')
       pixels_per_micron = 1/info$microns_per_pixel
       location = info$location
     } else {
@@ -322,14 +323,12 @@ get_col_types_and_decimal_mark = function(path, col_select) {
 # Convert cell locations back to pixels if possible
 force_pixel_locations = function(csd, cell_seg_path) {
   if (unit_is_microns(csd)) {
-    # The cell seg file's native unit is microns. Get image info
-    # from the component data file and convert back to pixels
-    component_path = sub('_cell_seg_data.txt', '_component_data.tif',
-                         cell_seg_path)
-    if(!file.exists(component_path))
+    # The cell seg file's native unit is microns. Get field info
+    # and convert back to pixels
+    info = get_field_info(cell_seg_path)
+    if (is.null(info))
       stop('For cell seg data in microns, ',
            'a matching component data file is required.')
-    info = get_field_info(component_path)
     pixels_per_micron = 1/info$microns_per_pixel
     location = info$location
     csd %>% dplyr::mutate(

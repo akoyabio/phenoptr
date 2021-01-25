@@ -54,30 +54,30 @@ read_components <- function(path) {
 #' @export
 read_field_info = function(field_name, export_path) {
   field_base = stringr::str_remove(field_name, '\\.im3')
-  component_path = file.path(export_path, paste0(field_base,
-                                                 '_component_data.tif'))
-  if(!file.exists(component_path)) {
-    warning('File not found: "', component_path, '"')
-    return(NULL)
-  }
-
-  phenoptr::get_field_info(component_path)
+  fake_cell_seg_path = file.path(export_path, paste0(field_base,
+                                                 '_cell_seg_data.txt'))
+  phenoptr::get_field_info(fake_cell_seg_path)
 }
 
-#' Read information about a field from a component image file.
+#' Read information about a field from a related image file.
 #'
 #' Find the location, size and magnification of an inForm field by inspecting a
-#' `component_data.tif` file.
+#' `component_data.tif` or `binary_seg_maps.tif` file.
 #'
-#' The field location is determined from the coordinates in the file
+#' If the provided `path` is for a `cell_seg_data.txt` file, this function
+#' will look for an appropriate image file. If none is found, it will
+#' return `NULL`.
+#'
+#' The field location is determined from TIFF tags,
+#' if akoyabio/tiff is installed, or from the coordinates in the file
 #' name. The field size and magnification are read from TIFF tags
 #' in the file.
 #'
-#' Limited to 1x1 fields due to
-#' limitations in the `tiff` package. Install the
-#' [Akoya Biosciences fork](https://github.com/akoyabio/tiff)
+#' Limited to 1x1 fields when the standard `tiff` package is installed.
+#' Install the [Akoya Biosciences fork](https://github.com/akoyabio/tiff)
 #' of the tiff package to remove this limitation.
-#' @param path Path to the `component_data.tif` file.
+#' @param path Path to the `cell_seg_data.txt`, `component_data.tif`
+#' or `binary_seg_maps.tif` file.
 #' @return A named list with values
 #'   \describe{
 #'    \item{\code{location}}{The physical (x, y) location of the top-left
@@ -100,13 +100,24 @@ read_field_info = function(field_name, export_path) {
 #'   get_field_info(path)
 #' @md
 get_field_info = function(path) {
+  # If `path` is to a cell seg file, look for an appropriate image file
+  # Look for component data first cuz those always have spatial info;
+  # segmentation maps only recently added it
+  if (endsWith(path, '_cell_seg_data.txt')) {
+    image_path = sub('_cell_seg_data.txt', '_component_data.tif', path)
+    if(!file.exists(image_path))
+      image_path = sub('_cell_seg_data.txt', '_binary_seg_maps.tif', path)
+    if (!file.exists(image_path))
+      return(NULL)
+  } else image_path = path
+
   # Use readTIFFDirectory if available, it is faster, more complete
   # and works with tiled images
   if (function_exists('tiff', 'readTIFFDirectory')) {
-    info = tiff::readTIFFDirectory(path, all=FALSE)
+    info = tiff::readTIFFDirectory(image_path, all=FALSE)
     center = NA # Don't need this
    } else {
-    tif = try(tiff::readTIFF(path, all=FALSE, info=TRUE))
+    tif = try(tiff::readTIFF(image_path, all=FALSE, info=TRUE))
     if (inherits(tif, 'try-error')) {
       # Give a helpful error message if the problem is missing support
       # for tiled images.
@@ -123,7 +134,7 @@ get_field_info = function(path) {
 
     # We have to get the location from the file name; tiff::readTIFF()
     # doesn't read the location tags :-(
-    name = basename(path)
+    name = basename(image_path)
     center_pattern = "_\\[([\\d\\.]+),([\\d\\.]+)\\][^\\[]*$"
     center = as.numeric(stringr::str_match(name, center_pattern)[, 2:3])
     if (any(is.na(center)))
@@ -134,7 +145,8 @@ get_field_info = function(path) {
   missing_attributes = setdiff(required_attributes, names(info))
   if (length(missing_attributes) > 0) {
     missing = paste(missing_attributes, collapse=', ')
-    stop(paste0('Image file is missing required attributes: ', missing))
+    stop('Image file is missing required attributes: ', missing,
+         '\n', image_path)
   }
 
   if (info$resolution.unit != 'cm')

@@ -36,11 +36,11 @@ knitr::opts_chunk$set(echo=FALSE,fig.width=11, fig.height=8,
 
 csd = read_cell_seg_data(cell_seg_path, pixels_per_micron='auto')
 
-# Get field metadata from the component data file
-component_path = sub('_cell_seg_data.txt', '_component_data.tif', cell_seg_path)
-if(!file.exists(component_path))
-  stop('Spatial distribution report requires a matching component data file.')
-field_info = get_field_info(component_path)
+# Get field metadata
+field_info = get_field_info(cell_seg_path)
+if(is.null(field_info))
+  stop('Spatial distribution report requires a matching component data',
+       ' or segmentation map file.')
 
 # Window for spatial processing and limit for charts
 xlim=c(field_info$location[1], field_info$location[1]+field_info$field_size[1])

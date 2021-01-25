@@ -10,7 +10,7 @@ make_ppp(csd, export_path, pheno, field_name = NULL, tissue_categories = NULL)
 \item{csd}{Cell seg data, may contain multiple fields}
 
 \item{export_path}{Path to a directory containing composite and component
-image files from inForm}
+or segmentation map image files from inForm}
 
 \item{pheno}{Phenotype definition. Either a (possibly named) character
 vector to be parsed by \code{\link[=parse_phenotypes]{parse_phenotypes()}} or a named list containing

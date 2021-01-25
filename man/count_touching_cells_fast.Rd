@@ -19,7 +19,7 @@ count_touching_cells_fast(
 
 \item{field_name}{Sample Name or Annotation ID to process}
 
-\item{export_path}{Path to a directory containing composite, component,
+\item{export_path}{Path to a directory containing composite
 and segmentation image files from inForm}
 
 \item{phenos}{Named list of phenotype definitions. Must have length 2.}

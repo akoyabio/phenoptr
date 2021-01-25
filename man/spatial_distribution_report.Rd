@@ -35,9 +35,9 @@ and nearest-neighbor relations for cells of pairs of phenotypes
 in a single field.
 }
 \details{
-A cell seg data file and component data file for the field are required.
-If a tissue segmentation
-or composite image of the field
+A cell seg data file and component data or segmentation maps file
+for the field are required.
+If a tissue segmentation or composite image of the field
 is available, it will be used as a background.
 
 The report is saved to the same directory as the input file.
