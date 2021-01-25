@@ -10,6 +10,10 @@ get_tissue_category_index(map)
 \arguments{
 \item{map}{A tissue category image from read_maps.}
 }
+\value{
+A named vector mapping tissue category names to label numbers
+for the map.
+}
 \description{
 Get the mapping from tissue category name to label number for a
 tissue category map.

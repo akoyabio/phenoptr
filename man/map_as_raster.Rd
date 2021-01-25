@@ -9,6 +9,9 @@ map_as_raster(map)
 \arguments{
 \item{map}{Map image from \code{read_maps}}
 }
+\value{
+A spatially-referenced raster
+}
 \description{
 Make a spatially-referenced raster from a map image
 }
