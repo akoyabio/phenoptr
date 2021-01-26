@@ -44,7 +44,7 @@ jobs:
         run: |
           install.packages(c("remotes", "rcmdcheck"))
           install.packages('sf', type='binary')
-          remotes::install_version('BH', '1.72.0-3')
+          remotes::install_version('BH', '1.72.0-3') # BH 1.75 won't build on Windows R 3.6
           remotes::install_deps(dependencies = TRUE, upgrade="never")
         shell: Rscript {0}
       - name: Check
