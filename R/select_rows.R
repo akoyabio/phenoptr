@@ -294,7 +294,6 @@ select_rows <- function(csd, sel) {
       if (class(col_selections) != 'logical' ||
           length(col_selections) != nrow(csd))
         stop('Invalid expression in select_rows: ~', lazyeval::f_text(s))
-      # Don't return NA values, treat them as false
       col_selections
     }
   }
@@ -304,6 +303,8 @@ select_rows <- function(csd, sel) {
   if (!is.list(sel)) sel = list(sel)
   for (s in sel)
     result = result & select_one(s)
+
+  # Don't return NA values, treat them as false
   result %>% tidyr::replace_na(FALSE)
 }
 
