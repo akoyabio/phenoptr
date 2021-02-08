@@ -47,6 +47,6 @@ Authors@R: c(
     person("Akoya Biosciences", role="cph"))
 Remotes:
     akoyabio/rtree,
-    akoyabio/tiff
+    akoyabio/tiff,
     r-lib/vroom
 Roxygen: list(markdown = TRUE)
