@@ -27,7 +27,7 @@ Imports:
     tidyr (>= 1.0.0),
     tiff,
     tools,
-    vroom,
+    vroom (> 1.4.0),
     xml2
 Depends: R (>= 3.6.0)
 License: Zlib | file LICENSE
@@ -52,4 +52,5 @@ Authors@R: c(
 Remotes:
     akoyabio/rtree,
     akoyabio/tiff
+    r-lib/vroom
 Roxygen: list(markdown = TRUE)

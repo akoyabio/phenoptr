@@ -1,3 +1,8 @@
+# Functions to read and parse inForm cell seg files
+
+# Possible NA values in cell seg files
+cell_seg_nas = c('NA', '#N/A', '')
+
 #' Find inForm data files.
 #'
 #' `list_cell_seg_files` finds inForm cell seg data files in a single directory
@@ -114,8 +119,8 @@ read_cell_seg_data <- function(
   data_types = get_col_types_and_decimal_mark(path, col_select)
 
   # Read the data.
-  df <- vroom::vroom(path, na=c('NA', '#N/A'), delim='\t',
-          locale=readr::locale(decimal_mark=data_types$decimal_mark),
+  df <- vroom::vroom(path, na=cell_seg_nas, delim='\t',
+          locale=vroom::locale(decimal_mark=data_types$decimal_mark),
           col_types=data_types$col_types, col_select=!!col_select)
 
   # If any of these fields has missing values, the file may be damaged.
@@ -261,12 +266,12 @@ get_col_types_and_decimal_mark = function(path, col_select) {
 
   # Read the first 1000 lines of data.
   # Supplying col_types prevents console output of the imputed types.
-  # Supplying the grouping_mark keeps readr from mis-handling commas
+  # Supplying the grouping_mark keeps vroom from mis-handling commas
   # that are decimal separators.
   # See https://github.com/akoyabio/phenoptrReports/issues/31
-  df <- vroom::vroom(path, na=c('NA', '#N/A'), n_max=1000, delim='\t',
-                        locale=readr::locale(grouping_mark=''),
-                        col_types=readr::cols(), col_select=!!col_select)
+  df <- vroom::vroom(path, na=cell_seg_nas, n_max=1000, delim='\t',
+                        locale=vroom::locale(grouping_mark=''),
+                        col_types=vroom::cols(), col_select=!!col_select)
 
   # If columns containing "Mean" are character, check to see if the
   # file may have been written in a locale that uses comma as a decimal
@@ -280,9 +285,9 @@ get_col_types_and_decimal_mark = function(path, col_select) {
     char_col = mean_cols[which(mean_class=='character')][[1]]
     if (any(stringr::str_detect(char_col, ','))) {
       message('Reading cell seg data with comma separator.')
-      df <- vroom::vroom(path, na=c('NA', '#N/A'), n_max=1000, delim='\t',
-                            locale=readr::locale(decimal_mark=','),
-                            col_types=readr::cols(), col_select=!!col_select)
+      df <- vroom::vroom(path, na=cell_seg_nas, n_max=1000, delim='\t',
+                            locale=vroom::locale(decimal_mark=','),
+                            col_types=vroom::cols(), col_select=!!col_select)
     }
 
     # Check again
@@ -297,8 +302,8 @@ get_col_types_and_decimal_mark = function(path, col_select) {
     decimal_mark = ','
   }
 
-  # Now clean up the column types. Start with the imputed types from readr.
-  col_types = readr::spec(df)$cols
+  # Now clean up the column types. Start with the imputed types from vroom.
+  col_types = vroom::spec(df)$cols
 
   # If df has fewer than 1000 rows, we read the entire file and the
   # imputed column types should be fine.
@@ -317,7 +322,7 @@ get_col_types_and_decimal_mark = function(path, col_select) {
   col_types[col_names=='Process Region ID'] = 'i'
   col_types[stringr::str_detect(col_names, 'Distance')] = 'd'
 
-  list(col_types=do.call(readr::cols, col_types), decimal_mark=decimal_mark)
+  list(col_types=do.call(vroom::cols, col_types), decimal_mark=decimal_mark)
 }
 
 # Convert cell locations back to pixels if possible
