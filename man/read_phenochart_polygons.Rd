@@ -2,7 +2,7 @@
 % Please edit documentation in R/spatial_helpers.R
 \name{read_phenochart_polygons}
 \alias{read_phenochart_polygons}
-\title{Read polygons and tags from a Phenochart annotation.}
+\title{Read polygons (ROIs) and tags from a Phenochart annotation.}
 \usage{
 read_phenochart_polygons(xml_path)
 }

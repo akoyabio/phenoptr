@@ -120,12 +120,50 @@ make_ppp = function(csd, export_path, pheno,
 # Operations with ROIs
 # These require {sf}
 
-#' Read polygons and tags from a Phenochart annotation.
+#' Read and combine all tagged ROIS from an annotation file
+#'
+#' Reads all tagged ROIs from the provided file. ROIs with the same
+#' tag are combined with `sf::st_union()`. A single (multi)polygon
+#' object is returned for each unique tag.
+#'
+#' @param annotation_file Path to annotations file
+#' @return A named list of (multi)polygons, one for each tag
+#' in the annotations file
+#' @export
+read_tagged_rois = function(annotation_file) {
+  rois = read_phenochart_polygons(annotation_file)
+  if (nrow(rois) > 0) {
+    rois = rois %>% dplyr::filter(tags != '') # Only tagged ROIs
+
+    # Get a list of all unique tags
+    all_roi_names = rois$tags %>%
+      stringr::str_split(' ') %>%
+      unlist() %>%
+      unique() %>%
+      sort() %>%
+      rlang::set_names()
+  } else return(list())
+
+  # Make a single (multi) polygon for each tag
+  tagged_rois = purrr::map(all_roi_names, function(tag_name) {
+    rois %>%
+      dplyr::filter(stringr::str_detect(tags, tag_name)) %>%
+      sf::st_union()
+  })
+
+  tagged_rois
+}
+
+
+#' Read polygons (ROIs) and tags from a Phenochart annotation.
 #'
 #' Reads the polygons and included rectangles for all ROI annotations
 #' in a single file.
+#'
 #' @param xml_path Path to an annotations file.
 #' @return An `sf::st_sf` object with columns `tags`, `geometry` and `rects`.
+#' `rects` is a list of `sf::st_sf` objects with columns `tags`, `center_x`,
+#' `center_y` and `geometry`.
 #' Multiple tags for a single ROI are separated by spaces in a single string.
 #' @export
 #' @importFrom magrittr %>%
@@ -151,7 +189,7 @@ read_phenochart_polygons = function(xml_path) {
     # converted to Spatial objects. st_buffer makes MULTIPOLYGONs which
     # are more tractable.
     poly = sf::st_buffer(poly, 0)
-    rects = parse_rects(roi)
+    rects = parse_roi_rects(roi)
     parsed = sf::st_sf(tags=tags,
               geometry=sf::st_sfc(poly),
               stringsAsFactors=FALSE)
@@ -164,16 +202,49 @@ read_phenochart_polygons = function(xml_path) {
   result
 }
 
-# Parse the rectangles from an ROI annotation
-# @param roi Parsed XML for an ROI annotation
-# @return An `sf::sfc` object with geometries for each rectangle in roi
-parse_rects = function(roi) {
-  fields = xml2::xml_find_all(roi, './/Fields-i[@subtype="RectangleAnnotation"]')
-  rects = purrr::map(fields, parse_field)
-  sf::st_sfc(rects)
+#' Read the tagged, top-level fields from an annotation file
+#' @param xml_path Path to an annotations file.
+#' @return An `sf::st_sf` object with columns `tags`, `center_x`,
+#' `center_y` and `geometry`.
+#' Multiple tags for a single field are separated by spaces in a single string.
+#' @export
+read_phenochart_fields = function(xml_path) {
+  xml = xml2::read_xml(xml_path)
+  fields = xml2::xml_find_all(xml,
+                              '/AnnotationList/Annotations/Annotations-i[@subtype="RectangleAnnotation"]')
+  rects = purrr::map_dfr(fields, parse_rect)
+  tags = purrr::map_chr(fields, parse_tags)
+  rects$tags = tags
+  dplyr::filter(rects, tags != '') %>%
+    dplyr::select(tags, dplyr::everything())
 }
 
-parse_field = function(field) {
+#' Parse the rectangles from an ROI annotation
+#' @param roi Parsed XML for an ROI annotation
+#' @return An `sf::sf` object with geometries for each rectangle in roi
+#' @keywords internal
+parse_roi_rects = function(roi) {
+  fields = xml2::xml_find_all(roi, './/Fields-i[@subtype="RectangleAnnotation"]')
+  purrr::map_dfr(fields, parse_rect)
+}
+
+#' Parse tags from a node of an annotations file
+#' @param node XML node containing tags
+#' @return A string with space-separated tags
+#' @keywords internal
+parse_tags = function(node) {
+  xml2::xml_find_all(node, './/Tags-i') %>%
+    xml2::xml_text() %>%
+    paste(collapse=' ')
+}
+
+#' Parse a single rectangle annotation
+#' @param field Parsed XML for a single rectangle annotation
+#' @return An `sf::st_sf` with coordinates of the rectangle
+#' and columns `center_x` and `center_y` giving the *rounded*
+#' center point that inForm uses to identify the field.
+#' @keywords internal
+parse_rect = function(field) {
   x = xml2::xml_find_first(field, './/Origin/X') %>% xml2::xml_double()
   y = xml2::xml_find_first(field, './/Origin/Y') %>% xml2::xml_double()
   width = xml2::xml_find_first(field, './/Size/Width') %>% xml2::xml_double()
@@ -183,7 +254,10 @@ parse_field = function(field) {
                  x+width, y+height,
                  x+width, y,
                  x, y), ncol=2, byrow=TRUE)
-  sf::st_polygon(list(pts))
+  center_x = round(x+width/2, 0)
+  center_y = round(y+height/2, 0)
+  sf::st_sf(center_x=center_x, center_y=center_y,
+        geometry=sf::st_sfc(sf::st_polygon(list(pts))))
 }
 
 #' Add a geometry column to a cell seg table
