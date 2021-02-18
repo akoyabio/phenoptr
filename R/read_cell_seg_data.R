@@ -1,6 +1,10 @@
 # Functions to read and parse inForm cell seg files
 
 # Possible NA values in cell seg files
+# Note: Historically, missing phenotypes have been coded as ''.
+# This converts them to NA. `read_cell_seg_data` converts the NA's
+# back to '' to avoid breaking a lot of client code that doesn't expect NAs
+# and does not handle them correctly.
 cell_seg_nas = c('NA', '#N/A', '')
 
 #' Find inForm data files.
@@ -123,6 +127,12 @@ read_cell_seg_data <- function(
           locale=vroom::locale(decimal_mark=data_types$decimal_mark),
           col_types=data_types$col_types, col_select=!!col_select)
 
+  # Convert NA values in phenotype columns back to '' for
+  # compatibility with existing client code
+  df = df %>%
+    dplyr::mutate(dplyr::across(dplyr::starts_with('Phenotype'),
+                                tidyr::replace_na, replace=''))
+
   # If any of these fields has missing values, the file may be damaged.
   no_na_cols = c("Path", "Sample Name", "Tissue Category", "Phenotype",
                  "Cell ID", "Slide ID")
@@ -133,12 +143,12 @@ read_cell_seg_data <- function(
     warning('Some expected columns have missing data:\n',
             paste(bad_na_cols, collapse=', '), '\n',
             path, ' may be damaged.')
-  sample_name = 'Sample Name'
 
   # If there are multiple sample names, make 'tag' be an abbreviated
   # Sample.Name column and insert it as the first column
   # Use the 'tag' column when you need a short name for the sample,
   # e.g. in chart legends
+  sample_name = 'Sample Name'
   if (length(unique(df[[sample_name]])) > 1 && !('tag' %in% names(df))) {
     tag <- as.factor(remove_extensions(remove_common_prefix(df[[sample_name]])))
     df <- cbind(tag, df)
@@ -269,9 +279,11 @@ get_col_types_and_decimal_mark = function(path, col_select) {
   # Supplying the grouping_mark keeps vroom from mis-handling commas
   # that are decimal separators.
   # See https://github.com/akoyabio/phenoptrReports/issues/31
-  df <- vroom::vroom(path, na=cell_seg_nas, n_max=1000, delim='\t',
+  # Suppress warnings about parsing problems
+  df <- suppressWarnings(
+    vroom::vroom(path, na=cell_seg_nas, n_max=1000, delim='\t',
                         locale=vroom::locale(grouping_mark=''),
-                        col_types=vroom::cols(), col_select=!!col_select)
+                        col_types=vroom::cols(), col_select=!!col_select))
 
   # If columns containing "Mean" are character, check to see if the
   # file may have been written in a locale that uses comma as a decimal
@@ -285,9 +297,10 @@ get_col_types_and_decimal_mark = function(path, col_select) {
     char_col = mean_cols[which(mean_class=='character')][[1]]
     if (any(stringr::str_detect(char_col, ','))) {
       message('Reading cell seg data with comma separator.')
-      df <- vroom::vroom(path, na=cell_seg_nas, n_max=1000, delim='\t',
+      df <- suppressWarnings(
+        vroom::vroom(path, na=cell_seg_nas, n_max=1000, delim='\t',
                             locale=vroom::locale(decimal_mark=','),
-                            col_types=vroom::cols(), col_select=!!col_select)
+                            col_types=vroom::cols(), col_select=!!col_select))
     }
 
     # Check again
@@ -305,22 +318,23 @@ get_col_types_and_decimal_mark = function(path, col_select) {
   # Now clean up the column types. Start with the imputed types from vroom.
   col_types = vroom::spec(df)$cols
 
-  # If df has fewer than 1000 rows, we read the entire file and the
-  # imputed column types should be fine.
-  if (nrow(df) < 1000)
-    return(list(col_types=col_types, decimal_mark=decimal_mark))
+  # vroom doesn't correctly read 'double' columns with comma for decimal mark.
+  # Switch them to 'number'
+  # See https://github.com/r-lib/vroom/issues/313
+  double_col_types =
+    purrr::map_lgl(col_types, ~inherits(.x, 'collector_double'))
+  col_types[double_col_types] = 'n'
 
   # Explicitly assign column type for columns that may not be represented
   # in the first 1000 rows
   # Notes:
   # - Cell ID is "all" in summary tables, don't make it numeric here
-  # - Columns such as "Total Cells" which are populated in summary tables and
-  #   present but unpopulated in detail tables don't need to be addressed here.
-  #   They will be read correctly in the summary tables and removed from the
-  #   detail tables.
   col_names = names(col_types)
-  col_types[col_names=='Process Region ID'] = 'i'
-  col_types[stringr::str_detect(col_names, 'Distance')] = 'd'
+  col_types[col_names %in% c('Total Cells', 'Process Region ID')] = 'i'
+  col_types[stringr::str_detect(col_names, 'Distance')] = 'n'
+  col_types[stringr::str_detect(col_names, 'Tissue Category Area')] = 'n'
+  col_types[stringr::str_detect(col_names, 'Cell Density')] = 'n'
+  col_types[stringr::str_detect(col_names, 'inForm')] = 'c'
 
   list(col_types=do.call(vroom::cols, col_types), decimal_mark=decimal_mark)
 }
