@@ -10,7 +10,8 @@ parse_roi_rects(roi)
 \item{roi}{Parsed XML for an ROI annotation}
 }
 \value{
-An \code{sf::sfc} object with geometries for each rectangle in roi
+An \code{sf::sf} object with geometries for each rectangle in roi, as
+returned from \code{parse_rect()}.
 }
 \description{
 Parse the rectangles from an ROI annotation

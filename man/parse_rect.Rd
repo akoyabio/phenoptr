@@ -10,7 +10,9 @@ parse_rect(field)
 \item{field}{Parsed XML for a single rectangle annotation}
 }
 \value{
-An \code{sf::st_polygon} with coordinates of the rectangle
+An \code{sf::st_sf} with coordinates of the rectangle
+and columns \code{center_x} and \code{center_y} giving the \emph{rounded}
+center point that inForm uses to identify the field.
 }
 \description{
 Parse a single rectangle annotation

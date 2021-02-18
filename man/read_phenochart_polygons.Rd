@@ -11,6 +11,8 @@ read_phenochart_polygons(xml_path)
 }
 \value{
 An \code{sf::st_sf} object with columns \code{tags}, \code{geometry} and \code{rects}.
+\code{rects} is a list of \code{sf::st_sf} objects with columns \code{tags}, \code{center_x},
+\code{center_y} and \code{geometry}.
 Multiple tags for a single ROI are separated by spaces in a single string.
 }
 \description{

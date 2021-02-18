@@ -10,7 +10,8 @@ read_phenochart_fields(xml_path)
 \item{xml_path}{Path to an annotations file.}
 }
 \value{
-An \code{sf::st_sf} object with columns \code{tags} and \code{geometry}.
+An \code{sf::st_sf} object with columns \code{tags}, \code{center_x},
+\code{center_y} and \code{geometry}.
 Multiple tags for a single field are separated by spaces in a single string.
 }
 \description{

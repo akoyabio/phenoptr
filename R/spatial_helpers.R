@@ -221,7 +221,8 @@ read_phenochart_fields = function(xml_path) {
 
 #' Parse the rectangles from an ROI annotation
 #' @param roi Parsed XML for an ROI annotation
-#' @return An `sf::sf` object with geometries for each rectangle in roi
+#' @return An `sf::sf` object with geometries for each rectangle in roi, as
+#' returned from `parse_rect()`.
 #' @keywords internal
 parse_roi_rects = function(roi) {
   fields = xml2::xml_find_all(roi, './/Fields-i[@subtype="RectangleAnnotation"]')
