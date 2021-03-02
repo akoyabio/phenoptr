@@ -129,11 +129,12 @@ make_ppp = function(csd, export_path, pheno,
 #' @param annotation_file Path to annotations file
 #' @return A named list of (multi)polygons, one for each tag
 #' in the annotations file
+#' @importFrom rlang .data
 #' @export
 read_tagged_rois = function(annotation_file) {
   rois = read_phenochart_polygons(annotation_file)
   if (nrow(rois) > 0) {
-    rois = rois %>% dplyr::filter(tags != '') # Only tagged ROIs
+    rois = rois %>% dplyr::filter(.data$tags != '') # Only tagged ROIs
 
     # Get a list of all unique tags
     all_roi_names = rois$tags %>%
@@ -147,7 +148,7 @@ read_tagged_rois = function(annotation_file) {
   # Make a single (multi) polygon for each tag
   tagged_rois = purrr::map(all_roi_names, function(tag_name) {
     rois %>%
-      dplyr::filter(stringr::str_detect(tags, tag_name)) %>%
+      dplyr::filter(stringr::str_detect(.data$tags, tag_name)) %>%
       sf::st_union()
   })
 
