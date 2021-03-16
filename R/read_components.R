@@ -100,35 +100,7 @@ read_field_info = function(field_name, export_path) {
 #'   get_field_info(path)
 #' @md
 get_field_info = function(path) {
-  # Use readTIFFDirectory if available, it is faster, more complete
-  # and works with tiled images
-  if (function_exists('tiff', 'readTIFFDirectory')) {
-    info = tiff::readTIFFDirectory(path, all=FALSE)
-    center = NA # Don't need this
-   } else {
-    tif = try(tiff::readTIFF(path, all=FALSE, info=TRUE))
-    if (inherits(tif, 'try-error')) {
-      # Give a helpful error message if the problem is missing support
-      # for tiled images.
-      if (stringr::str_detect(tif, 'tile-based images'))
-        stop('Please install akoyabio/tiff ',
-             'to support large component data files.\n',
-             'Use "devtools::install_github(\'akoyabio/tiff\')"')
-      else
-        stop()
-    }
-    info = attributes(tif)
-    info$length = info$dim[1]
-    info$width = info$dim[2]
-
-    # We have to get the location from the file name; tiff::readTIFF()
-    # doesn't read the location tags :-(
-    name = basename(path)
-    center_pattern = "_\\[([\\d\\.]+),([\\d\\.]+)\\][^\\[]*$"
-    center = as.numeric(stringr::str_match(name, center_pattern)[, 2:3])
-    if (any(is.na(center)))
-      stop("Field location not found in file name.")
-  }
+  info = readTIFFDirectory(path, all=FALSE)
 
   required_attributes = c('width', 'length', 'x.resolution', 'resolution.unit')
   missing_attributes = setdiff(required_attributes, names(info))
@@ -145,12 +117,8 @@ get_field_info = function(path) {
   result$microns_per_pixel = as.numeric(10000/info$x.resolution)
   result$pixels_per_micron = 1/result$microns_per_pixel
   result$field_size = result$image_size * result$microns_per_pixel
-  if (any(is.na(center))) {
-    # Location directly from TIFF info
-    result$location = c(info$x.position, info$y.position) * 10000
-  } else {
-    # Location from file name and resolution
-    result$location = center - result$field_size/2
-  }
+
+  # Location directly from TIFF info
+  result$location = c(info$x.position, info$y.position) * 10000
   result
 }
