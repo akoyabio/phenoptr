@@ -57,10 +57,7 @@ read_composite_info = function(path) {
   if (!stringr::str_detect(path, '\\.tiff?$'))
     stop('read_composite_info requires a TIFF image.')
 
-  if (!function_exists('tiff', 'readTIFFDirectory'))
-    stop('read_composite_info requires the Akoya tiff package.')
-
-  tiff::readTIFFDirectory(path, all=TRUE) %>%
+  readTIFFDirectory(path, all=TRUE) %>%
     purrr::map('description') %>%
     purrr::map(parse_composite_info)
 }
