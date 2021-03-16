@@ -23,7 +23,7 @@ Imports:
     stringr,
     tibble,
     tidyr (>= 1.0.0),
-    tiff,
+    tiff (>= 0.1.7),
     vroom (> 1.4.0),
     xml2
 Depends: R (>= 3.6.0)
