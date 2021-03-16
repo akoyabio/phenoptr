@@ -14,6 +14,7 @@ Changes to `read_cell_seg_data`:
 - Add `read_composites` and `read_composite_info` to read and parse
   metadata in inForm composite images.
 - Fix `select_rows` to always return `FALSE` instead of `NA`.
+- Update to work with upcoming CRAN release of tiff 0.1-8
 
 # phenoptr 0.2.9
 **2020-11-11**

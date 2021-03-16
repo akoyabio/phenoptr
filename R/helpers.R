@@ -38,6 +38,7 @@ field_column_ = function(csd) {
   dplyr::if_else('Annotation ID' %in% names(csd),
                  'Annotation ID', 'Sample Name')
 }
+
 # Workaround for inForm data that was originally pixels. In that case
 # field_data will have the origin at top left; convert to slide origin
 # to match the field_info.
@@ -56,4 +57,23 @@ correct_for_pixel_data = function(field_data, field_info) {
     )
   }
   field_data
+}
+
+#' Read directory info from a TIFF file
+#' @param path Path to a TIFF file
+#' @param all Return info on all images or just the first one?
+#' @return A list (if `all==FALSE`) or list of lists (if `all==TRUE`) containing
+#' directory info for the images in the file
+#' @export
+readTIFFDirectory = function(path, all=FALSE) {
+  # This function is a shim that calls either readTIFFDirectory
+  # from akoyabio/tiff or readTIFF from the latest s-u/tiff
+  if (function_exists('tiff', 'readTIFFDirectory')) {
+    # akoyabio/tiff
+    tiff::readTIFFDirectory(path, all=all)
+  } else if ('payload' %in% names(formals(tiff::readTIFF))) {
+    # s-u/tiff
+    tiff::readTIFF(path, all=all, payload=FALSE)
+  } else
+    stop('Please install a more recent tiff package.')
 }
