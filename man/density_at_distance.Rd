@@ -34,17 +34,17 @@ tissue boundary.}
 
 \item{pixels_per_micron}{Conversion factor to microns.}
 
-\item{...}{Additional arguments passed to \code{\link[spatstat]{rhohat}}.
+\item{...}{Additional arguments passed to \code{\link[spatstat.core]{rhohat}}.
 Default parameters are \verb{method="ratio", smoother="kernel", bw="nrd"}.}
 }
 \value{
 Returns a \code{list} containing four items:
 \describe{
 \item{\code{points}}{The points used, marked with their phenotype,
-a \code{\link[spatstat]{ppp.object}}.}
+a \code{\link[spatstat.geom]{ppp.object}}.}
 \item{\code{rhohat}}{The density estimates (see Details).}
 \item{\code{distance}}{The distance map, a pixel image
-(\code{\link[spatstat]{im.object}}).}
+(\code{\link[spatstat.geom]{im.object}}).}
 \item{\code{mask}}{A mask matrix showing the locations which are closer to
 the tissue boundary than to the border or other regions.}
 }
@@ -55,7 +55,7 @@ classes, estimate the dependence of the density of cells of each
 phenotype on the distance from the boundary between the two tissue classes.
 }
 \details{
-The cell density estimate is computed by \code{\link[spatstat]{rhohat}}.
+The cell density estimate is computed by \code{\link[spatstat.core]{rhohat}}.
 The signed distance from the boundary between the two tissue classes
 is used as the covariate and density is estimated separately for each
 phenotype. \code{rhohat} uses kernel density estimation to
@@ -66,7 +66,7 @@ of density vs distance.
 The \code{rhohat} element of the returned list is a
 \code{list} containing the results of the cell density
 estimation for each phenotype. Each list value is a \code{rhohat} object,
-see \code{\link[spatstat]{methods.rhohat}}.
+see \code{\link[spatstat.core]{methods.rhohat}}.
 
 Density estimates are
 in cells per square micron; multiply by 1,000,000 for cells per square
@@ -75,7 +75,7 @@ millimeter.
 \section{Edge correction}{
 
 
-The \code{\link[spatstat]{rhohat}} function does not have any built-in
+The \code{\link[spatstat.core]{rhohat}} function does not have any built-in
 edge correction. This may lead to incorrect density estimates
 because it does not account for cells at the edge of the image which may
 be near a tissue boundary which is not part of the image.

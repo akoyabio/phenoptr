@@ -45,7 +45,7 @@ if(is.null(field_info))
 # Window for spatial processing and limit for charts
 xlim=c(field_info$location[1], field_info$location[1]+field_info$field_size[1])
 ylim=c(field_info$location[2], field_info$location[2]+field_info$field_size[2])
-window = spatstat::owin(xrange=xlim, yrange=ylim)
+window = spatstat.geom::owin(xrange=xlim, yrange=ylim)
 
 
 # Segmented image for background

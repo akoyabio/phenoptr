@@ -8,7 +8,7 @@ if (getRversion() >= "2.15.1")
 #' classes, estimate the dependence of the density of cells of each
 #' phenotype on the distance from the boundary between the two tissue classes.
 #'
-#' The cell density estimate is computed by \code{\link[spatstat]{rhohat}}.
+#' The cell density estimate is computed by \code{\link[spatstat.core]{rhohat}}.
 #' The signed distance from the boundary between the two tissue classes
 #' is used as the covariate and density is estimated separately for each
 #' phenotype. `rhohat` uses kernel density estimation to
@@ -19,7 +19,7 @@ if (getRversion() >= "2.15.1")
 #' The `rhohat` element of the returned list is a
 #' `list` containing the results of the cell density
 #' estimation for each phenotype. Each list value is a `rhohat` object,
-#' see \code{\link[spatstat]{methods.rhohat}}.
+#' see \code{\link[spatstat.core]{methods.rhohat}}.
 #'
 #' Density estimates are
 #' in cells per square micron; multiply by 1,000,000 for cells per square
@@ -27,7 +27,7 @@ if (getRversion() >= "2.15.1")
 #'
 #' @section Edge correction:
 #'
-#' The \code{\link[spatstat]{rhohat}} function does not have any built-in
+#' The \code{\link[spatstat.core]{rhohat}} function does not have any built-in
 #' edge correction. This may lead to incorrect density estimates
 #' because it does not account for cells at the edge of the image which may
 #' be near a tissue boundary which is not part of the image.
@@ -61,15 +61,15 @@ if (getRversion() >= "2.15.1")
 #' to exclude cells which are closer to the edge of the image than to the
 #' tissue boundary.
 #' @param pixels_per_micron Conversion factor to microns.
-#' @param ... Additional arguments passed to \code{\link[spatstat]{rhohat}}.
+#' @param ... Additional arguments passed to \code{\link[spatstat.core]{rhohat}}.
 #' Default parameters are `method="ratio", smoother="kernel", bw="nrd"`.
 #' @return Returns a `list` containing four items:
 #'   \describe{
 #'    \item{`points`}{The points used, marked with their phenotype,
-#'    a \code{\link[spatstat]{ppp.object}}.}
+#'    a \code{\link[spatstat.geom]{ppp.object}}.}
 #'    \item{`rhohat`}{The density estimates (see Details).}
 #'    \item{`distance`}{The distance map, a pixel image
-#'      (\code{\link[spatstat]{im.object}}).}
+#'      (\code{\link[spatstat.geom]{im.object}}).}
 #'    \item{`mask`}{A mask matrix showing the locations which are closer to
 #'    the tissue boundary than to the border or other regions.}
 #'  }
@@ -155,11 +155,11 @@ density_at_distance = function(cell_seg_path, phenotypes, positive, negative,
   yrange=c(0, dim(tissue)[1]/pixels_per_micron)
 
   # Make distance maps for distance from positive and negative
-  pos_win = spatstat::owin(mask=pos_mask, xrange=xrange, yrange=yrange)
-  dist_from_pos = spatstat::distmap(pos_win)
+  pos_win = spatstat.geom::owin(mask=pos_mask, xrange=xrange, yrange=yrange)
+  dist_from_pos = spatstat.geom::distmap(pos_win)
 
-  neg_win = spatstat::owin(mask=neg_mask, xrange=xrange, yrange=yrange)
-  dist_from_neg = spatstat::distmap(neg_win)
+  neg_win = spatstat.geom::owin(mask=neg_mask, xrange=xrange, yrange=yrange)
+  dist_from_neg = spatstat.geom::distmap(neg_win)
 
   # Positive distance is into the positive mask == away from negative
   distance = dist_from_neg - dist_from_pos
@@ -173,21 +173,21 @@ density_at_distance = function(cell_seg_path, phenotypes, positive, negative,
   boundary_mask[, c(1, ncol(boundary_mask))]= TRUE
 
   boundary_win =
-    spatstat::owin(mask=boundary_mask, xrange=xrange, yrange=yrange)
-  dist_from_boundary = spatstat::distmap(boundary_win)
+    spatstat.geom::owin(mask=boundary_mask, xrange=xrange, yrange=yrange)
+  dist_from_boundary = spatstat.geom::distmap(boundary_win)
 
   valid_mask =
     dist_from_pos<dist_from_boundary & dist_from_neg<dist_from_boundary
 
   if (mask) {
     # Valid region is anything closer to positive or negative than to boundary
-    valid_win = spatstat::owin(mask=as.matrix(valid_mask),
+    valid_win = spatstat.geom::owin(mask=as.matrix(valid_mask),
                                xrange=xrange, yrange=yrange)
   } else {
-    valid_win = spatstat::owin(xrange=xrange, yrange=yrange)
+    valid_win = spatstat.geom::owin(xrange=xrange, yrange=yrange)
   }
 
-  pp = spatstat::ppp(csd$`Cell X Position`, csd$`Cell Y Position`,
+  pp = spatstat.geom::ppp(csd$`Cell X Position`, csd$`Cell Y Position`,
                     window=valid_win, marks=factor(csd$Phenotype))
 
   # Marshal args for rhohat
@@ -201,10 +201,10 @@ density_at_distance = function(cell_seg_path, phenotypes, positive, negative,
 
   # Distance estimation for each phenotype separately
   split_pp = split(pp)
-  all_rho = foreach::foreach(points=split_pp, .packages='spatstat') %dopar% {
+  all_rho = foreach::foreach(points=split_pp, .packages='spatstat.core') %dopar% {
     local_params = params
     local_params$object = points
-    do.call(spatstat::rhohat, local_params)
+    do.call(spatstat.core::rhohat, local_params)
    }
   names(all_rho) = names(split_pp)
 
@@ -213,10 +213,10 @@ density_at_distance = function(cell_seg_path, phenotypes, positive, negative,
 
 #' Plot a distance map using a diverging color scale with white at 0
 #'
-#' @param im A pixel image of class \code{\link[spatstat]{im}}.
+#' @param im A pixel image of class \code{\link[spatstat.geom]{im}}.
 #' @param title Title for the plot.
 #' @param show_boundary Should the boundary be highlighted?
-#' @param ... Additional arguments passed to \code{\link[spatstat]{plot.im}}
+#' @param ... Additional arguments passed to \code{\link[spatstat.geom]{plot.im}}
 #' @md
 #' @export
 plot_diverging = function(im, title, show_boundary=FALSE, ...) {

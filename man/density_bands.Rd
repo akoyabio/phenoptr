@@ -44,7 +44,7 @@ Returns a \code{list} with three items:
 \item{\code{cells}}{Cell seg data with phenotypes updated per the \code{phenotypes}
 parameter and an additional \code{distance} column.}
 \item{\code{distance}}{The distance map, a pixel image
-(\code{\link[spatstat]{im.object}}).}
+(\code{\link[spatstat.geom]{im.object}}).}
 }
 
 The \code{densities} item contains five columns:
