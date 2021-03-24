@@ -49,3 +49,50 @@ test_that('parse_composite_info works', {
   expect_equal(value$phenotypes, c(`CD8+` = "#FFFF00",
                                     `CD68+` = "#FF0000", other = "#0000FF"))
 })
+
+
+test_that('read_composite works', {
+  multi_composite_path =
+    "C:/Research/phenoptrTestData/Multi-schema/Multi_composite_image.tif"
+  skip_if_not(file.exists(multi_composite_path))
+
+  imgs = read_composites(multi_composite_path)
+  expect_equal(length(imgs), 3)
+  expect_true(all(purrr::map_int(imgs, purrr::attr_getter('width'))==1860))
+  expect_true(all(purrr::map_int(imgs, purrr::attr_getter('length'))==1396))
+
+  expected_composite_names = c("Standard", "CD8 FoxP3", "PD-1")
+  expect_equal(purrr::map_chr(imgs, purrr::attr_getter('composite_name')),
+               expected_composite_names)
+
+  component_names = purrr::map(imgs, purrr::attr_getter('components')) %>%
+    purrr::map(names)
+  expected_components = list(
+    c("CD8", "PD-L1", "FoxP3", "PD-1", "CK", "DAPI", "CD68", "Autofluorescence"),
+    c("CD8", "FoxP3", "CK", "DAPI"),
+    c("PD-1", "CK", "DAPI"))
+  expect_equal(component_names, expected_components)
+
+  # Try reading just the info
+  infos = readTIFFDirectory(multi_composite_path, all=TRUE)
+
+  # infos should be a list of lists
+  expect_equal(length(infos), 3)
+  expect_true(all(purrr::map_lgl(infos, ~inherits(.x, 'list'))))
+
+  # Image tags are now list elements, not attributes
+  expect_true(all(purrr::map_int(infos, 'width')==1860))
+  expect_true(all(purrr::map_int(infos, 'length')==1396))
+
+  # The description has to be parsed
+  parsed_description = infos %>%
+    purrr::map('description') %>%
+    purrr::map(parse_composite_info)
+  expect_equal(purrr::map_chr(parsed_description, 'composite_name'),
+               expected_composite_names)
+
+  component_names = purrr::map(parsed_description, 'components') %>%
+    purrr::map(names)
+  expect_equal(component_names, expected_components)
+})
+
