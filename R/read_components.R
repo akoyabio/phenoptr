@@ -111,7 +111,7 @@ get_field_info = function(path) {
       return(NULL)
   } else image_path = path
 
-  info = readTIFFDirectory(path, all=FALSE)
+  info = readTIFFDirectory(image_path, all=FALSE)
 
   required_attributes = c('width', 'length', 'x.resolution', 'resolution.unit')
   missing_attributes = setdiff(required_attributes, names(info))
