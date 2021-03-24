@@ -24,11 +24,11 @@ returned \code{ppp} will contain only cells in these categories and the
 associated window will be restricted to the extent of these categories.}
 }
 \value{
-Returns a marked point pattern (\code{\link[spatstat:ppp]{spatstat::ppp}} object)
+Returns a marked point pattern (\code{\link[spatstat.geom:ppp]{spatstat.geom::ppp}} object)
 with a single mark value.
 }
 \description{
-Makes a marked point pattern (\code{\link[spatstat:ppp]{spatstat::ppp}}) for the cells
+Makes a marked point pattern (\code{\link[spatstat.geom:ppp]{spatstat.geom::ppp}}) for the cells
 of the specified phenotype in the
 specified tissue categories and field.
 }
@@ -40,7 +40,7 @@ pp <- make_ppp(sample_cell_seg_data, sample_cell_seg_folder(),
 plot(pp, show.window=FALSE, main='')
 
 # To include multiple phenotypes in a single point pattern,
-# create them separately and join them with [spatstat::superimpose()].
+# create them separately and join them with [spatstat.geom::superimpose()].
 
 pp2 <- make_ppp(sample_cell_seg_data, sample_cell_seg_folder(),
   "CK+", tissue_categories="Tumor")

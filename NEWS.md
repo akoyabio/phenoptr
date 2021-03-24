@@ -13,6 +13,7 @@ Changes to `read_cell_seg_data`:
   
 - Fix `select_rows` to always return `FALSE` instead of `NA`
 - Update to work with upcoming CRAN release of tiff 0.1-8
+- Update to work with (and require) spatstat 2.0.0
 
 # phenoptr 0.2.9
 **2020-11-11**

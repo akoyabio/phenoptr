@@ -1,6 +1,6 @@
 #' Make a marked point pattern for cells in a single field
 #'
-#' Makes a marked point pattern ([`spatstat::ppp`]) for the cells
+#' Makes a marked point pattern ([`spatstat.geom::ppp`]) for the cells
 #' of the specified phenotype in the
 #' specified tissue categories and field.
 #'
@@ -15,7 +15,7 @@
 #' @param tissue_categories Tissue categories of interest. If supplied, the
 #' returned `ppp` will contain only cells in these categories and the
 #' associated window will be restricted to the extent of these categories.
-#' @return Returns a marked point pattern ([`spatstat::ppp`] object)
+#' @return Returns a marked point pattern ([`spatstat.geom::ppp`] object)
 #' with a single mark value.
 #' @examples
 #' # ppp for CD8+ cells in the sample data
@@ -25,7 +25,7 @@
 #' plot(pp, show.window=FALSE, main='')
 #'
 #' # To include multiple phenotypes in a single point pattern,
-#' # create them separately and join them with [spatstat::superimpose()].
+#' # create them separately and join them with [spatstat.geom::superimpose()].
 #'
 #' pp2 <- make_ppp(sample_cell_seg_data, sample_cell_seg_folder(),
 #'   "CK+", tissue_categories="Tumor")
@@ -92,7 +92,7 @@ make_ppp = function(csd, export_path, pheno,
   yrange=c(field_info$location[2], field_info$location[2]+field_info$field_size[2])
   if (is.null(tissue_categories)) {
     # Window is the full field
-    wind = spatstat::owin(xrange=xrange, yrange=yrange, unitname='micron')
+    wind = spatstat.geom::owin(xrange=xrange, yrange=yrange, unitname='micron')
   } else {
     # Window based on tissue categories
     map_path = get_map_path(field_name, export_path)
@@ -105,12 +105,12 @@ make_ppp = function(csd, export_path, pheno,
 
     mask = tissue %in% layer_nums
     dim(mask) = dim(tissue) # Convert back to matrix
-    wind = spatstat::owin(mask=mask, xrange=xrange, yrange=yrange,
+    wind = spatstat.geom::owin(mask=mask, xrange=xrange, yrange=yrange,
                           unitname='micron')
   }
 
   # Finally create the actual point pattern
-  pp = spatstat::ppp(field_data$`Cell X Position`, field_data$`Cell Y Position`,
+  pp = spatstat.geom::ppp(field_data$`Cell X Position`, field_data$`Cell Y Position`,
                 window=wind,
                 marks=factor(rep(pheno_name, nrow(field_data))))
   pp

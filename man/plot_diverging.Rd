@@ -7,13 +7,13 @@
 plot_diverging(im, title, show_boundary = FALSE, ...)
 }
 \arguments{
-\item{im}{A pixel image of class \code{\link[spatstat]{im}}.}
+\item{im}{A pixel image of class \code{\link[spatstat.geom]{im}}.}
 
 \item{title}{Title for the plot.}
 
 \item{show_boundary}{Should the boundary be highlighted?}
 
-\item{...}{Additional arguments passed to \code{\link[spatstat]{plot.im}}}
+\item{...}{Additional arguments passed to \code{\link[spatstat.geom]{plot.im}}}
 }
 \description{
 Plot a distance map using a diverging color scale with white at 0

@@ -104,7 +104,7 @@ spatial_distribution_report <- function(cell_seg_path, pairs, colors,
 # Get a point pattern for a single phenotype
 # @param data Cell seg data
 # @param pheno List of (name, color, select)
-# @param window spatstat::owin containing the points
+# @param window spatstat.geom::owin containing the points
 # @return List of (data subset, ppp, pheno)
 phenotype_as_ppp = function(data, pheno, window) {
   # Keep just the rows corresponding to the desired expression and phenotypes
@@ -115,7 +115,7 @@ phenotype_as_ppp = function(data, pheno, window) {
   data = stats::na.omit(data)
 
   # Convert to point pattern objects. Guess the dimensions...
-  pp = with(data, spatstat::ppp(`Cell X Position`, `Cell Y Position`,
+  pp = with(data, spatstat.geom::ppp(`Cell X Position`, `Cell Y Position`,
                               window=window,
                               marks=factor(rep(pheno$name, nrow(data)))))
   list(data=data, pp=pp, pheno=pheno)
@@ -128,7 +128,7 @@ phenotype_as_ppp = function(data, pheno, window) {
 # with the distance between them.
 # @importFrom magrittr "%>%"
 find_nearest_neighbor = function(pheno_data1, pheno_data2) {
-  d = spatstat::nncross(pheno_data1$pp, pheno_data2$pp)
+  d = spatstat.geom::nncross(pheno_data1$pp, pheno_data2$pp)
   names(d)[1] = 'Distance'
   from_data = pheno_data1$data %>%
     dplyr::select(`Cell ID`, `Cell X Position`, `Cell Y Position`)

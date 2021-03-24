@@ -47,7 +47,7 @@ if (getRversion() >= "2.15.1")
 #'  \item{`cells`}{Cell seg data with phenotypes updated per the `phenotypes`
 #'  parameter and an additional `distance` column.}
 #'  \item{`distance`}{The distance map, a pixel image
-#'      (\code{\link[spatstat]{im.object}}).}
+#'      (\code{\link[spatstat.geom]{im.object}}).}
 #'  }
 #'
 #' The `densities` item contains five columns:
@@ -136,11 +136,11 @@ density_bands = function(cell_seg_path, phenotypes, positive, negative,
   yrange=c(0, field_info$field_size[2])
 
   # Make distance maps for distance from positive and negative
-  pos_win = spatstat::owin(mask=pos_mask, xrange=xrange, yrange=yrange)
-  dist_from_pos = spatstat::distmap(pos_win)
+  pos_win = spatstat.geom::owin(mask=pos_mask, xrange=xrange, yrange=yrange)
+  dist_from_pos = spatstat.geom::distmap(pos_win)
 
-  neg_win = spatstat::owin(mask=neg_mask, xrange=xrange, yrange=yrange)
-  dist_from_neg = spatstat::distmap(neg_win)
+  neg_win = spatstat.geom::owin(mask=neg_mask, xrange=xrange, yrange=yrange)
+  dist_from_neg = spatstat.geom::distmap(neg_win)
 
   # Positive distance is into the positive mask == away from negative
   distance = dist_from_neg - dist_from_pos
