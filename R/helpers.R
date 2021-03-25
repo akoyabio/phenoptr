@@ -61,19 +61,27 @@ correct_for_pixel_data = function(field_data, field_info) {
 
 #' Read directory info from a TIFF file
 #' @param path Path to a TIFF file
-#' @param all Return info on all images or just the first one?
-#' @return A list (if `all==FALSE`) or list of lists (if `all==TRUE`) containing
-#' directory info for the images in the file
+#' @param all  If `all=TRUE` then directory info from all images is
+#' returned in a list of lists.
+#' If `all` is a vector, it gives the (1-based) indices of info to return.
+#' Otherwise only info for the first image is returned.
+#' @return A list (if `all==FALSE` or length 1) or list of lists
+#' (if `all==TRUE`) containing
+#' directory info for the images in the file.
 #' @export
 readTIFFDirectory = function(path, all=FALSE) {
   # This function is a shim that calls either readTIFFDirectory
   # from akoyabio/tiff or readTIFF from the latest s-u/tiff
   if (function_exists('tiff', 'readTIFFDirectory')) {
-    # akoyabio/tiff
+    # akoyabio/tiff has the same API as this function
     tiff::readTIFFDirectory(path, all=all)
   } else if ('payload' %in% names(formals(tiff::readTIFF))) {
-    # s-u/tiff
-    tiff::readTIFF(path, all=all, payload=FALSE)
+    # s-u/tiff returns a data.frame
+    info = tiff::readTIFF(path, all=all, payload=FALSE) %>%
+      purrr::transpose()
+    if (!all || (is.numeric(all) && length(all)==1))
+        info = info[[1]]
+    info
   } else
     stop('Please install a more recent tiff package.')
 }
