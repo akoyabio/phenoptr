@@ -203,7 +203,7 @@ read_phenochart_polygons = function(xml_path) {
   result
 }
 
-#' Read the tagged, top-level fields from an annotation file
+#' Read the tagged fields from an annotation file
 #' @param xml_path Path to an annotations file.
 #' @return An `sf::st_sf` object with columns `tags`, `center_x`,
 #' `center_y` and `geometry`.
@@ -211,12 +211,28 @@ read_phenochart_polygons = function(xml_path) {
 #' @export
 read_phenochart_fields = function(xml_path) {
   xml = xml2::read_xml(xml_path)
-  fields = xml2::xml_find_all(xml,
-                              '/AnnotationList/Annotations/Annotations-i[@subtype="RectangleAnnotation"]')
-  rects = purrr::map_dfr(fields, parse_rect)
+
+  # Find top-level rectangles
+  fields =
+    xml2::xml_find_all(xml, '//Annotations-i[@subtype="RectangleAnnotation"]')
+
+  # Find nested rectangles
+  fields2 =
+    xml2::xml_find_all(xml, '//Fields-i[@subtype="RectangleAnnotation"]')
+  fields = c(fields, fields2)
+
+  # Read tags first, it is quicker than parsing all the rects
   tags = purrr::map_chr(fields, parse_tags)
+
+  # Just keep the tagged fields
+  tagged = tags != ''
+  tags = tags[tagged]
+  fields = fields[tagged]
+
+  # Now get the rects
+  rects = purrr::map_dfr(fields, parse_rect)
   rects$tags = tags
-  dplyr::filter(rects, tags != '') %>%
+  rects %>%
     dplyr::select(tags, dplyr::everything())
 }
 
