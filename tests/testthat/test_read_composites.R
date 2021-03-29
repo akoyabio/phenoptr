@@ -94,5 +94,22 @@ test_that('read_composite works', {
   component_names = purrr::map(parsed_description, 'components') %>%
     purrr::map(names)
   expect_equal(component_names, expected_components)
+
+  # Reading a single info gives the result directly, not in a list
+  # If not specified, read the first directory
+  info = readTIFFDirectory(multi_composite_path, all=FALSE)
+  expect_equal(length(info), 16)
+  expect_equal(info$width, 1860)
+  expect_equal(info$length, 1396)
+  parsed_description = parse_composite_info(info$description)
+  expect_equal(names(parsed_description$components), component_names[[1]])
+
+  # Read just the second directory
+  info = readTIFFDirectory(multi_composite_path, all=2)
+  expect_equal(length(info), 16)
+  expect_equal(info$width, 1860)
+  expect_equal(info$length, 1396)
+  parsed_description = parse_composite_info(info$description)
+  expect_equal(names(parsed_description$components), component_names[[2]])
 })
 
