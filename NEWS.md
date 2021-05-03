@@ -10,8 +10,12 @@ Changes to `read_cell_seg_data`:
   `read_cell_seg_data(csd_path, col_select='phenoptrReports')` can be
   4-5x faster and use 75% less memory for the results,
   compared to the previous version.
-  
-- Fix `select_rows` to always return `FALSE` instead of `NA`
+
+Spatial distribution report:
+- Fix report generation to work when paths contain spaces.
+
+Misc:
+- Fix `select_rows` to always return `FALSE` instead of `NA`.
 - Update to work with upcoming CRAN release of tiff 0.1-8
 - Update to work with (and require) spatstat 2.0.0
 
