@@ -34,6 +34,11 @@ code, pre {
 knitr::opts_chunk$set(echo=FALSE,fig.width=11, fig.height=8, 
                       comment=NA, warning=FALSE, message=FALSE)
 
+# The default plot hook for vignettes creates a markdown image 'tag'
+# which breaks in pandoc if there are any spaces in the image path.
+# The standard HTML plot hook inserts an <img> tag which renders correctly.
+knitr::knit_hooks$set(plot = knitr:::hook_plot_html)
+
 csd = read_cell_seg_data(cell_seg_path, pixels_per_micron='auto')
 
 # Get field metadata

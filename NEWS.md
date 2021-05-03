@@ -4,13 +4,17 @@ Changes to `read_cell_seg_data`:
 - Add a `col_select` parameter to support reading only
   selected fields, with a `'phenoptrReports'` option to read only fields
   needed by `phenoptrReports`.
+- Use `vroom::vroom()` instead of `readr::read_tsv` for speed and support
+  of `col_select`.
 - For an export file containing all inForm fields,
   `read_cell_seg_data(csd_path, col_select='phenoptrReports')` can be
   4-5x faster and use 75% less memory for the results,
   compared to the previous version.
-- Use `vroom::vroom()` instead of `readr::read_tsv` for speed and support
-  of `col_select`.
-  
+
+Spatial distribution report:
+- Fix report generation to work when paths contain spaces.
+
+Misc:
 - Add `read_composites` and `read_composite_info` to read and parse
   metadata in inForm composite images.
 - Fix `select_rows` to always return `FALSE` instead of `NA`.
