@@ -1,0 +1,59 @@
+#' Negate the y-axis of a simple features object
+#'
+#' Use with `scale_sf_invert()` to match the orientation of Polaris images.
+#' @export
+#' @rdname geom_sf_invert
+#' @param ... Passed on to `ggplot2::geom_sf()` or `ggplot2::scale_y_continuous()`
+#' @export
+geom_sf_invert = function(...) {
+  ggplot2::geom_sf(stat='sf_invert', ...)
+}
+
+#' @export
+#' @rdname geom_sf_invert
+#' @usage NULL
+#' @format NULL
+StatSfInvert <- ggplot2::ggproto("StatSfInvert", ggplot2::StatSf,
+  compute_group = function(data, scales) {
+    data = ggproto_parent(ggplot2::StatSf, NULL)$compute_group(data, scales)
+
+    # Flip the data
+    flip = matrix(c(1, 0, 0, -1), ncol=2) # Matrix to negate Y
+    data[[ ggplot2:::geom_column(data) ]] = data[[ ggplot2:::geom_column(data) ]] * flip
+
+    # Flip the bounding box
+    data$ymin = - data$ymin
+    data$ymax = - data$ymax
+
+    data
+  },
+
+  required_aes = c("geometry")
+)
+
+#' @export
+#' @rdname geom_sf_invert
+#' @usage NULL
+stat_sf_invert <- function(mapping = NULL, data = NULL, geom = "rect",
+                    position = "identity", na.rm = FALSE, show.legend = NA,
+                    inherit.aes = TRUE, ...) {
+  ggplot2::layer_sf(
+    stat = StatSfInvert,
+    data = data,
+    mapping = mapping,
+    geom = geom,
+    position = position,
+    show.legend = show.legend,
+    inherit.aes = inherit.aes,
+    params = list(
+      na.rm = na.rm,
+      ...
+    )
+  )
+}
+
+#' @rdname geom_sf_invert
+#' @export
+scale_sf_invert = function(...) {
+  ggplot2::scale_y_continuous(labels = function(br) as.character(-br), ...)
+}

@@ -193,3 +193,165 @@ density_bands = function(cell_seg_path, phenotypes, positive, negative,
 
   list(densities=densities, cells=csd, distance=distance)
 }
+
+#' Compute density of each phenotype in each given region
+#' @param csd Cell seg table
+#' @param regions An `sf::st_sf` or `sf::st_sfc` object containing the regions
+#' of interest, for example the output of `create_buffers()`.
+#' @param phenotypes Phenotypes of interest; if omitted, will use
+#' `phenoptr::unique_phenotypes(csd)`.
+#' @return A data frame, `regions` annotated with an area column
+#' (in square microns) and two columns per phenotype
+#' giving the count and density of that phenotype in that region.
+#' @export
+density_by_region = function(csd, regions, phenotypes=NULL) {
+  stopifnot(!is.null(csd))
+
+  if (is.null(phenotypes))
+    phenotypes = phenoptr::unique_phenotypes(csd)
+  if (!rlang::is_named(phenotypes))
+    phenotypes = rlang::set_names(phenotypes)
+
+  # Make an st_sf (data frame) if we don't already have one
+  if (inherits(regions, 'sfc'))
+    regions = sf::st_sf(regions)
+  if (!inherits(regions, 'sf'))
+    stop('regions must be an sf::st_sf or sf::st_sfc object.')
+
+  # Compute areas once
+  regions$area = purrr::map_dbl(sf::st_geometry(regions), sf::st_area)
+
+  densities = purrr::imap_dfc(phenotypes, function(phenotype, name) {
+    # Which cells are in the target phenotype?
+    pheno_cells = csd[phenoptr::select_rows(csd, phenotype),
+                      c('Cell X Position', 'Cell Y Position')]
+    pheno_pts = sf::st_as_sf(pheno_cells, coords=1:2)
+    cells_in_region = sf::st_contains(regions, pheno_pts) %>%
+      purrr::map_int(length)
+    tibble::tibble(count=cells_in_region,
+                   density=cells_in_region/regions$area) %>%
+      rlang::set_names(paste0(name, ' count'), paste0(name, ' density'))
+  })
+
+  dplyr::bind_cols(regions, densities)
+}
+
+#' Create buffer regions around a boundary and within a region of interest
+#'
+#' For use with `density_by_region()`.
+#' @param boundary Polygon for boundary line. Must be at least partially
+#' within `roi`.
+#' @param roi Polygon for ROI
+#' @param n Number of buffers (on each side of boundary)
+#' @param width Buffer width
+#' @return A list with two items
+#' - buffers - a data frame with index from -n to n and geometry column
+#' - divider - the dividing line for `boundary` within `roi`
+#' @importFrom magrittr %>%
+#' @export
+create_buffer_bands = function(boundary, roi, n, width) {
+  # Get just the dividing line
+  divider = boundary %>%
+    sf::st_cast('LINESTRING') %>% # So the intersection is a line, not a polygon
+    sf::st_intersection(roi) %>%
+    sf::st_cast('LINESTRING')
+
+  if (sum(sf::st_length(divider)) == 0)
+    stop('boundary and roi do not intersect.')
+
+  # divider may have two segments, depending on where it broke into
+  # a linestring. If so, bind them back together.
+  if (length(sf::st_length(divider)) > 1) {
+    pts = unclass(sf::st_geometry(divider))
+    divider = sf::st_linestring(do.call(rbind, rev(pts))) %>% sf::st_sfc()
+  }
+
+  # Make buffers
+  # First make inclusive buffers that span both sides of the divider
+  # and subsets for inside and outside boundary
+  fat_buffers = list()
+  inside_buffers = list()
+  outside_buffers = list()
+  seed = divider
+
+  1:n %>% purrr::walk(function(i) {
+    seed <<- sf::st_buffer(seed, width) %>% sf::st_intersection(roi)
+    fat_buffers <<- c(fat_buffers, list(seed))
+    inside_buffers <<- c(inside_buffers, list(sf::st_intersection(seed, boundary)))
+    outside_buffers <<- c(outside_buffers, list(sf::st_difference(seed, boundary)))
+  })
+
+  # If the next-to-last fat buffer is the same as the roi, the buffers are
+  # are too many / too large
+  if (length(sf::st_difference(roi, fat_buffers[[n-1]])) == 0)
+    warning('Largest buffers exceed the roi, use smaller n or width.')
+
+  # Now sort it out to n distinct buffers on each side of the divide
+  buffers = purrr::map_dfr(1:n, function(i) {
+    # Don't use ifelse here, it loses the class attribute
+    if (i==1) {
+      inside = inside_buffers[[1]]
+      outside = outside_buffers[[1]]
+    } else {
+      inside = sf::st_difference(inside_buffers[[i]], inside_buffers[[i-1]])
+      outside = sf::st_difference(outside_buffers[[i]], outside_buffers[[i-1]])
+    }
+
+    inside = if (length(inside) > 0) inside else NA
+    outside = if (length(outside) > 0) outside else NA
+    tibble::tibble(
+      inner=c(-i+1, i-1) * width,
+      outer=c(-i, i) * width,
+      poly=list(inside, outside))
+  }) %>%
+    dplyr::filter(!is.na(poly)) %>%
+    dplyr::mutate(poly=sf::st_sfc(poly))
+
+  buffers=sf::st_sf(buffers, sf_column_name='poly') %>%
+    dplyr::arrange(inner)
+  list(divider=divider, buffers=buffers)
+}
+
+#' Plot density bands with divider and ROI
+#' @param buffers The band buffers
+#' @param divider The tumor boundary line
+#' @param roi The region of interest boundary
+#' @return A `ggplot` object
+#' @export
+plot_buffers = function(buffers, divider, roi)
+{
+  ggplot2::ggplot() +
+    geom_sf_invert(data=buffers,
+                           color=scales::alpha('lightblue'), fill=NA) +
+    geom_sf_invert(data=divider, color='red', fill=NA) +
+    geom_sf_invert(data=roi, color='blue', fill=NA) +
+    scale_sf_invert() +
+    ggplot2::labs(title='Area of analysis showing distance bands') +
+    ggplot2::theme_minimal()
+}
+
+#' Plot density by band
+#' @param densities Result of calling `density_by_region()`
+#' @param colors Named vector of phenotype colors
+#' @return A `ggplot` object
+#' @export
+plot_density_by_band = function(densities, colors) {
+  # To plot densities, make a tall data frame
+  tall = densities %>% sf::st_drop_geometry() %>%
+    dplyr::select(outer, ends_with('density')) %>%
+    tidyr::gather('Phenotype', 'Density', -outer) %>%
+    dplyr::mutate(Phenotype = stringr::str_remove(Phenotype, ' density'))
+
+  # Our density values are cells/micron^2 so multiply by 1e6
+  ggplot2::ggplot(tall, ggplot2::aes(outer, Density*1e6, color=Phenotype)) +
+    ggplot2::geom_vline(xintercept=0, linetype=2, color='gray') +
+    ggplot2::geom_line(size=2) +
+    ggplot2::annotate('text', x=20, y=800, angle=-90, vjust=0,
+                      label='Tumor margin') +
+    ggplot2::scale_color_manual(values=colors) +
+    ggplot2::scale_y_continuous(trans='sqrt') +
+    ggplot2::labs(x='Distance from tumor margin (negative is inside tumor)',
+                  y=expression(paste('Cell Density (', cells/mm^2, ') (non-linear scale)')),
+                  title='Cell density in bands from tumor margin') +
+    ggplot2::theme_minimal()
+}
