@@ -9,11 +9,15 @@ readTIFFDirectory(path, all = FALSE)
 \arguments{
 \item{path}{Path to a TIFF file}
 
-\item{all}{Return info on all images or just the first one?}
+\item{all}{If \code{all=TRUE} then directory info from all images is
+returned in a list of lists.
+If \code{all} is a vector, it gives the (1-based) indices of info to return.
+Otherwise only info for the first image is returned.}
 }
 \value{
-A list (if \code{all==FALSE}) or list of lists (if \code{all==TRUE}) containing
-directory info for the images in the file
+A list (if \code{all==FALSE} or length 1) or list of lists
+(if \code{all==TRUE}) containing
+directory info for the images in the file.
 }
 \description{
 Read directory info from a TIFF file

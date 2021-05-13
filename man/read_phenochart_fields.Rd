@@ -2,7 +2,7 @@
 % Please edit documentation in R/spatial_helpers.R
 \name{read_phenochart_fields}
 \alias{read_phenochart_fields}
-\title{Read the tagged, top-level fields from an annotation file}
+\title{Read the tagged fields from an annotation file}
 \usage{
 read_phenochart_fields(xml_path)
 }
@@ -15,5 +15,5 @@ An \code{sf::st_sf} object with columns \code{tags}, \code{center_x},
 Multiple tags for a single field are separated by spaces in a single string.
 }
 \description{
-Read the tagged, top-level fields from an annotation file
+Read the tagged fields from an annotation file
 }
