@@ -106,6 +106,8 @@ test_that('read_composite works', {
 
   # Read just the second directory
   info = readTIFFDirectory(multi_composite_path, all=2)
+  expect_equal(length(info), 1) # A list of lists when `all` is given
+  info = info[[1]]
   expect_equal(length(info), 16)
   expect_equal(info$width, 1860)
   expect_equal(info$length, 1396)

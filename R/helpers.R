@@ -79,7 +79,7 @@ readTIFFDirectory = function(path, all=FALSE) {
     # s-u/tiff returns a data.frame
     info = tiff::readTIFF(path, all=all, payload=FALSE) %>%
       purrr::transpose()
-    if (!all || (is.numeric(all) && length(all)==1))
+    if (!all)
         info = info[[1]]
     info
   } else
