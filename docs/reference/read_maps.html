@@ -76,7 +76,7 @@ names." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">phenoptr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.10</span>
       </span>
     </div>
 
@@ -84,7 +84,7 @@ names." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -119,14 +119,14 @@ names." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="../news/index.html">
-    <span class="fa fa-newspaper-o"></span>
+    <span class="fas fa-newspaper-o"></span>
      
     news
   </a>
 </li>
 <li>
   <a href="https://github.com/akoyabio/phenoptr">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fas fa-github fa-lg"></span>
      
     github
   </a>
@@ -157,7 +157,7 @@ TissueClassMap, and ProcessRegionImage; not every image file will include all
 names.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>read_maps</span>(<span class='kw'>map_path</span>)</pre>
+    <pre class="usage"><span class='fu'>read_maps</span><span class='op'>(</span><span class='va'>map_path</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -186,11 +186,11 @@ column corresponding to X.</p>
 <code><a href='read_components.html'>read_components</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>path</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"sample"</span>,
+    <pre class="examples"><div class='input'><span class='va'>path</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, <span class='st'>"sample"</span>,
                    <span class='st'>"Set4_1-6plex_[16142,55840]_binary_seg_maps.tif"</span>,
-                   package = <span class='st'>"phenoptr"</span>)
-<span class='kw'>maps</span> <span class='op'>&lt;-</span> <span class='fu'>read_maps</span>(<span class='kw'>path</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span>(<span class='kw'>maps</span>)
+                   package <span class='op'>=</span> <span class='st'>"phenoptr"</span><span class='op'>)</span>
+<span class='va'>maps</span> <span class='op'>&lt;-</span> <span class='fu'>read_maps</span><span class='op'>(</span><span class='va'>path</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='op'>(</span><span class='va'>maps</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] "Nucleus"   "Cytoplasm" "Membrane"  "Tissue"   </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

@@ -1,8 +1,8 @@
 Package: phenoptr
 Type: Package
 Title: inForm Helper Functions
-Version: 0.2.9.9000
-Date: 2020-11-11
+Version: 0.2.10
+Date: 2021-06-01
 Description: Helper functions for working with inForm data.
 Language: en-US
 biocViews: 
@@ -28,7 +28,7 @@ Imports:
     tiff (>= 0.1.7),
     vroom (> 1.4.0),
     xml2
-Depends: R (>= 3.6.0)
+Depends: R (>= 4.0.0)
 License: Zlib | file LICENSE
 Copyright: Akoya Biosciences
 Encoding: UTF-8
@@ -49,6 +49,5 @@ Authors@R: c(
     person("Akoya Biosciences", role="cph"))
 Remotes:
     akoyabio/rtree,
-    akoyabio/tiff,
     r-lib/vroom
 Roxygen: list(markdown = TRUE)

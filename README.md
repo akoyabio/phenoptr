@@ -14,7 +14,7 @@ Quantitative Pathology Research Solutions. For more information visit the
 ## Installation
 
 `phenoptr` requires the [R environment](https://www.r-project.org/) 
-for statistical computing, version 3.6.0 or higher. To install R,
+for statistical computing, version 4.0.0 or higher. To install R,
 visit the [R download](https://cloud.r-project.org/) page.
 The [RStudio IDE](https://www.rstudio.com/products/rstudio/)
 is highly recommended as well.
@@ -31,13 +31,6 @@ devtools::install_github("akoyabio/phenoptr")
 
 ### Optional packages
 
-Two optional packages are recommended in specific circumstances.
-
-- **2x2 fields from inForm** 
- The Akoya Biosciences fork of the `tiff` package includes support for tiled 
-  images and allows `phenoptr` to work with 2x2 component images from inForm.
-  See the [installation instructions](https://github.com/akoyabio/tiff/tree/master#installation)
-  in the package README file.
 - **Spatial metrics**
   The Akoya Biosciences `rtree` package 
   dramatically speeds calculation and reduces memory requirements of
@@ -103,7 +96,7 @@ section of the documentation for details on individual functions.
 
 To cite package `phenoptr` in publications use:
 
-&nbsp;&nbsp;Kent S Johnson (2020). phenoptr: inForm Helper Functions. R package version 0.2.9.  
+&nbsp;&nbsp;Kent S Johnson (2021). phenoptr: inForm Helper Functions. R package version 0.2.10.  
 &nbsp;&nbsp;https://akoyabio.github.io/phenoptr/
 
 <!-- badges: start -->

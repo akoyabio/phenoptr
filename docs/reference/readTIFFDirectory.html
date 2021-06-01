@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Distance matrix implementation of count_within_many_impl — count_within_many_impl_dist • phenoptr</title>
+<title>Read directory info from a TIFF file — readTIFFDirectory • phenoptr</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Distance matrix implementation of count_within_many_impl — count_within_many_impl_dist" />
-<meta property="og:description" content="Distance matrix implementation of count_within_many_impl" />
+<meta property="og:title" content="Read directory info from a TIFF file — readTIFFDirectory" />
+<meta property="og:description" content="Read directory info from a TIFF file" />
 
 
 
@@ -140,47 +140,34 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Distance matrix implementation of count_within_many_impl</h1>
-    <small class="dont-index">Source: <a href='https://github.com/akoyabio/phenoptr/blob/master/R/average_counts.R'><code>R/average_counts.R</code></a></small>
-    <div class="hidden name"><code>count_within_many_impl_dist.Rd</code></div>
+    <h1>Read directory info from a TIFF file</h1>
+    <small class="dont-index">Source: <a href='https://github.com/akoyabio/phenoptr/blob/master/R/helpers.R'><code>R/helpers.R</code></a></small>
+    <div class="hidden name"><code>readTIFFDirectory.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Distance matrix implementation of count_within_many_impl</p>
+    <p>Read directory info from a TIFF file</p>
     </div>
 
-    <pre class="usage"><span class='fu'>count_within_many_impl_dist</span><span class='op'>(</span><span class='va'>csd</span>, <span class='va'>name</span>, <span class='va'>combos</span>, <span class='va'>radii</span>, <span class='va'>phenotype_rules</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>readTIFFDirectory</span><span class='op'>(</span><span class='va'>path</span>, all <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>csd</th>
-      <td><p>Cell seg data for a single field.</p></td>
+      <th>path</th>
+      <td><p>Path to a TIFF file</p></td>
     </tr>
     <tr>
-      <th>name</th>
-      <td><p>Name associated with <code>csd</code>, for example the basename of the
-image file.</p></td>
-    </tr>
-    <tr>
-      <th>combos</th>
-      <td><p>List of pairs of (from phenotype name, to phenotype name)
-and tissue category.</p></td>
-    </tr>
-    <tr>
-      <th>radii</th>
-      <td><p>Vector of radii.</p></td>
-    </tr>
-    <tr>
-      <th>phenotype_rules</th>
-      <td><p>Named list of phenotype rules.</p></td>
+      <th>all</th>
+      <td><p>Return info on all images or just the first one?</p></td>
     </tr>
     </table>
 
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <div class='dont-index'><p>count_within_many_impl</p></div>
+    <p>A list (if <code>all==FALSE</code>) or list of lists (if <code>all==TRUE</code>) containing
+directory info for the images in the file</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

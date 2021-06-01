@@ -76,7 +76,7 @@ details of select_rows." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">phenoptr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.10</span>
       </span>
     </div>
 
@@ -84,7 +84,7 @@ details of select_rows." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -119,14 +119,14 @@ details of select_rows." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="../news/index.html">
-    <span class="fa fa-newspaper-o"></span>
+    <span class="fas fa-newspaper-o"></span>
      
     news
   </a>
 </li>
 <li>
   <a href="https://github.com/akoyabio/phenoptr">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fas fa-github fa-lg"></span>
      
     github
   </a>
@@ -157,7 +157,7 @@ a user does not have to know the (somewhat inscrutable)
 details of <code>select_rows</code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>parse_phenotypes</span>(<span class='kw'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>parse_phenotypes</span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -203,9 +203,9 @@ cannot be combined with comma (,).</p></li>
 <span class='co'># - CD3+ cells with membrane PDL-1 &gt; 5</span>
 <span class='co'># - All cells regardless of phenotype</span>
 <span class='co'># - Macrophages, defined as either CD68+ OR CD163+</span>
-<span class='fu'>parse_phenotypes</span>(<span class='st'>"CD3+"</span>, <span class='st'>"CD3+/CD8+"</span>, <span class='st'>"CD3+/CD8-"</span>,
-                 <span class='st'>"CD3+/PDL-1+"</span>=<span class='st'>"CD3+/~`Membrane PDL-1 (Opal 520) Mean`&gt;5"</span>,
-                 <span class='st'>"Total Cells"</span>, Macrophage=<span class='st'>"CD68+,CD163+"</span>)
+<span class='fu'>parse_phenotypes</span><span class='op'>(</span><span class='st'>"CD3+"</span>, <span class='st'>"CD3+/CD8+"</span>, <span class='st'>"CD3+/CD8-"</span>,
+                 <span class='st'>"CD3+/PDL-1+"</span><span class='op'>=</span><span class='st'>"CD3+/~`Membrane PDL-1 (Opal 520) Mean`&gt;5"</span>,
+                 <span class='st'>"Total Cells"</span>, Macrophage<span class='op'>=</span><span class='st'>"CD68+,CD163+"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; $`CD3+`
 #&gt; [1] "CD3+"
 #&gt; 

@@ -76,7 +76,9 @@ reference:
       - distance_matrix
       - field_column
       - parse_phenotypes
+      - phenotype_columns
       - plot_diverging
+      - readTIFFDirectory
       - select_rows
       - subset_distance_matrix
       - unique_phenotypes

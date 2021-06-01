@@ -74,7 +74,7 @@ the cell to the nearest neighbor cells in each of the provided phenotypes." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">phenoptr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.10</span>
       </span>
     </div>
 
@@ -82,7 +82,7 @@ the cell to the nearest neighbor cells in each of the provided phenotypes." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -117,14 +117,14 @@ the cell to the nearest neighbor cells in each of the provided phenotypes." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="../news/index.html">
-    <span class="fa fa-newspaper-o"></span>
+    <span class="fas fa-newspaper-o"></span>
      
     news
   </a>
 </li>
 <li>
   <a href="https://github.com/akoyabio/phenoptr">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fas fa-github fa-lg"></span>
      
     github
   </a>
@@ -153,7 +153,7 @@ find the distances from
 the cell to the nearest neighbor cells in each of the provided phenotypes.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>find_nearest_distance</span>(<span class='kw'>csd</span>, phenotypes = <span class='kw'>NULL</span>, dst = <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>find_nearest_distance</span><span class='op'>(</span><span class='va'>csd</span>, phenotypes <span class='op'>=</span> <span class='cn'>NULL</span>, dst <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -208,32 +208,32 @@ prohibitive as the number of cells becomes large.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Compute distance columns</span>
-<span class='kw'>csd</span> <span class='op'>&lt;-</span> <span class='kw'>sample_cell_seg_data</span>
-<span class='kw'>nearest</span> <span class='op'>&lt;-</span> <span class='fu'>find_nearest_distance</span>(<span class='kw'>csd</span>)
-<span class='kw'>dplyr</span>::<span class='fu'><a href='https://tibble.tidyverse.org/reference/glimpse.html'>glimpse</a></span>(<span class='kw'>nearest</span>)
+<span class='va'>csd</span> <span class='op'>&lt;-</span> <span class='va'>sample_cell_seg_data</span>
+<span class='va'>nearest</span> <span class='op'>&lt;-</span> <span class='fu'>find_nearest_distance</span><span class='op'>(</span><span class='va'>csd</span><span class='op'>)</span>
+<span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://pillar.r-lib.org/reference/glimpse.html'>glimpse</a></span><span class='op'>(</span><span class='va'>nearest</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Rows: 6,072
 #&gt; Columns: 10
-#&gt; $ `Distance to CD68+`  <span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> 29.529646, 30.269622, 38.082148, 36.674242, 15...
-#&gt; $ `Cell ID CD68+`      </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> 108, 99, 41, 262, 41, 99, 4949, 217, 69, 99, 1...
-#&gt; $ `Distance to CD8+`   </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> 18.03469, 50.09241, 64.37585, 67.57403, 60.002...
-#&gt; $ `Cell ID CD8+`       </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> 101, 189, 5068, 423, 5068, 189, 182, 128, 188,...
-#&gt; $ `Distance to CK+`    </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> 36.830694, 21.377558, 109.317199, 3.605551, 10...
-#&gt; $ `Cell ID CK+`        </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> 192, 166, 5127, 45, 636, 58, 68, 4943, 209, 16...
-#&gt; $ `Distance to FoxP3+` </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> 16.347783, 24.909837, 40.140379, 30.870698, 26...
-#&gt; $ `Cell ID FoxP3+`     </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> 117, 138, 214, 229, 214, 138, 437, 229, 102, 1...
-#&gt; $ `Distance to other`  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> 10.307764, 6.800735, 8.062258, 19.811613, 5.59...
-#&gt; $ `Cell ID other`      </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> 76, 36, 84, 57, 50, 40, 43, 142, 49, 71, 60, 8...</div><div class='input'>
+#&gt; $ `Distance to CD68+`  <span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> 29.529646, 30.269622, 38.082148, 36.674242, 15.62~
+#&gt; $ `Cell ID CD68+`      </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> 108, 99, 41, 262, 41, 99, 4949, 217, 69, 99, 108,~
+#&gt; $ `Distance to CD8+`   </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> 18.03469, 50.09241, 64.37585, 67.57403, 60.00208,~
+#&gt; $ `Cell ID CD8+`       </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> 101, 189, 5068, 423, 5068, 189, 182, 128, 188, 18~
+#&gt; $ `Distance to CK+`    </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> 36.830694, 21.377558, 109.317199, 3.605551, 105.0~
+#&gt; $ `Cell ID CK+`        </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> 192, 166, 5127, 45, 636, 58, 68, 4943, 209, 166, ~
+#&gt; $ `Distance to FoxP3+` </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> 16.347783, 24.909837, 40.140379, 30.870698, 26.40~
+#&gt; $ `Cell ID FoxP3+`     </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> 117, 138, 214, 229, 214, 138, 437, 229, 102, 138,~
+#&gt; $ `Distance to other`  </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> 10.307764, 6.800735, 8.062258, 19.811613, 5.59017~
+#&gt; $ `Cell ID other`      </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> 76, 36, 84, 57, 50, 40, 43, 142, 49, 71, 60, 85, ~</div><div class='input'>
 <span class='co'># Make a combined data frame including original data and distance columns</span>
-<span class='kw'>csd</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>cbind</a></span>(<span class='kw'>csd</span>, <span class='fu'>find_nearest_distance</span>(<span class='kw'>csd</span>))
+<span class='va'>csd</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>cbind</a></span><span class='op'>(</span><span class='va'>csd</span>, <span class='fu'>find_nearest_distance</span><span class='op'>(</span><span class='va'>csd</span><span class='op'>)</span><span class='op'>)</span>
 
-<span class='co'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
 <span class='co'># If `merged` is a data frame containing cell seg data from multiple fields,</span>
 <span class='co'># this code will create a new `tibble` with distance columns computed</span>
 <span class='co'># for each `Sample Name` in the data.</span>
-<span class='kw'>merged_with_distance</span> <span class='op'>&lt;-</span> <span class='kw'>merged</span> <span class='op'>%&gt;%</span>
-  <span class='kw'>dplyr</span>::<span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span>(<span class='kw'>`Sample Name`</span>) <span class='op'>%&gt;%</span>
-  <span class='kw'>dplyr</span>::<span class='fu'><a href='https://dplyr.tidyverse.org/reference/do.html'>do</a></span>(<span class='kw'>dplyr</span>::<span class='fu'><a href='https://dplyr.tidyverse.org/reference/bind.html'>bind_cols</a></span>(<span class='kw'>.</span>, <span class='fu'>find_nearest_distance</span>(<span class='kw'>.</span>)))
-}
+<span class='va'>merged_with_distance</span> <span class='op'>&lt;-</span> <span class='va'>merged</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span><span class='op'>(</span><span class='va'>`Sample Name`</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/do.html'>do</a></span><span class='op'>(</span><span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/bind.html'>bind_cols</a></span><span class='op'>(</span><span class='va'>.</span>, <span class='fu'>find_nearest_distance</span><span class='op'>(</span><span class='va'>.</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
+<span class='op'>}</span>
 </div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

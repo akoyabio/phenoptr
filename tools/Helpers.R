@@ -48,7 +48,6 @@ spelling::spell_check_package()
 # Build documentation site. `build_site` seems to work better than
 # the RStudio menu which calls `build_site_rstudio`.
 # Add any new functions or vignettes to _pkgdown.yml before building!
-devtools::install_github("hadley/pkgdown")
 pkgdown::build_site()
 
 # To merge and close a dev branch:
