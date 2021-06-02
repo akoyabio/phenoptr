@@ -25,7 +25,7 @@ Imports:
     stringr,
     tibble,
     tidyr (>= 1.0.0),
-    tiff (>= 0.1.7),
+    tiff (>= 0.1.8),
     vroom (> 1.4.0),
     xml2
 Depends: R (>= 4.0.0)
