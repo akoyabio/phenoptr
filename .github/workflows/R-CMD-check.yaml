@@ -44,5 +44,5 @@ jobs:
           remotes::install_deps(dependencies = TRUE, upgrade="never")
         shell: Rscript {0}
       - name: Check
-        run: rcmdcheck::rcmdcheck(args = "--no-manual --no-build-vignettes", error_on = "error")
+        run: rcmdcheck::rcmdcheck(args = c("--no-manual","--no-build-vignettes", "--no-vignettes", "--no-examples"), error_on = "error")
         shell: Rscript {0}
