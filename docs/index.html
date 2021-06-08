@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">phenoptr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.10</span>
       </span>
     </div>
 
@@ -39,7 +39,7 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -74,14 +74,14 @@
 <ul class="nav navbar-nav navbar-right">
 <li>
   <a href="news/index.html">
-    <span class="fa fa-newspaper-o"></span>
+    <span class="fas fa-newspaper-o"></span>
      
     news
   </a>
 </li>
 <li>
   <a href="https://github.com/akoyabio/phenoptr">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fas fa-github fa-lg"></span>
      
     github
   </a>
@@ -112,7 +112,7 @@
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
-<p><code>phenoptr</code> requires the <a href="https://www.r-project.org/">R environment</a> for statistical computing, version 3.6.0 or higher. To install R, visit the <a href="https://cloud.r-project.org/">R download</a> page. The <a href="https://www.rstudio.com/products/rstudio/">RStudio IDE</a> is highly recommended as well.</p>
+<p><code>phenoptr</code> requires the <a href="https://www.r-project.org/">R environment</a> for statistical computing, version 4.0.0 or higher. To install R, visit the <a href="https://cloud.r-project.org/">R download</a> page. The <a href="https://www.rstudio.com/products/rstudio/">RStudio IDE</a> is highly recommended as well.</p>
 <ol>
 <li>Install R. Download the most recent version from <a href="https://cloud.r-project.org/" class="uri">https://cloud.r-project.org/</a>.</li>
 <li>Install RStudio. Download the desktop version from <a href="https://www.rstudio.com/products/rstudio/" class="uri">https://www.rstudio.com/products/rstudio/</a>.</li>
@@ -127,10 +127,7 @@ devtools::install_github("akoyabio/phenoptr")</a></code></pre>
 <div id="optional-packages" class="section level3">
 <h3 class="hasAnchor">
 <a href="#optional-packages" class="anchor"></a>Optional packages</h3>
-<p>Two optional packages are recommended in specific circumstances.</p>
 <ul>
-<li>
-<strong>2x2 fields from inForm</strong> The Akoya Biosciences fork of the <code>tiff</code> package includes support for tiled images and allows <code>phenoptr</code> to work with 2x2 component images from inForm. See the <a href="https://github.com/akoyabio/tiff/tree/master#installation">installation instructions</a> in the package README file.</li>
 <li>
 <strong>Spatial metrics</strong> The Akoya Biosciences <code>rtree</code> package dramatically speeds calculation and reduces memory requirements of spatial metrics such as nearest neighbors and count within. See the <a href="https://github.com/akoyabio/rtree/tree/master#installation">installation instructions</a> in the package README file.</li>
 </ul>
@@ -151,7 +148,7 @@ devtools::install_github("akoyabio/phenoptr")</a></code></pre>
 </ul>
 <div class="panel panel-default">
 <div class="panel-body">
-For examples showing aggregation across multiple inForm fields and multiple slides, see the Tutorials in the <a href="https://akoyabio.github.io/phenoptrExamples">phenoptrExamples</a> package.
+<p>For examples showing aggregation across multiple inForm fields and multiple slides, see the Tutorials in the <a href="https://akoyabio.github.io/phenoptrExamples">phenoptrExamples</a> package.</p>
 </div>
 </div>
 <div id="learning-r" class="section level3">
@@ -175,8 +172,10 @@ For examples showing aggregation across multiple inForm fields and multiple slid
 <a href="#full-documentation" class="anchor"></a>Full documentation</h2>
 <p>See the <a href="https://akoyabio.github.io/phenoptr/reference/index.html">Reference</a> section of the documentation for details on individual functions.</p>
 <p>To cite package <code>phenoptr</code> in publications use:</p>
-<p>  Kent S Johnson (2020). phenoptr: inForm Helper Functions. R package version 0.2.9.<br>
+<p>  Kent S Johnson (2021). phenoptr: inForm Helper Functions. R package version 0.2.10.<br>
   <a href="https://akoyabio.github.io/phenoptr/" class="uri">https://akoyabio.github.io/phenoptr/</a></p>
+<!-- badges: start -->
+<p><a href="https://github.com/akoyabio/phenoptr/actions"><img src="https://github.com/akoyabio/phenoptr/workflows/R-CMD-check/badge.svg" alt="R build status"></a> <!-- badges: end --></p>
 </div>
 </div>
   </div>

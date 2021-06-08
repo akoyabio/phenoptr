@@ -75,7 +75,7 @@ within radius of from cells." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">phenoptr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.10</span>
       </span>
     </div>
 
@@ -83,7 +83,7 @@ within radius of from cells." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -118,14 +118,14 @@ within radius of from cells." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="../news/index.html">
-    <span class="fa fa-newspaper-o"></span>
+    <span class="fas fa-newspaper-o"></span>
      
     news
   </a>
 </li>
 <li>
   <a href="https://github.com/akoyabio/phenoptr">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fas fa-github fa-lg"></span>
      
     github
   </a>
@@ -155,7 +155,7 @@ Compute the average number of <code>to</code> cells
 within <code>radius</code> of <code>from</code> cells.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>count_within</span>(<span class='kw'>csd</span>, <span class='kw'>from</span>, <span class='kw'>to</span>, <span class='kw'>radius</span>, category = <span class='fl'>NA</span>, dst = <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>count_within</span><span class='op'>(</span><span class='va'>csd</span>, <span class='va'>from</span>, <span class='va'>to</span>, <span class='va'>radius</span>, category <span class='op'>=</span> <span class='cn'>NA</span>, dst <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -244,43 +244,43 @@ for the entire data set.</p>
 <code><a href='subset_distance_matrix.html'>subset_distance_matrix</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='https://dplyr.tidyverse.org'>dplyr</a></span>)
+    <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='message'></span>
 #&gt; <span class='message'>Attaching package: 'dplyr'</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from 'package:stats':</span>
 #&gt; <span class='message'></span>
 #&gt; <span class='message'>    filter, lag</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from 'package:base':</span>
 #&gt; <span class='message'></span>
-#&gt; <span class='message'>    intersect, setdiff, setequal, union</span></div><div class='input'><span class='kw'>csd</span> <span class='op'>&lt;-</span> <span class='kw'>sample_cell_seg_data</span>
+#&gt; <span class='message'>    intersect, setdiff, setequal, union</span></div><div class='input'><span class='va'>csd</span> <span class='op'>&lt;-</span> <span class='va'>sample_cell_seg_data</span>
 
 <span class='co'># Find the number of macrophages with a tumor cell within 10 or 25 microns</span>
-<span class='fu'>count_within</span>(<span class='kw'>csd</span>, from=<span class='st'>'CD68+'</span>, to=<span class='st'>'CK+'</span>, radius=<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>10</span>, <span class='fl'>25</span>))
-</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 2 x 5</span><span>
+<span class='fu'>count_within</span><span class='op'>(</span><span class='va'>csd</span>, from<span class='op'>=</span><span class='st'>'CD68+'</span>, to<span class='op'>=</span><span class='st'>'CK+'</span>, radius<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>10</span>, <span class='fl'>25</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 2 x 5</span><span>
 #&gt;   radius from_count to_count from_with within_mean
-#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>       </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'>1</span><span>     10        417     </span><span style='text-decoration: underline;'>2</span><span>257        89       0.288
-#&gt; </span><span style='color: #555555;'>2</span><span>     25        417     </span><span style='text-decoration: underline;'>2</span><span>257       274       3.28 </div><div class='input'>
+#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>      </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>       </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #BCBCBC;'>1</span><span>     10        417     </span><span style='text-decoration: underline;'>2</span><span>257        89       0.288
+#&gt; </span><span style='color: #BCBCBC;'>2</span><span>     25        417     </span><span style='text-decoration: underline;'>2</span><span>257       274       3.28 </div><div class='input'>
 <span class='co'># Find the number of tumor cells with a macrophage within 10 or 25 microns</span>
-<span class='fu'>count_within</span>(<span class='kw'>csd</span>, from=<span class='st'>'CK+'</span>, to=<span class='st'>'CD68+'</span>, radius=<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>10</span>, <span class='fl'>25</span>))
-</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 2 x 5</span><span>
+<span class='fu'>count_within</span><span class='op'>(</span><span class='va'>csd</span>, from<span class='op'>=</span><span class='st'>'CK+'</span>, to<span class='op'>=</span><span class='st'>'CD68+'</span>, radius<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>10</span>, <span class='fl'>25</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 2 x 5</span><span>
 #&gt;   radius from_count to_count from_with within_mean
-#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>       </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'>1</span><span>     10       </span><span style='text-decoration: underline;'>2</span><span>257      417       109      0.053</span><span style='text-decoration: underline;'>2</span><span>
-#&gt; </span><span style='color: #555555;'>2</span><span>     25       </span><span style='text-decoration: underline;'>2</span><span>257      417       664      0.606 </div><div class='input'>
-<span class='co'>if</span> (<span class='fl'>FALSE</span>) {
+#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>      </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>       </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #BCBCBC;'>1</span><span>     10       </span><span style='text-decoration: underline;'>2</span><span>257      417       109      0.053</span><span style='text-decoration: underline;'>2</span><span>
+#&gt; </span><span style='color: #BCBCBC;'>2</span><span>     25       </span><span style='text-decoration: underline;'>2</span><span>257      417       664      0.606 </div><div class='input'>
+<span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
 <span class='co'># If 'merged' is a merged cell seg file, this will run count_within for</span>
 <span class='co'># each field:</span>
-<span class='kw'>distances</span> <span class='op'>=</span> <span class='kw'>merged</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span>(<span class='kw'>`Slide ID`</span>, <span class='kw'>`Sample Name`</span>) <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/do.html'>do</a></span>(<span class='fu'>count_within</span>(<span class='kw'>.</span>, from=<span class='st'>'CK+'</span>, to=<span class='st'>'CD68+'</span>, radius=<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>10</span>, <span class='fl'>25</span>)))
+<span class='va'>distances</span> <span class='op'>=</span> <span class='va'>merged</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span><span class='op'>(</span><span class='va'>`Slide ID`</span>, <span class='va'>`Sample Name`</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/do.html'>do</a></span><span class='op'>(</span><span class='fu'>count_within</span><span class='op'>(</span><span class='va'>.</span>, from<span class='op'>=</span><span class='st'>'CK+'</span>, to<span class='op'>=</span><span class='st'>'CD68+'</span>, radius<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>10</span>, <span class='fl'>25</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
 
 <span class='co'># This will aggregate the fields by Slide ID:</span>
-<span class='kw'>distances</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span>(<span class='kw'>`Slide ID`</span>, <span class='kw'>radius</span>) <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/summarise.html'>summarize</a></span>(within=<span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span>(<span class='kw'>from_count</span><span class='op'>*</span><span class='kw'>within_mean</span>, na.rm=<span class='fl'>TRUE</span>),
-            from_count=<span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span>(<span class='kw'>from_count</span>),
-            to_count=<span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span>(<span class='kw'>to_count</span>),
-            from_with=<span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span>(<span class='kw'>from_with</span>),
-            within_mean=<span class='kw'>within</span><span class='op'>/</span><span class='kw'>from_count</span>) <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span>(<span class='op'>-</span><span class='kw'>within</span>)
-}
+<span class='va'>distances</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span><span class='op'>(</span><span class='va'>`Slide ID`</span>, <span class='va'>radius</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/summarise.html'>summarize</a></span><span class='op'>(</span>within<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='op'>(</span><span class='va'>from_count</span><span class='op'>*</span><span class='va'>within_mean</span>, na.rm<span class='op'>=</span><span class='cn'>TRUE</span><span class='op'>)</span>,
+            from_count<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='op'>(</span><span class='va'>from_count</span><span class='op'>)</span>,
+            to_count<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='op'>(</span><span class='va'>to_count</span><span class='op'>)</span>,
+            from_with<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='op'>(</span><span class='va'>from_with</span><span class='op'>)</span>,
+            within_mean<span class='op'>=</span><span class='va'>within</span><span class='op'>/</span><span class='va'>from_count</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='op'>-</span><span class='va'>within</span><span class='op'>)</span>
+<span class='op'>}</span>
 </div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

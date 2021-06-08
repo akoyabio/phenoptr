@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">phenoptr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.10</span>
       </span>
     </div>
 
@@ -39,7 +39,7 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -74,14 +74,14 @@
 <ul class="nav navbar-nav navbar-right">
 <li>
   <a href="../news/index.html">
-    <span class="fa fa-newspaper-o"></span>
+    <span class="fas fa-newspaper-o"></span>
      
     news
   </a>
 </li>
 <li>
   <a href="https://github.com/akoyabio/phenoptr">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fas fa-github fa-lg"></span>
      
     github
   </a>
@@ -96,13 +96,13 @@
 
       
 
-      </header><script src="computing_distances_files/header-attrs-2.3/header-attrs.js"></script><script src="computing_distances_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><script src="computing_distances_files/header-attrs-2.8/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Computing inter-cellular distances</h1>
                         <h4 class="author">Kent Johnson</h4>
             
-            <h4 class="date">2020-11-11</h4>
+            <h4 class="date">2021-06-01</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/akoyabio/phenoptr/blob/master/vignettes/computing_distances.Rmd"><code>vignettes/computing_distances.Rmd</code></a></small>
       <div class="hidden name"><code>computing_distances.Rmd</code></div>
@@ -129,15 +129,13 @@ table {
 </h3>
 <p>The <code>find_nearest_distance</code> function finds per-cell nearest neighbor distances. For each cell in a sample, it finds the nearest neighbor cell in each of the provided phenotypes and reports the cell ID and distance to the nearest neighbor cell. Results are returned in a <code>tibble</code> with a <code>Distance to</code> and <code>Cell ID</code> column per phenotype.</p>
 <p>For example, the <code>phenoptr</code> sample data <code>sample_cell_seg_data</code> contains 5 unique phenotypes:</p>
-<div class="sourceCode" id="cb1"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="http://tidyverse.tidyverse.org">tidyverse</a></span>)
-</pre></div>
-<div class="sourceCode" id="cb2"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://akoyabio.github.io/phenoptr">phenoptr</a></span>)
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://akoyabio.github.io/phenoptr/">phenoptr</a></span><span class="op">)</span>
 
-<span class="kw">csd</span> <span class="op">&lt;-</span> <span class="kw">sample_cell_seg_data</span>
-<span class="kw">csd</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html">count</a></span>(<span class="kw">Phenotype</span>)
-</pre></div>
+<span class="va">csd</span> <span class="op">&lt;-</span> <span class="va">sample_cell_seg_data</span>
+<span class="va">csd</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html">count</a></span><span class="op">(</span><span class="va">Phenotype</span><span class="op">)</span></code></pre></div>
 <pre><code># A tibble: 5 x 2
   Phenotype     n
   &lt;chr&gt;     &lt;int&gt;
@@ -147,48 +145,42 @@ table {
 4 FoxP3+      228
 5 other      2942</code></pre>
 <p>The <code>other</code> cells are not of interest, so first filter them out.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit">
-<span class="kw">csd</span> <span class="op">&lt;-</span> <span class="kw">csd</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="kw">Phenotype</span>!=<span class="st">'other'</span>)
-</pre></div>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">csd</span> <span class="op">&lt;-</span> <span class="va">csd</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">Phenotype</span><span class="op">!=</span><span class="st">'other'</span><span class="op">)</span></code></pre></div>
 <p>Calling <code>find_nearest_distance</code> on this file returns a <code>tibble</code> with two columns for each phenotype and one row for each cell. The <code>Distance to &lt;phenotype&gt;</code> columns give the distance to the nearest cell of the phenotype; the <code>Cell ID &lt;phenotype&gt;</code> columns identify the nearest cell.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit">
-<span class="kw">distances</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/find_nearest_distance.html">find_nearest_distance</a></span>(<span class="kw">csd</span>)
-<span class="fu"><a href="https://tibble.tidyverse.org/reference/glimpse.html">glimpse</a></span>(<span class="kw">distances</span>)
-</pre></div>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">distances</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/find_nearest_distance.html">find_nearest_distance</a></span><span class="op">(</span><span class="va">csd</span><span class="op">)</span>
+<span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html">glimpse</a></span><span class="op">(</span><span class="va">distances</span><span class="op">)</span></code></pre></div>
 <pre><code>Rows: 3,130
 Columns: 8
-$ `Distance to CD68+`  &lt;dbl&gt; 29.529646, 38.082148, 36.674242, 73.119765, 51...
-$ `Cell ID CD68+`      &lt;int&gt; 108, 41, 262, 99, 217, 69, 236, 217, 262, 110,...
-$ `Distance to CD8+`   &lt;dbl&gt; 18.03469, 64.37585, 67.57403, 91.44397, 37.947...
-$ `Cell ID CD8+`       &lt;int&gt; 101, 5068, 423, 189, 128, 188, 280, 128, 423, ...
-$ `Distance to CK+`    &lt;dbl&gt; 36.830694, 109.317199, 3.605551, 4.031129, 5.5...
-$ `Cell ID CK+`        &lt;int&gt; 192, 5127, 45, 58, 4943, 209, 636, 87, 30, 45,...
-$ `Distance to FoxP3+` &lt;dbl&gt; 16.347783, 40.140379, 30.870698, 65.408333, 77...
-$ `Cell ID FoxP3+`     &lt;int&gt; 117, 214, 229, 138, 229, 102, 66, 229, 229, 95...</code></pre>
-<div class="sourceCode" id="cb7"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(<span class="kw">csd</span>)
-</pre></div>
+$ `Distance to CD68+`  &lt;dbl&gt; 29.529646, 38.082148, 36.674242, 73.119765, 51.00~
+$ `Cell ID CD68+`      &lt;int&gt; 108, 41, 262, 99, 217, 69, 236, 217, 262, 110, 21~
+$ `Distance to CD8+`   &lt;dbl&gt; 18.03469, 64.37585, 67.57403, 91.44397, 37.94733,~
+$ `Cell ID CD8+`       &lt;int&gt; 101, 5068, 423, 189, 128, 188, 280, 128, 423, 188~
+$ `Distance to CK+`    &lt;dbl&gt; 36.830694, 109.317199, 3.605551, 4.031129, 5.5901~
+$ `Cell ID CK+`        &lt;int&gt; 192, 5127, 45, 58, 4943, 209, 636, 87, 30, 45, 34~
+$ `Distance to FoxP3+` &lt;dbl&gt; 16.347783, 40.140379, 30.870698, 65.408333, 77.19~
+$ `Cell ID FoxP3+`     &lt;int&gt; 117, 214, 229, 138, 229, 102, 66, 229, 229, 95, 2~</code></pre>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">csd</span><span class="op">)</span></code></pre></div>
 <pre><code>[1] 3130</code></pre>
 <p>To create a combined data frame, use <code><a href="https://dplyr.tidyverse.org/reference/bind.html">dplyr::bind_cols</a></code>.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit">
-<span class="kw">csd_with_distance</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind.html">bind_cols</a></span>(<span class="kw">csd</span>, <span class="kw">distances</span>)
-</pre></div>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">csd_with_distance</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind.html">bind_cols</a></span><span class="op">(</span><span class="va">csd</span>, <span class="va">distances</span><span class="op">)</span></code></pre></div>
 <p>Note: The origin for cell positions in a cell seg data file may be the slide origin or the field origin, depending on the inForm version and the selected option. The field origin is the top-left corner of the field, so calling <code>find_nearest_distance</code> on a merged data file with field positions will compute incorrect values. One way to add distance columns to such a merged data file is to use <code><a href="https://dplyr.tidyverse.org/reference/group_by.html">dplyr::group_by</a></code> to process each field separately. For example, if <code>merged</code> contains merged cell seg data with field positions, add distance columns with this code:</p>
-<div class="sourceCode" id="cb10"><pre class="downlit">
-<span class="kw">merged_with_distance</span> <span class="op">&lt;-</span> <span class="kw">merged</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span>(<span class="kw">`Sample Name`</span>) <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/do.html">do</a></span>(<span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind.html">bind_cols</a></span>(<span class="kw">.</span>, <span class="fu"><a href="../reference/find_nearest_distance.html">find_nearest_distance</a></span>(<span class="kw">.</span>)))
-</pre></div>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">merged_with_distance</span> <span class="op">&lt;-</span> <span class="va">merged</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">`Sample Name`</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/do.html">do</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind.html">bind_cols</a></span><span class="op">(</span><span class="va">.</span>, <span class="fu"><a href="../reference/find_nearest_distance.html">find_nearest_distance</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="analyzing-nearest-neighbor-distances" class="section level3">
 <h3 class="hasAnchor">
 <a href="#analyzing-nearest-neighbor-distances" class="anchor"></a>Analyzing nearest neighbor distances</h3>
 <p>Once the nearest neighbors have been computed per cell, standard aggregation, analysis and plotting commands can be used to examine the results. For example, find the mean nearest neighbor distances by phenotype:</p>
-<div class="sourceCode" id="cb11"><pre class="downlit">
-<span class="kw">csd_with_distance</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span>(<span class="kw">Phenotype</span>) <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(<span class="kw">Phenotype</span>, <span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html">starts_with</a></span>(<span class="st">'Distance to'</span>)) <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise_all.html">summarize_all</a></span>(<span class="op">~</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span>(<span class="kw">.</span>), <span class="fl">1</span>))
-</pre></div>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">csd_with_distance</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">Phenotype</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">Phenotype</span>, <span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html">starts_with</a></span><span class="op">(</span><span class="st">'Distance to'</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise_all.html">summarize_all</a></span><span class="op">(</span><span class="op">~</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code># A tibble: 4 x 5
   Phenotype `Distance to CD6~ `Distance to CD~ `Distance to CK~ `Distance to Fo~
   &lt;chr&gt;                 &lt;dbl&gt;            &lt;dbl&gt;            &lt;dbl&gt;            &lt;dbl&gt;
@@ -197,78 +189,72 @@ $ `Cell ID FoxP3+`     &lt;int&gt; 117, 214, 229, 138, 229, 102, 66, 229, 229, 9
 3 CK+                    44.3             48.2              7.9             50.5
 4 FoxP3+                 19.1             29.1             23.3             22.3</code></pre>
 <p>Show the distribution of distances in a density plot:</p>
-<div class="sourceCode" id="cb13"><pre class="downlit">
-<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="kw">csd_with_distance</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="kw">`Distance to CD8+`</span>, color=<span class="kw">Phenotype</span>)) <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_density.html">geom_density</a></span>(size=<span class="fl">1</span>)
-</pre></div>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">csd_with_distance</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">`Distance to CD8+`</span>, color<span class="op">=</span><span class="va">Phenotype</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_density.html">geom_density</a></span><span class="op">(</span>size<span class="op">=</span><span class="fl">1</span><span class="op">)</span></code></pre></div>
 <p><img src="computing_distances_files/figure-html/unnamed-chunk-8-1.png" width="672"></p>
 </div>
 <div id="visualizing-nearest-neighbors" class="section level3">
 <h3 class="hasAnchor">
 <a href="#visualizing-nearest-neighbors" class="anchor"></a>Visualizing nearest neighbors</h3>
 <p>The <code>Cell ID &lt;phenotype&gt;</code> column allows visualizing nearest neighbors by joining the combined cell seg table with itself. For example, to show the nearest CK+ cell for each CD8+ cell, join the <code>Cell ID CK+</code> field to the original <code>Cell ID</code> field. This example filters the data before joining.</p>
-<div class="sourceCode" id="cb14"><pre class="downlit">
-<span class="co"># Filter to just CD8+ and CK+ cells</span>
-<span class="kw">cd8_cells</span> <span class="op">=</span> <span class="kw">csd_with_distance</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="fu"><a href="../reference/select_rows.html">select_rows</a></span>(<span class="kw">csd_with_distance</span>, <span class="st">'CD8+'</span>))
-<span class="kw">ck_cells</span> <span class="op">=</span> <span class="kw">csd_with_distance</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="fu"><a href="../reference/select_rows.html">select_rows</a></span>(<span class="kw">csd_with_distance</span>, <span class="st">'CK+'</span>))
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># Filter to just CD8+ and CK+ cells</span>
+<span class="va">cd8_cells</span> <span class="op">=</span> <span class="va">csd_with_distance</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="fu"><a href="../reference/select_rows.html">select_rows</a></span><span class="op">(</span><span class="va">csd_with_distance</span>, <span class="st">'CD8+'</span><span class="op">)</span><span class="op">)</span>
+<span class="va">ck_cells</span> <span class="op">=</span> <span class="va">csd_with_distance</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="fu"><a href="../reference/select_rows.html">select_rows</a></span><span class="op">(</span><span class="va">csd_with_distance</span>, <span class="st">'CK+'</span><span class="op">)</span><span class="op">)</span>
 
 <span class="co"># For each CD8+ cell, join with the data for the nearest CK+ cell</span>
-<span class="kw">cd8_to_ck</span> <span class="op">=</span> <span class="kw">cd8_cells</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span>(<span class="kw">ck_cells</span>, by=<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">'Cell ID CK+'</span>=<span class="st">'Cell ID'</span>),
-                                    suffix=<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">''</span>, <span class="st">'.CK'</span>))
-</pre></div>
+<span class="va">cd8_to_ck</span> <span class="op">=</span> <span class="va">cd8_cells</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span><span class="op">(</span><span class="va">ck_cells</span>, by<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'Cell ID CK+'</span><span class="op">=</span><span class="st">'Cell ID'</span><span class="op">)</span>,
+                                    suffix<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">''</span>, <span class="st">'.CK'</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p>Show the CD8+ and CK+ cells with the nearest neighbors connected:</p>
-<div class="sourceCode" id="cb15"><pre class="downlit">
-<span class="co"># Read a background image and make a base plot</span>
-<span class="kw">background_path</span> <span class="op">=</span> 
-  <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"extdata/sample/Set4_1-6plex_[16142,55840]_composite_image.jpg"</span>, package=<span class="st">'phenoptr'</span>)
-<span class="kw">background</span> <span class="op">=</span> <span class="kw">jpeg</span>::<span class="fu"><a href="https://rdrr.io/pkg/jpeg/man/readJPEG.html">readJPEG</a></span>(<span class="kw">background_path</span>) <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/as.raster.html">as.raster</a></span>()
-<span class="kw">xlim</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0</span>, <span class="fl">934</span>)
-<span class="kw">ylim</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0</span>, <span class="fl">700</span>)
-<span class="kw">base_plot</span> <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(mapping=<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="kw">`Cell X Position`</span>, <span class="kw">`Cell Y Position`</span>)) <span class="op">%&gt;%</span> 
-  <span class="kw">phenoptr</span>:::<span class="fu">add_scales_and_background</span>(<span class="kw">background</span>, <span class="kw">xlim</span>, <span class="kw">ylim</span>, scale_color=<span class="st">'white'</span>) <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span>(x=<span class="st">'Cell X Position'</span>, y=<span class="st">'Cell Y Position'</span>) <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html">scale_color_manual</a></span>(<span class="st">'Phenotype'</span>, values=<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">'CD8+'</span>=<span class="st">'red'</span>, <span class="st">'CK+'</span>=<span class="st">'cyan2'</span>))
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># Read a background image and make a base plot</span>
+<span class="va">background_path</span> <span class="op">=</span> 
+  <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"extdata/sample/Set4_1-6plex_[16142,55840]_composite_image.jpg"</span>, package<span class="op">=</span><span class="st">'phenoptr'</span><span class="op">)</span>
+<span class="va">background</span> <span class="op">=</span> <span class="fu">jpeg</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/jpeg/man/readJPEG.html">readJPEG</a></span><span class="op">(</span><span class="va">background_path</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/as.raster.html">as.raster</a></span><span class="op">(</span><span class="op">)</span>
+<span class="va">xlim</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">934</span><span class="op">)</span>
+<span class="va">ylim</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">700</span><span class="op">)</span>
+<span class="va">base_plot</span> <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>mapping<span class="op">=</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">`Cell X Position`</span>, <span class="va">`Cell Y Position`</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="fu">phenoptr</span><span class="fu">:::</span><span class="fu">add_scales_and_background</span><span class="op">(</span><span class="va">background</span>, <span class="va">xlim</span>, <span class="va">ylim</span>, scale_color<span class="op">=</span><span class="st">'white'</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>x<span class="op">=</span><span class="st">'Cell X Position'</span>, y<span class="op">=</span><span class="st">'Cell Y Position'</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html">scale_color_manual</a></span><span class="op">(</span><span class="st">'Phenotype'</span>, values<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'CD8+'</span><span class="op">=</span><span class="st">'red'</span>, <span class="st">'CK+'</span><span class="op">=</span><span class="st">'cyan2'</span><span class="op">)</span><span class="op">)</span>
 
 <span class="co"># Add lines and points</span>
-<span class="kw">base_plot</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_segment.html">geom_segment</a></span>(data=<span class="kw">cd8_to_ck</span>,
-               <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(xend=<span class="kw">`Cell X Position.CK`</span>, yend=<span class="kw">`Cell Y Position.CK`</span>),
-               color=<span class="st">'white'</span>) <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span>(data=<span class="kw">ck_cells</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(color=<span class="st">'CK+'</span>), size=<span class="fl">1</span>) <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span>(data=<span class="kw">cd8_cells</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(color=<span class="st">'CD8+'</span>), size=<span class="fl">1</span>) <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span>(title=<span class="st">'Nearest CK+ to each CD8+'</span>)
-</pre></div>
+<span class="va">base_plot</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_segment.html">geom_segment</a></span><span class="op">(</span>data<span class="op">=</span><span class="va">cd8_to_ck</span>,
+               <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>xend<span class="op">=</span><span class="va">`Cell X Position.CK`</span>, yend<span class="op">=</span><span class="va">`Cell Y Position.CK`</span><span class="op">)</span>,
+               color<span class="op">=</span><span class="st">'white'</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span>data<span class="op">=</span><span class="va">ck_cells</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>color<span class="op">=</span><span class="st">'CK+'</span><span class="op">)</span>, size<span class="op">=</span><span class="fl">1</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span>data<span class="op">=</span><span class="va">cd8_cells</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>color<span class="op">=</span><span class="st">'CD8+'</span><span class="op">)</span>, size<span class="op">=</span><span class="fl">1</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title<span class="op">=</span><span class="st">'Nearest CK+ to each CD8+'</span><span class="op">)</span></code></pre></div>
 <p><img src="computing_distances_files/figure-html/unnamed-chunk-10-1.png" width="768"></p>
 <p>To show the nearest CD8+ for each CK+, join in the other direction; for each CK+ cell, find the nearest CD8+ cell:</p>
-<div class="sourceCode" id="cb16"><pre class="downlit">
-<span class="kw">ck_to_cd8</span> <span class="op">=</span> <span class="kw">ck_cells</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span>(<span class="kw">cd8_cells</span>, by=<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">'Cell ID CD8+'</span>=<span class="st">'Cell ID'</span>),
-                                    suffix=<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">''</span>, <span class="st">'.CD8'</span>))
-<span class="kw">base_plot</span> <span class="op">+</span> 
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_segment.html">geom_segment</a></span>(data=<span class="kw">ck_to_cd8</span>,
-               <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(xend=<span class="kw">`Cell X Position.CD8`</span>, yend=<span class="kw">`Cell Y Position.CD8`</span>),
-               color=<span class="st">'white'</span>) <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span>(data=<span class="kw">ck_cells</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(color=<span class="st">'CK+'</span>), size=<span class="fl">1</span>) <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span>(data=<span class="kw">cd8_cells</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(color=<span class="st">'CD8+'</span>), size=<span class="fl">1</span>) <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span>(title=<span class="st">'Nearest CD8+ to each CK+'</span>)
-</pre></div>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">ck_to_cd8</span> <span class="op">=</span> <span class="va">ck_cells</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span><span class="op">(</span><span class="va">cd8_cells</span>, by<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'Cell ID CD8+'</span><span class="op">=</span><span class="st">'Cell ID'</span><span class="op">)</span>,
+                                    suffix<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">''</span>, <span class="st">'.CD8'</span><span class="op">)</span><span class="op">)</span>
+<span class="va">base_plot</span> <span class="op">+</span> 
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_segment.html">geom_segment</a></span><span class="op">(</span>data<span class="op">=</span><span class="va">ck_to_cd8</span>,
+               <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>xend<span class="op">=</span><span class="va">`Cell X Position.CD8`</span>, yend<span class="op">=</span><span class="va">`Cell Y Position.CD8`</span><span class="op">)</span>,
+               color<span class="op">=</span><span class="st">'white'</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span>data<span class="op">=</span><span class="va">ck_cells</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>color<span class="op">=</span><span class="st">'CK+'</span><span class="op">)</span>, size<span class="op">=</span><span class="fl">1</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span>data<span class="op">=</span><span class="va">cd8_cells</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>color<span class="op">=</span><span class="st">'CD8+'</span><span class="op">)</span>, size<span class="op">=</span><span class="fl">1</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title<span class="op">=</span><span class="st">'Nearest CD8+ to each CK+'</span><span class="op">)</span></code></pre></div>
 <p><img src="computing_distances_files/figure-html/unnamed-chunk-11-1.png" width="768"></p>
 </div>
 <div id="mutual-nearest-neighbors" class="section level3">
 <h3 class="hasAnchor">
 <a href="#mutual-nearest-neighbors" class="anchor"></a>Mutual nearest neighbors</h3>
 <p>Mutual nearest neighbors are cells which have each other as nearest neighbors; i.e. cells where the nearest neighbor of the nearest neighbor is the starting cell:</p>
-<div class="sourceCode" id="cb17"><pre class="downlit">
-<span class="kw">mutual</span> <span class="op">=</span> <span class="kw">ck_to_cd8</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="kw">`Cell ID`</span><span class="op">==</span><span class="kw">`Cell ID CK+.CD8`</span>)
-</pre></div>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">mutual</span> <span class="op">=</span> <span class="va">ck_to_cd8</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">`Cell ID`</span><span class="op">==</span><span class="va">`Cell ID CK+.CD8`</span><span class="op">)</span></code></pre></div>
 <p>This data set contains 126 mutual nearest neighbor pairs between CD8+ and CK+ cells.</p>
-<div class="sourceCode" id="cb18"><pre class="downlit">
-<span class="kw">base_plot</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_segment.html">geom_segment</a></span>(data=<span class="kw">mutual</span>,
-               <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(xend=<span class="kw">`Cell X Position.CD8`</span>, yend=<span class="kw">`Cell Y Position.CD8`</span>),
-               size=<span class="fl">1</span>, color=<span class="st">'white'</span>) <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span>(data=<span class="kw">ck_cells</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(color=<span class="st">'CK+'</span>), size=<span class="fl">1</span>) <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span>(data=<span class="kw">cd8_cells</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(color=<span class="st">'CD8+'</span>), size=<span class="fl">1</span>) <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span>(title=<span class="st">'Mutual nearest neighbors - CD8+ and CK+'</span>)
-</pre></div>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">base_plot</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_segment.html">geom_segment</a></span><span class="op">(</span>data<span class="op">=</span><span class="va">mutual</span>,
+               <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>xend<span class="op">=</span><span class="va">`Cell X Position.CD8`</span>, yend<span class="op">=</span><span class="va">`Cell Y Position.CD8`</span><span class="op">)</span>,
+               size<span class="op">=</span><span class="fl">1</span>, color<span class="op">=</span><span class="st">'white'</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span>data<span class="op">=</span><span class="va">ck_cells</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>color<span class="op">=</span><span class="st">'CK+'</span><span class="op">)</span>, size<span class="op">=</span><span class="fl">1</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span>data<span class="op">=</span><span class="va">cd8_cells</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>color<span class="op">=</span><span class="st">'CD8+'</span><span class="op">)</span>, size<span class="op">=</span><span class="fl">1</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title<span class="op">=</span><span class="st">'Mutual nearest neighbors - CD8+ and CK+'</span><span class="op">)</span></code></pre></div>
 <p><img src="computing_distances_files/figure-html/unnamed-chunk-13-1.png" width="768"></p>
 <hr>
 </div>
@@ -281,18 +267,16 @@ $ `Cell ID FoxP3+`     &lt;int&gt; 117, 214, 229, 138, 229, 102, 66, 229, 229, 9
 <a href="#computing-with-count_within" class="anchor"></a>Computing with <code>count_within</code>
 </h3>
 <p>The <code>count_within</code> function looks at the number of cells within a radius of another cell and returns summary measures. For example, use <code>count_within</code> to find the number of <code>CD68+</code> cells having a <code>CK+</code> cell within 25 microns:</p>
-<div class="sourceCode" id="cb19"><pre class="downlit">
-<span class="fu"><a href="../reference/count_within.html">count_within</a></span>(<span class="kw">csd</span>, from=<span class="st">'CD68+'</span>, to=<span class="st">'CK+'</span>, radius=<span class="fl">25</span>)
-</pre></div>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/count_within.html">count_within</a></span><span class="op">(</span><span class="va">csd</span>, from<span class="op">=</span><span class="st">'CD68+'</span>, to<span class="op">=</span><span class="st">'CK+'</span>, radius<span class="op">=</span><span class="fl">25</span><span class="op">)</span></code></pre></div>
 <pre><code># A tibble: 1 x 5
   radius from_count to_count from_with within_mean
    &lt;dbl&gt;      &lt;int&gt;    &lt;int&gt;     &lt;int&gt;       &lt;dbl&gt;
 1     25        417     2257       274        3.28</code></pre>
 <p>In this result, <code>from_count</code> and <code>to_count</code> are the total numbers of eligible cells. They agree with the counts in the first table in this tutorial. <code>from_with</code> is the number of <code>CD68+</code> cells having at least one <code>CK+</code> cell within 25 micron. <code>within_mean</code> is the average number of <code>CK+</code> cells found within 25 micron of each <code>CD68+</code> cell.</p>
 <p>Note there are some subtleties to <code>count_within</code>. Most importantly, it is not symmetric. In this example, the number of <code>CK+</code> cells with a <code>CD68+</code> within 25 microns is not the same as the number of <code>CD68+</code> cells with a <code>CK+</code> cell within 25 microns.</p>
-<div class="sourceCode" id="cb21"><pre class="downlit">
-<span class="fu"><a href="../reference/count_within.html">count_within</a></span>(<span class="kw">csd</span>, from=<span class="st">'CK+'</span>, to=<span class="st">'CD68+'</span>, radius=<span class="fl">25</span>)
-</pre></div>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/count_within.html">count_within</a></span><span class="op">(</span><span class="va">csd</span>, from<span class="op">=</span><span class="st">'CK+'</span>, to<span class="op">=</span><span class="st">'CD68+'</span>, radius<span class="op">=</span><span class="fl">25</span><span class="op">)</span></code></pre></div>
 <pre><code># A tibble: 1 x 5
   radius from_count to_count from_with within_mean
    &lt;dbl&gt;      &lt;int&gt;    &lt;int&gt;     &lt;int&gt;       &lt;dbl&gt;
@@ -305,16 +289,15 @@ $ `Cell ID FoxP3+`     &lt;int&gt; 117, 214, 229, 138, 229, 102, 66, 229, 229, 9
 </h3>
 <p>You may want to run <code>count_within</code> on an entire directory of cell seg data files, or to count multiple combinations of phenotypes. Both of these are possible using <code>count_within_batch</code>. This function takes the path to a directory that contains multiple cell seg data files. The <code>pairs</code> and <code>category</code> parameters are lists and may contain multiple entries.</p>
 <p>For example, the following commands will count <code>FoxP3+</code> cells with a <code>CD8+</code> or <code>CK+</code> cell within 10 or 25 microns. Separate counts are returned for each <code>to</code> phenotype and for <code>Tumor</code> and <code>Stroma</code> tissue categories. Counts will be calculated for all <code>cell_seg_data.txt</code> files in <code>my_directory</code>.</p>
-<div class="sourceCode" id="cb23"><pre class="downlit">
-<span class="kw">base_path</span> <span class="op">&lt;-</span> <span class="st">"/path/to/my_directory"</span>
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">base_path</span> <span class="op">&lt;-</span> <span class="st">"/path/to/my_directory"</span>
 
-<span class="kw">pairs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">'FoxP3+'</span>, <span class="st">'CD8+'</span>),
-              <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">'FoxP3+'</span>, <span class="st">'CK+'</span>))
-<span class="kw">radii</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">10</span>, <span class="fl">25</span>)
-<span class="kw">categories</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">'Stroma'</span>, <span class="st">'Tumor'</span>)
+<span class="va">pairs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'FoxP3+'</span>, <span class="st">'CD8+'</span><span class="op">)</span>,
+              <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'FoxP3+'</span>, <span class="st">'CK+'</span><span class="op">)</span><span class="op">)</span>
+<span class="va">radii</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">25</span><span class="op">)</span>
+<span class="va">categories</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'Stroma'</span>, <span class="st">'Tumor'</span><span class="op">)</span>
 
-<span class="fu"><a href="../reference/count_within_batch.html">count_within_batch</a></span>(<span class="kw">base_path</span>, <span class="kw">pairs</span>, <span class="kw">radii</span>, <span class="kw">categories</span>)
-</pre></div>
+<span class="fu"><a href="../reference/count_within_batch.html">count_within_batch</a></span><span class="op">(</span><span class="va">base_path</span>, <span class="va">pairs</span>, <span class="va">radii</span>, <span class="va">categories</span><span class="op">)</span></code></pre></div>
 <p>See <code><a href="../reference/count_within_batch.html">help(count_within_batch)</a></code> and the tutorial <a href="https://akoyabio.github.io/phenoptr/articles/selecting_cells.html">Selecting cells within a cell segmentation table</a> for additional details.</p>
 <hr>
 </div>
@@ -324,25 +307,23 @@ $ `Cell ID FoxP3+`     &lt;int&gt; 117, 214, 229, 138, 229, 102, 66, 229, 229, 9
 <a href="#spatial-distribution-report" class="anchor"></a>Spatial distribution report</h2>
 <p>The <code>spatial_distribution_report</code> function is a bit different from the other functions mentioned in this tutorial. Rather than calculate and return distance metrics, it creates a report which shows visually the nearest neighbor relations between two phenotypes in a single field. Because the result is a stand-alone HTML file, it can’t easily be demonstrated in a tutorial. For an example, copy and paste this code into your own copy of R. It will create a sample report in your user directory.</p>
 <p>This example requires the <code>phenoptrExamples</code> package, which includes extended sample data.</p>
-<div class="sourceCode" id="cb24"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://github.com/akoyabio/phenoptrExamples">phenoptrExamples</a></span>)
-<span class="kw">cell_seg_path</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"extdata"</span>, <span class="st">"samples"</span>, 
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/akoyabio/phenoptrExamples">phenoptrExamples</a></span><span class="op">)</span>
+<span class="va">cell_seg_path</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"samples"</span>, 
                             <span class="st">"Set4_1-6plex_[16142,55840]_cell_seg_data.txt"</span>,
-                            package = <span class="st">"phenoptrExamples"</span>)
+                            package <span class="op">=</span> <span class="st">"phenoptrExamples"</span><span class="op">)</span>
 
-<span class="kw">pairs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">'CD68+'</span>, <span class="st">'CD8+'</span>))
-<span class="kw">colors</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">'CD68+'</span>=<span class="st">'magenta'</span>, <span class="st">'CD8+'</span>=<span class="st">'yellow'</span>)
-<span class="kw">out_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/path.expand.html">path.expand</a></span>(<span class="st">'~/spatial_distribution_report.html'</span>)
+<span class="va">pairs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'CD68+'</span>, <span class="st">'CD8+'</span><span class="op">)</span><span class="op">)</span>
+<span class="va">colors</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'CD68+'</span><span class="op">=</span><span class="st">'magenta'</span>, <span class="st">'CD8+'</span><span class="op">=</span><span class="st">'yellow'</span><span class="op">)</span>
+<span class="va">out_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/path.expand.html">path.expand</a></span><span class="op">(</span><span class="st">'~/spatial_distribution_report.html'</span><span class="op">)</span>
 
-<span class="fu"><a href="../reference/spatial_distribution_report.html">spatial_distribution_report</a></span>(<span class="kw">cell_seg_path</span>, <span class="kw">pairs</span>, <span class="kw">colors</span>, output_path=<span class="kw">out_path</span>)
-</pre></div>
+<span class="fu"><a href="../reference/spatial_distribution_report.html">spatial_distribution_report</a></span><span class="op">(</span><span class="va">cell_seg_path</span>, <span class="va">pairs</span>, <span class="va">colors</span>, output_path<span class="op">=</span><span class="va">out_path</span><span class="op">)</span></code></pre></div>
 <p>To create reports for all cell seg data files in a directory, first define <code>phenotypes</code> and <code>colors</code> as above. Use <code>list_cell_seg_files</code> to find all the files. Then call <code>spatial_distribution_report</code> for each file. This will create reports in the same directory as the data files.</p>
-<div class="sourceCode" id="cb25"><pre class="downlit">
-<span class="kw">base_path</span> <span class="op">&lt;-</span> <span class="st">'/path/to/data/'</span>
-<span class="kw">paths</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/list_cell_seg_files.html">list_cell_seg_files</a></span>(<span class="kw">base_path</span>)
-<span class="co">for</span> (<span class="kw">path</span> <span class="co">in</span> <span class="kw">paths</span>)
-  <span class="fu"><a href="../reference/spatial_distribution_report.html">spatial_distribution_report</a></span>(<span class="kw">path</span>, <span class="kw">pairs</span>, <span class="kw">colors</span>)
-</pre></div>
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">base_path</span> <span class="op">&lt;-</span> <span class="st">'/path/to/data/'</span>
+<span class="va">paths</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/list_cell_seg_files.html">list_cell_seg_files</a></span><span class="op">(</span><span class="va">base_path</span><span class="op">)</span>
+<span class="kw">for</span> <span class="op">(</span><span class="va">path</span> <span class="kw">in</span> <span class="va">paths</span><span class="op">)</span>
+  <span class="fu"><a href="../reference/spatial_distribution_report.html">spatial_distribution_report</a></span><span class="op">(</span><span class="va">path</span>, <span class="va">pairs</span>, <span class="va">colors</span><span class="op">)</span></code></pre></div>
 </div>
   </div>
 

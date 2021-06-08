@@ -88,6 +88,9 @@
     <loc>http://akoyabio.github.io/phenoptr/reference/plot_diverging.html</loc>
   </url>
   <url>
+    <loc>http://akoyabio.github.io/phenoptr/reference/readTIFFDirectory.html</loc>
+  </url>
+  <url>
     <loc>http://akoyabio.github.io/phenoptr/reference/read_cell_seg_data.html</loc>
   </url>
   <url>
@@ -110,6 +113,9 @@
   </url>
   <url>
     <loc>http://akoyabio.github.io/phenoptr/reference/split_and_trim.html</loc>
+  </url>
+  <url>
+    <loc>http://akoyabio.github.io/phenoptr/reference/stop_if_multiple_fields.html</loc>
   </url>
   <url>
     <loc>http://akoyabio.github.io/phenoptr/reference/subset_distance_matrix.html</loc>

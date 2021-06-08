@@ -26,9 +26,9 @@ jobs:
       matrix:
         config:
           - {os: windows-latest, r: 'release'}
-          - {os: windows-latest, r: '3.6.3'}
+          - {os: windows-latest, r: '4.0.0'}
           - {os: macOS-latest, r: 'release'}
-          - {os: macOS-latest, r: '3.6.3'}
+          - {os: macOS-latest, r: '4.0.0'}
 
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
@@ -43,10 +43,8 @@ jobs:
       - name: Install dependencies
         run: |
           install.packages(c("remotes", "rcmdcheck"))
-          install.packages('sf', type='binary')
-          remotes::install_version('BH', '1.72.0-3') # BH 1.75 won't build on Windows R 3.6
           remotes::install_deps(dependencies = TRUE, upgrade="never")
         shell: Rscript {0}
       - name: Check
-        run: rcmdcheck::rcmdcheck(args = "--no-manual", error_on = "error")
+        run: rcmdcheck::rcmdcheck(args = c("--no-manual","--no-build-vignettes", "--no-vignettes", "--no-examples"), error_on = "error")
         shell: Rscript {0}

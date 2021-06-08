@@ -1,4 +1,5 @@
-# phenoptr 0.2.9.9000
+# phenoptr 0.2.10
+**2021-06-01**
 
 Changes to `read_cell_seg_data`:
 - Add a `col_select` parameter to support reading only
@@ -18,8 +19,9 @@ Misc:
 - Add `read_composites` and `read_composite_info` to read and parse
   metadata in inForm composite images.
 - Fix `select_rows` to always return `FALSE` instead of `NA`.
-- Update to work with upcoming CRAN release of tiff 0.1-8
+- Update to work with CRAN release of tiff 0.1-8
 - Update to work with (and require) spatstat 2.0.0
+- Require R 4.0.0 or greater for compatibility with latest rtree
 
 # phenoptr 0.2.9
 **2020-11-11**

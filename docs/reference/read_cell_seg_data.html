@@ -74,7 +74,7 @@ useful cleanup on the result." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">phenoptr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.10</span>
       </span>
     </div>
 
@@ -82,7 +82,7 @@ useful cleanup on the result." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -117,14 +117,14 @@ useful cleanup on the result." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="../news/index.html">
-    <span class="fa fa-newspaper-o"></span>
+    <span class="fas fa-newspaper-o"></span>
      
     news
   </a>
 </li>
 <li>
   <a href="https://github.com/akoyabio/phenoptr">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fas fa-github fa-lg"></span>
      
     github
   </a>
@@ -153,11 +153,12 @@ inForm program. It reads data files written by inForm 2.0 and later and does
 useful cleanup on the result.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>read_cell_seg_data</span>(
-  path = <span class='fl'>NA</span>,
-  pixels_per_micron = <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"phenoptr.pixels.per.micron"</span>),
-  remove_units = <span class='fl'>TRUE</span>
-)</pre>
+    <pre class="usage"><span class='fu'>read_cell_seg_data</span><span class='op'>(</span>
+  path <span class='op'>=</span> <span class='cn'>NA</span>,
+  pixels_per_micron <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span><span class='op'>(</span><span class='st'>"phenoptr.pixels.per.micron"</span><span class='op'>)</span>,
+  remove_units <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  col_select <span class='op'>=</span> <span class='cn'>NULL</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -179,6 +180,16 @@ an associated <code>component_data.tif</code> file.</p></td>
       <td><p>If TRUE (default),
 remove the unit name from expression columns.</p></td>
     </tr>
+    <tr>
+      <th>col_select</th>
+      <td><p>Optional column selection expression, may be</p><ul>
+<li><p>NULL - retain all columns</p></li>
+<li><p><code>"phenoptrReports"</code> - retain only columns needed by functions
+in the <code>phenoptrReports</code> package.</p></li>
+<li><p>A quoted list of one or more selection expressions,
+like in <code><a href='https://dplyr.tidyverse.org/reference/select.html'>dplyr::select()</a></code> (see example).</p></li>
+</ul></td>
+    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
@@ -187,7 +198,8 @@ remove the unit name from expression columns.</p></td>
 containing the cleaned-up data set.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p><code>read_cell_seg_data</code> reads both single-image tables and merged tables
+    <p><code>read_cell_seg_data</code> reads both single-field tables, merged tables
+and consolidated tables
 and does useful cleanup on the data:</p><ul>
 <li><p>Removes columns that are all NA.
 These are typically unused summary columns.</p></li>
@@ -208,6 +220,17 @@ short name is needed, for example in chart legends.</p></li>
 a <code>component_data.tif</code> file in the same directory as <code>path</code>.
 If found, <code>pixels_per_micron</code> is read from the file <strong>and</strong>
 the cell coordinates are offset to the correct spatial location.</p>
+<p>If <code>col_select</code> is <code>"phenoptrReports"</code>, only columns normally needed by
+<code>phenoptrReports</code> are read. This can dramatically reduce the time to
+read a file and the memory required to store the results.</p>
+<p>Specifically, passing <code>col_select='phenoptrReports'</code> will omit</p><ul>
+<li><p>Component stats other than mean expression</p></li>
+<li><p>Shape stats other than area</p></li>
+<li><p><code>Path</code>, <code>Processing Region ID</code>, <code>Category Region ID</code>,
+<code>Lab ID</code>, <code>Confidence</code>, and columns which are normally
+blank.</p></li>
+</ul>
+
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other file readers: 
@@ -217,20 +240,27 @@ the cell coordinates are offset to the correct spatial location.</p>
 <code><a href='read_maps.html'>read_maps</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>path</span> <span class='op'>&lt;-</span> <span class='fu'><a href='sample_cell_seg_data.html'>sample_cell_seg_path</a></span>()
-<span class='kw'>csd</span> <span class='op'>&lt;-</span> <span class='fu'>read_cell_seg_data</span>(<span class='kw'>path</span>)
+    <pre class="examples"><div class='input'><span class='va'>path</span> <span class='op'>&lt;-</span> <span class='fu'><a href='sample_cell_seg_data.html'>sample_cell_seg_path</a></span><span class='op'>(</span><span class='op'>)</span>
+<span class='va'>csd</span> <span class='op'>&lt;-</span> <span class='fu'>read_cell_seg_data</span><span class='op'>(</span><span class='va'>path</span><span class='op'>)</span>
 
 <span class='co'># count all the phenotypes in the data</span>
-<span class='fu'><a href='https://rdrr.io/r/base/table.html'>table</a></span>(<span class='kw'>csd</span><span class='op'>$</span><span class='kw'>Phenotype</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/table.html'>table</a></span><span class='op'>(</span><span class='va'>csd</span><span class='op'>$</span><span class='va'>Phenotype</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; 
 #&gt;  CD68+   CD8+    CK+ FoxP3+  other 
 #&gt;    417    228   2257    228   2942 </div><div class='input'>
-<span class='co'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='co'># Read only columns needed by phenoptrReports</span>
+<span class='va'>csd</span> <span class='op'>&lt;-</span> <span class='fu'>read_cell_seg_data</span><span class='op'>(</span><span class='va'>path</span>, col_select<span class='op'>=</span><span class='st'>'phenoptrReports'</span><span class='op'>)</span>
+
+<span class='co'># Read only position and phenotype columns</span>
+<span class='va'>csd</span> <span class='op'>&lt;-</span> <span class='fu'>read_cell_seg_data</span><span class='op'>(</span><span class='va'>path</span>,
+         col_select<span class='op'>=</span><span class='fu'>rlang</span><span class='fu'>::</span><span class='fu'><a href='https://rlang.r-lib.org/reference/nse-defuse.html'>quo</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://tidyselect.r-lib.org/reference/starts_with.html'>contains</a></span><span class='op'>(</span><span class='st'>'Position'</span><span class='op'>)</span>,
+                                    <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://tidyselect.r-lib.org/reference/starts_with.html'>contains</a></span><span class='op'>(</span><span class='st'>'Phenotype'</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
+<span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
 <span class='co'># Use purrr::map_df to read all cell seg files in a directory</span>
 <span class='co'># and return a single tibble.</span>
-<span class='kw'>paths</span> <span class='op'>&lt;-</span> <span class='fu'><a href='list_cell_seg_files.html'>list_cell_seg_files</a></span>(<span class='kw'>path</span>)
-<span class='kw'>csd</span> <span class='op'>&lt;-</span> <span class='kw'>purrr</span>::<span class='fu'><a href='https://purrr.tidyverse.org/reference/map.html'>map_df</a></span>(<span class='kw'>paths</span>, <span class='kw'>read_cell_seg_data</span>)
-}
+<span class='va'>paths</span> <span class='op'>&lt;-</span> <span class='fu'><a href='list_cell_seg_files.html'>list_cell_seg_files</a></span><span class='op'>(</span><span class='va'>path</span><span class='op'>)</span>
+<span class='va'>csd</span> <span class='op'>&lt;-</span> <span class='fu'>purrr</span><span class='fu'>::</span><span class='fu'><a href='https://purrr.tidyverse.org/reference/map.html'>map_df</a></span><span class='op'>(</span><span class='va'>paths</span>, <span class='va'>read_cell_seg_data</span><span class='op'>)</span>
+<span class='op'>}</span>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

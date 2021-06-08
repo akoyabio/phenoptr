@@ -75,7 +75,7 @@ tissue classes." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">phenoptr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.10</span>
       </span>
     </div>
 
@@ -83,7 +83,7 @@ tissue classes." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -118,14 +118,14 @@ tissue classes." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="../news/index.html">
-    <span class="fa fa-newspaper-o"></span>
+    <span class="fas fa-newspaper-o"></span>
      
     news
   </a>
 </li>
 <li>
   <a href="https://github.com/akoyabio/phenoptr">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fas fa-github fa-lg"></span>
      
     github
   </a>
@@ -155,15 +155,15 @@ phenotype in bands from the boundary between the two
 tissue classes.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>density_bands</span>(
-  <span class='kw'>cell_seg_path</span>,
-  <span class='kw'>phenotypes</span>,
-  <span class='kw'>positive</span>,
-  <span class='kw'>negative</span>,
-  width = <span class='fl'>25</span>,
-  map_path = <span class='kw'>NULL</span>,
-  component_path = <span class='kw'>NULL</span>
-)</pre>
+    <pre class="usage"><span class='fu'>density_bands</span><span class='op'>(</span>
+  <span class='va'>cell_seg_path</span>,
+  <span class='va'>phenotypes</span>,
+  <span class='va'>positive</span>,
+  <span class='va'>negative</span>,
+  width <span class='op'>=</span> <span class='fl'>25</span>,
+  map_path <span class='op'>=</span> <span class='cn'>NULL</span>,
+  component_path <span class='op'>=</span> <span class='cn'>NULL</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -213,7 +213,7 @@ same directory as <code>cell_seg_path</code>.</p></td>
 <dt><code>cells</code></dt><dd><p>Cell seg data with phenotypes updated per the <code>phenotypes</code>
 parameter and an additional <code>distance</code> column.</p></dd>
 <dt><code>distance</code></dt><dd><p>The distance map, a pixel image
-(<code><a href='https://rdrr.io/pkg/spatstat/man/im.object.html'>im.object</a></code>).</p></dd>
+(<code><a href='https://rdrr.io/pkg/spatstat.geom/man/im.object.html'>im.object</a></code>).</p></dd>
 
 </dl>
 
@@ -251,16 +251,16 @@ to compute density.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Compute density for the sample data</span>
-<span class='kw'>values</span> <span class='op'>&lt;-</span> <span class='fu'>density_bands</span>(<span class='fu'><a href='sample_cell_seg_data.html'>sample_cell_seg_path</a></span>(),
-  <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='st'>"CD8+"</span>, <span class='st'>"CD68+"</span>, <span class='st'>"FoxP3+"</span>),
-  positive=<span class='st'>"Stroma"</span>, negative=<span class='st'>"Tumor"</span>)
+<span class='va'>values</span> <span class='op'>&lt;-</span> <span class='fu'>density_bands</span><span class='op'>(</span><span class='fu'><a href='sample_cell_seg_data.html'>sample_cell_seg_path</a></span><span class='op'>(</span><span class='op'>)</span>,
+  <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='st'>"CD8+"</span>, <span class='st'>"CD68+"</span>, <span class='st'>"FoxP3+"</span><span class='op'>)</span>,
+  positive<span class='op'>=</span><span class='st'>"Stroma"</span>, negative<span class='op'>=</span><span class='st'>"Tumor"</span><span class='op'>)</span>
 
 <span class='co'># Plot the densities in a single plot</span>
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='http://ggplot2.tidyverse.org'>ggplot2</a></span>)
-<span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span>(<span class='kw'>values</span><span class='op'>$</span><span class='kw'>densities</span>, <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span>(<span class='kw'>midpoint</span>, <span class='kw'>density</span><span class='op'>*</span><span class='fl'>1000000</span>, color=<span class='kw'>phenotype</span>)) <span class='op'>+</span>
-  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_path.html'>geom_line</a></span>(size=<span class='fl'>2</span>) <span class='op'>+</span>
-  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span>(x=<span class='st'>'Distance from tumor boundary (microns)'</span>,
-       y=<span class='st'>'Estimated cell density (cells per sq mm)'</span>)
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://ggplot2.tidyverse.org'>ggplot2</a></span><span class='op'>)</span>
+<span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='va'>values</span><span class='op'>$</span><span class='va'>densities</span>, <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span><span class='va'>midpoint</span>, <span class='va'>density</span><span class='op'>*</span><span class='fl'>1000000</span>, color<span class='op'>=</span><span class='va'>phenotype</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_path.html'>geom_line</a></span><span class='op'>(</span>size<span class='op'>=</span><span class='fl'>2</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='op'>(</span>x<span class='op'>=</span><span class='st'>'Distance from tumor boundary (microns)'</span>,
+       y<span class='op'>=</span><span class='st'>'Estimated cell density (cells per sq mm)'</span><span class='op'>)</span>
 </div><div class='img'><img src='density_bands-1.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

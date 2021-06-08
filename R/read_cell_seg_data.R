@@ -276,14 +276,14 @@ get_col_types_and_decimal_mark = function(path, col_select) {
 
   # Read the first 1000 lines of data.
   # Supplying col_types prevents console output of the imputed types.
-  # Supplying the grouping_mark keeps vroom from mis-handling commas
-  # that are decimal separators.
+  # Supplying the decimal_mark and grouping_mark keeps vroom from mis-handling
+  # commas that are decimal separators.
   # See https://github.com/akoyabio/phenoptrReports/issues/31
   # Suppress warnings about parsing problems
   df <- suppressWarnings(
     vroom::vroom(path, na=cell_seg_nas, n_max=1000, delim='\t',
-                        locale=vroom::locale(grouping_mark=''),
-                        col_types=vroom::cols(), col_select=!!col_select))
+                 locale=vroom::locale(decimal_mark='.', grouping_mark=','),
+                 col_types=vroom::cols(), col_select=!!col_select))
 
   # If columns containing "Mean" are character, check to see if the
   # file may have been written in a locale that uses comma as a decimal
@@ -299,8 +299,8 @@ get_col_types_and_decimal_mark = function(path, col_select) {
       message('Reading cell seg data with comma separator.')
       df <- suppressWarnings(
         vroom::vroom(path, na=cell_seg_nas, n_max=1000, delim='\t',
-                            locale=vroom::locale(decimal_mark=','),
-                            col_types=vroom::cols(), col_select=!!col_select))
+                     locale=vroom::locale(decimal_mark=',', grouping_mark='.',),
+                     col_types=vroom::cols(), col_select=!!col_select))
     }
 
     # Check again

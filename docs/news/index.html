@@ -71,7 +71,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">phenoptr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.10</span>
       </span>
     </div>
 
@@ -79,7 +79,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -114,14 +114,14 @@
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="../news/index.html">
-    <span class="fa fa-newspaper-o"></span>
+    <span class="fas fa-newspaper-o"></span>
      
     news
   </a>
 </li>
 <li>
   <a href="https://github.com/akoyabio/phenoptr">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fas fa-github fa-lg"></span>
      
     github
   </a>
@@ -143,6 +143,28 @@
       <small>Source: <a href='https://github.com/akoyabio/phenoptr/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="phenoptr-0210" class="section level1">
+<h1 class="page-header" data-toc-text="0.2.10">
+<a href="#phenoptr-0210" class="anchor"></a>phenoptr 0.2.10</h1>
+<p><strong>2021-06-01</strong></p>
+<p>Changes to <code>read_cell_seg_data</code>:</p>
+<ul>
+<li>Add a <code>col_select</code> parameter to support reading only selected fields, with a <code>'phenoptrReports'</code> option to read only fields needed by <code>phenoptrReports</code>.</li>
+<li>Use <code><a href="https://vroom.r-lib.org/reference/vroom.html">vroom::vroom()</a></code> instead of <code><a href="https://readr.tidyverse.org/reference/read_delim.html">readr::read_tsv</a></code> for speed and support of <code>col_select</code>.</li>
+<li>For an export file containing all inForm fields, <code><a href="../reference/read_cell_seg_data.html">read_cell_seg_data(csd_path, col_select='phenoptrReports')</a></code> can be 4-5x faster and use 75% less memory for the results, compared to the previous version.</li>
+</ul>
+<p>Spatial distribution report:</p>
+<ul>
+<li>Fix report generation to work when paths contain spaces.</li>
+</ul>
+<p>Misc:</p>
+<ul>
+<li>Fix <code>select_rows</code> to always return <code>FALSE</code> instead of <code>NA</code>.</li>
+<li>Update to work with CRAN release of tiff 0.1-8</li>
+<li>Update to work with (and require) spatstat 2.0.0</li>
+<li>Require R 4.0.0 or greater for compatibility with latest rtree</li>
+</ul>
+</div>
     <div id="phenoptr-029" class="section level1">
 <h1 class="page-header" data-toc-text="0.2.9">
 <a href="#phenoptr-029" class="anchor"></a>phenoptr 0.2.9</h1>
@@ -249,7 +271,7 @@
 <a href="#phenoptr-0161" class="anchor"></a>phenoptr 0.1.6.1</h1>
 <p><strong>2019-04-22</strong></p>
 <ul>
-<li>Remove the scary <code>Failed with error: ‘there is no package called ‘rtree’’</code> message that <code>requireNamespace('rtree')</code> generates (<a href='https://github.com/akoyabio/phenoptr/issues/5'>#5</a>).</li>
+<li>Remove the scary <code>Failed with error: ‘there is no package called ‘rtree’’</code> message that <code><a href="https://rdrr.io/r/base/ns-load.html">requireNamespace('rtree')</a></code> generates (<a href='https://github.com/akoyabio/phenoptr/issues/5'>#5</a>).</li>
 </ul>
 </div>
     <div id="phenoptr-016" class="section level1">
