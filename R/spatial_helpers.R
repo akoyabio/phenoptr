@@ -300,11 +300,22 @@ add_geometry = function(csd) {
 #' @export
 trim_tissue_categories = function(annotations, roi,
                                   export_path, plot_path=NULL) {
-  # Sanity check the export path
+  # Sanity check the export path by finding matching maps for each annotation
   expected_maps = paste0(annotations, '_binary_seg_maps.tif')
-  existing_maps = list.files(export_path, 'binary_seg_maps.tif')
-  if (!all(expected_maps %in% existing_maps))
-    stop('The export directory is missing segmentation maps.')
+  existing_maps = list.files(export_path, 'binary_seg_maps.tif',
+                             full.names=TRUE, recursive=TRUE)
+
+  # Indices of expected_maps in existing_maps
+  matching_maps = match(expected_maps, basename(existing_maps))
+
+  if (any(is.na(matching_maps))) {
+    missing_maps = annotations[is.na(matching_maps)]
+    stop('The export directory is missing segmentation maps for\n',
+         paste(missing_maps, collapse='\n'))
+  }
+
+  # Now the actual matching paths
+  matching_maps = existing_maps[matching_maps]
 
   # raster::mask needs a Spatial* object
   sp_roi = sf::as_Spatial(roi)
@@ -314,11 +325,10 @@ trim_tissue_categories = function(annotations, roi,
 
   # Helper to process a single annotation
   pb = dplyr::progress_estimated(length(annotations))
-  trim_tissue_categories_single = function(annotation) {
+  trim_tissue_categories_single = function(annotation, map_path) {
     pb$tick()$print() # Show progress
 
     # Get the tissue map for annotation and trim by roi
-    map_path = get_map_path(annotation, export_path)
     maps = read_maps(map_path)
     if (!'Tissue' %in% names(maps))
       stop('No tissue category map in ', map_path)
@@ -352,7 +362,7 @@ trim_tissue_categories = function(annotations, roi,
 
   # Process data for each field
   cat('Trimming tissue categories\n')
-  trimmed = purrr::map(annotations, trim_tissue_categories_single)
+  trimmed = purrr::map2(annotations, matching_maps, trim_tissue_categories_single)
   result  = purrr::map_dfr(trimmed, 'data')
   cat('\n')
 

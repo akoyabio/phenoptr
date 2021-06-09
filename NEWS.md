@@ -1,3 +1,9 @@
+# phenoptr 0.2.10.9000
+
+Misc:
+- `get_map_path` and `trim_tissue_categories` support export files in 
+  sub-directories of the given export path.
+  
 # phenoptr 0.2.10
 **2021-06-01**
 

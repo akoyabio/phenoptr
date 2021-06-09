@@ -96,11 +96,26 @@ get_tissue_category_index = function(map) {
 #' @export
 get_map_path = function(field_name, export_path) {
   field_base = stringr::str_remove(field_name, '\\.im3')
+
+  # Try hard-coded path in the export folder
   map_path = file.path(export_path, paste0(field_base,
                                                  '_binary_seg_maps.tif'))
   if(!file.exists(map_path)) {
-    warning('File not found: "', map_path, '"')
-    return(NULL)
+    # Try a recursive search
+    # Did you know that \Q...\E is a quoting sequence in regex!?
+    pattern = paste0('\\Q', basename(map_path), '\\E')
+    map_path = list.files(export_path, pattern=pattern,
+                          recursive=TRUE, full.names=TRUE)
+
+    if (length(map_path) > 1) {
+      warning('Multiple binary_seg_maps file found for ', field_name)
+      map_path = map_path[1]
+      warning('Using ', map_path)
+    }
+    if (length(map_path) == 0) {
+      warning('No binary_seg_maps file found for ', field_name)
+      map_path = NULL
+    }
   }
 
   map_path
