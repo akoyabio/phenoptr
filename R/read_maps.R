@@ -61,11 +61,19 @@ map_as_raster = function(map) {
   if (attrs$resolution.unit != 'cm')
     stop('map_as_raster requires centimeter units.')
   microns_per_pixel = 10000 / attrs$x.resolution
+
+  # Location values in TIFF should all be in cm, we want microns
+  # Until inform:changeset:6235 positions were in microns!
+  # If either position is greater than 20 (cm), assume they are microns
+  # Otherwise convert.
+  # 20 cm is bigger than any expected image but very small in microns
+  microns_per_tiff_unit =
+    ifelse(attrs$x.position > 20 || attrs$y.position > 20, 1, 10000)
   rastr = raster::raster(map,
-                    xmn = attrs$x.position,
-                    xmx = attrs$x.position + dim(map)[2] * microns_per_pixel,
-                    ymn = attrs$y.position,
-                    ymx = attrs$y.position + dim(map)[1] * microns_per_pixel
+    xmn = attrs$x.position * microns_per_tiff_unit,
+    xmx = attrs$x.position * microns_per_tiff_unit + dim(map)[2] * microns_per_pixel,
+    ymn = attrs$y.position * microns_per_tiff_unit,
+    ymx = attrs$y.position * microns_per_tiff_unit + dim(map)[1] * microns_per_pixel
   )
 
   # Flip to get the correct orientation
