@@ -3,6 +3,7 @@
 Misc:
 - `get_map_path` and `trim_tissue_categories` support export files in 
   sub-directories of the given export path.
+- `trim_tissue_categories` creates a check plot with the expected orientation.
   
 # phenoptr 0.2.10
 **2021-06-01**

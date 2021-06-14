@@ -374,6 +374,16 @@ trim_tissue_categories = function(annotations, roi,
 
     rm(trimmed) # Free some memory before merging
 
+    # To get the plot to come out right we need to invert each raster
+    # in Y and negate the bounding box
+    invert_raster = function(r) {
+      r = raster::flip(r, 'y')
+      ext = raster::extent(r)
+      raster::setExtent(r, raster::extent(ext@xmin, ext@xmax, -ext@ymax, -ext@ymin))
+    }
+
+    trimmed_rasters = purrr::map(trimmed_rasters, invert_raster)
+
     # One big raster
     merged_rasters = rlang::exec(raster::merge, !!!trimmed_rasters, tolerance=1)
 
