@@ -70,12 +70,10 @@ correct_for_pixel_data = function(field_data, field_info) {
 #' directory info for the images in the file.
 #' @export
 readTIFFDirectory = function(path, all=FALSE) {
-  # This function is a shim that calls either readTIFFDirectory
-  # from akoyabio/tiff or readTIFF from the latest s-u/tiff
-  if (function_exists('tiff', 'readTIFFDirectory')) {
-    # akoyabio/tiff has the same API as this function
-    tiff::readTIFFDirectory(path, all=all)
-  } else if ('payload' %in% names(formals(tiff::readTIFF))) {
+  # This function is a shim that calls
+  # from readTIFF from the latest s-u/tiff using the interface from
+  # akoyabio/tiff readTIFFDirectory,
+  if ('payload' %in% names(formals(tiff::readTIFF))) {
     # s-u/tiff returns a data.frame
     info = tiff::readTIFF(path, all=all, payload=FALSE) %>%
       purrr::transpose()

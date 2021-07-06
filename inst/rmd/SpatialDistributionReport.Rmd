@@ -145,7 +145,7 @@ p + labs(title='Locations of all cells')
 ```
 
 ```{r cell_locations_faceted, fig.height=6+2*(length(unique(csd2$Phenotype))-1) %/% 3}
-p + facet_wrap(~Phenotype) + guides(color=FALSE)
+p + facet_wrap(~Phenotype) + guides(color="none")
 ```
 
 ### Nearest neighbors, selected phenotypes

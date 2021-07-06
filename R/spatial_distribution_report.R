@@ -234,15 +234,9 @@ add_scales_and_background = function(p, background, xlim, ylim,
 
   # Add background image if we have one
   if (length(background) > 1) {
-    if (inherits(background, 'nativeRaster')) {
-    p = p + annotation_raster_native(background,
+    p = p + ggplot2::annotation_raster(background,
                               xmin=xlim[1], xmax=xlim[2],
                               ymin=-ylim[1], ymax=-ylim[2])
-    } else {
-      p = p + ggplot2::annotation_raster(background,
-                                         xmin=xlim[1], xmax=xlim[2],
-                                         ymin=-ylim[1], ymax=-ylim[2])
-    }
   }
 
   p = add_scale_line(p, xlim, ylim, scale_color, scale_alpha=1)
@@ -261,29 +255,6 @@ add_scale_line <- function(p, xlim, ylim, scale_color, scale_alpha) {
                              color=scale_color, alpha=scale_alpha,
                              parse=TRUE)
   p
-}
-
-# A version of ggplot2::annotation_raster which takes a nativeRaster
-# image. This is much faster than standard raster.
-annotation_raster_native <- function(raster, xmin, xmax, ymin, ymax,
-                                     interpolate = FALSE) {
-  stopifnot(inherits(raster, 'nativeRaster'))
-  ggplot2::layer(
-    data = ggplot2:::dummy_data(),
-    mapping = NULL,
-    stat = ggplot2::StatIdentity,
-    position = ggplot2::PositionIdentity,
-    geom = ggplot2::GeomRasterAnn,
-    inherit.aes = FALSE,
-    params = list(
-      raster = raster,
-      xmin = xmin,
-      xmax = xmax,
-      ymin = ymin,
-      ymax = ymax,
-      interpolate = interpolate
-    )
-  )
 }
 
 # ggplot2 3.3.0 deprecated expand_scale in favor of expansion.
