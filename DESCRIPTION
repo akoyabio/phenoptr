@@ -10,7 +10,7 @@ Imports:
     dplyr (>= 0.8.0),
     EBImage,
     foreach,
-    ggplot2,
+    ggplot2 (>= 3.3.2),
     jpeg,
     knitr,
     lazyeval,
@@ -31,7 +31,7 @@ Imports:
     tidyr (>= 1.0.0),
     tiff (>= 0.1.8),
     tools,
-    vroom (> 1.4.0),
+    vroom (>= 1.5.1),
     xml2
 Depends: R (>= 4.0.0)
 License: Zlib | file LICENSE
@@ -52,6 +52,5 @@ Authors@R: c(
            email = "kjohnson@akoyabio.com"),
     person("Akoya Biosciences", role="cph"))
 Remotes:
-    akoyabio/rtree,
-    r-lib/vroom
+    akoyabio/rtree
 Roxygen: list(markdown = TRUE)
