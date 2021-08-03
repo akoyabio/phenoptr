@@ -3,7 +3,7 @@
 
 Misc:
 - Update dependencies to modern versions
-- Fix for (bug in readr 2.0.0)[https://github.com/tidyverse/readr/issues/1258]
+- Fix for [bug in readr 2.0.0](https://github.com/tidyverse/readr/issues/1258)
 
 # phenoptr 0.2.10
 **2021-06-01**
