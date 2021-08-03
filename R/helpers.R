@@ -71,7 +71,7 @@ correct_for_pixel_data = function(field_data, field_info) {
 #' @export
 readTIFFDirectory = function(path, all=FALSE) {
   # This function is a shim that calls
-  # from readTIFF from the latest s-u/tiff using the interface from
+  # readTIFF from the latest s-u/tiff using the interface from
   # akoyabio/tiff readTIFFDirectory,
   if ('payload' %in% names(formals(tiff::readTIFF))) {
     # s-u/tiff returns a data.frame
