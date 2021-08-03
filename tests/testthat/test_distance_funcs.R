@@ -100,7 +100,8 @@ test_that('compute_all_nearest_distance works', {
   out_path = tempfile()
   compute_all_nearest_distance(merge_path, out_path)
   expect_true(file.exists(out_path))
-  all_d = readr::read_tsv(out_path, na=c('NA', '#N/A'), col_types=readr::cols())
+  all_d = vroom::vroom(out_path, na=c('NA', '#N/A'),
+                       show_col_types=FALSE, altrep=FALSE)
   expect_equal(nrow(all_d), 66+68+270+215)
 
   # The result for the sample data should be the same
@@ -126,7 +127,8 @@ test_that('compute_all_nearest_distance works', {
   out_path = tempfile()
   compute_all_nearest_distance(merge_path, out_path)
   expect_true(file.exists(out_path))
-  all_d = readr::read_tsv(out_path, na=c('NA', '#N/A'), col_types=readr::cols())
+  all_d = vroom::vroom(out_path, na=c('NA', '#N/A'),
+                       show_col_types=FALSE, altrep=FALSE)
   expect_equal(nrow(all_d), 66+68+270+215)
 
   # The result for the sample data should be the same
