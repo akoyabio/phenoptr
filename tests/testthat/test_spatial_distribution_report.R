@@ -11,6 +11,9 @@ test_that('spatial_distribution_report runs', {
     c("B", 'Cytotoxic T'),
     c("B", 'Helper T'))
   colors = c(B='red', 'Helper T'='green', 'Cytotoxic T'="yellow")
+
+  # Make sure tempdir exists
+  tempdir(check=TRUE)
   out_path = tempfile(fileext='.html')
 
   spatial_distribution_report(cell_seg_path, pairs, colors,
