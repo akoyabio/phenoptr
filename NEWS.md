@@ -1,3 +1,8 @@
+# phenoptr 0.3.0.9000
+
+- Add `read_composites` and `read_composite_info` to read and parse
+  metadata in inForm composite images.
+
 # phenoptr 0.3.0
 **2021-08-03**
 
