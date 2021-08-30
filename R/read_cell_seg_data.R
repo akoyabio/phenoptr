@@ -359,7 +359,8 @@ force_pixel_locations = function(csd, cell_seg_path) {
 }
 
 unit_is_microns = function(df) {
-  any(stringr::str_detect(names(df), 'micron'))
+  # df is in microns if microns unit is found or no unit is found
+  any(stringr::str_detect(names(df), 'micron')) || !any(stringr::str_detect(names(df), 'pixel'))
 }
 
 get_pixel_columns = function(df) {

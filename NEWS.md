@@ -1,10 +1,16 @@
-# phenoptr 0.3.0.9000
+# phenoptr 0.3.1.9000
 
 Misc:
 - `get_map_path` and `trim_tissue_categories` support export files in 
   sub-directories of the given export path.
 - `trim_tissue_categories` creates a check plot with the expected orientation.
   
+# phenoptr 0.3.1
+**2021-08-24**
+
+- Add `read_composites` and `read_composite_info` to read and parse
+  metadata in inForm composite images.
+
 # phenoptr 0.3.0
 **2021-08-03**
 

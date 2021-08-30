@@ -114,4 +114,3 @@ test_that('read_composite works', {
   parsed_description = parse_composite_info(info$description)
   expect_equal(names(parsed_description$components), component_names[[2]])
 })
-
