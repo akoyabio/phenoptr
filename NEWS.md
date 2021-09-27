@@ -1,3 +1,8 @@
+# phenoptr 0.3.1.9000
+
+- Tighten up the column exclusion criteria for 
+  `read_cell_seg_data` with `col_select="phenoptrReports"` (#16)
+
 # phenoptr 0.3.1
 **2021-08-24**
 
