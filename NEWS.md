@@ -1,5 +1,6 @@
 # phenoptr 0.3.1.9000
 
+- Update tests to work with testthat 3.1.
 - Fix `parse_composite_info` to work with older composite images
   that are missing ImageDescription (akoyabio/phenoptrReports#52)
 - Tighten up the column exclusion criteria for 
