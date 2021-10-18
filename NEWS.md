@@ -1,5 +1,7 @@
 # phenoptr 0.3.1.9000
 
+- Fix `parse_composite_info` to work with older composite images
+  that are missing ImageDescription (akoyabio/phenoptrReports#52)
 - Tighten up the column exclusion criteria for 
   `read_cell_seg_data` with `col_select="phenoptrReports"` (#16)
 

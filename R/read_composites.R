@@ -73,9 +73,9 @@ read_composite_info = function(path) {
 #'   are hex colors
 #' @keywords internal
 parse_composite_info = function(info) {
-  # If info is not XML, return an empty list
+  # If info is missing or not XML, return an empty list
   result = list()
-  if (!startsWith(info, '<?xml')) return(result)
+  if (is.null(info) || !startsWith(info, '<?xml')) return(result)
 
   xml = xml2::read_xml(info)
 
