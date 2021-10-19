@@ -10,7 +10,7 @@ Imports:
     dplyr (>= 0.8.0),
     EBImage,
     foreach,
-    ggplot2 (>= 3.3.2),
+    ggplot2 (>= 3.3.4),
     jpeg,
     knitr,
     lazyeval,

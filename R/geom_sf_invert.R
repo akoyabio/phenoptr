@@ -14,18 +14,13 @@ geom_sf_invert = function(...) {
 #' @usage NULL
 #' @format NULL
 StatSfInvert <- ggplot2::ggproto("StatSfInvert", ggplot2::StatSf,
-  compute_group = function(data, scales) {
-    data = ggproto_parent(ggplot2::StatSf, NULL)$compute_group(data, scales)
-
+  compute_group = function(data, scales, coord) {
     # Flip the data
     flip = matrix(c(1, 0, 0, -1), ncol=2) # Matrix to negate Y
     data[[ ggplot2:::geom_column(data) ]] = data[[ ggplot2:::geom_column(data) ]] * flip
 
-    # Flip the bounding box
-    data$ymin = - data$ymin
-    data$ymax = - data$ymax
-
-    data
+    parent = ggplot2::ggproto_parent(ggplot2::StatSf, NULL)
+    parent$compute_group(data, scales, coord)
   },
 
   required_aes = c("geometry")
