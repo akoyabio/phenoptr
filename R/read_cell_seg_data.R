@@ -253,15 +253,16 @@ process_col_select = function(col_select) {
   # they might be useful for other analysis.
   return(rlang::quo(list(
     # Component stats, either at the end of the name or followed by (unit)
-    -dplyr::matches('(Min|Max|Std Dev|Total)( \\(|$)'),
+    -dplyr::matches(' (Min|Max|Std Dev|Total)( \\(|$)', ignore.case=FALSE),
 
     # Shape stats
-    -dplyr::matches('Area \\(percent|Axis|Compactness|Region ID'),
+    -dplyr::matches(' Area \\(percent| Axis| Compactness| Region ID',
+                    ignore.case=FALSE),
 
     # inForm version
     -dplyr::matches('^inForm '),
 
-    # Miscellaneous
+    # Miscellaneous; these are literal names, not regexes
     -dplyr::any_of(c('Path', 'Total Cells', 'Lab ID', 'Confidence',
                      'Tissue Category Area (square microns)',
                      'Cell Density (per square mm)')))))

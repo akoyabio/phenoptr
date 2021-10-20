@@ -3,6 +3,7 @@
 test_that('parse_composite_info works', {
 
   # If info is not XML, return an empty list
+  expect_equal(parse_composite_info(NULL), list())
   expect_equal(parse_composite_info(''), list())
   expect_equal(parse_composite_info('CD8 CD68 CK'), list())
 

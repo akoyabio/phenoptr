@@ -95,13 +95,13 @@ test_that('Comma as decimal separator works', {
   # These should match except for the Sample Name which has commas
   # because of the hacky way I made the test file.
   d = read_cell_seg_data(path)
-  d_comma = expect_message(read_cell_seg_data(comma_path), 'comma')
+  expect_message(d_comma <- read_cell_seg_data(comma_path), 'comma')
   expect_equal(d %>% dplyr::select(-`Sample Name`),
                d_comma %>% dplyr::select(-`Sample Name`),
                ignore_attr=TRUE)
 
   d = read_cell_seg_data(summary_path)
-  d_comma = expect_message(read_cell_seg_data(comma_summary_path), 'comma')
+  expect_message(d_comma <- read_cell_seg_data(comma_summary_path), 'comma')
   expect_equal(d %>% dplyr::select(-`Sample Name`),
                d_comma %>% dplyr::select(-`Sample Name`),
                ignore_attr=TRUE)

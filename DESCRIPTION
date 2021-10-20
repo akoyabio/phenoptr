@@ -41,8 +41,9 @@ LazyData: true
 RoxygenNote: 7.1.1
 Config/testthat/edition: 3
 Suggests: 
-    testthat (>= 3.0.0),
-    doParallel
+    testthat (>= 3.1.0),
+    doParallel,
+    rtree
 VignetteBuilder: knitr
 URL: https://akoyabio.github.io/phenoptr/
 BugReports: https://github.com/akoyabio/phenoptr/issues
