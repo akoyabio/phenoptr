@@ -78,9 +78,17 @@ make_ppp = function(csd, export_path, pheno,
 
   field_data = field_data[select_rows(field_data, pheno), ]
 
-  if (nrow(field_data) == 0)
-    warning(stringr::str_glue(
-      'Field "{field_name}" contains no {names(pheno)[[1]]} cells.'))
+  if (nrow(field_data) == 0) {
+    if (is.null(tissue_categories))
+      warning(stringr::str_glue(
+        'Field "{field_name}" contains no "{pheno_name}" cells.'))
+    else {
+      categories = paste0("\"", tissue_categories, "\"", collapse=", ")
+      warning(stringr::str_glue(
+        'Field "{field_name}" contains no {pheno_name} cells in ',
+        'tissue category {categories}'))
+    }
+  }
 
   field_info = read_field_info(field_name, export_path)
   stopifnot(!is.null(field_info))
@@ -102,6 +110,11 @@ make_ppp = function(csd, export_path, pheno,
     tissue = maps[['Tissue']]
     layers = parse_tissue_description(tissue)
     layer_nums = layers[tissue_categories]
+    if (any(is.na(layer_nums))) {
+      missing = tissue_categories[is.na(layer_nums)]
+      stop('Tissue category missing from composite data: ',
+           paste0('"', missing, '"', collapse=', '))
+    }
 
     mask = tissue %in% layer_nums
     dim(mask) = dim(tissue) # Convert back to matrix
