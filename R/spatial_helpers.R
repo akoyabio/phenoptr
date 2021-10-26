@@ -385,7 +385,10 @@ trim_tissue_categories = function(annotations, roi,
     trimmed_rasters = purrr::map(trimmed_rasters, invert_raster)
 
     # One big raster
-    merged_rasters = rlang::exec(raster::merge, !!!trimmed_rasters, tolerance=1)
+    if (length(trimmed_rasters) == 1)
+      merged_rasters = trimmed_rasters[[1]]
+    else
+      merged_rasters = rlang::exec(raster::merge, !!!trimmed_rasters, tolerance=1)
 
     # Save a plot of the merged rasters
     # One color for each tissue category, skipping black
@@ -419,8 +422,8 @@ trim_tissue_categories = function(annotations, roi,
                    at=tissue_index * raster_max/max(tissue_index),
                    labels=names(tissue_index)))
 
-    # The ROI that we clipped to
-    plot(roi, add=TRUE, asp=1)
+    # The ROI that we clipped to; invert it to match the raster
+    plot(negate_y(roi), add=TRUE, asp=1)
 
     grDevices::dev.off()
   }

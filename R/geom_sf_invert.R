@@ -1,6 +1,6 @@
 #' Negate the y-axis of a simple features object
 #'
-#' Use with `scale_sf_invert()` to match the orientation of Polaris images.
+#' Use `geom_sf_invert()` with `scale_sf_invert()` to match the orientation of Polaris images.
 #' @export
 #' @rdname geom_sf_invert
 #' @param ... Passed on to `ggplot2::geom_sf()` or `ggplot2::scale_y_continuous()`
@@ -16,8 +16,7 @@ geom_sf_invert = function(...) {
 StatSfInvert <- ggplot2::ggproto("StatSfInvert", ggplot2::StatSf,
   compute_group = function(data, scales, coord) {
     # Flip the data
-    flip = matrix(c(1, 0, 0, -1), ncol=2) # Matrix to negate Y
-    data[[ ggplot2:::geom_column(data) ]] = data[[ ggplot2:::geom_column(data) ]] * flip
+    data[[ ggplot2:::geom_column(data) ]] = negate_y(data[[ ggplot2:::geom_column(data) ]])
 
     parent = ggplot2::ggproto_parent(ggplot2::StatSf, NULL)
     parent$compute_group(data, scales, coord)
@@ -51,4 +50,15 @@ stat_sf_invert <- function(mapping = NULL, data = NULL, geom = "rect",
 #' @export
 scale_sf_invert = function(...) {
   ggplot2::scale_y_continuous(labels = function(br) as.character(-br), ...)
+}
+
+#' Negate the y-axis
+#' @param sf_obj A simple features object
+#' @return `negate_y()` returns `sf_obj` with the y-axis negated.
+#' @export
+#' @rdname geom_sf_invert
+negate_y = function(sf_obj) {
+  flip = matrix(c(1, 0, 0, -1), ncol=2) # Matrix to negate Y
+  sf_obj * flip
+
 }
