@@ -133,9 +133,10 @@ make_ppp = function(csd, export_path, pheno,
 #' @export
 read_tagged_rois = function(annotation_file) {
   rois = read_phenochart_polygons(annotation_file)
-  if (nrow(rois) > 0) {
+  if (nrow(rois) > 0)
     rois = rois %>% dplyr::filter(.data$tags != '') # Only tagged ROIs
 
+  if (nrow(rois) > 0) {
     # Get a list of all unique tags
     all_roi_names = rois$tags %>%
       stringr::str_split(' ') %>%
