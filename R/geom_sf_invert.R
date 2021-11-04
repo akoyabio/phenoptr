@@ -1,12 +1,15 @@
 #' Negate the y-axis of a simple features object
 #'
-#' Use `geom_sf_invert()` with `scale_sf_invert()` to match the orientation of Polaris images.
+#' Use `geom_sf_invert()` with `scale_sf_invert()` to match the orientation
+#' of Polaris images.
 #' @export
 #' @rdname geom_sf_invert
+#' @param stat The statistical transformation to use on the data for this layer,
+#' as a string or Stat object.
 #' @param ... Passed on to `ggplot2::geom_sf()` or `ggplot2::scale_y_continuous()`
 #' @export
-geom_sf_invert = function(...) {
-  ggplot2::geom_sf(stat='sf_invert', ...)
+geom_sf_invert = function(stat=StatSfInvert, ...) {
+  ggplot2::geom_sf(stat=stat, ...)
 }
 
 #' @export
@@ -16,7 +19,8 @@ geom_sf_invert = function(...) {
 StatSfInvert <- ggplot2::ggproto("StatSfInvert", ggplot2::StatSf,
   compute_group = function(data, scales, coord) {
     # Flip the data
-    data[[ ggplot2:::geom_column(data) ]] = negate_y(data[[ ggplot2:::geom_column(data) ]])
+    data[[ ggplot2:::geom_column(data) ]] =
+      negate_y(data[[ ggplot2:::geom_column(data) ]])
 
     parent = ggplot2::ggproto_parent(ggplot2::StatSf, NULL)
     parent$compute_group(data, scales, coord)

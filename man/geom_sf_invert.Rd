@@ -9,13 +9,16 @@
 \alias{negate_y}
 \title{Negate the y-axis of a simple features object}
 \usage{
-geom_sf_invert(...)
+geom_sf_invert(stat = StatSfInvert, ...)
 
 scale_sf_invert(...)
 
 negate_y(sf_obj)
 }
 \arguments{
+\item{stat}{The statistical transformation to use on the data for this layer,
+as a string or Stat object.}
+
 \item{...}{Passed on to \code{ggplot2::geom_sf()} or \code{ggplot2::scale_y_continuous()}}
 
 \item{sf_obj}{A simple features object}
@@ -24,6 +27,7 @@ negate_y(sf_obj)
 \code{negate_y()} returns \code{sf_obj} with the y-axis negated.
 }
 \description{
-Use \code{geom_sf_invert()} with \code{scale_sf_invert()} to match the orientation of Polaris images.
+Use \code{geom_sf_invert()} with \code{scale_sf_invert()} to match the orientation
+of Polaris images.
 }
 \keyword{datasets}
