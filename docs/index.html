@@ -19,6 +19,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-home">
       <header><div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
   <div class="container">
@@ -31,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">phenoptr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.2</span>
       </span>
     </div>
 
@@ -80,7 +82,7 @@
   </a>
 </li>
 <li>
-  <a href="https://github.com/akoyabio/phenoptr">
+  <a href="https://github.com/akoyabio/phenoptr" class="external-link">
     <span class="fa fa-github fa-lg"></span>
      
     github
@@ -98,111 +100,125 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
-<div id="phenoptr-" class="section level1">
-<div class="page-header"><h1 class="hasAnchor">
-<a href="#phenoptr-" class="anchor"></a>phenoptr <img src="reference/figures/Akoya.png" align="right" width="175">
+<div class="section level1">
+<div class="page-header"><h1 id="phenoptr-">phenoptr <img src="reference/figures/Akoya.png" align="right" width="175"><a class="anchor" aria-label="anchor" href="#phenoptr-"></a>
 </h1></div>
-<div id="helpers-for-working-with-inform-data" class="section level2">
-<h2 class="hasAnchor">
-<a href="#helpers-for-working-with-inform-data" class="anchor"></a>Helpers for working with inForm data</h2>
+<div class="section level2">
+<h2 id="helpers-for-working-with-inform-data">Helpers for working with inForm data<a class="anchor" aria-label="anchor" href="#helpers-for-working-with-inform-data"></a>
+</h2>
 <p><code>phenoptr</code> contains functions that make it easier to read and analyze data tables and images created by Akoya Biosciences’ inForm<sup>®</sup> software.</p>
-<p><code>phenoptr</code> is part of the Akoya Biosciences Phenoptics™ family of Quantitative Pathology Research Solutions. For more information visit the <a href="https://www.akoyabio.com/phenopticstm/technology/quantitative-pathology-research">Phenoptics™ home page</a>.</p>
+<p><code>phenoptr</code> is part of the Akoya Biosciences Phenoptics™ family of Quantitative Pathology Research Solutions. For more information visit the <a href="https://www.akoyabio.com/phenopticstm/technology/quantitative-pathology-research" class="external-link">Phenoptics™ home page</a>.</p>
 <hr>
 </div>
-<div id="installation" class="section level2">
-<h2 class="hasAnchor">
-<a href="#installation" class="anchor"></a>Installation</h2>
-<p><code>phenoptr</code> requires the <a href="https://www.r-project.org/">R environment</a> for statistical computing, version 4.0.0 or higher. To install R, visit the <a href="https://cloud.r-project.org/">R download</a> page. The <a href="https://www.rstudio.com/products/rstudio/">RStudio IDE</a> is highly recommended as well.</p>
-<ol>
-<li>Install R. Download the most recent version from <a href="https://cloud.r-project.org/" class="uri">https://cloud.r-project.org/</a>.</li>
-<li>Install RStudio. Download the desktop version from <a href="https://www.rstudio.com/products/rstudio/" class="uri">https://www.rstudio.com/products/rstudio/</a>.</li>
+<div class="section level2">
+<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h2>
+<p><code>phenoptr</code> requires the <a href="https://www.r-project.org/" class="external-link">R environment</a> for statistical computing, version 4.0.0 or higher. To install R, visit the <a href="https://cloud.r-project.org/" class="external-link">R download</a> page. The <a href="https://www.rstudio.com/products/rstudio/" class="external-link">RStudio IDE</a> is highly recommended as well.</p>
+<ol style="list-style-type: decimal">
+<li>Install R. Download the most recent version from <a href="https://cloud.r-project.org/" class="external-link uri">https://cloud.r-project.org/</a>.</li>
+<li>Install RStudio. Download the desktop version from <a href="https://www.rstudio.com/products/rstudio/" class="external-link uri">https://www.rstudio.com/products/rstudio/</a>.</li>
 <li>Start RStudio.</li>
 <li>Install <code>phenoptr</code> from GitHub. In the RStudio console, copy and paste or type these commands (press Enter after each line):</li>
 </ol>
-<pre><code><a href="https://rdrr.io/r/utils/install.packages.html">install.packages("devtools")
-devtools::install_github("akoyabio/phenoptr")</a></code></pre>
-<ol>
+<pre><code><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span>
+<span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/remote-reexports.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"akoyabio/phenoptr"</span><span class="op">)</span></code></pre>
+<ol style="list-style-type: decimal">
 <li>When requested, enter <code>1</code> (Yes) to install BiocInstaller.</li>
 </ol>
-<div id="optional-packages" class="section level3">
-<h3 class="hasAnchor">
-<a href="#optional-packages" class="anchor"></a>Optional packages</h3>
+<div class="section level3">
+<h3 id="optional-packages">Optional packages<a class="anchor" aria-label="anchor" href="#optional-packages"></a>
+</h3>
 <ul>
 <li>
-<strong>Spatial metrics</strong> The Akoya Biosciences <code>rtree</code> package dramatically speeds calculation and reduces memory requirements of spatial metrics such as nearest neighbors and count within. See the <a href="https://github.com/akoyabio/rtree/tree/master#installation">installation instructions</a> in the package README file.</li>
+<strong>Spatial metrics</strong> The Akoya Biosciences <code>rtree</code> package dramatically speeds calculation and reduces memory requirements of spatial metrics such as nearest neighbors and count within. See the <a href="https://github.com/akoyabio/rtree/tree/master#installation" class="external-link">installation instructions</a> in the package README file.</li>
 </ul>
 <hr>
 </div>
 </div>
-<div id="getting-started" class="section level2">
-<h2 class="hasAnchor">
-<a href="#getting-started" class="anchor"></a>Getting Started</h2>
-<p>These <a href="https://akoyabio.github.io/phenoptr/articles/index.html">Tutorials</a> introduce the most important features of <code>phenoptr</code>.</p>
+<div class="section level2">
+<h2 id="getting-started">Getting Started<a class="anchor" aria-label="anchor" href="#getting-started"></a>
+</h2>
+<p>These <a href="https://akoyabio.github.io/phenoptr/articles/index.html" class="external-link">Tutorials</a> introduce the most important features of <code>phenoptr</code>.</p>
 <ul>
 <li>
-<a href="https://akoyabio.github.io/phenoptr/articles/reading_tables.html">Reading and exploring inForm tables</a> demonstrates reading and processing inForm cell segmentation tables. This is a good place to start.</li>
+<a href="https://akoyabio.github.io/phenoptr/articles/reading_tables.html" class="external-link">Reading and exploring inForm tables</a> demonstrates reading and processing inForm cell segmentation tables. This is a good place to start.</li>
 <li>
-<a href="https://akoyabio.github.io/phenoptr/articles/computing_distances.html">Computing inter-cellular distances</a> introduces most of <code>phenoptr</code>’s spatial processing capabilities—finding nearest neighbor distances, counting cells within a radius, and visualizing nearest neighbors.</li>
+<a href="https://akoyabio.github.io/phenoptr/articles/computing_distances.html" class="external-link">Computing inter-cellular distances</a> introduces most of <code>phenoptr</code>’s spatial processing capabilities—finding nearest neighbor distances, counting cells within a radius, and visualizing nearest neighbors.</li>
 <li>
-<a href="https://akoyabio.github.io/phenoptr/articles/find_and_count_touching_cells.html">Find and count touching cells</a> shows how to count touching cells of paired phenotypes.</li>
+<a href="https://akoyabio.github.io/phenoptr/articles/find_and_count_touching_cells.html" class="external-link">Find and count touching cells</a> shows how to count touching cells of paired phenotypes.</li>
 </ul>
 <div class="panel panel-default">
 <div class="panel-body">
-<p>For examples showing aggregation across multiple inForm fields and multiple slides, see the Tutorials in the <a href="https://akoyabio.github.io/phenoptrExamples">phenoptrExamples</a> package.</p>
+<p>For examples showing aggregation across multiple inForm fields and multiple slides, see the Tutorials in the <a href="https://akoyabio.github.io/phenoptrExamples" class="external-link">phenoptrExamples</a> package.</p>
 </div>
 </div>
-<div id="learning-r" class="section level3">
-<h3 class="hasAnchor">
-<a href="#learning-r" class="anchor"></a>Learning R</h3>
+<div class="section level3">
+<h3 id="learning-r">Learning R<a class="anchor" aria-label="anchor" href="#learning-r"></a>
+</h3>
 <p>R is a powerful and popular environment for data manipulation and statistical analysis. Many learning resources are available online.</p>
-<p><code>phenoptr</code> is designed to work in harmony with packages in the <a href="http://tidyverse.org/">tidyverse</a>.</p>
+<p><code>phenoptr</code> is designed to work in harmony with packages in the <a href="http://tidyverse.org/" class="external-link">tidyverse</a>.</p>
 <ul>
 <li>
-<a href="http://readr.tidyverse.org/">readr</a> is used to read data files.</li>
-<li>A <a href="http://tibble.tidyverse.org/">tibble</a> (also known as <code>data_frame</code>) is the preferred representation of tabular data.</li>
+<a href="http://readr.tidyverse.org/" class="external-link">readr</a> is used to read data files.</li>
+<li>A <a href="http://tibble.tidyverse.org/" class="external-link">tibble</a> (also known as <code>data_frame</code>) is the preferred representation of tabular data.</li>
 <li>
-<a href="http://dplyr.tidyverse.org/">dplyr</a>, <a href="http://purrr.tidyverse.org/">purrr</a> and the pipe operator (<a href="http://magrittr.tidyverse.org/">%&gt;%</a>) are used extensively in package code and examples.</li>
+<a href="http://dplyr.tidyverse.org/" class="external-link">dplyr</a>, <a href="http://purrr.tidyverse.org/" class="external-link">purrr</a> and the pipe operator (<a href="http://magrittr.tidyverse.org/" class="external-link">%&gt;%</a>) are used extensively in package code and examples.</li>
 </ul>
-<p>If you’d like to learn more about the tidyverse packages, a good place to start is Garrett Grolemund and Hadley Wickham’s book, available free online at <a href="http://r4ds.had.co.nz/">R for data science</a>. If you are new to R, the book’s <a href="http://r4ds.had.co.nz/introduction.html">Introduction</a> will help you get started.</p>
+<p>If you’d like to learn more about the tidyverse packages, a good place to start is Garrett Grolemund and Hadley Wickham’s book, available free online at <a href="http://r4ds.had.co.nz/" class="external-link">R for data science</a>. If you are new to R, the book’s <a href="http://r4ds.had.co.nz/introduction.html" class="external-link">Introduction</a> will help you get started.</p>
 <hr>
 </div>
 </div>
-<div id="full-documentation" class="section level2">
-<h2 class="hasAnchor">
-<a href="#full-documentation" class="anchor"></a>Full documentation</h2>
-<p>See the <a href="https://akoyabio.github.io/phenoptr/reference/index.html">Reference</a> section of the documentation for details on individual functions.</p>
+<div class="section level2">
+<h2 id="full-documentation">Full documentation<a class="anchor" aria-label="anchor" href="#full-documentation"></a>
+</h2>
+<p>See the <a href="https://akoyabio.github.io/phenoptr/reference/index.html" class="external-link">Reference</a> section of the documentation for details on individual functions.</p>
 <p>To cite package <code>phenoptr</code> in publications use:</p>
-<p>  Kent S Johnson (2021). phenoptr: inForm Helper Functions. R package version 0.3.0.<br>
-  <a href="https://akoyabio.github.io/phenoptr/" class="uri">https://akoyabio.github.io/phenoptr/</a></p>
+<p>  Kent S Johnson (2022). phenoptr: inForm Helper Functions. R package version 0.3.2.<br>
+  <a href="https://akoyabio.github.io/phenoptr/" class="external-link uri">https://akoyabio.github.io/phenoptr/</a></p>
 <!-- badges: start -->
-<p><a href="https://github.com/akoyabio/phenoptr/actions"><img src="https://github.com/akoyabio/phenoptr/workflows/R-CMD-check/badge.svg" alt="R build status"></a> <!-- badges: end --></p>
+
 </div>
 </div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <div class="links">
-<h2>Links</h2>
+<h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
-<li>Browse source code at <br><a href="https://github.com/akoyabio/phenoptr/">https://​github.com/​akoyabio/​phenoptr/​</a>
-</li>
-<li>Report a bug at <br><a href="https://github.com/akoyabio/phenoptr/issues">https://​github.com/​akoyabio/​phenoptr/​issues</a>
-</li>
+<li><a href="https://github.com/akoyabio/phenoptr/" class="external-link">Browse source code</a></li>
+<li><a href="https://github.com/akoyabio/phenoptr/issues" class="external-link">Report a bug</a></li>
 </ul>
 </div>
+
 <div class="license">
-<h2>License</h2>
+<h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
 <li>
-<a href="http://www.gzip.org/zlib/zlib_license.html">Zlib</a> | file <a href="LICENSE-text.html">LICENSE</a>
+<a href="http://www.gzip.org/zlib/zlib_license.html" class="external-link">Zlib</a> | file <a href="LICENSE-text.html">LICENSE</a>
 </li>
 </ul>
 </div>
+
+
+<div class="citation">
+<h2 data-toc-skip>Citation</h2>
+<ul class="list-unstyled">
+<li><a href="authors.html#citation">Citing phenoptr</a></li>
+</ul>
+</div>
+
 <div class="developers">
-<h2>Developers</h2>
+<h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
 <li>Kent S Johnson <br><small class="roles"> Author, maintainer </small>  </li>
-<li><a href="authors.html">All authors...</a></li>
+<li><a href="authors.html">More about authors...</a></li>
+</ul>
+</div>
+
+<div class="dev-status">
+<h2 data-toc-skip>Dev status</h2>
+<ul class="list-unstyled">
+<li><a href="https://github.com/akoyabio/phenoptr/actions" class="external-link"><img src="https://github.com/akoyabio/phenoptr/workflows/R-CMD-check/badge.svg" alt="R build status"></a></li>
 </ul>
 </div>
 
@@ -211,11 +227,13 @@ devtools::install_github("akoyabio/phenoptr")</a></code></pre>
 
 
       <footer><div class="copyright">
-  <p>Developed by Kent S Johnson.</p>
+  <p></p>
+<p>Developed by Kent S Johnson.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
 </div>
 
       </footer>
@@ -223,6 +241,8 @@ devtools::install_github("akoyabio/phenoptr")</a></code></pre>
 
   
 
+
+  
 
   </body>
 </html>

@@ -52,6 +52,8 @@ reference:
       - get_field_info
       - get_map_path
       - read_components
+      - read_composite_info
+      - read_composites
       - read_field_info
       - read_maps
       - parse_tissue_description
