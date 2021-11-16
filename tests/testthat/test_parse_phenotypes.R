@@ -59,6 +59,10 @@ test_that('parse_phenotypes works with formulae', {
          'CD3+', Mixed='CD8+/~`Membrane PDL1`>1'),
     list(`CD3+`='CD3+', Mixed=list('CD8+', ~`Membrane PDL1`>1)),
     ignore_attr=TRUE)
+
+  expect_equal(parse_phenotypes("PanCK+/PD-L1+/~`Distance to CD8+/PD-1+`<=30"),
+    list(list("PanCK+", "PD-L1+", ~`Distance to CD8+/PD-1+`<=30)),
+    ignore_attr=TRUE)
 })
 
 test_that('parse_phenotypes error checking works', {

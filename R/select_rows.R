@@ -138,7 +138,7 @@ parse_phenotypes = function(...) {
         stop(paste("Phenotype selectors may not contain both '/' and ',':",
                    pheno))
       ## Split the phenotypes and convert formulae
-      purrr::map(split_and_trim(pheno, '/'), ~{
+      purrr::map(split_by_slash(pheno), ~{
         if (startsWith(.x, '~')) stats::as.formula(.x, globalenv()) else .x
       })
     }
@@ -206,6 +206,35 @@ phenotype_columns = function(phenos) {
 split_and_trim = function(str, pattern) {
   stopifnot(is.character(str), length(str)==1)
   stringr::str_trim(stringr::str_split(str, pattern)[[1]])
+}
+
+#' Split a single string on / and trim white space from the results.
+#' Slashes quoted with backquotes are not split.
+#' `str` must not contain commas
+#' @param str A single string.
+#' @return A character vector of split components.
+#' @keywords internal
+split_by_slash = function(str) {
+  stopifnot(is.character(str), length(str)==1)
+
+  # Split into individual characters
+  chars = strsplit(str, split='')[[1]]
+  if (',' %in% chars)
+    stop('Commas not allowed in split_by_slash().')
+
+  # Find character locations preceded by an even number of `
+  even_backticks = cumsum(chars=='`') %% 2 == 0
+
+  # Find slashes that are preceded by an even number of `
+  slashes = chars == '/' & even_backticks
+
+  # External constraints prohibit comma in str, use it as a marker
+  chars[which(slashes)] = ','
+  str2 = paste0(chars, collapse='')
+
+  # Now the / we want to split on have been changed to ,
+  result = stringr::str_split(str2, ',')[[1]]
+  stringr::str_trim(result)
 }
 
 #' Make user-friendly names for phenotypes
