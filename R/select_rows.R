@@ -14,8 +14,7 @@ validate_phenotype_definitions = function(pheno, available, csd=NULL) {
       || stringr::str_detect(pheno, 'Total|All'))
     return('')
 
-  phenos = stringr::str_split(pheno, '[,/]')[[1]] %>%
-    stringr::str_trim()
+  phenos = split_quoted(pheno, c(',', '/'))
 
   if (!all(stringr::str_detect(phenos, '^~|[+-]$')))
     return('Phenotype definitions must start with ~ or end with + or -.')
@@ -138,7 +137,7 @@ parse_phenotypes = function(...) {
         stop(paste("Phenotype selectors may not contain both '/' and ',':",
                    pheno))
       ## Split the phenotypes and convert formulae
-      purrr::map(split_by_slash(pheno), ~{
+      purrr::map(split_quoted(pheno), ~{
         if (startsWith(.x, '~')) stats::as.formula(.x, globalenv()) else .x
       })
     }
@@ -210,30 +209,32 @@ split_and_trim = function(str, pattern) {
 
 #' Split a single string on / and trim white space from the results.
 #' Slashes quoted with backquotes are not split.
-#' `str` must not contain commas
+#' `str` must not contain tabs
 #' @param str A single string.
+#' @param split Character vector containing characters to split on
 #' @return A character vector of split components.
 #' @keywords internal
-split_by_slash = function(str) {
+split_quoted = function(str, split='/') {
   stopifnot(is.character(str), length(str)==1)
+  stopifnot(is.character(split), all(purrr::map_int(split, nchar) ==1))
 
   # Split into individual characters
   chars = strsplit(str, split='')[[1]]
-  if (',' %in% chars)
-    stop('Commas not allowed in split_by_slash().')
+  if ('\t' %in% chars)
+    stop('Tabs not allowed in split_quoted().')
 
   # Find character locations preceded by an even number of `
   even_backticks = cumsum(chars=='`') %% 2 == 0
 
-  # Find slashes that are preceded by an even number of `
-  slashes = chars == '/' & even_backticks
+  # Find split characters that are preceded by an even number of `
+  split_locations = (chars %in% split) & even_backticks
 
-  # External constraints prohibit comma in str, use it as a marker
-  chars[which(slashes)] = ','
+  # Use tab as a marker
+  chars[which(split_locations)] = '\t'
   str2 = paste0(chars, collapse='')
 
   # Now the / we want to split on have been changed to ,
-  result = stringr::str_split(str2, ',')[[1]]
+  result = stringr::str_split(str2, '\t')[[1]]
   stringr::str_trim(result)
 }
 

@@ -91,16 +91,25 @@ test_that('validate_phenotype_definitions works', {
   expect_equal(validate_phenotype_definitions('All', ''), '')
   expect_equal(validate_phenotype_definitions('~`Mean x`>3', ''), '')
 
+  # Valid with CD3 specified
   expect_equal(validate_phenotype_definitions('CD3+', 'CD3'), '')
   expect_equal(validate_phenotype_definitions('CD3+/~`Mean x`>3', 'CD3'), '')
+  expect_equal(validate_phenotype_definitions('CD3+/~`Mean x/y/z`>3', 'CD3'), '')
 
+  # Errors
   expect_match(validate_phenotype_definitions('CD3', 'CD3'), 'must start')
   expect_match(validate_phenotype_definitions('CD3+', 'CD8'), 'Unknown')
   expect_match(validate_phenotype_definitions('CD3+,~`Mean x`>3', 'CD3'),
                'not allowed')
+  expect_match(validate_phenotype_definitions('CD3+,~`Mean x/y/z`>3', 'CD3'),
+               'not allowed')
 
-  df = tibble::tibble(x=1:2)
+  # Formula validation against available data
+  df = tibble::tibble(x=1:2, `Mean x+/y-/z+`=3:4)
   expect_equal(validate_phenotype_definitions('~x==1', '', df), '')
+  expect_equal(validate_phenotype_definitions(
+    'CD3+/~`Mean x+/y-/z+`>3', 'CD3', df), '')
+
   expect_match(validate_phenotype_definitions('~x==', ''),
                'not a valid expression')
   expect_match(validate_phenotype_definitions('~y==1', '', df),
