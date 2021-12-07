@@ -90,7 +90,9 @@ get_tissue_category_index = function(map) {
   desc = attr(map, 'description')
   stopifnot(stringr::str_detect(desc, 'TissueClassMap'))
   xml = xml2::read_xml(desc)
-  categories = xml2::xml_find_all(xml, './/Name') %>% xml2::xml_text()
+  categories = xml2::xml_find_all(xml, './/Name') %>%
+    xml2::xml_text() %>%
+    stringr::str_trim()
 
   # Categories are numbered starting from 0
   (seq_along(categories)-1) %>% rlang::set_names(categories)
