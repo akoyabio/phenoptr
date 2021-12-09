@@ -233,22 +233,3 @@ plot_diverging = function(im, title, show_boundary=FALSE, ...) {
     seq(-max_absolute_value, max_absolute_value, length.out=color_levels+1)
   graphics::plot(im, main=title, col=colors, breaks=color_sequence, ...)
 }
-
-#' Parse the description tag of the tissue map image read from an
-#' inForm `binary_seg_maps` file
-#' @param img The `Tissue` image from \code{\link{read_maps}}.
-#' @return A named vector whose names are the tissue classes in `img` and
-#' whose values are the mask values for the class in `img`.
-#' @md
-#' @export
-parse_tissue_description = function(img) {
-  desc = attr(img, 'description')
-  stopifnot(!is.null(desc))
-  parsed = xml2::read_xml(desc)
-  layers = purrr::map_chr(xml2::xml_find_all(parsed, 'Entry'),
-                          function(entry) {
-    entry %>% xml2::xml_find_first('Name') %>% xml2::xml_text()
-  })
-
-  purrr::set_names(seq_along(layers)-1, layers)
-}
