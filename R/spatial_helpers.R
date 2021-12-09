@@ -348,7 +348,7 @@ trim_tissue_categories = function(annotations, roi,
       stop('No tissue category map in ', map_path)
 
     tissue = maps$Tissue
-    tissue_ix = get_tissue_category_index(tissue)
+    tissue_ix = parse_tissue_description(tissue)
 
     # Merge tissue_ix into tissue_index while preserving names
     # base set operations union and setdiff don't work here

@@ -80,23 +80,6 @@ map_as_raster = function(map) {
   raster::flip(rastr, direction='y')
 }
 
-#' Get the mapping from tissue category name to label number for a
-#' tissue category map.
-#' @param map A tissue category image from read_maps.
-#' @return A named vector mapping tissue category names to label numbers
-#' for the map.
-#' @export
-get_tissue_category_index = function(map) {
-  desc = attr(map, 'description')
-  stopifnot(stringr::str_detect(desc, 'TissueClassMap'))
-  xml = xml2::read_xml(desc)
-  categories = xml2::xml_find_all(xml, './/Name') %>%
-    xml2::xml_text() %>%
-    stringr::str_trim()
-
-  # Categories are numbered starting from 0
-  (seq_along(categories)-1) %>% rlang::set_names(categories)
-}
 
 #' Get the path to the segmentation map file for a field
 #'
