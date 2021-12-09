@@ -145,7 +145,7 @@ parse_tissue_description = function(img) {
       entry %>%
         xml2::xml_find_first('Name') %>%
         xml2::xml_text() %>%
-        stringr::trim()
+        stringr::str_trim()
     })
 
   purrr::set_names(seq_along(layers)-1, layers)
