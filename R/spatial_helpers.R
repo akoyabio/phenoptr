@@ -78,9 +78,17 @@ make_ppp = function(csd, export_path, pheno,
 
   field_data = field_data[select_rows(field_data, pheno), ]
 
-  if (nrow(field_data) == 0)
-    warning(stringr::str_glue(
-      'Field "{field_name}" contains no {names(pheno)[[1]]} cells.'))
+  if (nrow(field_data) == 0) {
+    if (is.null(tissue_categories))
+      warning(stringr::str_glue(
+        'Field "{field_name}" contains no "{pheno_name}" cells.'))
+    else {
+      categories = paste0("\"", tissue_categories, "\"", collapse=", ")
+      warning(stringr::str_glue(
+        'Field "{field_name}" contains no {pheno_name} cells in ',
+        'tissue category {categories}'))
+    }
+  }
 
   field_info = read_field_info(field_name, export_path)
   stopifnot(!is.null(field_info))
@@ -102,6 +110,11 @@ make_ppp = function(csd, export_path, pheno,
     tissue = maps[['Tissue']]
     layers = parse_tissue_description(tissue)
     layer_nums = layers[tissue_categories]
+    if (any(is.na(layer_nums))) {
+      missing = tissue_categories[is.na(layer_nums)]
+      stop('Tissue category missing from map file: ', basename(map_path), ' - ',
+           paste0('"', missing, '"', collapse=', '))
+    }
 
     mask = tissue %in% layer_nums
     dim(mask) = dim(tissue) # Convert back to matrix
@@ -431,4 +444,26 @@ trim_tissue_categories = function(annotations, roi,
 
   # Return the trimmed data
   result
+}
+
+#' Parse the description tag of the tissue map image read from an
+#' inForm `binary_seg_maps` file
+#' @param img The `Tissue` image from \code{\link{read_maps}}.
+#' @return A named vector whose names are the tissue classes in `img` and
+#' whose values are the mask values for the class in `img`.
+#' @md
+#' @export
+parse_tissue_description = function(img) {
+  desc = attr(img, 'description')
+  stopifnot(!is.null(desc))
+  parsed = xml2::read_xml(desc)
+  layers = purrr::map_chr(xml2::xml_find_all(parsed, 'Entry'),
+    function(entry) {
+      entry %>%
+        xml2::xml_find_first('Name') %>%
+        xml2::xml_text() %>%
+        stringr::trim()
+    })
+
+  purrr::set_names(seq_along(layers)-1, layers)
 }

@@ -5,10 +5,12 @@ Misc:
   sub-directories of the given export path.
 - `trim_tissue_categories` creates a check plot with the expected orientation.
 - Update tests to work with testthat 3.1.
+- Correctly parse phenotype expressions containing slashes (#18)
 - Fix `parse_composite_info` to work with older composite images
   that are missing ImageDescription (akoyabio/phenoptrReports#52)
 - Tighten up the column exclusion criteria for 
   `read_cell_seg_data` with `col_select="phenoptrReports"` (#16)
+- Update tests to work with testthat 3.1.
 
 # phenoptr 0.3.1
 **2021-08-24**
