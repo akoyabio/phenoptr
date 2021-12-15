@@ -4,18 +4,22 @@
 \alias{read_phenochart_polygons}
 \title{Read polygons (ROIs) and tags from a Phenochart annotation.}
 \usage{
-read_phenochart_polygons(xml_path)
+read_phenochart_polygons(xml_path, include_rects = TRUE)
 }
 \arguments{
 \item{xml_path}{Path to an annotations file.}
+
+\item{include_rects}{If \code{TRUE}, the result will include the rectangles
+contained in each annotation.}
 }
 \value{
-An \code{sf::st_sf} object with columns \code{tags}, \code{geometry} and \code{rects}.
+An \code{sf::st_sf} object with columns \code{tags}, \code{geometry} and
+(optionally) \code{rects}.
 \code{rects} is a list of \code{sf::st_sf} objects with columns \code{tags}, \code{center_x},
 \code{center_y} and \code{geometry}.
 Multiple tags for a single ROI are separated by spaces in a single string.
 }
 \description{
-Reads the polygons and included rectangles for all ROI annotations
-in a single file.
+Reads the polygons and (optionally) included rectangles for all
+ROI annotations in a single file.
 }

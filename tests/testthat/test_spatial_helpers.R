@@ -46,9 +46,14 @@ test_that('read_phenochart_polygons works', {
   # There are two ROIs. The first is not tagged and contains rectangles,
   # the second is tagged and has no rectangles
   expect_equal(rois$tags, c('', '#IncludeInResults #Test'))
-  expect_equal(purrr::map_int(rois$rects, nrow), c(10, 0))
 
+  expect_equal(purrr::map_int(rois$rects, nrow), c(10, 0))
   expect_equal(as.numeric(sf::st_bbox(rois$rects[[1]])),
                c(11547.55, 42073.73, 17093.25, 47617.44),
                tolerance=0.01)
+
+  # Try without parsing rectangles
+  rois = read_phenochart_polygons(xml_path, include_rects=FALSE)
+  expect_equal(rois$tags, c('', '#IncludeInResults #Test'))
+  expect(!'rects' %in% names(rois), 'rois should not include rects')
 })

@@ -4,10 +4,13 @@
 \alias{parse_rect}
 \title{Parse a single rectangle annotation}
 \usage{
-parse_rect(field)
+parse_rect(field, ns = xml2::xml_ns(field))
 }
 \arguments{
 \item{field}{Parsed XML for a single rectangle annotation}
+
+\item{ns}{Optional namespace; providing this makes parsing many rects
+much faster.}
 }
 \value{
 An \code{sf::st_sf} with coordinates of the rectangle

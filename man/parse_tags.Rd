@@ -4,10 +4,12 @@
 \alias{parse_tags}
 \title{Parse tags from a node of an annotations file}
 \usage{
-parse_tags(node)
+parse_tags(node, ns = xml2::xml_ns(node))
 }
 \arguments{
 \item{node}{XML node containing tags}
+
+\item{ns}{Optional namespace; providing this makes parsing faster.}
 }
 \value{
 A string with space-separated tags

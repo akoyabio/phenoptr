@@ -4,10 +4,12 @@
 \alias{parse_roi_rects}
 \title{Parse the rectangles from an ROI annotation}
 \usage{
-parse_roi_rects(roi)
+parse_roi_rects(roi, ns = xml2::xml_ns(roi))
 }
 \arguments{
 \item{roi}{Parsed XML for an ROI annotation}
+
+\item{ns}{Optional namespace; providing this makes parsing faster.}
 }
 \value{
 An \code{sf::sf} object with geometries for each rectangle in roi, as

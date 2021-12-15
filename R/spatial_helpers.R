@@ -172,26 +172,33 @@ read_tagged_rois = function(annotation_file) {
 
 #' Read polygons (ROIs) and tags from a Phenochart annotation.
 #'
-#' Reads the polygons and included rectangles for all ROI annotations
-#' in a single file.
+#' Reads the polygons and (optionally) included rectangles for all
+#' ROI annotations in a single file.
 #'
 #' @param xml_path Path to an annotations file.
-#' @return An `sf::st_sf` object with columns `tags`, `geometry` and `rects`.
+#' @param include_rects If `TRUE`, the result will include the rectangles
+#' contained in each annotation.
+#' @return An `sf::st_sf` object with columns `tags`, `geometry` and
+#' (optionally) `rects`.
 #' `rects` is a list of `sf::st_sf` objects with columns `tags`, `center_x`,
 #' `center_y` and `geometry`.
 #' Multiple tags for a single ROI are separated by spaces in a single string.
 #' @export
 #' @importFrom magrittr %>%
-read_phenochart_polygons = function(xml_path) {
+read_phenochart_polygons = function(xml_path, include_rects=TRUE) {
   xml = xml2::read_xml(xml_path)
-  rois = xml2::xml_find_all(xml, './/Annotations-i[@subtype="ROIAnnotation"]')
+  ns = xml2::xml_ns(xml)
+
+  rois =
+    xml2::xml_find_all(xml, './/Annotations-i[@subtype="ROIAnnotation"]', ns=ns)
+
   result = purrr::map_dfr(rois, function(roi) {
-    tags = xml2::xml_find_all(roi, './/Tags-i') %>%
+    tags = xml2::xml_find_all(roi, './/Tags-i', ns=ns) %>%
       xml2::xml_text() %>%
       paste(collapse=' ')
-    locs = xml2::xml_find_all(roi, './/Perimeter-i')
-    x = xml2::xml_find_all(locs, './/X') %>% xml2::xml_double()
-    y = xml2::xml_find_all(locs, './/Y') %>% xml2::xml_double()
+    locs = xml2::xml_find_all(roi, './/Perimeter-i', ns=ns)
+    x = xml2::xml_find_all(locs, './/X', ns=ns) %>% xml2::xml_double()
+    y = xml2::xml_find_all(locs, './/Y', ns=ns) %>% xml2::xml_double()
 
     # A valid polygon has at least four points, making a triangle
     if (length(x)<4) return(NULL)
@@ -204,11 +211,14 @@ read_phenochart_polygons = function(xml_path) {
     # converted to Spatial objects. st_buffer makes MULTIPOLYGONs which
     # are more tractable.
     poly = sf::st_buffer(poly, 0)
-    rects = parse_roi_rects(roi)
     parsed = sf::st_sf(tags=tags,
               geometry=sf::st_sfc(poly),
               stringsAsFactors=FALSE)
-    parsed$rects = list(rects)
+
+    if (include_rects) {
+      rects = parse_roi_rects(roi, ns)
+      parsed$rects = list(rects)
+    }
     parsed
   })
 
@@ -225,18 +235,20 @@ read_phenochart_polygons = function(xml_path) {
 #' @export
 read_phenochart_fields = function(xml_path) {
   xml = xml2::read_xml(xml_path)
+  ns = xml2::xml_ns(xml)
 
   # Find top-level rectangles
   fields =
-    xml2::xml_find_all(xml, '//Annotations-i[@subtype="RectangleAnnotation"]')
+    xml2::xml_find_all(xml,
+                       '//Annotations-i[@subtype="RectangleAnnotation"]', ns=ns)
 
   # Find nested rectangles
   fields2 =
-    xml2::xml_find_all(xml, '//Fields-i[@subtype="RectangleAnnotation"]')
+    xml2::xml_find_all(xml, '//Fields-i[@subtype="RectangleAnnotation"]', ns=ns)
   fields = c(fields, fields2)
 
   # Read tags first, it is quicker than parsing all the rects
-  tags = purrr::map_chr(fields, parse_tags)
+  tags = purrr::map_chr(fields, parse_tags, ns=ns)
 
   # Just keep the tagged fields
   tagged = tags != ''
@@ -244,7 +256,7 @@ read_phenochart_fields = function(xml_path) {
   fields = fields[tagged]
 
   # Now get the rects
-  rects = purrr::map_dfr(fields, parse_rect)
+  rects = purrr::map_dfr(fields, parse_rect, ns=ns)
   rects$tags = tags
   rects %>%
     dplyr::select(tags, dplyr::everything())
@@ -252,35 +264,40 @@ read_phenochart_fields = function(xml_path) {
 
 #' Parse the rectangles from an ROI annotation
 #' @param roi Parsed XML for an ROI annotation
+#' @param ns Optional namespace; providing this makes parsing faster.
 #' @return An `sf::sf` object with geometries for each rectangle in roi, as
 #' returned from `parse_rect()`.
 #' @keywords internal
-parse_roi_rects = function(roi) {
-  fields = xml2::xml_find_all(roi, './/Fields-i[@subtype="RectangleAnnotation"]')
-  purrr::map_dfr(fields, parse_rect)
+parse_roi_rects = function(roi, ns = xml2::xml_ns(roi)) {
+  fields =
+    xml2::xml_find_all(roi, './/Fields-i[@subtype="RectangleAnnotation"]', ns=ns)
+  purrr::map_dfr(fields, parse_rect, ns=ns)
 }
 
 #' Parse tags from a node of an annotations file
 #' @param node XML node containing tags
+#' @param ns Optional namespace; providing this makes parsing faster.
 #' @return A string with space-separated tags
 #' @keywords internal
-parse_tags = function(node) {
-  xml2::xml_find_all(node, './/Tags-i') %>%
+parse_tags = function(node, ns=xml2::xml_ns(node)) {
+  xml2::xml_find_all(node, './/Tags-i', ns=ns) %>%
     xml2::xml_text() %>%
     paste(collapse=' ')
 }
 
 #' Parse a single rectangle annotation
 #' @param field Parsed XML for a single rectangle annotation
+#' @param ns Optional namespace; providing this makes parsing many rects
+#' much faster.
 #' @return An `sf::st_sf` with coordinates of the rectangle
 #' and columns `center_x` and `center_y` giving the *rounded*
 #' center point that inForm uses to identify the field.
 #' @keywords internal
-parse_rect = function(field) {
-  x = xml2::xml_find_first(field, './/Origin/X') %>% xml2::xml_double()
-  y = xml2::xml_find_first(field, './/Origin/Y') %>% xml2::xml_double()
-  width = xml2::xml_find_first(field, './/Size/Width') %>% xml2::xml_double()
-  height = xml2::xml_find_first(field, './/Size/Height') %>% xml2::xml_double()
+parse_rect = function(field, ns=xml2::xml_ns(field)) {
+  x = xml2::xml_find_first(field, './/Origin/X', ns=ns) %>% xml2::xml_double()
+  y = xml2::xml_find_first(field, './/Origin/Y', ns=ns) %>% xml2::xml_double()
+  width = xml2::xml_find_first(field, './/Size/Width', ns=ns) %>% xml2::xml_double()
+  height = xml2::xml_find_first(field, './/Size/Height', ns=ns) %>% xml2::xml_double()
   pts = matrix(c(x, y,
                  x, y+height,
                  x+width, y+height,
