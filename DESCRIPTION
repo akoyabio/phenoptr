@@ -21,6 +21,7 @@ Imports:
     rlang,
     rmarkdown,
     rtree,
+    scales,
     sf,
     sp,
     spatstat (>= 2.0-0),
@@ -42,8 +43,7 @@ RoxygenNote: 7.1.2
 Config/testthat/edition: 3
 Suggests: 
     testthat (>= 3.1.0),
-    doParallel,
-    rtree
+    doParallel
 VignetteBuilder: knitr
 URL: https://akoyabio.github.io/phenoptr/
 BugReports: https://github.com/akoyabio/phenoptr/issues

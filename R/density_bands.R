@@ -304,11 +304,11 @@ create_buffer_bands = function(boundary, roi, n, width) {
       outer=c(-i, i) * width,
       poly=list(inside, outside))
   }) %>%
-    dplyr::filter(!is.na(poly)) %>%
-    dplyr::mutate(poly=sf::st_sfc(poly))
+    dplyr::filter(!is.na(.data$poly)) %>%
+    dplyr::mutate(poly=sf::st_sfc(.data$poly))
 
   buffers=sf::st_sf(buffers, sf_column_name='poly') %>%
-    dplyr::arrange(inner)
+    dplyr::arrange(.data$inner)
   list(divider=divider, buffers=buffers)
 }
 
@@ -338,12 +338,12 @@ plot_buffers = function(buffers, divider, roi)
 plot_density_by_band = function(densities, colors) {
   # To plot densities, make a tall data frame
   tall = densities %>% sf::st_drop_geometry() %>%
-    dplyr::select(outer, ends_with('density')) %>%
+    dplyr::select(outer, dplyr::ends_with('density')) %>%
     tidyr::gather('Phenotype', 'Density', -outer) %>%
     dplyr::mutate(Phenotype = stringr::str_remove(Phenotype, ' density'))
 
   # Our density values are cells/micron^2 so multiply by 1e6
-  ggplot2::ggplot(tall, ggplot2::aes(outer, Density*1e6, color=Phenotype)) +
+  ggplot2::ggplot(tall, ggplot2::aes(outer, .data$Density*1e6, color=Phenotype)) +
     ggplot2::geom_vline(xintercept=0, linetype=2, color='gray') +
     ggplot2::geom_line(size=2) +
     ggplot2::annotate('text', x=20, y=800, angle=-90, vjust=0,

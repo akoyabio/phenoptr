@@ -20,7 +20,7 @@ sample_cell_seg_folder()
 A dataset containing inForm cell segmentation data for a single field.
 }
 \details{
-\code{sample_cell_seg_data} contains the \code{data_table} returned from\if{html}{\out{<div class="r">}}\preformatted{read_cell_seg_data(sample_cell_seg_path())
+\code{sample_cell_seg_data} contains the \code{data_table} returned from\if{html}{\out{<div class="sourceCode r">}}\preformatted{read_cell_seg_data(sample_cell_seg_path())
 }\if{html}{\out{</div>}}
 
 This table shows the stains used, the epitopes they were bound to,
