@@ -15,6 +15,7 @@ ggplot
 grayscale
 Grolemund
 Hadley
+ImageDescription
 inForm
 impl
 kable
@@ -44,6 +45,7 @@ sel
 SpatialDistributionReport
 spatstat
 stroma
+testthat
 tibble
 tidyr
 tidyverse
