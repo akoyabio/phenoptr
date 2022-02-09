@@ -7,6 +7,10 @@
 # and does not handle them correctly.
 cell_seg_nas = c('NA', '#N/A', '')
 
+# Fix for unexported tidyselect::where()
+# See https://github.com/r-lib/tidyselect/issues/201
+utils::globalVariables("where")
+
 #' Find inForm data files.
 #'
 #' `list_cell_seg_files` finds inForm cell seg data files in a single directory
@@ -129,9 +133,12 @@ read_cell_seg_data <- function(
 
   # Convert NA values in phenotype columns back to '' for
   # compatibility with existing client code
+  # Check for character in case we are reading a Consolidated_data_summary.txt
+  # file, we don't need to do this for them.
   df = df %>%
-    dplyr::mutate(dplyr::across(dplyr::starts_with('Phenotype'),
-                                tidyr::replace_na, replace=''))
+    dplyr::mutate(
+      dplyr::across(where(is.character) & dplyr::starts_with('Phenotype'),
+                    tidyr::replace_na, replace=''))
 
   # If any of these fields has missing values, the file may be damaged.
   no_na_cols = c("Path", "Sample Name", "Tissue Category", "Phenotype",
