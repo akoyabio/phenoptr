@@ -193,12 +193,12 @@ read_phenochart_polygons = function(xml_path, include_rects=TRUE) {
     xml2::xml_find_all(xml, './/Annotations-i[@subtype="ROIAnnotation"]', ns=ns)
 
   result = purrr::map_dfr(rois, function(roi) {
-    tags = xml2::xml_find_all(roi, './/Tags-i', ns=ns) %>%
+    tags = xml2::xml_find_all(roi, './Tags/Tags-i', ns=ns) %>%
       xml2::xml_text() %>%
       paste(collapse=' ')
     locs = xml2::xml_find_all(roi, './/Perimeter-i', ns=ns)
-    x = xml2::xml_find_all(locs, './/X', ns=ns) %>% xml2::xml_double()
-    y = xml2::xml_find_all(locs, './/Y', ns=ns) %>% xml2::xml_double()
+    x = xml2::xml_find_all(locs, './X', ns=ns) %>% xml2::xml_double()
+    y = xml2::xml_find_all(locs, './Y', ns=ns) %>% xml2::xml_double()
 
     # A valid polygon has at least four points, making a triangle
     if (length(x)<4) return(NULL)
