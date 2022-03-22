@@ -1,5 +1,8 @@
 # phenoptr 0.3.2.9000
 
+- Update the minimum R version to 4.1.0 as this is now required by `{locfit}`
+  which is imported by `{EBImage}`.
+  
 # phenoptr 0.3.2
 **2022-01-03**
 

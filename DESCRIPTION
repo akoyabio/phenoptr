@@ -28,7 +28,7 @@ Imports:
     tiff (>= 0.1.8),
     vroom (>= 1.5.1),
     xml2
-Depends: R (>= 4.0.0)
+Depends: R (>= 4.1.0)
 License: Zlib | file LICENSE
 Copyright: Akoya Biosciences
 Encoding: UTF-8
