@@ -139,25 +139,29 @@ make_ppp = function(csd, export_path, pheno,
 #' tag are combined with `sf::st_union()`. A single (multi)polygon
 #' object is returned for each unique tag.
 #'
-#' @param annotation_file Path to annotations file
+#' @param annotation_file Path to annotations file, either XML or GeoJSON
 #' @return A named list of (multi)polygons, one for each tag
 #' in the annotations file
 #' @importFrom rlang .data
 #' @export
 read_tagged_rois = function(annotation_file) {
-  rois = read_phenochart_polygons(annotation_file)
+  rois = read_phenochart_polygons(annotation_file, include_rects=FALSE)
   if (nrow(rois) > 0)
     rois = rois %>% dplyr::filter(.data$tags != '') # Only tagged ROIs
 
-  if (nrow(rois) > 0) {
-    # Get a list of all unique tags
-    all_roi_names = rois$tags %>%
-      stringr::str_split(' ') %>%
-      unlist() %>%
-      unique() %>%
-      sort() %>%
-      rlang::set_names()
-  } else return(list())
+  if (nrow(rois) == 0) return(list())
+
+  # If we have status, filter out any deleted or ignored annotations
+  if ('status' %in% names(rois))
+    rois = rois %>% dplyr::filter(!.data$status %in% c('Deleted', 'Ignored'))
+
+  # Get a list of all unique tags
+  all_roi_names = rois$tags %>%
+    stringr::str_split(' ') %>%
+    unlist() %>%
+    unique() %>%
+    sort() %>%
+    rlang::set_names()
 
   # Make a single (multi) polygon for each tag
   tagged_rois = purrr::map(all_roi_names, function(tag_name) {
@@ -175,18 +179,31 @@ read_tagged_rois = function(annotation_file) {
 #' Reads the polygons and (optionally) included rectangles for all
 #' ROI annotations in a single file.
 #'
-#' @param xml_path Path to an annotations file.
+#' @param anno_path Path to an annotations file, either XML or GeoJSON.
 #' @param include_rects If `TRUE`, the result will include the rectangles
-#' contained in each annotation.
+#' contained in each annotation (XML annotations only).
 #' @return An `sf::st_sf` object with columns `tags`, `geometry` and
 #' (optionally) `rects`.
 #' `rects` is a list of `sf::st_sf` objects with columns `tags`, `center_x`,
 #' `center_y` and `geometry`.
+#' If `anno_path` points to a GeoJSON file, the value will also include
+#' columns `status` and `object_type`.
 #' Multiple tags for a single ROI are separated by spaces in a single string.
 #' @export
 #' @importFrom magrittr %>%
-read_phenochart_polygons = function(xml_path, include_rects=TRUE) {
-  xml = xml2::read_xml(xml_path)
+read_phenochart_polygons = function(anno_path, include_rects=TRUE) {
+  if (endsWith(anno_path, '.geojson')) {
+    if (include_rects)
+      stop('include_rects=TRUE is not supported for GeoJSON files.')
+
+    # GeoJSON annotations are easily read with st_read
+    df = sf::st_read(anno_path)
+    sf::st_crs(df) = sf::NA_crs_ # GeoJSON is read as WGS84; we are not that
+    return(df)
+  }
+
+  # XML annotations
+  xml = xml2::read_xml(anno_path)
   ns = xml2::xml_ns(xml)
 
   rois =

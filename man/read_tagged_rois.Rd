@@ -7,7 +7,7 @@
 read_tagged_rois(annotation_file)
 }
 \arguments{
-\item{annotation_file}{Path to annotations file}
+\item{annotation_file}{Path to annotations file, either XML or GeoJSON}
 }
 \value{
 A named list of (multi)polygons, one for each tag
