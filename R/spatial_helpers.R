@@ -199,6 +199,9 @@ read_phenochart_polygons = function(anno_path, include_rects=TRUE) {
     # GeoJSON annotations are easily read with st_read
     df = sf::st_read(anno_path)
     sf::st_crs(df) = sf::NA_crs_ # GeoJSON is read as WGS84; we are not that
+
+    # Make valid geometries; see note below
+    df = sf::st_buffer(df, 0)
     return(df)
   }
 
