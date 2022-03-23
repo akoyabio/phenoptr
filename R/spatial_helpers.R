@@ -200,6 +200,10 @@ read_phenochart_polygons = function(anno_path, include_rects=TRUE) {
     df = sf::st_read(anno_path)
     sf::st_crs(df) = sf::NA_crs_ # GeoJSON is read as WGS84; we are not that
 
+    # Filter out geometries that are beyond fixing, e.g. 0 or < 4 points
+    # See ?st_is_valid for details
+    df = df[!is.na(sf::st_is_valid(df)),]
+
     # Make valid geometries; see note below
     df = sf::st_buffer(df, 0)
     return(df)
